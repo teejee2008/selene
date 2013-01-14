@@ -1,0 +1,19 @@
+Source: selene
+Section: video
+Priority: extra
+Maintainer: Tony George <teejee2008@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev
+Standards-Version: 3.9.3
+Homepage: http://teejeetech.blogspot.com/2013/01/selene-media-encoder-for-ubuntu.html
+#Vcs-Git: git://git.debian.org/collab-maint/hello.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/hello.git;a=summary
+
+Package: selene
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools
+Recommends: lame, mkvtoolnix, ffmpeg2theora
+Description: Simple audio/video transcoder for Linux.
+ Selene is an audio/video converter for linux that uses simple bash scripts for
+ transcoding the input files. The scripts can use any command line utility for
+ encoding input files. Selene displays the encoding progress along with options
+ to pause/resume/shutdown, etc.

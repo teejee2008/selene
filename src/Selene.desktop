@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Selene Media Encoder
+MimeType=
+Exec=selene 
+Type=Application
+GenericName=Audio-Video Converter
+Terminal=false
+Icon=
+Caption=Audio-Video Converter
+X-KDE-StartupNotify=false
+Categories=AudioVideo;
+InitialPreference=9
+Name[en_US]=Selene
