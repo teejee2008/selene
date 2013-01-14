@@ -1,7 +1,7 @@
 Source: selene
 Section: video
 Priority: extra
-Maintainer: Tony George <teejee2008@gmail.com>
+Maintainer: Tony George <tony.george.kol@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), autotools-dev
 Standards-Version: 3.9.3
 Homepage: http://teejeetech.blogspot.com/2013/01/selene-media-encoder-for-ubuntu.html
