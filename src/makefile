@@ -26,7 +26,7 @@ install:
 	install -m 0755 selene-scripts/* $(DESTDIR)$(sharedir)/selene/scripts
 	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
-	sudo glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
+	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	
 uninstall:
 	sudo rm -f /usr/bin/selene
