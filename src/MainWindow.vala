@@ -101,22 +101,25 @@ public class MainWindow : Gtk.Window
         
 		// Toolbar
 		Gtk.Toolbar toolbar = new Gtk.Toolbar ();
-		toolbar.toolbar_style = ToolbarStyle.ICONS;
+		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.pack_start (toolbar, false, false, 0);
 
 		// Toolbar content
 		btnAddFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+		btnAddFiles.is_important = true;
 		btnAddFiles.clicked.connect (btnAddFiles_clicked);
 		btnAddFiles.set_tooltip_text ("Add file(s)");
 		toolbar.add (btnAddFiles);
 
 		btnRemoveFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.REMOVE);
+		btnRemoveFiles.label = "";
 		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
 		btnRemoveFiles.set_tooltip_text ("Remove selected file(s)");
 		toolbar.add (btnRemoveFiles);
 		
 		btnClearFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
+		btnClearFiles.label = "";
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
 		btnClearFiles.set_tooltip_text ("Remove all file(s)");
 		toolbar.add (btnClearFiles);
@@ -124,12 +127,14 @@ public class MainWindow : Gtk.Window
 		toolbar.add (new Gtk.SeparatorToolItem());
 		
 		btnStart = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PLAY);
+		btnStart.is_important = true;
 		btnStart.label = "Start";
 		btnStart.clicked.connect (start);
 		btnStart.set_tooltip_text ("Start");
 		toolbar.add (btnStart);
 		
 		btnPause = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PAUSE);
+		btnPause.is_important = true;
 		btnPause.clicked.connect (btnPause_clicked);
 		btnPause.set_tooltip_text ("Pause");
 		btnPause.visible = false;
@@ -137,6 +142,7 @@ public class MainWindow : Gtk.Window
 		toolbar.add (btnPause);
 		
 		btnStop = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_STOP);
+		btnStop.is_important = true;
 		btnStop.clicked.connect (() => { App.stop_batch (); });
 		btnStop.set_tooltip_text ("Abort");
 		btnStop.visible = false;
@@ -144,6 +150,7 @@ public class MainWindow : Gtk.Window
 		toolbar.add (btnStop);
 
 		btnFinish = new Gtk.ToolButton.from_stock (Gtk.Stock.OK);
+		btnFinish.is_important = true;
 		btnFinish.label = "Finish";
 		btnFinish.clicked.connect (() => {  convert_finish (); });
 		btnFinish.set_tooltip_text ("Finish");
@@ -157,11 +164,13 @@ public class MainWindow : Gtk.Window
 		toolbar.add (separator);
 
 		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
+		btnAppSettings.label = "";
 		btnAppSettings.clicked.connect (btnAppSettings_clicked);
 		btnAppSettings.set_tooltip_text ("Application Settings");
 		toolbar.add (btnAppSettings);
 		
 		btnAbout = new Gtk.ToolButton.from_stock (Gtk.Stock.ABOUT);
+		btnAbout.label = "";
 		btnAbout.clicked.connect (btnAbout_clicked);
 		btnAbout.set_tooltip_text ("About");
 		toolbar.add (btnAbout);
@@ -758,8 +767,11 @@ This program is free for personal and commercial use and comes with absolutely n
 		}	
 
 		convert_prepare ();
+		
 	    App.SelectedScript = App.ScriptFiles[cmbScript.get_active()];
+	    
 	    App.convert_all ();
+	    
 	    timerID = Timeout.add (500, update_progress);
 	}
 	
@@ -811,14 +823,14 @@ This program is free for personal and commercial use and comes with absolutely n
 	public void convert_prepare ()
 	{
 		hboxScript.visible = false;
-		hboxButtons.visible = false;
+		//hboxButtons.visible = false;
 		hboxProgress.visible = true;
 		btnShutdown.active = App.Shutdown;
 		
 		btnShutdown.visible = App.AdminMode;
 		btnBackground.visible = App.AdminMode;
-		btnOpenTempDir.visible = true;
-		btnOpenOutputDir.visible = (App.OutputDirectory.length > 0);
+		//btnOpenTempDir.visible = true;
+		//btnOpenOutputDir.visible = (App.OutputDirectory.length > 0);
 		
 		btnStart.visible = false;
 		btnPause.visible = true;
@@ -851,7 +863,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	public void convert_finish ()
 	{
 		hboxScript.visible = true;
-		hboxButtons.visible = true;
+		//hboxButtons.visible = true;
 		hboxProgress.visible = false;
 		
 		colCrop.fixed_width = 100;
