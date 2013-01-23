@@ -76,7 +76,8 @@ public class MainWindow : Gtk.Window
 	private uint startupTimer;
 	private uint statusTimer;
 	private bool paused = false;
-
+	private MediaFile lastFile;
+	
 	private const Gtk.TargetEntry[] targets = {
 		{ "text/uri-list", 0, 0}
 	};
@@ -144,7 +145,7 @@ public class MainWindow : Gtk.Window
 		
 		btnStop = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_STOP);
 		btnStop.is_important = true;
-		btnStop.clicked.connect (() => { App.stop_batch (); });
+		btnStop.clicked.connect (btnStop_clicked);
 		btnStop.set_tooltip_text ("Abort");
 		btnStop.visible = false;
 		btnStop.no_show_all = true;
@@ -197,7 +198,8 @@ public class MainWindow : Gtk.Window
 		CellRendererText cellName = new CellRendererText ();
 		cellName.ellipsize = Pango.EllipsizeMode.END;
 		colName.pack_start (cellName, false);
-		colName.set_cell_data_func (cellName, cellName_render);
+		colName.set_attributes(cellName, "text", InputField.FILE_NAME);
+		//colName.set_cell_data_func (cellName, cellName_render);
 		tvFiles.append_column(colName);
 		
 		// colSize
@@ -205,7 +207,8 @@ public class MainWindow : Gtk.Window
 		colSize.title = "Size";
 		CellRendererText cellSize = new CellRendererText ();
 		colSize.pack_start (cellSize, false);
-		colSize.set_cell_data_func (cellSize, cellSize_render);
+		colSize.set_attributes(cellSize, "text", InputField.FILE_SIZE);
+		//colSize.set_cell_data_func (cellSize, cellSize_render);
 		tvFiles.append_column(colSize);
 		
 		// colDuration
@@ -213,7 +216,8 @@ public class MainWindow : Gtk.Window
 		colDuration.title = "Duration";
 		CellRendererText cellDuration = new CellRendererText ();
 		colDuration.pack_start (cellDuration, false);
-		colDuration.set_cell_data_func (cellDuration, cellDuration_render);
+		colDuration.set_attributes(cellDuration, "text", InputField.FILE_DURATION);
+		//colDuration.set_cell_data_func (cellDuration, cellDuration_render);
 		tvFiles.append_column(colDuration);
 
 		// colCrop
@@ -224,7 +228,8 @@ public class MainWindow : Gtk.Window
 		cellCrop.editable = true;
 		cellCrop.edited.connect (tvFiles_crop_cell_edited);
 		colCrop.pack_start (cellCrop, false);
-		colCrop.set_cell_data_func (cellCrop, cellCrop_render);
+		colCrop.set_attributes(cellCrop, "text", InputField.FILE_CROPVAL);
+		//colCrop.set_cell_data_func (cellCrop, cellCrop_render);
 		tvFiles.append_column(colCrop);
 		
 		// colProgress
@@ -235,7 +240,8 @@ public class MainWindow : Gtk.Window
 		cellProgress.height = 15;
 		cellProgress.width = 150;
 		colProgress.pack_start (cellProgress, false);
-		colProgress.set_cell_data_func (cellProgress, cellProgress_render);
+		colProgress.set_attributes(cellProgress, "value", InputField.FILE_PROGRESS, "text", InputField.FILE_PROGRESS_TEXT);
+		//colProgress.set_cell_data_func (cellProgress, cellProgress_render);
 		tvFiles.append_column(colProgress);
 		
 		// colSpacer
@@ -430,43 +436,7 @@ public class MainWindow : Gtk.Window
 		
         Gtk.drag_finish (drag_context, true, false, time);
     }
-    
-    private void cellName_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
-		MediaFile mf;
-		model.get (iter, 0, out mf, -1);
-		(cell as Gtk.CellRendererText).text = mf.Name;
-	}
-	
-	private void cellSize_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
-		MediaFile mf;
-		model.get (iter, 0, out mf, -1);
-		(cell as Gtk.CellRendererText).text = Utility.format_file_size(mf.Size);
-	}
-	
-	private void cellDuration_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
-		MediaFile mf;
-		model.get (iter, 0, out mf, -1);
-		(cell as Gtk.CellRendererText).text = Utility.format_duration(mf.Duration);
-	}
-	
-	private void cellCrop_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
-		MediaFile mf;
-		model.get (iter, 0, out mf, -1);
-		(cell as Gtk.CellRendererText).text = mf.crop_values_info();
-	}
-	
-	private void cellProgress_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
-		MediaFile mf;
-		model.get (iter, 0, out mf, -1);
-		(cell as CellRendererProgress2).value = mf.ProgressPercent;
-		(cell as CellRendererProgress2).text = mf.ProgressText;
-	}
-	
+
 	private void cellScript_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
 	{
 		ScriptFile sh;
@@ -675,18 +645,21 @@ public class MainWindow : Gtk.Window
     
 	private void refresh_file_list (bool refresh_model)
 	{
-		ListStore inputStore = (ListStore) tvFiles.model;
+		ListStore inputStore = new ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
 		
-		if (refresh_model){
-			inputStore = new ListStore (1, typeof (MediaFile));
-			
-			TreeIter iter;
-			foreach(MediaFile mf in App.InputFiles) {
-				inputStore.append (out iter);
-				inputStore.set (iter, 0, mf);
-			}
+		TreeIter iter;
+		foreach(MediaFile mFile in App.InputFiles) {
+			inputStore.append (out iter);
+			inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
+	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
+	    	inputStore.set (iter, InputField.FILE_SIZE, Utility.format_file_size(mFile.Size));
+	    	inputStore.set (iter, InputField.FILE_DURATION, Utility.format_duration(mFile.Duration));
+	    	inputStore.set (iter, InputField.FILE_STATUS, Stock.MEDIA_PAUSE);
+	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info ());
+	    	inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
+	    	inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
 		}
-		
+			
 		tvFiles.set_model (inputStore);
 		
 		tvFiles.columns_autosize ();
@@ -874,6 +847,14 @@ This program is free for personal and commercial use and comes with absolutely n
 				statusbar_default_message ();
 				break; 
 		}
+		
+		refresh_file_status_all ();
+	}
+	
+	private void btnStop_clicked ()
+	{
+		App.stop_batch ();
+		refresh_file_status_all (); 
 	}
 	
 	public void convert_prepare ()
@@ -921,8 +902,8 @@ This program is free for personal and commercial use and comes with absolutely n
 
 	public bool update_progress()
 	{
-		//TreeIter iter;
-		//ListStore model = (ListStore)tvFiles.model;
+		TreeIter iter;
+		ListStore model = (ListStore)tvFiles.model;
 		//model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string());
 		//model.set (iter, 0, App.CurrentFile);
 		
@@ -934,8 +915,6 @@ This program is free for personal and commercial use and comes with absolutely n
 				break;
 				
 			case AppStatus.IDLE:
-				refresh_file_list(false);
-
 				// remove progress timers and check shutdown flag
 				Source.remove (timerID);
 				if (App.Shutdown){
@@ -973,16 +952,52 @@ This program is free for personal and commercial use and comes with absolutely n
 				
 				/*if (btnPause.active){
 					btnPause.active = false;
-				}*/
+				}
+				*/
 				
+				if (lastFile == null) { lastFile = App.CurrentFile; }
+				if (lastFile != App.CurrentFile){
+					refresh_file_status_all();
+					lastFile = App.CurrentFile;
+				}
+				
+				if (model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string ())){
+					model.set (iter, InputField.FILE_PROGRESS, (int)(App.Progress * 100));
+					model.set (iter, InputField.FILE_PROGRESS_TEXT, null);
+				}
+
 				statusbar_default_message ();
 				lblStatus.label = statusLine;
 				break;
 		}
 		
-		refresh_file_list(false);
-		
+		//refresh_file_status();
+		//refresh_file_list(true);
 		return true;
+	}
+	
+	public void refresh_file_status_all ()
+	{
+		//refresh_file_list(true);
+		
+		
+		ListStore model = (ListStore)tvFiles.model;
+		MediaFile mf;
+		int index = -1;
+		TreeIter iter;
+		
+		bool iterExists = model.get_iter_first (out iter);
+		index++;
+		
+		while (iterExists){
+			mf = App.InputFiles[index];
+			model.set (iter, InputField.FILE_PROGRESS, mf.ProgressPercent);
+			model.set (iter, InputField.FILE_PROGRESS_TEXT, mf.ProgressText);
+
+			iterExists = model.iter_next (ref iter);
+			index++;
+		}
+		
 	}
 	
 	public bool shutdown ()

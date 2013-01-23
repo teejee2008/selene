@@ -82,8 +82,8 @@ public class MediaFile : GLib.Object
 	
 	public FileStatus Status;
 	public bool IsValid;
-	public string ProgressText;
-	public int ProgressPercent;
+	public string ProgressText = "Queued";
+	public int ProgressPercent = 0;
 	
 	public string InfoText;
 	public bool HasAudio = false;
@@ -1334,7 +1334,12 @@ Notes:
 		}
 		
 		this.Aborted = true;
-
+		for(int k = InputFiles.index_of(CurrentFile); k < InputFiles.size; k++)
+		{
+			MediaFile mf  = InputFiles[k];
+			mf.ProgressText = "Cancelled";
+		}
+		
 	    Utility.process_kill (procID);
 	}
 	
@@ -1347,6 +1352,7 @@ Notes:
 		
 		// this.Aborted = true; //Do not set Abort flag
 		CurrentFile.Status = FileStatus.SKIPPED;
+		CurrentFile.ProgressText = "Cancelled";
 
 	    Utility.process_kill (procID);
 	}
@@ -1359,7 +1365,8 @@ Notes:
 		    Utility.process_pause (childPid);
 	    }
 		
-		this.Status = AppStatus.PAUSED;
+		Status = AppStatus.PAUSED;
+		CurrentFile.ProgressText = "Paused";
 		
 		if (ConsoleMode)
 			log_msg ("Paused: Enter (r) to resume...");
@@ -1375,7 +1382,8 @@ Notes:
 		    Utility.process_resume (childPid);
 	    }
 	    
-	    this.Status = AppStatus.RUNNING;
+		Status = AppStatus.RUNNING;
+		CurrentFile.ProgressText = null;
 	    
 	    if (ConsoleMode)
 			log_msg ("Converting: Enter (q) to quit or (p) to pause...");
