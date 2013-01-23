@@ -23,6 +23,7 @@
  
 using GLib;
 using Gtk;
+using Gee;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
@@ -56,7 +57,7 @@ public enum AppStatus
 	WAITFILE    //waiting for files
 }
 
-public class MediaFile
+public class MediaFile : GLib.Object
 {
 	public string Path;
 	public string Name;
@@ -81,6 +82,8 @@ public class MediaFile
 	
 	public FileStatus Status;
 	public bool IsValid;
+	public string ProgressText;
+	public int ProgressPercent;
 	
 	public string InfoText;
 	public bool HasAudio = false;
@@ -309,7 +312,7 @@ public class MediaFile
 	}
 }
 
-public class ScriptFile
+public class ScriptFile : GLib.Object
 {
 	public string Path;
 	public string Name;
@@ -318,20 +321,16 @@ public class ScriptFile
 
 public class Main : GLib.Object
 {
-	public MediaFile InputFiles[100];
-	public int InputCount = 0;
-	public ScriptFile ScriptFiles[100];
-	public int ScriptCount = 0;
-	
+	public Gee.ArrayList<MediaFile> InputFiles;
+	public Gee.ArrayList<ScriptFile> ScriptFiles;
+
 	public string DataDirectory;
 	public string TempDirectory;
 	public string OutputDirectory = "";
 	public string BackupDirectory = "";
 	private string ConfigDirectory;
 
-	public int FileIndex = -1;
 	public ScriptFile SelectedScript;
-	
 	public MediaFile CurrentFile;
 	public string CurrentLine;
 	public string StatusLine;
@@ -490,13 +489,13 @@ public class Main : GLib.Object
 		
 		// check UI mode
 		
-		if ((App.SelectedScript == null)||(App.InputCount == 0))
+		if ((App.SelectedScript == null)||(App.InputFiles.size == 0))
 			App.ConsoleMode = false;
 		
 		// show window
 		
 		if (App.ConsoleMode){
-			if (App.InputCount == 0){
+			if (App.InputFiles.size == 0){
 				log_error ("Input queue is empty! Please specify files to convert.");
 				return 1;
 			}
@@ -562,6 +561,9 @@ Notes:
 	
 	public Main(string arg0)
 	{
+		InputFiles = new Gee.ArrayList<MediaFile>();
+		ScriptFiles = new Gee.ArrayList<ScriptFile>();
+		
 		// check for admin priviledges
 		
 		AdminMode = Utility.user_is_admin ();
@@ -611,7 +613,7 @@ Notes:
 
 		// check if script dir is empty
 		
-		if (ScriptCount == 0){
+		if (this.ScriptFiles.size == 0){
 			if (Utility.dir_exists (sharePath)){
 				
 				// copy installed scripts
@@ -726,7 +728,6 @@ Notes:
 	{
 		try
 		{
-			ScriptCount = 0;
 			var dataDir = File.parse_name (DataDirectory);
 	        var enumerator = dataDir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
 	
@@ -750,11 +751,8 @@ Notes:
 			}
 
 			if (Utility.file_exists (sh)){
-				int index = find_script (sh);
-				if (index != -1){
-					SelectedScript = ScriptFiles[index];
-				}
-				else{
+				SelectedScript = find_script(sh);
+				if (SelectedScript == null){
 					SelectedScript = add_script (sh);
 				}
 				return true;
@@ -763,12 +761,8 @@ Notes:
 		
 		// resolve the full path and check
 		string filePath = Utility.resolve_relative_path(scriptFile);
-		int index = find_script (filePath);
-		
-		if (index != -1){
-			SelectedScript = ScriptFiles[index];
-		}
-		else{
+		SelectedScript = find_script(filePath);
+		if (SelectedScript == null){
 			SelectedScript = add_script (filePath);
 		}
 		
@@ -798,8 +792,8 @@ Notes:
 	            sh.Path = filePath;
 	            sh.Name = finfo.get_name();
 	            sh.Title = sh.Name[0:sh.Name.length - 3];
-	            ScriptCount++;
-	            this.ScriptFiles[ScriptCount-1] = sh;
+	            
+	            this.ScriptFiles.add(sh);
 	            return sh;
             }
         }
@@ -810,28 +804,26 @@ Notes:
         return null;
 	}
 	
-	public int find_script (string filePath)
+	public ScriptFile? find_script (string filePath)
 	{
-		for(int i = 0; i < ScriptCount; i++){
-			ScriptFile sh = ScriptFiles[i];
+		foreach(ScriptFile sh in this.ScriptFiles){
 			if (sh.Path == filePath){
-				return i;
+				return sh;
 			}
 		}
 		
-		return -1;
+		return null;
 	}
 	
-	public int find_input_file (string filePath)
+	public MediaFile? find_input_file (string filePath)
 	{
-		for(int i = 0; i < InputCount; i++){
-			MediaFile mf = InputFiles[i];
+		foreach(MediaFile mf in this.InputFiles){
 			if (mf.Path == filePath){
-				return i;
+				return mf;
 			}
 		}
 		
-		return -1;
+		return null;
 	}
 	
 	public void save_config ()
@@ -845,25 +837,6 @@ Notes:
 		} else {
 			settings.set_string ("last-script", "");
 		}
-		
-		/*
-		string txt = "";
-		
-		txt += "[AppConfig]\n";
-		txt += "OutputDirectory=" + OutputDirectory + "\n";
-		txt += "BackupDirectory=" + BackupDirectory + "\n";
-		if (SelectedScript != null) {
-			txt += "LastScript=" + SelectedScript.Path + "\n";
-		}
-		
-		try{
-			FileUtils.set_contents (ConfigFile, txt);
-		}
-		catch(Error e){
-	        log_error (e.message);
-	    }
-	    * 
-	    * */
 	}
 	
 	public void load_config ()
@@ -887,43 +860,6 @@ Notes:
 		if (sh != null && sh.length > 0) {
 			select_script(sh);
 		}
-		
-		
-		/*
-		if (Utility.file_exists (ConfigFile) == false) { return; }
-		
-		string txt = "";
-		
-		try{
-			FileUtils.get_contents (ConfigFile, out txt);
-		}
-		catch(Error e){
-	        log_error (e.message);
-	    }
-	    
-	    foreach(string line in txt.split ("\n")){
-		    string[] arr = line.split ("=");
-		    if (arr.length != 2){ continue; }
-		    
-			string key = arr[0];
-			string val = arr[1];
-			if (val == "") { val = null; }
-			
-			switch (key){
-				case "OutputDirectory":
-					OutputDirectory = val;
-					break;
-				case "BackupDirectory":
-					BackupDirectory = val;
-					break;
-				case "LastScript":
-					select_script(val);
-					break;
-			}
-		}
-		
-		log_msg ("Using config file '%s'".printf (ConfigFile));
-		* */
 	}
 	
 	public void exit_app ()
@@ -936,8 +872,7 @@ Notes:
 	{
 		MediaFile mFile = new MediaFile (filePath);
 		if (mFile.IsValid) {
-			InputCount++;
-			InputFiles[InputCount-1] = mFile;
+			InputFiles.add(mFile);
 			log_msg ("File added: '%s'".printf (mFile.Path));
 			return true;
 		}
@@ -948,51 +883,28 @@ Notes:
 		return false;
 	}
 	
-	public void remove_files (int[] indexArray)
+	public void remove_files (Gee.ArrayList<MediaFile> file_list)
 	{
-		foreach(int k in indexArray){
-			log_msg ("File removed: '%s'".printf (InputFiles[k].Path));
-			InputFiles[k] = null;
+		foreach(MediaFile mf in file_list){
+			this.InputFiles.remove (mf);
+			log_msg ("File removed: '%s'".printf (mf.Path));
 		}
-		
-		if (InputCount == 1){
-			InputCount = 0;
-			return;
-		}
-
-		bool nullFound = true;
-		int k = 0;
-		while (nullFound){
-			k = 0; 
-			nullFound = false;
-			while (k < InputCount - 1){
-				if (InputFiles[k] == null){
-					InputFiles[k] = InputFiles[k+1];
-					InputFiles[k+1] = null;
-					nullFound = true;
-				}
-				k++;
-			}
-			
-			if (nullFound) { InputCount--; }
-			if ((InputCount > 0) && (InputFiles[InputCount-1] == null)) { InputCount--; }
-		}	
 	}
 	
 	public void remove_all ()
 	{
-		InputCount = 0;
+		this.InputFiles.clear();
 		log_msg ("All files removed");
 	}
 
 	public void convert_all ()
 	{
-		if (InputCount == 0){
+		if (InputFiles.size == 0){
 			log_error ("Input queue is empty! Please add some files.");
 			return;
 		}
 		
-		log_msg ("Starting batch of %d file(s):".printf(InputCount), true);
+		log_msg ("Starting batch of %d file(s):".printf(InputFiles.size), true);
 
 		if (this.OutputDirectory.length > 0) { 
 			Utility.create_dir (this.OutputDirectory); 
@@ -1022,18 +934,18 @@ Notes:
 		BatchCompleted = false;
 		Aborted = false;
 		
-		for(int k = 0; k < this.InputCount; k++) {
-			InputFiles[k].Status = FileStatus.PENDING;
+		foreach(MediaFile mf in this.InputFiles) {
+			mf.Status = FileStatus.PENDING;
+			mf.ProgressText = "Queued";
+			mf.ProgressPercent = 0;
 		}
 
 		if (ConsoleMode)
 			progressTimerID = Timeout.add (500, update_progress);
-
-		for(int k = 0; k < this.InputCount; k++) {
+				
+		foreach(MediaFile mf in this.InputFiles) {
 			if (this.Aborted) { break; }
-			this.FileIndex = k;
-			this.CurrentFile = this.InputFiles[k];
-			this.convert_file();
+			this.convert_file(mf);
 		}
 
 		if (ConsoleMode)
@@ -1061,16 +973,17 @@ Notes:
 		Status = AppStatus.NOTSTARTED;
 	}
 	
-	private bool convert_file ()
+	private bool convert_file (MediaFile mf)
 	{
-		if (Utility.file_exists (CurrentFile.Path) == false) { return false; }
+		if (Utility.file_exists (mf.Path) == false) { return false; }
 		
 		// prepare 
-		
-		CurrentFile = this.InputFiles[this.FileIndex];
+		CurrentFile = mf;
 		CurrentFile.prepare (this.TempDirectory);		
 		CurrentFile.Status = FileStatus.RUNNING;
-		
+		CurrentFile.ProgressText = null; // (not set) show value as percent
+		CurrentFile.ProgressPercent = 0;
+					
 		log_msg ("Source: '%s'".printf(CurrentFile.Path), true);
 		if (CurrentFile.SubFile != null){
 			log_msg ("Subtitles: '%s'".printf(CurrentFile.SubName));
@@ -1324,11 +1237,18 @@ Notes:
 				Utility.notify_send ("File Complete", CurrentFile.Name, 2000, "low");
 		}
 		
-        CurrentFile.Status = FileStatus.DONE;
-        
-        if (Utility.file_exists (CurrentFile.TempDirectory + "/0") == false)
+		// check for errors
+        if (Utility.file_exists (CurrentFile.TempDirectory + "/0"))
         {
+			CurrentFile.Status = FileStatus.SUCCESS;
+			CurrentFile.ProgressText = "Done";
+			CurrentFile.ProgressPercent = 100;
+		}
+		else
+		{
 			CurrentFile.Status = FileStatus.ERROR;
+			CurrentFile.ProgressText = "Error";
+			CurrentFile.ProgressPercent = 0;
 		}
 	}
 
@@ -1357,8 +1277,7 @@ Notes:
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
 		
 		StatusLine = tempLine;
-		//Progress = 0;
-		
+
 		if (regex_generic.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
 			Progress = dblVal / 100;
@@ -1390,6 +1309,8 @@ Notes:
 				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
 			}
 		}
+		
+		CurrentFile.ProgressPercent = (int)(Progress * 100);
 
 		if (ConsoleMode){
 			stdout.printf ("\r%s\r", blankLine[0:78]);

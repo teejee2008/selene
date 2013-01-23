@@ -57,9 +57,11 @@ public class MainWindow : Gtk.Window
 	private Gtk.MenuItem miFileCropAuto;
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePreview;
+	private TreeViewColumn colName;
+	private TreeViewColumn colSize;
+	private TreeViewColumn colDuration;
 	private TreeViewColumn colCrop;
 	private TreeViewColumn colProgress;
-	private TreeViewColumn colName;
 	private TreeViewColumn colSpacer;
 
 	private Regex regexGeneric;
@@ -73,7 +75,6 @@ public class MainWindow : Gtk.Window
 	private uint timerID;
 	private uint startupTimer;
 	private uint statusTimer;
-	private int lastFileIndex;
 	private bool paused = false;
 
 	private const Gtk.TargetEntry[] targets = {
@@ -189,39 +190,62 @@ public class MainWindow : Gtk.Window
 
 		vboxMain.pack_start (swFiles, true, true, 0);
 
-		CellRendererText cell_name = new CellRendererText ();
-		cell_name.ellipsize = Pango.EllipsizeMode.END;
-
-		CellRendererProgress2 cell_prg = new CellRendererProgress2();
-		cell_prg.height = 15;
-		cell_prg.width = 150;
-		
-		CellRendererText cell_crop = new CellRendererText ();
-		cell_crop.editable = true;
-		cell_crop.edited.connect (tvFiles_crop_cell_edited);
-
-        tvFiles.insert_column_with_attributes (-1, "File", cell_name, "text", InputField.FILE_NAME);
-        tvFiles.insert_column_with_attributes (-1, "Size", new CellRendererText (), "text", InputField.FILE_SIZE);
-        tvFiles.insert_column_with_attributes (-1, "Duration", new CellRendererText (), "text", InputField.FILE_DURATION);
-		tvFiles.insert_column_with_attributes (-1, "Crop", cell_crop, "text", InputField.FILE_CROPVAL);
-	    tvFiles.insert_column_with_attributes (-1, "Progress", cell_prg, "value", InputField.FILE_PROGRESS, "text", InputField.FILE_PROGRESS_TEXT);
-		tvFiles.insert_column_with_attributes (-1, "", new CellRendererText ());
-
-		colName = tvFiles.get_column (0);
+		// colName
+		colName = new TreeViewColumn();
+		colName.title = "File";
 		colName.expand = true;
+		CellRendererText cellName = new CellRendererText ();
+		cellName.ellipsize = Pango.EllipsizeMode.END;
+		colName.pack_start (cellName, false);
+		colName.set_cell_data_func (cellName, cellName_render);
+		tvFiles.append_column(colName);
 		
-		colCrop = tvFiles.get_column (3);
-		colCrop.fixed_width = 100;
+		// colSize
+		colSize = new TreeViewColumn();
+		colSize.title = "Size";
+		CellRendererText cellSize = new CellRendererText ();
+		colSize.pack_start (cellSize, false);
+		colSize.set_cell_data_func (cellSize, cellSize_render);
+		tvFiles.append_column(colSize);
+		
+		// colDuration
+		colDuration = new TreeViewColumn();
+		colDuration.title = "Duration";
+		CellRendererText cellDuration = new CellRendererText ();
+		colDuration.pack_start (cellDuration, false);
+		colDuration.set_cell_data_func (cellDuration, cellDuration_render);
+		tvFiles.append_column(colDuration);
 
-		colProgress = tvFiles.get_column (4);
-		colProgress.fixed_width = 120;
+		// colCrop
+		colCrop = new TreeViewColumn();
+		colCrop.title = "CropVideo";
+		colCrop.fixed_width = 100;
+		CellRendererText cellCrop = new CellRendererText ();
+		cellCrop.editable = true;
+		cellCrop.edited.connect (tvFiles_crop_cell_edited);
+		colCrop.pack_start (cellCrop, false);
+		colCrop.set_cell_data_func (cellCrop, cellCrop_render);
+		tvFiles.append_column(colCrop);
 		
-		colSpacer = tvFiles.get_column (4);
+		// colProgress
+		colProgress = new TreeViewColumn();
+		colProgress.title = "CropVideo";
+		colProgress.fixed_width = 120;
+		CellRendererProgress2 cellProgress = new CellRendererProgress2();
+		cellProgress.height = 15;
+		cellProgress.width = 150;
+		colProgress.pack_start (cellProgress, false);
+		colProgress.set_cell_data_func (cellProgress, cellProgress_render);
+		tvFiles.append_column(colProgress);
+		
+		// colSpacer
+		colSpacer = new TreeViewColumn();
 		colSpacer.expand = false;
 		colSpacer.fixed_width = 10;
-		
-		colCrop.visible = true;
-		
+		CellRendererText cellSpacer = new CellRendererText();
+		colSpacer.pack_start (cellSpacer, false);
+		tvFiles.append_column(colSpacer);
+
 		startupTimer = Timeout.add (100, () => 
 		{	
 			colProgress.visible = false; 
@@ -231,7 +255,6 @@ public class MainWindow : Gtk.Window
 
 		Gtk.drag_dest_set (tvFiles,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
         tvFiles.drag_data_received.connect(this.on_drag_data_received);
-		
 		
 		vboxMain.add (vboxMain2);
 		
@@ -243,24 +266,26 @@ public class MainWindow : Gtk.Window
         
 		// cmbScript
 		
-		ListStore model = new ListStore( 1, typeof( string ) );
+		ListStore model = new ListStore( 1, typeof( ScriptFile ) );
 		cmbScript = new ComboBox.with_model(model);
 		hboxScript.pack_start (cmbScript, true, true, 0);
 		
-		CellRendererText cell = new CellRendererText();
-        cmbScript.pack_start( cell, false );
-        cmbScript.set_attributes( cell, "text", 0 );
+		CellRendererText cellScript = new CellRendererText();
+        cmbScript.pack_start( cellScript, false );
+        cmbScript.set_cell_data_func (cellScript, cellScript_render);
         cmbScript.set_tooltip_text ("Conversion script (Preset file)");
-        ScriptFile sh;
-        for(int k = 0; k < App.ScriptCount; k++){
-	        sh = App.ScriptFiles[k];
-        	TreeIter iter;
+        
+        // populate script dropdown
+        TreeIter iter;
+        foreach(ScriptFile sh in App.ScriptFiles){
         	model.append( out iter );
-        	model.set( iter, 0, sh.Title);
+        	model.set( iter, 0, sh);
         }
         
+        // select default script
         if (App.SelectedScript != null){
-	        cmbScript.set_active(App.find_script(App.SelectedScript.Path));
+			ScriptFile sh = App.find_script(App.SelectedScript.Path);
+	        cmbScript.set_active(App.ScriptFiles.index_of(sh));
 	    }
 	    else{
 			cmbScript.set_active(0);
@@ -365,7 +390,7 @@ public class MainWindow : Gtk.Window
 				return false;
 			});
 
-		RefreshFileList();
+		refresh_file_list(true);
 		
 		try{
 			regexGeneric = new Regex("""([0-9]+[.]?[0-9]*)%""");
@@ -401,11 +426,54 @@ public class MainWindow : Gtk.Window
 			}
 		}
         
-        RefreshFileList ();
+        refresh_file_list(true);
 		
         Gtk.drag_finish (drag_context, true, false, time);
     }
     
+    private void cellName_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		MediaFile mf;
+		model.get (iter, 0, out mf, -1);
+		(cell as Gtk.CellRendererText).text = mf.Name;
+	}
+	
+	private void cellSize_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		MediaFile mf;
+		model.get (iter, 0, out mf, -1);
+		(cell as Gtk.CellRendererText).text = Utility.format_file_size(mf.Size);
+	}
+	
+	private void cellDuration_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		MediaFile mf;
+		model.get (iter, 0, out mf, -1);
+		(cell as Gtk.CellRendererText).text = Utility.format_duration(mf.Duration);
+	}
+	
+	private void cellCrop_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		MediaFile mf;
+		model.get (iter, 0, out mf, -1);
+		(cell as Gtk.CellRendererText).text = mf.crop_values_info();
+	}
+	
+	private void cellProgress_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		MediaFile mf;
+		model.get (iter, 0, out mf, -1);
+		(cell as CellRendererProgress2).value = mf.ProgressPercent;
+		(cell as CellRendererProgress2).text = mf.ProgressText;
+	}
+	
+	private void cellScript_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		ScriptFile sh;
+		model.get (iter, 0, out sh, -1);
+		(cell as Gtk.CellRendererText).text = sh.Name;
+	}
+	
     private void show_status (string message, bool is_error = false, bool timeout = true)
     {
 		Gdk.RGBA red = Gdk.RGBA ();
@@ -441,7 +509,7 @@ public class MainWindow : Gtk.Window
 	{
 		switch (App.Status){
 			case AppStatus.NOTSTARTED:
-				if (App.InputCount > 0)
+				if (App.InputFiles.size > 0)
 					show_status ("Select a script from the dropdown and click 'Start' to begin", false, false);
 				else
 					show_status ("Drag files on this window or click the 'Add' button", false, false);
@@ -456,8 +524,7 @@ public class MainWindow : Gtk.Window
 				break;
 				
 			case AppStatus.RUNNING:
-				MediaFile mFile = App.InputFiles[App.FileIndex];
-				show_status ("Converting: '%s'".printf (mFile.Path), false, false);
+				show_status ("Converting: '%s'".printf (App.CurrentFile.Path), false, false);
 				break;
 		}
 	}
@@ -606,24 +673,20 @@ public class MainWindow : Gtk.Window
 		}
     }
     
-	private void RefreshFileList ()
+	private void refresh_file_list (bool refresh_model)
 	{
-		ListStore inputStore = new ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
+		ListStore inputStore = (ListStore) tvFiles.model;
 		
-		for(int k = 0; k < App.InputCount; k++) {
-			MediaFile mFile = App.InputFiles[k]; 
-			TreeIter iter;
-			inputStore.append (out iter);
-			inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
-	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
-	    	inputStore.set (iter, InputField.FILE_SIZE, Utility.format_file_size(mFile.Size));
-	    	inputStore.set (iter, InputField.FILE_DURATION, Utility.format_duration(mFile.Duration));
-	    	inputStore.set (iter, InputField.FILE_STATUS, Stock.MEDIA_PAUSE);
-	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info ());
-	    	inputStore.set (iter, InputField.FILE_PROGRESS, 0);
-	    	inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, "Queued");
-			}
+		if (refresh_model){
+			inputStore = new ListStore (1, typeof (MediaFile));
 			
+			TreeIter iter;
+			foreach(MediaFile mf in App.InputFiles) {
+				inputStore.append (out iter);
+				inputStore.set (iter, 0, mf);
+			}
+		}
+		
 		tvFiles.set_model (inputStore);
 		
 		tvFiles.columns_autosize ();
@@ -632,27 +695,27 @@ public class MainWindow : Gtk.Window
 	public void tvFiles_crop_cell_edited (string path, string new_text) 
 	{
 		int index = int.parse (path.to_string ());
-		MediaFile file = App.InputFiles[index];
+		MediaFile mf = App.InputFiles[index];
 		
 		if (new_text == null || new_text.length == 0){
-			file.crop_reset ();
+			mf.crop_reset ();
 		}
 		else{
 			string[ ] arr = new_text.replace ("  "," ").split (" ");
 			if (arr.length == 4){
-				file.CropL = int.parse(arr[0]);
-				file.CropT = int.parse(arr[1]);
-				file.CropR = int.parse(arr[2]);
-				file.CropB = int.parse(arr[3]);
-				file.CropW = file.V_Width - file.CropL - file.CropR;
-				file.CropH = file.V_Height - file.CropT - file.CropB;
+				mf.CropL = int.parse(arr[0]);
+				mf.CropT = int.parse(arr[1]);
+				mf.CropR = int.parse(arr[2]);
+				mf.CropB = int.parse(arr[3]);
+				mf.CropW = mf.V_Width  - mf.CropL - mf.CropR;
+				mf.CropH = mf.V_Height - mf.CropT - mf.CropB;
 			}
 		}
 		
-		ListStore model = (ListStore) tvFiles.model;
-		TreeIter iter;
-		model.get_iter (out iter, new TreePath.from_string (path));
-		model.set (iter, InputField.FILE_CROPVAL, file.crop_values_info ());
+		//ListStore model = (ListStore) tvFiles.model;
+		//TreeIter iter;
+		//model.get_iter (out iter, new TreePath.from_string (path));
+		//model.set (iter, InputField.FILE_CROPVAL, file.crop_values_info ());
 	}
 	
 	private void btnAddFiles_clicked ()
@@ -671,40 +734,33 @@ public class MainWindow : Gtk.Window
 	 	}
 	 	
 	 	dlgAddFiles.destroy ();
-	 	RefreshFileList ();
+	 	refresh_file_list(true);
 	}
 	
 	private void btnRemoveFiles_clicked ()
 	{
-		int[] arr = {};
-		
-		// get selected indices 
-		
+		Gee.ArrayList<MediaFile> list = new Gee.ArrayList<MediaFile>();
 		TreeSelection sel = tvFiles.get_selection ();
-		TreeIter iter;
-		bool iterExists;
-		int index = -1;
 		
-		iterExists = tvFiles.model.get_iter_first (out iter);
-		index++;
+		TreeIter iter;
+		bool iterExists = tvFiles.model.get_iter_first (out iter);
 		while (iterExists) { 
 			if (sel.iter_is_selected (iter)){
-				arr += index;
+				MediaFile mf;
+				tvFiles.model.get (iter, 0, out mf, -1);
+				list.add(mf);
 			}
 			iterExists = tvFiles.model.iter_next (ref iter);
-			index++;
 		}
-
-		// remove selected indices
 		
-		App.remove_files (arr);
-		RefreshFileList();
+		App.remove_files(list);
+		refresh_file_list(true);
 	}
 	
 	private void btnClearFiles_clicked ()
 	{
 		App.remove_all ();
-		RefreshFileList();
+		refresh_file_list(true);
 	}
 	
 	private void btnAbout_clicked ()
@@ -760,7 +816,7 @@ This program is free for personal and commercial use and comes with absolutely n
 
 	public void start ()
 	{
-		if (App.InputCount == 0){
+		if (App.InputFiles.size == 0){
 			string msg = "Input queue is empty!\nPlease add some files.\n";
 			Utility.messagebox_show ("Queue is Empty", msg);
 			return;
@@ -840,24 +896,8 @@ This program is free for personal and commercial use and comes with absolutely n
 		paused = false;
 		//btnPause.set_image (new Image.from_stock (Stock.MEDIA_PAUSE, IconSize.MENU));
 		
-		colCrop.fixed_width = 100;
-		colProgress.fixed_width = 120;
-		
 		colCrop.visible = false;
 		colProgress.visible = true;
-		
-		lastFileIndex = 0;
-		
-		// initialize the file list
-		ListStore model = (ListStore) tvFiles.model;
-		TreeIter iter;
-
-		bool iterExists = model.get_iter_first (out iter);
-		while (iterExists){
-			model.set (iter, InputField.FILE_PROGRESS, 0);
-			model.set (iter, InputField.FILE_PROGRESS_TEXT, "Queued");
-			iterExists = model.iter_next (ref iter);
-		}
 	} 
 	
 	public void convert_finish ()
@@ -865,10 +905,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		hboxScript.visible = true;
 		//hboxButtons.visible = true;
 		hboxProgress.visible = false;
-		
-		colCrop.fixed_width = 100;
-		colProgress.fixed_width = 120;
-		
+
 		colCrop.visible = true;
 		colProgress.visible = false;
 		
@@ -884,9 +921,11 @@ This program is free for personal and commercial use and comes with absolutely n
 
 	public bool update_progress()
 	{
-		TreeIter iter;
-		ListStore model = (ListStore)tvFiles.model;
-				
+		//TreeIter iter;
+		//ListStore model = (ListStore)tvFiles.model;
+		//model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string());
+		//model.set (iter, 0, App.CurrentFile);
+		
 		switch (App.Status) {
 			case AppStatus.PAUSED:
 				/*if (btnPause.active == false){
@@ -895,10 +934,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				break;
 				
 			case AppStatus.IDLE:
-				// update the progress for last file
-				if ((lastFileIndex >= 0)&&(lastFileIndex < App.FileIndex)){
-					update_file_status ();
-				}
+				refresh_file_list(false);
 
 				// remove progress timers and check shutdown flag
 				Source.remove (timerID);
@@ -928,7 +964,6 @@ This program is free for personal and commercial use and comes with absolutely n
 				btnStop.visible = false;
 				btnFinish.visible = true;
 				
-				update_file_status ();
 				statusbar_default_message ();
 				break;
 
@@ -942,63 +977,12 @@ This program is free for personal and commercial use and comes with absolutely n
 				
 				statusbar_default_message ();
 				lblStatus.label = statusLine;
-
-				// update the progress for last file
-				if ((lastFileIndex >= 0)&&(lastFileIndex < App.FileIndex)){
-					update_file_status ();
-				}
-				
-				// update the progress for current file
-				if (model.get_iter_from_string (out iter, App.FileIndex.to_string ())){
-					model.set (iter, InputField.FILE_PROGRESS, (int)(App.Progress * 100));
-					model.set (iter, InputField.FILE_PROGRESS_TEXT, null);
-				}
-
-				lastFileIndex = App.FileIndex;
-				
 				break;
 		}
-
+		
+		refresh_file_list(false);
+		
 		return true;
-	}
-	
-	public void update_file_status ()
-	{
-		TreeIter iter;
-		ListStore model = (ListStore)tvFiles.model;
-		
-		for(int k = 0; k < App.InputCount; k++) {
-			
-			if (model.get_iter_from_string (out iter, k.to_string ())){
-				
-				switch (App.InputFiles[k].Status){
-					case FileStatus.PENDING:
-						model.set (iter, InputField.FILE_PROGRESS, 0);
-						model.set (iter, InputField.FILE_PROGRESS_TEXT, "Queued");
-						break;
-					case FileStatus.DONE:
-						model.set (iter, InputField.FILE_PROGRESS, 100);
-						model.set (iter, InputField.FILE_PROGRESS_TEXT, "Done");
-						break;
-					case FileStatus.ERROR:
-						model.set (iter, InputField.FILE_PROGRESS, 0);
-						model.set (iter, InputField.FILE_PROGRESS_TEXT, "Error");
-						break;
-				}
-			}
-		}
-		
-		if (model.get_iter_from_string (out iter, App.FileIndex.to_string ())){
-			if (App.InputFiles[App.FileIndex].Status == FileStatus.ERROR){
-				model.set (iter, InputField.FILE_PROGRESS, 0);
-				model.set (iter, InputField.FILE_PROGRESS_TEXT, "Error");
-			}
-			else{
-				model.set (iter, InputField.FILE_PROGRESS, 100);
-				model.set (iter, InputField.FILE_PROGRESS_TEXT, "Done");
-			}
-		}
-		
 	}
 	
 	public bool shutdown ()
