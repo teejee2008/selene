@@ -199,7 +199,6 @@ public class MainWindow : Gtk.Window
 		cellName.ellipsize = Pango.EllipsizeMode.END;
 		colName.pack_start (cellName, false);
 		colName.set_attributes(cellName, "text", InputField.FILE_NAME);
-		//colName.set_cell_data_func (cellName, cellName_render);
 		tvFiles.append_column(colName);
 		
 		// colSize
@@ -208,7 +207,6 @@ public class MainWindow : Gtk.Window
 		CellRendererText cellSize = new CellRendererText ();
 		colSize.pack_start (cellSize, false);
 		colSize.set_attributes(cellSize, "text", InputField.FILE_SIZE);
-		//colSize.set_cell_data_func (cellSize, cellSize_render);
 		tvFiles.append_column(colSize);
 		
 		// colDuration
@@ -217,7 +215,6 @@ public class MainWindow : Gtk.Window
 		CellRendererText cellDuration = new CellRendererText ();
 		colDuration.pack_start (cellDuration, false);
 		colDuration.set_attributes(cellDuration, "text", InputField.FILE_DURATION);
-		//colDuration.set_cell_data_func (cellDuration, cellDuration_render);
 		tvFiles.append_column(colDuration);
 
 		// colCrop
@@ -229,7 +226,6 @@ public class MainWindow : Gtk.Window
 		cellCrop.edited.connect (tvFiles_crop_cell_edited);
 		colCrop.pack_start (cellCrop, false);
 		colCrop.set_attributes(cellCrop, "text", InputField.FILE_CROPVAL);
-		//colCrop.set_cell_data_func (cellCrop, cellCrop_render);
 		tvFiles.append_column(colCrop);
 		
 		// colProgress
@@ -241,7 +237,6 @@ public class MainWindow : Gtk.Window
 		cellProgress.width = 150;
 		colProgress.pack_start (cellProgress, false);
 		colProgress.set_attributes(cellProgress, "value", InputField.FILE_PROGRESS, "text", InputField.FILE_PROGRESS_TEXT);
-		//colProgress.set_cell_data_func (cellProgress, cellProgress_render);
 		tvFiles.append_column(colProgress);
 		
 		// colSpacer
@@ -685,10 +680,10 @@ public class MainWindow : Gtk.Window
 			}
 		}
 		
-		//ListStore model = (ListStore) tvFiles.model;
-		//TreeIter iter;
-		//model.get_iter (out iter, new TreePath.from_string (path));
-		//model.set (iter, InputField.FILE_CROPVAL, file.crop_values_info ());
+		ListStore model = (ListStore) tvFiles.model;
+		TreeIter iter;
+		model.get_iter (out iter, new TreePath.from_string (path));
+		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info ());
 	}
 	
 	private void btnAddFiles_clicked ()
@@ -770,16 +765,7 @@ This program is free for personal and commercial use and comes with absolutely n
 
 		dialog.present ();
 	}
-	
-	/*
-	private void btnEditScript_clicked ()
-    {
-	    var window = new ConfigWindow();
-	    window.show_all ();
-	    window.run ();
-	}
-	*/
-	
+
 	private void btnAppSettings_clicked ()
     {
 	    var window = new PrefWindow ();
@@ -875,7 +861,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnFinish.visible = false;
 				
 		paused = false;
-		//btnPause.set_image (new Image.from_stock (Stock.MEDIA_PAUSE, IconSize.MENU));
+		btnPause.stock_id = "gtk-media-pause";
 		
 		colCrop.visible = false;
 		colProgress.visible = true;
@@ -904,9 +890,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	{
 		TreeIter iter;
 		ListStore model = (ListStore)tvFiles.model;
-		//model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string());
-		//model.set (iter, 0, App.CurrentFile);
-		
+
 		switch (App.Status) {
 			case AppStatus.PAUSED:
 				/*if (btnPause.active == false){
@@ -970,17 +954,12 @@ This program is free for personal and commercial use and comes with absolutely n
 				lblStatus.label = statusLine;
 				break;
 		}
-		
-		//refresh_file_status();
-		//refresh_file_list(true);
+
 		return true;
 	}
 	
 	public void refresh_file_status_all ()
 	{
-		//refresh_file_list(true);
-		
-		
 		ListStore model = (ListStore)tvFiles.model;
 		MediaFile mf;
 		int index = -1;
@@ -997,7 +976,6 @@ This program is free for personal and commercial use and comes with absolutely n
 			iterExists = model.iter_next (ref iter);
 			index++;
 		}
-		
 	}
 	
 	public bool shutdown ()
