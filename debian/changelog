@@ -1,5 +1,11 @@
-selene (1.0) quantal; urgency=low
+selene (1.1) quantal; urgency=low
 
-  * Initial release
-
- -- Tony George <tony.george.kol@gmail.com>  Sun, 13 Jan 2013 23:07:06 +0530
+  * v1.1, Rev:15, 2013-02-02
+  
+  * Updated toolbar and right-click menu options
+  
+  * Options to open temporary and output folders
+  
+  * Bug fixes
+  
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 02 Feb 2013 10:00:00 +0530
