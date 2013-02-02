@@ -1076,34 +1076,22 @@ Notes:
 		        if (CurrentFile.crop_enabled ()){
 					if (rxCrop_libav.match (line, 0, out match)){
 						line = line.replace (match.fetch(1), "crop=" + CurrentFile.crop_values_libav ());
-						stderr.printf ("match:%s\n", match.fetch(1));
-						stderr.printf ("line:%s\n", line);
 					}
 					else if (rxCrop_x264.match (line, 0, out match)){
 						line = line.replace (match.fetch(2), "crop:" + CurrentFile.crop_values_x264 ());
-						stderr.printf ("match:%s\n", match.fetch(1));
-						stderr.printf ("line:%s\n", line);
 					}
 					else if (rxCrop_f2t.match (line, 0, out match)){
 						if (rxCrop_f2t_left.match (line, 0, out match)){
 							line = line.replace (match.fetch(1), "--cropleft " + CurrentFile.CropL.to_string());
-							stderr.printf ("match:%s\n", match.fetch(1));
-							stderr.printf ("line:%s\n", line);
 						}
 						if (rxCrop_f2t_right.match (line, 0, out match)){
 							line = line.replace (match.fetch(1), "--cropright " + CurrentFile.CropR.to_string());
-							stderr.printf ("match:%s\n", match.fetch(1));
-							stderr.printf ("line:%s\n", line);
 						}
 						if (rxCrop_f2t_top.match (line, 0, out match)){
 							line = line.replace (match.fetch(1), "--croptop " + CurrentFile.CropT.to_string());
-							stderr.printf ("match:%s\n", match.fetch(1));
-							stderr.printf ("line:%s\n", line);
 						}
 						if (rxCrop_f2t_bottom.match (line, 0, out match)){
 							line = line.replace (match.fetch(1), "--cropbottom " + CurrentFile.CropB.to_string());
-							stderr.printf ("match:%s\n", match.fetch(1));
-							stderr.printf ("line:%s\n", line);
 						}
 					}
 		        }
