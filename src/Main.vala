@@ -303,6 +303,7 @@ public class MediaFile : GLib.Object
 		string output = "";
 		string error = "";
 		
+		//log_msg(crop_values_libav ());
 		try {
 			Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path) + " -vf crop=" + crop_values_libav (), out output, out error);
 		}

@@ -57,6 +57,7 @@ public class MainWindow : Gtk.Window
 	private Gtk.MenuItem miFileCropAuto;
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePreview;
+	private Gtk.MenuItem miFileSeparator1;
 	private TreeViewColumn colName;
 	private TreeViewColumn colSize;
 	private TreeViewColumn colDuration;
@@ -92,6 +93,11 @@ public class MainWindow : Gtk.Window
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		this.drag_data_received.connect(this.on_drag_data_received);
 		
+		Gdk.RGBA gray = Gdk.RGBA ();
+		//Gdk.RGBA white = Gdk.RGBA ();
+		gray.parse ("rgba(200,200,200,1)");
+		//white.parse ("rgba(0,0,0,1)");
+
         // vboxMain
         vboxMain = new Box (Orientation.VERTICAL, 0);
         add (vboxMain);
@@ -354,7 +360,8 @@ public class MainWindow : Gtk.Window
 		
 		// menuFile
 		menuFile = new Gtk.Menu();
-
+		menuFile.set_title("File Options");
+		
 		// miFileSkip
 		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
 		miFileSkip.activate.connect (() => { App.stop_file (); });
@@ -365,15 +372,20 @@ public class MainWindow : Gtk.Window
 		miFileCropAuto.activate.connect(miFileCropAuto_clicked);
 		menuFile.append(miFileCropAuto);
 
+		// miFilePreview
+		miFilePreview = new Gtk.MenuItem.with_label ("Preview File");
+		miFilePreview.activate.connect(miFilePreview_clicked);
+		menuFile.append(miFilePreview);		
+		
 		// miFileRemove
 		miFileRemove = new ImageMenuItem.from_stock(Stock.REMOVE, null);
 		miFileRemove.activate.connect(miFileRemove_clicked);
 		menuFile.append(miFileRemove);
-		
-		// miFilePreview
-		miFilePreview = new Gtk.MenuItem.with_label ("Preview output");
-		miFilePreview.activate.connect(miFilePreview_clicked);
-		menuFile.append(miFilePreview);		
+
+		// miFileSeparator1
+		miFileSeparator1 = new Gtk.MenuItem();
+		miFileSeparator1.override_color (StateFlags.NORMAL, gray);
+		menuFile.append(miFileSeparator1);	
 		
 		// miFileInfo
 		miFileInfo = new ImageMenuItem.from_stock(Stock.INFO, null);
@@ -420,10 +432,10 @@ public class MainWindow : Gtk.Window
 			file = Uri.unescape_string (file);
 			bool valid = App.add_file (file);
 			if (!valid){
-				show_status ("Unknown format: '%s'".printf (file), true, true);
+				statusbar_show_message ("Unknown format: '%s'".printf (file), true, true);
 			}
 			else {
-				show_status ("File added: '%s'".printf (file));
+				statusbar_show_message ("File added: '%s'".printf (file));
 			}
 		}
         
@@ -439,7 +451,7 @@ public class MainWindow : Gtk.Window
 		(cell as Gtk.CellRendererText).text = sh.Name;
 	}
 	
-    private void show_status (string message, bool is_error = false, bool timeout = true)
+    private void statusbar_show_message (string message, bool is_error = false, bool timeout = true)
     {
 		Gdk.RGBA red = Gdk.RGBA ();
 		Gdk.RGBA white = Gdk.RGBA ();
@@ -476,21 +488,21 @@ public class MainWindow : Gtk.Window
 		switch (App.Status){
 			case AppStatus.NOTSTARTED:
 				if (App.InputFiles.size > 0)
-					show_status ("Select a script from the dropdown and click 'Start' to begin", false, false);
+					statusbar_show_message("Select a script from the dropdown and click 'Start' to begin", false, false);
 				else
-					show_status ("Drag files on this window or click the 'Add' button", false, false);
+					statusbar_show_message("Drag files on this window or click the 'Add' button", false, false);
 				break;
 				
 			case AppStatus.IDLE:
-				show_status ("Batch completed. Click 'Finish' to continue.", false, false);
+				statusbar_show_message("Batch completed. Click 'Finish' to continue.", false, false);
 				break;
 				
 			case AppStatus.PAUSED:
-				show_status ("[Paused] Click 'Resume' to continue or 'Stop' to abort.", false, false);
+				statusbar_show_message("[Paused] Click 'Resume' to continue or 'Stop' to abort.", false, false);
 				break;
 				
 			case AppStatus.RUNNING:
-				show_status ("Converting: '%s'".printf (App.CurrentFile.Path), false, false);
+				statusbar_show_message("Converting: '%s'".printf (App.CurrentFile.Path), false, false);
 				break;
 		}
 	}
@@ -701,7 +713,7 @@ public class MainWindow : Gtk.Window
 	 		foreach (string file in dlgAddFiles.get_filenames()){
 				bool added = App.add_file (file);
 				if (added == false){
-					show_status ("Format not supported: '" + file + "'", true, true);
+					statusbar_show_message ("Format not supported: '" + file + "'", true, true);
 				}
 			}
 	 	}
