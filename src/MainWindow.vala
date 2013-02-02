@@ -361,7 +361,7 @@ public class MainWindow : Gtk.Window
 		menuFile.append(miFileSkip);
 		
 		// miFileCropAuto
-		miFileCropAuto = new Gtk.MenuItem.with_label ("Remove black borders");
+		miFileCropAuto = new Gtk.MenuItem.with_label ("AutoCrop Video");
 		miFileCropAuto.activate.connect(miFileCropAuto_clicked);
 		menuFile.append(miFileCropAuto);
 
