@@ -40,11 +40,8 @@ public class MainWindow : Gtk.Window
     
     private Button btnOpenScriptFolder;
     private ToolButton btnAppSettings;
-    private Button btnOpenTempDir;
-    private Button btnOpenOutputDir;
 	private Box vboxMain;
 	private Box vboxMain2;
-	private Box hboxButtons;
 	private Box hboxScript;
 	private Box hboxProgress;
 	private ComboBox cmbScript;
@@ -58,6 +55,8 @@ public class MainWindow : Gtk.Window
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePreview;
 	private Gtk.MenuItem miFileSeparator1;
+	private Gtk.MenuItem miFileOpenTemp;
+	private Gtk.MenuItem miFileOpenOutput;
 	private TreeViewColumn colName;
 	private TreeViewColumn colSize;
 	private TreeViewColumn colDuration;
@@ -337,31 +336,12 @@ public class MainWindow : Gtk.Window
         btnBackground.clicked.connect (btnBackground_clicked);
         btnBackground.set_tooltip_text ("Run processes with lower priority");
         hboxProgress.add (btnBackground);
-        
-        /*
- 		// btnOpenTempDir
-        btnOpenTempDir = new Button.with_label("Work Folder");
-	    btnOpenTempDir.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
-        btnOpenTempDir.clicked.connect (() => { Utility.exo_open (App.TempDirectory); });
-        btnOpenTempDir.set_tooltip_text ("Open Working Folder");
-        btnOpenTempDir.show ();
-        hboxProgress.add (btnOpenTempDir);
-
-        // btnOpenOutputDir
-        btnOpenOutputDir = new Button.with_label("Output Folder");
-	    btnOpenOutputDir.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
-        btnOpenOutputDir.clicked.connect (() => { Utility.exo_open (App.OutputDirectory); });
-        btnOpenOutputDir.set_tooltip_text ("Open Output Folder");
-        btnOpenOutputDir.show ();
-        hboxProgress.add (btnOpenOutputDir);
-*/
 
 		statusbar_default_message ();
 		
 		// menuFile
 		menuFile = new Gtk.Menu();
-		menuFile.set_title("File Options");
-		
+
 		// miFileSkip
 		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
 		miFileSkip.activate.connect (() => { App.stop_file (); });
@@ -381,11 +361,23 @@ public class MainWindow : Gtk.Window
 		miFileRemove = new ImageMenuItem.from_stock(Stock.REMOVE, null);
 		miFileRemove.activate.connect(miFileRemove_clicked);
 		menuFile.append(miFileRemove);
-
+		
 		// miFileSeparator1
 		miFileSeparator1 = new Gtk.MenuItem();
 		miFileSeparator1.override_color (StateFlags.NORMAL, gray);
 		menuFile.append(miFileSeparator1);	
+		
+		// miFileOpenTemp
+		miFileOpenTemp = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
+		miFileOpenTemp.label = "Open Temp Folder";
+		miFileOpenTemp.activate.connect(miFileOpenTemp_clicked);
+		menuFile.append(miFileOpenTemp);
+		
+		// miFileOpenOutput
+		miFileOpenOutput = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
+		miFileOpenOutput.label = "Open Output Folder";
+		miFileOpenOutput.activate.connect(miFileOpenOutput_clicked);
+		menuFile.append(miFileOpenOutput);
 		
 		// miFileInfo
 		miFileInfo = new ImageMenuItem.from_stock(Stock.INFO, null);
@@ -494,7 +486,7 @@ public class MainWindow : Gtk.Window
 				break;
 				
 			case AppStatus.IDLE:
-				statusbar_show_message("Batch completed. Click 'Finish' to continue.", false, false);
+				statusbar_show_message("[Batch completed] Right-click for options or click 'Finish' to continue.", false, false);
 				break;
 				
 			case AppStatus.PAUSED:
@@ -519,37 +511,68 @@ public class MainWindow : Gtk.Window
 			index = int.parse (path.to_string ());
 		}
 		
-		if (App.Status == AppStatus.RUNNING)
+		switch(App.Status)
 		{
-			if (index != -1){
-				if (App.InputFiles[index].Status == FileStatus.RUNNING){
-					miFileSkip.sensitive = true;
-				}
-				else{
-					miFileSkip.sensitive = false;
-				}
-			}
-			
-			miFileSkip.visible = true;
-			miFileInfo.visible = false;
-			miFilePreview.visible = false;
-			miFileCropAuto.visible = false;
-			miFileRemove.visible = false;
-		}
-		else
-		{
-			miFileSkip.visible = false;
-			miFileInfo.visible = true;
-			miFilePreview.visible = true;
-			miFileCropAuto.visible = true;
-			miFileRemove.visible = true;
-			
-			miFileInfo.sensitive = (selection.count_selected_rows() == 1);
-			miFilePreview.sensitive = (selection.count_selected_rows() == 1);
-			miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
-			miFileRemove.sensitive = (selection.count_selected_rows() > 0);
-		}
+			case AppStatus.NOTSTARTED:
+				miFileSkip.visible = false;
+				miFileOpenTemp.visible = false;
+				miFileOpenOutput.visible = false;
+				
+				miFileInfo.visible = true;
+				miFilePreview.visible = true;
+				miFileCropAuto.visible = true;
+				miFileRemove.visible = true;
+				miFileSeparator1.visible = true;
 
+				miFileInfo.sensitive = (selection.count_selected_rows() == 1);
+				miFilePreview.sensitive = (selection.count_selected_rows() == 1);
+				miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
+				miFileRemove.sensitive = (selection.count_selected_rows() > 0);
+				break;
+			
+			case AppStatus.RUNNING:
+				if (index != -1){
+					if (App.InputFiles[index].Status == FileStatus.RUNNING){
+						miFileSkip.sensitive = true;
+					}
+					else{
+						miFileSkip.sensitive = false;
+					}
+				}
+				
+				if (index != -1){
+					if (Utility.dir_exists(App.InputFiles[index].TempDirectory)){
+						miFileOpenTemp.sensitive = true;
+					}
+					else{
+						miFileOpenTemp.sensitive = false;
+					}
+				}
+				
+				miFileSkip.visible = true;
+				miFileOpenTemp.visible = true;
+				miFileOpenOutput.visible = true;
+				
+				miFileInfo.visible = false;
+				miFilePreview.visible = false;
+				miFileCropAuto.visible = false;
+				miFileRemove.visible = false;
+				miFileSeparator1.visible = true;
+				break;
+			
+			case AppStatus.IDLE:
+				miFileSkip.visible = false;
+				miFileOpenTemp.visible = true;
+				miFileOpenOutput.visible = true;
+				
+				miFileInfo.visible = false;
+				miFilePreview.visible = false;
+				miFileCropAuto.visible = false;
+				miFileRemove.visible = false;
+				miFileSeparator1.visible = false;
+				break;
+		}
+		
 		if (event != null) {
 			menuFile.popup (null, null, null, event.button, event.time);
 		} else {
@@ -607,6 +630,47 @@ public class MainWindow : Gtk.Window
     private void miFileRemove_clicked () 
     {
 		btnRemoveFiles_clicked ();
+    }
+    
+    private void miFileOpenTemp_clicked () 
+    {
+		TreeSelection selection = tvFiles.get_selection ();
+		if (selection.count_selected_rows () == 0){ return; }
+		
+		TreeModel model;
+		List<TreePath> lst = selection.get_selected_rows (out model);
+		
+		for(int k=0; k<lst.length(); k++){
+			TreePath path = lst.nth_data (k);
+			TreeIter iter;
+			model.get_iter (out iter, path);
+			int index = int.parse (path.to_string ());
+			MediaFile mf = App.InputFiles[index];
+			Utility.exo_open (mf.TempDirectory);
+		}
+    }
+    
+    private void miFileOpenOutput_clicked () 
+    {
+		TreeSelection selection = tvFiles.get_selection ();
+		if (selection.count_selected_rows () == 0){ return; }
+		
+		TreeModel model;
+		List<TreePath> lst = selection.get_selected_rows (out model);
+		
+		for(int k=0; k<lst.length(); k++){
+			TreePath path = lst.nth_data (k);
+			TreeIter iter;
+			model.get_iter (out iter, path);
+			int index = int.parse (path.to_string ());
+			MediaFile mf = App.InputFiles[index];
+			
+			if (App.OutputDirectory.length == 0){
+				Utility.exo_open (mf.Location);
+			} else{
+				Utility.exo_open (App.OutputDirectory);
+			}
+		}
     }
     
 	private void set_busy (bool busy) 
@@ -761,9 +825,9 @@ public class MainWindow : Gtk.Window
 		dialog.translator_credits = null; 
 
 		dialog.program_name = "Selene Media Encoder";
-		dialog.comments = "An audio/video encoder for Linux";
+		dialog.comments = "An audio-video encoder for Linux";
 		dialog.copyright = "Copyright © 2013 Tony George (teejee2008@gmail.com)";
-		dialog.version = "1.0";
+		dialog.version = AppVersion;
 
 		dialog.license = 
 """
