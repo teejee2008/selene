@@ -73,6 +73,11 @@ public void log_error (string message, bool highlight = false)
 	stderr.printf (msg);
 }
 
+public void debug (string message)
+{
+	log_msg (message);
+}
+
 namespace Utility 
 {
 	public void messagebox_show(string title, string message, bool is_error = false)
@@ -166,7 +171,7 @@ namespace Utility
 		catch(Error e){
 	        log_error (e.message);
 	    }
-	    
+	    	    
 	    int w=0,h=0,x=10000,y=10000;
 		int num=0;
 		string key,val;
@@ -175,7 +180,7 @@ namespace Utility
 	    foreach (string line in error.split ("\n")){
 			if (line == null) { continue; }
 			if (line.index_of ("crop=") == -1) { continue; }
-			
+
 			foreach (string part in line.split (" ")){
 				if (part == null || part.length == 0) { continue; }
 				

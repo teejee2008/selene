@@ -225,7 +225,7 @@ public class MainWindow : Gtk.Window
 
 		// colCrop
 		colCrop = new TreeViewColumn();
-		colCrop.title = "CropVideo";
+		colCrop.title = "CropVideo (L:T:R:B)";
 		colCrop.fixed_width = 100;
 		CellRendererText cellCrop = new CellRendererText ();
 		cellCrop.editable = true;
@@ -236,7 +236,7 @@ public class MainWindow : Gtk.Window
 		
 		// colProgress
 		colProgress = new TreeViewColumn();
-		colProgress.title = "CropVideo";
+		colProgress.title = "Status";
 		colProgress.fixed_width = 120;
 		CellRendererProgress2 cellProgress = new CellRendererProgress2();
 		cellProgress.height = 15;
@@ -683,7 +683,7 @@ public class MainWindow : Gtk.Window
 			mf.crop_reset ();
 		}
 		else{
-			string[ ] arr = new_text.replace ("  "," ").split (" ");
+			string[ ] arr = new_text.replace ("  "," ").split (":");
 			if (arr.length == 4){
 				mf.CropL = int.parse(arr[0]);
 				mf.CropT = int.parse(arr[1]);

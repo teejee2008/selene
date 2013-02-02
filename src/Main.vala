@@ -275,7 +275,7 @@ public class MediaFile : GLib.Object
 	public string crop_values_info ()
 	{
 		if (crop_enabled())
-			return "%i %i %i %i".printf(CropL,CropT,CropR,CropB);
+			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
 		else if (AutoCropError)
 			return "N/A";
 		else
@@ -303,7 +303,6 @@ public class MediaFile : GLib.Object
 		string output = "";
 		string error = "";
 		
-		//log_msg(crop_values_libav ());
 		try {
 			Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path) + " -vf crop=" + crop_values_libav (), out output, out error);
 		}
