@@ -459,12 +459,13 @@ public class MainWindow : Gtk.Window
 	
     private void statusbar_set_timeout ()
     {
+		//Source.remove (statusTimer);
 		statusTimer = Timeout.add (3000, statusbar_clear);
 	}
     
     private bool statusbar_clear ()
     {
-		Source.remove (statusTimer);
+		//Source.remove (statusTimer);
 		lblStatus.label = "";
 		statusbar_default_message ();
 		return true;
@@ -640,11 +641,12 @@ public class MainWindow : Gtk.Window
     
 	private void refresh_file_list (bool refresh_model)
 	{
-		ListStore inputStore = new ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
+		ListStore inputStore = new ListStore (9, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
 		
 		TreeIter iter;
 		foreach(MediaFile mFile in App.InputFiles) {
 			inputStore.append (out iter);
+			inputStore.set (iter, InputField.FILE_REF, mFile);
 			inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
 	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
 	    	inputStore.set (iter, InputField.FILE_SIZE, Utility.format_file_size(mFile.Size));
@@ -697,7 +699,10 @@ public class MainWindow : Gtk.Window
 
  		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
 	 		foreach (string file in dlgAddFiles.get_filenames()){
-				App.add_file (file);
+				bool added = App.add_file (file);
+				if (added == false){
+					show_status ("Format not supported: '" + file + "'", true, true);
+				}
 			}
 	 	}
 	 	
@@ -715,7 +720,7 @@ public class MainWindow : Gtk.Window
 		while (iterExists) { 
 			if (sel.iter_is_selected (iter)){
 				MediaFile mf;
-				tvFiles.model.get (iter, 0, out mf, -1);
+				tvFiles.model.get (iter, InputField.FILE_REF, out mf, -1);
 				list.add(mf);
 			}
 			iterExists = tvFiles.model.iter_next (ref iter);
@@ -987,6 +992,7 @@ This program is free for personal and commercial use and comes with absolutely n
 
 public enum InputField
 {
+	FILE_REF,
 	FILE_PATH,
 	FILE_NAME,
 	FILE_SIZE,
