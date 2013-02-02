@@ -800,10 +800,10 @@ This program is free for personal and commercial use and comes with absolutely n
 		App.Shutdown = btnShutdown.active;
 		
 		if (App.Shutdown){
-			stdout.printf ("Shutdown Activated\n");
+			log_msg ("Shutdown Activated\n");
 		}
 		else{
-			stdout.printf ("Shutdown Deactivated\n");
+			log_msg ("Shutdown Deactivated\n");
 		}
 	}
 	
