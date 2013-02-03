@@ -440,7 +440,7 @@ public class MainWindow : Gtk.Window
 	{
 		ScriptFile sh;
 		model.get (iter, 0, out sh, -1);
-		(cell as Gtk.CellRendererText).text = sh.Name;
+		(cell as Gtk.CellRendererText).text = sh.Name.replace(".sh","");
 	}
 	
     private void statusbar_show_message (string message, bool is_error = false, bool timeout = true)
@@ -833,7 +833,7 @@ public class MainWindow : Gtk.Window
 		dialog.set_transient_for (this);
 		dialog.set_modal (true);
 		
-		//dialog.artists = {"Darkwing Duck", "Launchpad McQuack"};
+		//dialog.artists = {"", ""};
 		dialog.authors = {"Tony George"};
 		dialog.documenters = null; 
 		dialog.translator_credits = null; 
