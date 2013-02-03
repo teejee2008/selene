@@ -948,6 +948,9 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnBackground.visible = App.AdminMode;
 
 		btnStart.visible = false;
+		btnRemoveFiles.visible = false;
+		btnClearFiles.visible = false;
+		
 		btnPause.visible = true;
 		btnStop.visible = true;
 		btnFinish.visible = false;
@@ -968,6 +971,9 @@ This program is free for personal and commercial use and comes with absolutely n
 		colProgress.visible = false;
 		
 		btnStart.visible = true;
+		btnRemoveFiles.visible = true;
+		btnClearFiles.visible = true;
+		
 		btnPause.visible = false;
 		btnStop.visible = false;
 		btnFinish.visible = false;
