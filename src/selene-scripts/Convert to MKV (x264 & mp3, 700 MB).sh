@@ -3,7 +3,7 @@ tempAudio="${tempDir}/${title}.mp3"
 tempVideo="${tempDir}/${title}.mkv"
 targetMB=700
 
-avconv -i "${inFile}" -f mp3 -acodec libmp3lame -q 4 -vn -sn -y "${tempAudio}"
+${audiodec} | lame --nohist --brief -V 4 -q 5 --replaygain-fast - "${tempAudio}"
 
 echo "==========================================================">&2
 audioSize=$(stat -c%s "${tempAudio}")

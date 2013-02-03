@@ -80,7 +80,7 @@ public class MediaFile : GLib.Object
 	public int CropB = 0;
 	public bool AutoCropError = false;
 	
-	public FileStatus Status;
+	public FileStatus Status = FileStatus.PENDING;
 	public bool IsValid;
 	public string ProgressText = "Queued";
 	public int ProgressPercent = 0;
@@ -190,16 +190,17 @@ public class MediaFile : GLib.Object
 				if (sectionType	== "general"){
 					switch (key.down ()) {
 						case "duration":
+							Duration = 0;
 							foreach(string p in val.split(" ")){
 								string part = p.strip().down();
 								if (part.contains ("h") || part.contains ("hr"))
 									Duration += long.parse(part.replace ("hr","").replace ("h","")) * 60 * 60 * 1000;
 								else if (part.contains ("mn") || part.contains ("min"))
 									Duration += long.parse(part.replace ("min","").replace ("mn","")) * 60 * 1000;
-								else if (part.contains ("s"))
-									Duration += long.parse(part.replace ("s","")) * 1000;
 								else if (part.contains ("ms"))
 									Duration += long.parse(part.replace ("ms",""));
+								else if (part.contains ("s"))
+									Duration += long.parse(part.replace ("s","")) * 1000;
 							}
 							break;
 					}
@@ -363,7 +364,6 @@ public class Main : GLib.Object
 	private string tempLine;
 	private MatchInfo match;
 	private double dblVal;
-	private uint progressTimerID;	
 	private uint shutdownTimerID;
 	private Pid procID;
 	private string errLine = "";
@@ -500,7 +500,7 @@ public class Main : GLib.Object
 				return 1;
 			}
 			App.start_input_thread ();
-			App.convert_all ();
+			App.convert_begin ();
 		}
 		else{
 			var window = new MainWindow ();
@@ -897,7 +897,7 @@ Notes:
 		log_msg ("All files removed");
 	}
 
-	public void convert_all ()
+	public void convert_begin ()
 	{
 		if (InputFiles.size == 0){
 			log_error ("Input queue is empty! Please add some files.");
@@ -918,38 +918,56 @@ Notes:
 			Utility.create_dir (this.BackupDirectory); 
 			log_msg ("Source files will be moved to '%s'".printf(this.BackupDirectory));
 		}	
-
-		this.Status = AppStatus.RUNNING;
 		
+		BatchStarted = true;
+		BatchCompleted = false;
+		Aborted = false;
+		Status = AppStatus.RUNNING;
+		
+		//if (ConsoleMode)
+			//progressTimerID = Timeout.add (500, update_progress);
+			
+		convert_next ();
+	}
+	
+	private void convert_next ()
+	{
 		try {
-			Thread.create<void> (convert_all_thread, true);
+			Thread.create<void> (convert_next_thread, true);
 		} catch (ThreadError e) {
 			log_error (e.message);
 		}
 	}
-	
-	private void convert_all_thread ()
+
+	private void convert_next_thread ()
 	{
-		BatchStarted = true;
-		BatchCompleted = false;
-		Aborted = false;
+		MediaFile nextFile = null;
 		
+		foreach (MediaFile mf in InputFiles) {
+			if (mf.Status == FileStatus.PENDING){
+				nextFile = mf;
+				break;
+			}
+		}
+			
+		if (!Aborted && nextFile != null){
+			convert_file(nextFile);
+		}
+		else{
+			Status = AppStatus.IDLE;
+		}
+	}
+	
+	public void convert_finish ()
+	{
 		foreach(MediaFile mf in this.InputFiles) {
 			mf.Status = FileStatus.PENDING;
 			mf.ProgressText = "Queued";
 			mf.ProgressPercent = 0;
 		}
-
-		if (ConsoleMode)
-			progressTimerID = Timeout.add (500, update_progress);
-				
-		foreach(MediaFile mf in this.InputFiles) {
-			if (this.Aborted) { break; }
-			this.convert_file(mf);
-		}
-
-		if (ConsoleMode)
-			Source.remove (progressTimerID);
+		
+		//if (ConsoleMode)
+			//Source.remove (progressTimerID);
 
 		save_config ();
 		
@@ -965,16 +983,14 @@ Notes:
 		
 		BatchStarted = true;
 		BatchCompleted = true;
-		Status = AppStatus.IDLE;
-	}
-
-	public void finish ()
-	{
+		Aborted = false;
 		Status = AppStatus.NOTSTARTED;
 	}
 	
 	private bool convert_file (MediaFile mf)
 	{
+		bool retVal = false;
+		
 		if (Utility.file_exists (mf.Path) == false) { return false; }
 		
 		// prepare 
@@ -997,7 +1013,7 @@ Notes:
 		
 		string script = build_script ();
 		save_script (script);
-		run_script ();
+		retVal = run_script ();
 		
 		// move input files to backup location
 		
@@ -1008,7 +1024,7 @@ Notes:
 			}
 		}
 		
-		return true;
+		return retVal;
 	}
 	
 	private string build_script ()
@@ -1134,8 +1150,10 @@ Notes:
 	    return true;
 	}
 
-	private void run_script ()
+	private bool run_script ()
 	{
+		bool retVal = false;
+		
 		if (ConsoleMode)
 			log_msg ("Converting: Enter (q) to quit or (p) to pause...");
 		else
@@ -1231,13 +1249,20 @@ Notes:
 			CurrentFile.Status = FileStatus.SUCCESS;
 			CurrentFile.ProgressText = "Done";
 			CurrentFile.ProgressPercent = 100;
+			retVal = true;
 		}
 		else
 		{
 			CurrentFile.Status = FileStatus.ERROR;
 			CurrentFile.ProgressText = "Error";
 			CurrentFile.ProgressPercent = 0;
+			retVal = false;
 		}
+		
+		// convert next file
+		convert_next();
+		
+		return retVal;
 	}
 
 	private void read_std_err ()
@@ -1292,7 +1317,6 @@ Notes:
 			dblVal = Utility.parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			StatusLine = "(ffmpeg2theora) %s+%s kbps".printf(match.fetch(2), match.fetch(3));
-			
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
 				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
 			}

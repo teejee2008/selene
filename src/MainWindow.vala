@@ -531,40 +531,54 @@ public class MainWindow : Gtk.Window
 				break;
 			
 			case AppStatus.RUNNING:
-				if (index != -1){
+				
+				miFileSkip.visible = true;
+				miFileSeparator1.visible = true;
+				miFileOpenTemp.visible = true;
+				miFileOpenOutput.visible = true;
+				
+				if (selection.count_selected_rows() == 1){
 					if (App.InputFiles[index].Status == FileStatus.RUNNING){
 						miFileSkip.sensitive = true;
 					}
 					else{
 						miFileSkip.sensitive = false;
 					}
-				}
-				
-				if (index != -1){
 					if (Utility.dir_exists(App.InputFiles[index].TempDirectory)){
 						miFileOpenTemp.sensitive = true;
 					}
 					else{
 						miFileOpenTemp.sensitive = false;
 					}
+					miFileOpenOutput.sensitive = false;
 				}
-				
-				miFileSkip.visible = true;
-				miFileOpenTemp.visible = true;
-				miFileOpenOutput.visible = true;
-				
+				else{
+					miFileSkip.sensitive = false;
+					miFileOpenTemp.sensitive = false;
+					miFileOpenOutput.sensitive = false;
+				}
+
 				miFileInfo.visible = false;
 				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
-				miFileSeparator1.visible = true;
 				break;
 			
 			case AppStatus.IDLE:
-				miFileSkip.visible = false;
+			
 				miFileOpenTemp.visible = true;
 				miFileOpenOutput.visible = true;
 				
+				if (index != -1){
+					miFileOpenTemp.sensitive = true;
+					miFileOpenOutput.sensitive = true;
+				}
+				else{
+					miFileOpenTemp.sensitive = false;
+					miFileOpenOutput.sensitive = false;
+				}
+				
+				miFileSkip.visible = false;
 				miFileInfo.visible = false;
 				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
@@ -866,9 +880,9 @@ This program is free for personal and commercial use and comes with absolutely n
 		
 	    App.SelectedScript = App.ScriptFiles[cmbScript.get_active()];
 	    
-	    App.convert_all ();
+	    App.convert_begin ();
 	    
-	    timerID = Timeout.add (500, update_progress);
+	    timerID = Timeout.add (500, update_status);
 	}
 	
 	private void btnShutdown_clicked ()
@@ -915,27 +929,24 @@ This program is free for personal and commercial use and comes with absolutely n
 				break; 
 		}
 		
-		refresh_file_status_all ();
+		update_status_all();
 	}
 	
 	private void btnStop_clicked ()
 	{
-		App.stop_batch ();
-		refresh_file_status_all (); 
+		App.stop_batch();
+		update_status_all(); 
 	}
 	
 	public void convert_prepare ()
 	{
 		hboxScript.visible = false;
-		//hboxButtons.visible = false;
 		hboxProgress.visible = true;
 		btnShutdown.active = App.Shutdown;
 		
 		btnShutdown.visible = App.AdminMode;
 		btnBackground.visible = App.AdminMode;
-		//btnOpenTempDir.visible = true;
-		//btnOpenOutputDir.visible = (App.OutputDirectory.length > 0);
-		
+
 		btnStart.visible = false;
 		btnPause.visible = true;
 		btnStop.visible = true;
@@ -951,7 +962,6 @@ This program is free for personal and commercial use and comes with absolutely n
 	public void convert_finish ()
 	{
 		hboxScript.visible = true;
-		//hboxButtons.visible = true;
 		hboxProgress.visible = false;
 
 		colCrop.visible = true;
@@ -962,12 +972,12 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnStop.visible = false;
 		btnFinish.visible = false;
 		
-		App.finish();
+		App.convert_finish();
 		
 		statusbar_default_message ();
 	} 
 
-	public bool update_progress()
+	public bool update_status ()
 	{
 		TreeIter iter;
 		ListStore model = (ListStore)tvFiles.model;
@@ -980,8 +990,10 @@ This program is free for personal and commercial use and comes with absolutely n
 				break;
 				
 			case AppStatus.IDLE:
-				// remove progress timers and check shutdown flag
+				// remove progress timers
 				Source.remove (timerID);
+				
+				// check shutdown flag
 				if (App.Shutdown){
 					string msg = "System will shutdown in one minute!\n";
 					msg += "Press 'Cancel' to abort shutdown";
@@ -998,17 +1010,20 @@ This program is free for personal and commercial use and comes with absolutely n
 					}
 				}
 				
+				// update status for all files
+				update_status_all();
+				
 				// update UI
 				btnShutdown.visible = false;
 				btnBackground.visible = false;
-				//btnOpenTempDir.visible = true;
-				//btnOpenTempDir.visible = true;
 				btnStart.visible = false;
 				btnPause.visible = false;
 				btnStop.visible = false;
 				btnFinish.visible = true;
 				
+				// update statusbar message
 				statusbar_default_message ();
+				
 				break;
 
 			case AppStatus.RUNNING:
@@ -1022,7 +1037,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				
 				if (lastFile == null) { lastFile = App.CurrentFile; }
 				if (lastFile != App.CurrentFile){
-					refresh_file_status_all();
+					update_status_all();
 					lastFile = App.CurrentFile;
 				}
 				
@@ -1039,7 +1054,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		return true;
 	}
 	
-	public void refresh_file_status_all ()
+	public void update_status_all ()
 	{
 		ListStore model = (ListStore)tvFiles.model;
 		MediaFile mf;
