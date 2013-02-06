@@ -27,7 +27,7 @@ using Gee;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.1";
+public const string AppVersion = "1.2";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
