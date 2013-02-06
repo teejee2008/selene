@@ -202,6 +202,7 @@ public class MediaFile : GLib.Object
 								else if (part.contains ("s"))
 									Duration += long.parse(part.replace ("s","")) * 1000;
 							}
+							log_msg	("%ld".printf(Duration));
 							break;
 					}
 				}

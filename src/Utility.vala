@@ -125,11 +125,11 @@ namespace Utility
 	{
 	    double time = millis / 1000.0; // time in seconds
 
-	    double hr = time / (60.0 * 60);
-	    time = time - (Math.floor (hr) * 60 * 60);
-	    double min = time / (60.0);
-	    time = time - (Math.floor (min) * 60);
-	    double sec = time;
+	    double hr = Math.floor(time / (60.0 * 60));
+	    time = time - (hr * 60 * 60);
+	    double min = Math.floor(time / 60.0);
+	    time = time - (min * 60);
+	    double sec = Math.floor(time);
 	    
         return "%02.0lf:%02.0lf:%02.0lf".printf (hr, min, sec);
 	}
