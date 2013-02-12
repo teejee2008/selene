@@ -36,11 +36,12 @@ public class MainWindow : Gtk.Window
     private ToolButton btnAddFiles;
 	private ToolButton btnRemoveFiles;
     private ToolButton btnClearFiles;
+    private ToolButton btnAppSettings;
     private ToolButton btnAbout;
     
     private Button btnOpenScriptFolder;
 
-    private ToolButton btnAppSettings;
+    
 	private Box vboxMain;
 	private Box vboxMain2;
 	private Box hboxScript;
@@ -971,6 +972,8 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnStart.visible = false;
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
+		btnAppSettings.visible = false;
+		btnAbout.visible = false;
 		
 		btnPause.visible = true;
 		btnStop.visible = true;
@@ -994,6 +997,8 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnStart.visible = true;
 		btnRemoveFiles.visible = true;
 		btnClearFiles.visible = true;
+		btnAppSettings.visible = true;
+		btnAbout.visible = true;
 		
 		btnPause.visible = false;
 		btnStop.visible = false;
