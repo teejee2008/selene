@@ -30,8 +30,8 @@ public class MainWindow : Gtk.Window
     private ToolButton btnFinish;
     
     private ToolButton btnPause;
-    private ToggleButton btnShutdown;
-    private ToggleButton btnBackground;
+    private ToggleToolButton btnShutdown;
+    private ToggleToolButton btnBackground;
     
     private ToolButton btnAddFiles;
 	private ToolButton btnRemoveFiles;
@@ -41,7 +41,6 @@ public class MainWindow : Gtk.Window
     
     private Button btnOpenScriptFolder;
 
-    
 	private Box vboxMain;
 	private Box vboxMain2;
 	private Box hboxScript;
@@ -99,42 +98,46 @@ public class MainWindow : Gtk.Window
 		gray.parse ("rgba(200,200,200,1)");
 		//white.parse ("rgba(0,0,0,1)");
 
-        // vboxMain
+        //vboxMain
         vboxMain = new Box (Orientation.VERTICAL, 0);
         add (vboxMain);
         
-        // vboxMain2
+        //vboxMain2
         vboxMain2 = new Box (Orientation.VERTICAL, 0);
 		vboxMain2.margin_left = 6;
         vboxMain2.margin_right = 6;
         
-		// Toolbar
+		//toolbar
 		Gtk.Toolbar toolbar = new Gtk.Toolbar ();
 		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.pack_start (toolbar, false, false, 0);
 
-		// Toolbar content
+		//btnAddFiles
 		btnAddFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
 		btnAddFiles.is_important = true;
 		btnAddFiles.clicked.connect (btnAddFiles_clicked);
 		btnAddFiles.set_tooltip_text ("Add file(s)");
 		toolbar.add (btnAddFiles);
 
+		//btnRemoveFiles
 		btnRemoveFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.REMOVE);
 		btnRemoveFiles.label = "";
 		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
 		btnRemoveFiles.set_tooltip_text ("Remove selected file(s)");
 		toolbar.add (btnRemoveFiles);
 		
+		//btnClearFiles
 		btnClearFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
 		btnClearFiles.label = "";
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
 		btnClearFiles.set_tooltip_text ("Remove all file(s)");
 		toolbar.add (btnClearFiles);
 		
+		//separator
 		toolbar.add (new Gtk.SeparatorToolItem());
 		
+		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PLAY);
 		btnStart.is_important = true;
 		btnStart.label = "Start";
@@ -142,6 +145,7 @@ public class MainWindow : Gtk.Window
 		btnStart.set_tooltip_text ("Start");
 		toolbar.add (btnStart);
 		
+		//btnPause
 		btnPause = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PAUSE);
 		btnPause.is_important = true;
 		btnPause.clicked.connect (btnPause_clicked);
@@ -150,6 +154,7 @@ public class MainWindow : Gtk.Window
 		btnPause.no_show_all = true;
 		toolbar.add (btnPause);
 		
+		//btnStop
 		btnStop = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_STOP);
 		btnStop.is_important = true;
 		btnStop.clicked.connect (btnStop_clicked);
@@ -157,7 +162,8 @@ public class MainWindow : Gtk.Window
 		btnStop.visible = false;
 		btnStop.no_show_all = true;
 		toolbar.add (btnStop);
-
+		
+		//btnFinish
 		btnFinish = new Gtk.ToolButton.from_stock (Gtk.Stock.OK);
 		btnFinish.is_important = true;
 		btnFinish.label = "Finish";
@@ -167,23 +173,46 @@ public class MainWindow : Gtk.Window
 		btnFinish.no_show_all = true;
 		toolbar.add (btnFinish);
 		
+		//separator
 		var separator = new Gtk.SeparatorToolItem();
 		separator.set_draw (false);
 		separator.set_expand (true);
 		toolbar.add (separator);
 
+		//btnAppSettings
 		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
 		btnAppSettings.label = "";
 		btnAppSettings.clicked.connect (btnAppSettings_clicked);
 		btnAppSettings.set_tooltip_text ("Application Settings");
 		toolbar.add (btnAppSettings);
 		
+		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock (Gtk.Stock.ABOUT);
 		btnAbout.label = "";
 		btnAbout.clicked.connect (btnAbout_clicked);
 		btnAbout.set_tooltip_text ("About");
 		toolbar.add (btnAbout);
 		
+		//btnShutdown
+		btnShutdown = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.QUIT);
+		btnShutdown.label = "Shutdown";
+		btnShutdown.visible = false;
+		btnShutdown.no_show_all = true;
+		btnShutdown.is_important = true;
+		btnShutdown.clicked.connect (btnShutdown_clicked);
+		btnShutdown.set_tooltip_text ("Shutdown system after completion");
+		toolbar.add (btnShutdown);
+		
+		//btnBackground
+        btnBackground = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.SORT_ASCENDING);
+        btnBackground.label = "Background";
+        btnBackground.visible = false;
+        btnBackground.no_show_all = true;
+        btnBackground.is_important = true;
+        btnBackground.clicked.connect (btnBackground_clicked);
+        btnBackground.set_tooltip_text ("Run processes with lower priority");
+        toolbar.add (btnBackground);
+        
 		// tvFiles
 		
 		tvFiles = new TreeView();
@@ -331,24 +360,6 @@ public class MainWindow : Gtk.Window
 		hboxProgress.no_show_all = true;
 		hboxProgress.homogeneous = true;
         vboxMain.add (hboxProgress);
-
-		// btnShutdown
-        btnShutdown = new ToggleButton.with_label("Shutdown");
-	    btnShutdown.set_image (new Image.from_stock (Stock.QUIT, IconSize.MENU));
-        btnShutdown.visible = App.AdminMode;
-        btnShutdown.active = App.Shutdown;
-        btnShutdown.clicked.connect (btnShutdown_clicked);
-        btnShutdown.set_tooltip_text ("Shutdown system after batch is complete");
-        hboxProgress.add (btnShutdown);
-		
-		// btnBackground
-        btnBackground = new ToggleButton.with_label("Background");
-	    btnBackground.set_image (new Image.from_stock (Stock.SORT_ASCENDING, IconSize.MENU));
-        btnBackground.visible = App.AdminMode;
-        btnBackground.active = App.BackgroundMode;
-        btnBackground.clicked.connect (btnBackground_clicked);
-        btnBackground.set_tooltip_text ("Run processes with lower priority");
-        hboxProgress.add (btnBackground);
 
 		statusbar_default_message ();
 		
@@ -968,13 +979,18 @@ This program is free for personal and commercial use and comes with absolutely n
 		
 		btnShutdown.visible = App.AdminMode;
 		btnBackground.visible = App.AdminMode;
-
+		btnBackground.visible = App.AdminMode;
+        btnBackground.active = App.BackgroundMode;
+        
 		btnStart.visible = false;
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
 		btnAppSettings.visible = false;
 		btnAbout.visible = false;
 		
+		btnShutdown.visible = App.AdminMode;
+        btnShutdown.active = App.Shutdown;
+        
 		btnPause.visible = true;
 		btnStop.visible = true;
 		btnFinish.visible = false;
@@ -1000,6 +1016,9 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnAppSettings.visible = true;
 		btnAbout.visible = true;
 		
+		btnShutdown.visible = false;
+		btnBackground.visible = false;
+
 		btnPause.visible = false;
 		btnStop.visible = false;
 		btnFinish.visible = false;
