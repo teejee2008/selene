@@ -6,7 +6,7 @@ if [ "${hasAudio}" == "1" ]; then
 	avconv -i "${inFile}" -f wav -acodec pcm_s16le -ac 2 -vn -y - | lame --nohist --brief -V 4 -q 5 --replaygain-fast - "${tempAudio}"
 fi
 
-x264 --vf crop:0,0,0,0 -o "${tempVideo}" "${inFile}"
+x264 --vf crop:0,0,0,0 --preset slower --profile high --crf 22.0 -o "${tempVideo}" "${inFile}"
 
 if [ "${hasAudio}" == "1" ]; then
 

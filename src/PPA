@@ -1,0 +1,4 @@
+sudo apt-add-repository -y ppa:motumedia/libav-daily 
+sudo aptitude update
+sudo aptitude install libav-tools
+

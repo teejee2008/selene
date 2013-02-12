@@ -39,6 +39,7 @@ public class MainWindow : Gtk.Window
     private ToolButton btnAbout;
     
     private Button btnOpenScriptFolder;
+
     private ToolButton btnAppSettings;
 	private Box vboxMain;
 	private Box vboxMain2;
@@ -305,6 +306,17 @@ public class MainWindow : Gtk.Window
         btnOpenScriptFolder.set_tooltip_text ("Open script folder");
         hboxScript.add (btnOpenScriptFolder);
 
+		/*
+		// btnAudioConfig
+    	
+		btnAudioConfig = new Button();
+		btnAudioConfig.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
+        btnAudioConfig.clicked.connect (btnAudioConfig_clicked);
+        btnAudioConfig.set_tooltip_text ("Open script folder");
+        hboxScript.add (btnAudioConfig);
+
+        */
+        
 		// lblStatus
 		lblStatus = new Label ("test");
 		//lblStatus.margin_bottom = 6;
@@ -866,6 +878,15 @@ This program is free for personal and commercial use and comes with absolutely n
 	    var window = new PrefWindow ();
 	    window.show_all ();
 	    window.run ();
+	}
+
+	private void btnAudioConfig_clicked ()
+    {
+	    /*var window = new ConfigWindow();
+	    window.SelectedScriptPath = App.ScriptFiles[cmbScript.get_active()].Path;
+	    window.show_all();
+	    window.load_script();
+	    window.run();*/
 	}
 
 	public void start ()

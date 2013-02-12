@@ -1,6 +1,4 @@
 
- * Add options to open temp and output directories.
-   - Add options to right-click menu
-   - Add options to toolbar?
-   
- * Customize the right-click menu based on APP_STATE
+ * Hide About and Settings button while encoding
+ * Move the Shutdown and Background buttons to right side of toolbar
+ * Implement file monitoring

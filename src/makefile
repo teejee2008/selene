@@ -29,8 +29,8 @@ install:
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	
 uninstall:
-	sudo rm -f /usr/bin/selene
-	sudo rm -f /usr/bin/selene-admin
-	sudo rm -rf /usr/share/selene-scripts
-	sudo rm -f /usr/share/glib-2.0/schemas/apps.selene.gschema.xml
-	sudo glib-compile-schemas /usr/share/glib-2.0/schemas/
+	rm -f /usr/bin/selene
+	rm -f /usr/bin/selene-admin
+	rm -rf /usr/share/selene-scripts
+	rm -f /usr/share/glib-2.0/schemas/apps.selene.gschema.xml
+	glib-compile-schemas /usr/share/glib-2.0/schemas/

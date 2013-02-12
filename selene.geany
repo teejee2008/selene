@@ -17,14 +17,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=6
-FILE_NAME_0=2;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+current_page=0
+FILE_NAME_0=6858;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
 FILE_NAME_1=1974;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_2=25513;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_3=26167;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_2=5541;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_3=27998;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
 FILE_NAME_4=0;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
-FILE_NAME_5=669;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_6=4118;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_5=13;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_6=2902;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
 
 [VTE]
 last_dir=/home/teejee
