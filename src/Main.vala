@@ -1738,6 +1738,18 @@ Notes:
 				break;
 		}
 		
+		switch (audio.get_string_member("opusOptimize")){
+			case "none":
+				//do nothing
+				break;
+			case "speech":
+				s += " --speech";
+				break;
+			case "music":
+				s += " --music";
+				break;
+		}
+		
 		//input
 		s += " -";
 		

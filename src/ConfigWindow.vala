@@ -111,6 +111,9 @@ public class ConfigWindow : Dialog {
 	private Label lblAudioQuality;
 	private SpinButton spinAudioQuality;
 	
+	private Label lblOpusOptimize;
+	private ComboBox cmbOpusOptimize;
+	
 	private Label lblAuthorName;
 	private Entry txtAuthorName;
 	
@@ -628,7 +631,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		row = -1;
 		
 		//lblACodec
-		lblACodec = new Gtk.Label("Format & Codec");
+		lblACodec = new Gtk.Label("Format / Codec");
 		lblACodec.xalign = (float) 0.0;
 		lblACodec.hexpand = true;
 		gridAudio.attach(lblACodec,0,++row,2,1);
@@ -677,9 +680,33 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		spinAudioQuality.xalign = (float) 0.5;
 		gridAudio.attach(spinAudioQuality,1,row,1,1);
 		
+		//lblOpusOptimize
+		lblOpusOptimize = new Gtk.Label("Optimization");
+		lblOpusOptimize.xalign = (float) 0.0;
+		gridAudio.attach(lblOpusOptimize,0,++row,1,1);
+
+		//cmbOpusOptimize
+		cmbOpusOptimize = new ComboBox();
+		textCell = new CellRendererText();
+        cmbOpusOptimize.pack_start(textCell, false);
+        cmbOpusOptimize.set_attributes(textCell, "text", 0);
+        cmbOpusOptimize.hexpand = true;
+        gridAudio.attach(cmbOpusOptimize,1,row,1,1);
+        
+        //populate
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter,0,"None",1,"none");
+		model.append (out iter);
+		model.set (iter,0,"Speech",1,"speech");
+		model.append (out iter);
+		model.set (iter,0,"Music",1,"music");
+		cmbOpusOptimize.set_model(model);
+		
 		//defaults
 		cmbFileFormat.set_active(0);
 		cmbAudioMode.set_active(0);
+		cmbOpusOptimize.set_active(0);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
@@ -828,10 +855,14 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 			case "neroaac":
 				lblAudioQuality.visible = true;
 				spinAudioQuality.visible = true;
+				lblOpusOptimize.visible = false;
+				cmbOpusOptimize.visible = false;
 				break;
 			case "opus":
 				lblAudioQuality.visible = false;
 				spinAudioQuality.visible = false;
+				lblOpusOptimize.visible = true;
+				cmbOpusOptimize.visible = true;
 				break;
 		}
 		
@@ -1112,6 +1143,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		audio.set_string_member("mode",audio_mode);
 		audio.set_string_member("bitrate",audio_bitrate);
 		audio.set_string_member("quality",audio_quality);
+		audio.set_string_member("opusOptimize",audio_opus_optimize);
 		
 		var filePath = Folder + "/" + txtPresetName.text + ".json";
 		var json = new Json.Generator();
@@ -1187,6 +1219,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 			case "opus":
 				audio_mode = audio.get_string_member("mode");
 				audio_bitrate = audio.get_string_member("bitrate");
+				audio_opus_optimize = audio.get_string_member("opusOptimize");
 				break;
 		}
 	}
@@ -1398,6 +1431,16 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		}
         set { 
 			Utility.Combo_SelectValue(cmbAudioMode, 1, value);
+		}
+    }
+    
+    public string audio_opus_optimize
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbOpusOptimize,1,"music");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbOpusOptimize, 1, value);
 		}
     }
     
