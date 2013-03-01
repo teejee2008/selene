@@ -22,6 +22,7 @@
  */
 
 using Gtk;
+using Gee;
 
 public class MainWindow : Gtk.Window
 {
@@ -40,12 +41,15 @@ public class MainWindow : Gtk.Window
     private ToolButton btnAbout;
     
     private Button btnOpenScriptFolder;
-
+	private Button btnPresetNew;
+	private Button btnPresetEdit;
+	
 	private Box vboxMain;
 	private Box vboxMain2;
 	private Box hboxScript;
 	private Box hboxProgress;
-	private ComboBox cmbScript;
+	private ComboBox cmbScriptFile;
+	private ComboBox cmbScriptFolder;
 	private TreeView tvFiles;
 	private ScrolledWindow swFiles;
 	private Label lblStatus;
@@ -78,7 +82,7 @@ public class MainWindow : Gtk.Window
 	private uint statusTimer;
 	private bool paused = false;
 	private MediaFile lastFile;
-	
+
 	private const Gtk.TargetEntry[] targets = {
 		{ "text/uri-list", 0, 0}
 	};
@@ -213,8 +217,7 @@ public class MainWindow : Gtk.Window
         btnBackground.set_tooltip_text ("Run processes with lower priority");
         toolbar.add (btnBackground);
         
-		// tvFiles
-		
+		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
 		tvFiles.set_tooltip_text ("File(s) to convert");
@@ -227,7 +230,7 @@ public class MainWindow : Gtk.Window
 
 		vboxMain.pack_start (swFiles, true, true, 0);
 
-		// colName
+		//colName
 		colName = new TreeViewColumn();
 		colName.title = "File";
 		colName.expand = true;
@@ -237,7 +240,7 @@ public class MainWindow : Gtk.Window
 		colName.set_attributes(cellName, "text", InputField.FILE_NAME);
 		tvFiles.append_column(colName);
 		
-		// colSize
+		//colSize
 		colSize = new TreeViewColumn();
 		colSize.title = "Size";
 		CellRendererText cellSize = new CellRendererText ();
@@ -245,7 +248,7 @@ public class MainWindow : Gtk.Window
 		colSize.set_attributes(cellSize, "text", InputField.FILE_SIZE);
 		tvFiles.append_column(colSize);
 		
-		// colDuration
+		//colDuration
 		colDuration = new TreeViewColumn();
 		colDuration.title = "Duration";
 		CellRendererText cellDuration = new CellRendererText ();
@@ -253,7 +256,7 @@ public class MainWindow : Gtk.Window
 		colDuration.set_attributes(cellDuration, "text", InputField.FILE_DURATION);
 		tvFiles.append_column(colDuration);
 
-		// colCrop
+		//colCrop
 		colCrop = new TreeViewColumn();
 		colCrop.title = "CropVideo (L:T:R:B)";
 		colCrop.fixed_width = 100;
@@ -264,7 +267,7 @@ public class MainWindow : Gtk.Window
 		colCrop.set_attributes(cellCrop, "text", InputField.FILE_CROPVAL);
 		tvFiles.append_column(colCrop);
 		
-		// colProgress
+		//colProgress
 		colProgress = new TreeViewColumn();
 		colProgress.title = "Status";
 		colProgress.fixed_width = 120;
@@ -275,7 +278,7 @@ public class MainWindow : Gtk.Window
 		colProgress.set_attributes(cellProgress, "value", InputField.FILE_PROGRESS, "text", InputField.FILE_PROGRESS_TEXT);
 		tvFiles.append_column(colProgress);
 		
-		// colSpacer
+		//colSpacer
 		colSpacer = new TreeViewColumn();
 		colSpacer.expand = false;
 		colSpacer.fixed_width = 10;
@@ -295,57 +298,73 @@ public class MainWindow : Gtk.Window
 		
 		vboxMain.add (vboxMain2);
 		
-		// hboxScript
-
+		//hboxScript
 		hboxScript = new Box (Orientation.HORIZONTAL, 6);
 		hboxScript.homogeneous = false;
         vboxMain2.pack_start (hboxScript, true, true, 6);
         
-		// cmbScript
+        //cmbScriptFolder ---------------------
+
+		cmbScriptFolder = new ComboBox();
+		cmbScriptFolder.set_size_request(100,-1);
+		cmbScriptFolder.set_tooltip_text ("Folder");
+		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
+		hboxScript.pack_start (cmbScriptFolder, true, true, 0);
+
+		CellRendererText cellScriptFolder = new CellRendererText();
+        cmbScriptFolder.pack_start( cellScriptFolder, false );
+        cmbScriptFolder.set_cell_data_func (cellScriptFolder, cellScriptFolder_render);
 		
-		ListStore model = new ListStore( 1, typeof( ScriptFile ) );
-		cmbScript = new ComboBox.with_model(model);
-		hboxScript.pack_start (cmbScript, true, true, 0);
+		//cmbScriptFile ----------------------
 		
-		CellRendererText cellScript = new CellRendererText();
-        cmbScript.pack_start( cellScript, false );
-        cmbScript.set_cell_data_func (cellScript, cellScript_render);
-        cmbScript.set_tooltip_text ("Conversion script (Preset file)");
+		cmbScriptFile = new ComboBox();
+		hboxScript.pack_start (cmbScriptFile, true, true, 0);
+		
+		CellRendererText cellScriptFile = new CellRendererText();
+        cmbScriptFile.pack_start( cellScriptFile, false );
+        cmbScriptFile.set_cell_data_func (cellScriptFile, cellScriptFile_render);
+        cmbScriptFile.set_tooltip_text ("Encoding Script or Preset File");
+        cmbScriptFile.changed.connect(cmbScriptFile_changed);
         
-        // populate script dropdown
-        TreeIter iter;
+        populate_script_folders();
+        
+        /*
+        //populate
         foreach(ScriptFile sh in App.ScriptFiles){
-        	model.append( out iter );
-        	model.set( iter, 0, sh);
+        	model1.append( out iter );
+        	model1.set( iter, 0, sh);
         }
         
-        // select default script
+        //select default script
         if (App.SelectedScript != null){
 			ScriptFile sh = App.find_script(App.SelectedScript.Path);
-	        cmbScript.set_active(App.ScriptFiles.index_of(sh));
+	        cmbScriptFile.set_active(App.ScriptFiles.index_of(sh));
 	    }
 	    else{
-			cmbScript.set_active(0);
+			cmbScriptFile.set_active(0);
 		}
+*/
 
-		// btnOpenScriptFolder
-    	
+		//btnPresetNew
+		btnPresetNew = new Button();
+		btnPresetNew.set_image (new Image.from_stock (Stock.ADD, IconSize.MENU));
+        btnPresetNew.clicked.connect (btnPresetNew_clicked);
+        btnPresetNew.set_tooltip_text ("New Preset");
+        hboxScript.add (btnPresetNew);
+        
+        //btnPresetEdit
+		btnPresetEdit = new Button();
+		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.MENU));
+        btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
+        btnPresetEdit.set_tooltip_text ("Edit Preset");
+        hboxScript.add (btnPresetEdit);
+        
+        //btnOpenScriptFolder
 		btnOpenScriptFolder = new Button();
 		btnOpenScriptFolder.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
-        btnOpenScriptFolder.clicked.connect (() => { Utility.exo_open (App.DataDirectory); });
+        btnOpenScriptFolder.clicked.connect (btnOpenScriptFolder_clicked);
         btnOpenScriptFolder.set_tooltip_text ("Open script folder");
         hboxScript.add (btnOpenScriptFolder);
-
-		/*
-		// btnAudioConfig
-    	
-		btnAudioConfig = new Button();
-		btnAudioConfig.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
-        btnAudioConfig.clicked.connect (btnAudioConfig_clicked);
-        btnAudioConfig.set_tooltip_text ("Open script folder");
-        hboxScript.add (btnAudioConfig);
-
-        */
         
 		// lblStatus
 		lblStatus = new Label ("test");
@@ -439,33 +458,250 @@ public class MainWindow : Gtk.Window
 		catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
-	}
 
-	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
+		select_script(App.SelectedScript.Path);
+	}
+	
+	// script dropdown handlers -----------------------
+	
+	private void populate_script_folders ()
 	{
-        foreach(string uri in data.get_uris ()){
-			string file = uri.replace("file://","").replace("file:/","");
-			file = Uri.unescape_string (file);
-			bool valid = App.add_file (file);
-			if (!valid){
-				statusbar_show_message ("Unknown format: '%s'".printf (file), true, true);
+		TreeStore model = new TreeStore(2, typeof(string), typeof(string));
+		cmbScriptFolder.set_model(model);
+		TreeIter iter0;
+
+		model.append (out iter0, null);
+		model.set (iter0, 0, App.ScriptsFolder_Official, 1, "Official Scripts");
+		iter_append_children (model, iter0, App.ScriptsFolder_Official);
+		
+		model.append (out iter0, null);
+		model.set (iter0, 0, App.PresetsFolder_Official,1, "Official Presets");
+		iter_append_children (model, iter0, App.PresetsFolder_Official);
+		
+		model.append (out iter0, null);
+		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "Custom Scripts");
+		iter_append_children (model, iter0, App.ScriptsFolder_Custom);
+		
+		model.append (out iter0, null);
+		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Custom Presets");
+	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
+	    
+	    model.append (out iter0, null);
+		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Other");
+	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
+	    
+	    cmbScriptFolder.set_active(0);
+	}
+	
+	private void iter_append_children (TreeStore model, TreeIter iter0, string path)
+	{
+		try{
+			var dir = File.parse_name (path);
+			var enumerator = dir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+			FileInfo file;
+			TreeIter iter1;
+
+			while ((file = enumerator.next_file()) != null) {
+				if (file.get_file_type() == FileType.DIRECTORY){
+					string dirPath = dir.resolve_relative_path(file.get_name()).get_path();
+					string dirName = file.get_name();
+					
+					model.append(out iter1, iter0);
+					model.set(iter1, 0, dirPath, 1, dirName);
+					iter_append_children(model, iter1, dir.resolve_relative_path(file.get_name()).get_path());
+				}
+			} 
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
+		
+	}
+	
+	private void cmbScriptFolder_changed()
+	{
+		//create empty model
+		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
+		cmbScriptFile.set_model(model);
+		
+		if (cmbScriptFolder.active == 4){ return; }
+
+		string path = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+		
+		try
+		{
+			var dir = File.parse_name (path);
+	        var enumerator = dir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+
+	        FileInfo file;
+	        while ((file = enumerator.next_file ()) != null) {
+		        string filePath = dir.resolve_relative_path(file.get_name()).get_path();
+		        string fileName = file.get_name();
+		        
+		        if (Utility.file_exists(filePath)){
+					ScriptFile sh = new ScriptFile(filePath);
+					if (sh.Extension == ".sh" || sh.Extension == ".json") {
+						TreeIter iter;
+						model.append(out iter);
+						model.set(iter, 0, sh, 1, fileName);
+						
+						if (App.SelectedScript != null && App.SelectedScript.Path == sh.Path) {
+							cmbScriptFile.set_active_iter(iter);
+						}
+					}
+				}
+	        } 
+        }
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	}
+	
+	private void cmbScriptFile_changed()
+	{
+		if ((cmbScriptFile == null)||(cmbScriptFile.model == null)||(cmbScriptFile.active < 0)){ return; }
+		
+		ScriptFile sh;
+		TreeIter iter;
+		cmbScriptFile.get_active_iter(out iter);
+		cmbScriptFile.model.get (iter, 0, out sh, -1);
+	}
+	
+	private bool select_script (string filePath)
+	{
+		string dirPath = GLib.Path.get_dirname(filePath);
+		bool retVal = false;
+		TreeIter iter;
+		
+		//select folder
+		TreeStore model = (TreeStore) cmbScriptFolder.model;
+		for (bool next = model.get_iter_first (out iter); next; next = model.iter_next (ref iter)) {
+			string path;
+			model.get (iter, 0, out path);
+			if (path == dirPath){
+				cmbScriptFolder.set_active_iter(iter);
+				retVal = true;
+				break;
 			}
-			else {
-				statusbar_show_message ("File added: '%s'".printf (file));
+			else if(model.iter_has_child(iter)){
+				retVal = select_script_recurse_children(filePath, iter);
+				if (retVal) { break; }
 			}
 		}
-        
-        refresh_file_list(true);
 		
-        Gtk.drag_finish (drag_context, true, false, time);
-    }
+		//check if selected file is in some other folder
+		if (retVal == false){
+			//select "Other" folder
+			cmbScriptFolder.set_active(4); 
+			
+			//add the selected file
+			ListStore model1 = new ListStore(2, typeof(ScriptFile), typeof(string));
+			cmbScriptFile.set_model(model1);
+			ScriptFile sh = new ScriptFile(filePath);
+			model1.append(out iter);
+			model1.set(iter, 0, sh, 1, sh.Title);
+			
+			//select it
+			cmbScriptFile.set_active(0); 
+		}
+		
+		//select file
+		ListStore model1 = (ListStore) cmbScriptFile.model;
+		for (bool next = model1.get_iter_first (out iter); next; next = model1.iter_next (ref iter)) {
+			ScriptFile sh = new ScriptFile(filePath);
+			model1.get (iter, 0, out sh);
+			if (sh.Path == filePath){
+				cmbScriptFile.set_active_iter(iter);
+				retVal = true;
+				break;
+			}
+		}
 
-	private void cellScript_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+		return retVal;
+	}
+	
+	private bool select_script_recurse_children (string filePath, TreeIter iter0)
+	{
+		TreeStore model = (TreeStore) cmbScriptFolder.model;
+		string dirPath = GLib.Path.get_dirname(filePath);
+		bool retVal = false;
+		
+		TreeIter iter1;
+		int index = 0;
+		
+		for (bool next = model.iter_children (out iter1, iter0); next; next = model.iter_nth_child (out iter1, iter0, index)) {
+			
+			string path;
+			model.get (iter1, 0, out path);
+			
+			if (path == dirPath){
+				cmbScriptFolder.set_active_iter(iter1);
+				return true;
+			}
+			else if(model.iter_has_child(iter1)){
+				retVal = select_script_recurse_children(filePath, iter1);
+			}
+			index++;
+		}
+		
+		return retVal;
+	}
+	
+	private void cellScriptFile_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
 	{
 		ScriptFile sh;
 		model.get (iter, 0, out sh, -1);
-		(cell as Gtk.CellRendererText).text = sh.Name.replace(".sh","");
+		(cell as Gtk.CellRendererText).text = sh.Title;
 	}
+	
+	private void cellScriptFolder_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
+	{
+		string name;
+		model.get (iter, 1, out name, -1);
+		(cell as Gtk.CellRendererText).text = name;
+	}
+	
+	private void btnOpenScriptFolder_clicked()
+	{
+		string path;
+		TreeModel model = (TreeModel) cmbScriptFolder.model;
+		TreeIter iter;
+		cmbScriptFolder.get_active_iter(out iter);
+		model.get (iter, 0, out path, -1);
+		Utility.exo_open (path); 
+	}
+
+	private void btnPresetNew_clicked ()
+    {
+	    var window = new ConfigWindow();
+	    window.Folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+	    window.Name = "New Preset";
+	    //window.CreateNew = true;
+	    window.show_all();
+	    window.run();
+	    
+	    cmbScriptFolder_changed();
+	    
+	}
+	
+	private void btnPresetEdit_clicked ()
+    {
+		if ((cmbScriptFile.model == null)||(cmbScriptFile.active < 0)) { return; }
+		
+		ScriptFile sh;
+		TreeIter iter;
+		cmbScriptFile.get_active_iter(out iter);
+		cmbScriptFile.model.get (iter, 0, out sh, -1);
+
+	    var window = new ConfigWindow();
+	    window.Folder = sh.Folder;
+	    window.Name = sh.Title;
+	    window.show_all();
+	    window.load_script();
+	    window.run();
+	}
+
+	// statusbar -------------------
 	
     private void statusbar_show_message (string message, bool is_error = false, bool timeout = true)
     {
@@ -523,6 +759,27 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
+	// file list and context menu -------------------------
+	
+	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
+	{
+        foreach(string uri in data.get_uris ()){
+			string file = uri.replace("file://","").replace("file:/","");
+			file = Uri.unescape_string (file);
+			bool valid = App.add_file (file);
+			if (!valid){
+				statusbar_show_message ("Unknown format: '%s'".printf (file), true, true);
+			}
+			else {
+				statusbar_show_message ("File added: '%s'".printf (file));
+			}
+		}
+        
+        refresh_file_list(true);
+		
+        Gtk.drag_finish (drag_context, true, false, time);
+    }
+
     private bool menuFile_popup (Gtk.Menu popup, Gdk.EventButton? event) 
     {
 		TreeSelection selection = tvFiles.get_selection ();
@@ -530,7 +787,7 @@ public class MainWindow : Gtk.Window
 		
 		if (selection.count_selected_rows () == 1){
 			TreeModel model;
-			List<TreePath> lst = selection.get_selected_rows (out model);
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
 			index = int.parse (path.to_string ());
 		}
@@ -625,7 +882,7 @@ public class MainWindow : Gtk.Window
 		
 		if (selection.count_selected_rows () > 0){
 			TreeModel model;
-			List<TreePath> lst = selection.get_selected_rows (out model);
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
 			int index = int.parse (path.to_string ());
 			
@@ -643,7 +900,7 @@ public class MainWindow : Gtk.Window
 		set_busy (true);
 		
 		TreeModel model;
-		List<TreePath> lst = selection.get_selected_rows (out model);
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 		
 		for(int k=0; k<lst.length(); k++){
 			TreePath path = lst.nth_data (k);
@@ -676,7 +933,7 @@ public class MainWindow : Gtk.Window
 		if (selection.count_selected_rows () == 0){ return; }
 		
 		TreeModel model;
-		List<TreePath> lst = selection.get_selected_rows (out model);
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 		
 		for(int k=0; k<lst.length(); k++){
 			TreePath path = lst.nth_data (k);
@@ -694,7 +951,7 @@ public class MainWindow : Gtk.Window
 		if (selection.count_selected_rows () == 0){ return; }
 		
 		TreeModel model;
-		List<TreePath> lst = selection.get_selected_rows (out model);
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 		
 		for(int k=0; k<lst.length(); k++){
 			TreePath path = lst.nth_data (k);
@@ -742,7 +999,7 @@ public class MainWindow : Gtk.Window
 		
 		if (selection.count_selected_rows () > 0){
 			TreeModel model;
-			List<TreePath> lst = selection.get_selected_rows (out model);
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
 			TreeIter iter;
 			model.get_iter (out iter, path);
@@ -791,8 +1048,8 @@ public class MainWindow : Gtk.Window
 				mf.CropT = int.parse(arr[1]);
 				mf.CropR = int.parse(arr[2]);
 				mf.CropB = int.parse(arr[3]);
-				mf.CropW = mf.V_Width  - mf.CropL - mf.CropR;
-				mf.CropH = mf.V_Height - mf.CropT - mf.CropB;
+				mf.CropW = mf.SourceWidth  - mf.CropL - mf.CropR;
+				mf.CropH = mf.SourceHeight - mf.CropT - mf.CropB;
 			}
 		}
 		
@@ -801,6 +1058,8 @@ public class MainWindow : Gtk.Window
 		model.get_iter (out iter, new TreePath.from_string (path));
 		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info ());
 	}
+	
+	// toolbar --------------------------------
 	
 	private void btnAddFiles_clicked ()
 	{
@@ -891,32 +1150,6 @@ This program is free for personal and commercial use and comes with absolutely n
 	    window.show_all ();
 	    window.run ();
 	}
-
-	private void btnAudioConfig_clicked ()
-    {
-	    /*var window = new ConfigWindow();
-	    window.SelectedScriptPath = App.ScriptFiles[cmbScript.get_active()].Path;
-	    window.show_all();
-	    window.load_script();
-	    window.run();*/
-	}
-
-	public void start ()
-	{
-		if (App.InputFiles.size == 0){
-			string msg = "Input queue is empty!\nPlease add some files.\n";
-			Utility.messagebox_show ("Queue is Empty", msg);
-			return;
-		}	
-
-		convert_prepare ();
-		
-	    App.SelectedScript = App.ScriptFiles[cmbScript.get_active()];
-	    
-	    App.convert_begin ();
-	    
-	    timerID = Timeout.add (500, update_status);
-	}
 	
 	private void btnShutdown_clicked ()
     {
@@ -969,6 +1202,29 @@ This program is free for personal and commercial use and comes with absolutely n
 	{
 		App.stop_batch();
 		update_status_all(); 
+	}
+	
+	// encoding ----------------------------------
+	
+	public void start ()
+	{
+		if (App.InputFiles.size == 0){
+			string msg = "Input queue is empty!\nPlease add some files.\n";
+			Utility.messagebox_show ("Queue is Empty", msg);
+			return;
+		}	
+
+		convert_prepare ();
+		
+		ScriptFile sh;
+		TreeIter iter;
+		cmbScriptFile.get_active_iter(out iter);
+		cmbScriptFile.model.get (iter, 0, out sh, -1);
+	    App.SelectedScript = sh;
+	    
+	    App.convert_begin ();
+	    
+	    timerID = Timeout.add (500, update_status);
 	}
 	
 	public void convert_prepare ()

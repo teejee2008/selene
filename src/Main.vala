@@ -24,6 +24,7 @@
 using GLib;
 using Gtk;
 using Gee;
+using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
@@ -88,8 +89,8 @@ public class MediaFile : GLib.Object
 	public string InfoText;
 	public bool HasAudio = false;
 	public bool HasVideo = false;
-	public int V_Width = 0;
-	public int V_Height = 0;
+	public int SourceWidth = 0;
+	public int SourceHeight = 0;
 	
 	public string ScriptFile;
 	public string TempDirectory;
@@ -208,10 +209,10 @@ public class MediaFile : GLib.Object
 				else if (sectionType == "video"){
 					switch (key.down ()) {
 						case "width":
-							V_Width = int.parse(val.replace ("pixels","").replace (" ","").strip ());
+							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip ());
 							break;
 						case "height":
-							V_Height = int.parse(val.replace ("pixels","").replace (" ","").strip ());
+							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip ());
 							break;
 					}
 				}
@@ -244,8 +245,8 @@ public class MediaFile : GLib.Object
 			CropT = int.parse (arr[3]);
 		}
 		
-		CropR = V_Width - CropW - CropL;
-		CropB = V_Height - CropH - CropT;
+		CropR = SourceWidth - CropW - CropL;
+		CropB = SourceHeight - CropH - CropT;
 		
 		if ((CropW == 0) && (CropH == 0)){
 			AutoCropError = true;
@@ -318,14 +319,36 @@ public class ScriptFile : GLib.Object
 	public string Path;
 	public string Name;
 	public string Title;
+	public string Extension;
+	public string Folder;
+	
+	public ScriptFile(string filePath)
+	{
+		Path = filePath;
+	    Name = GLib.Path.get_basename (filePath);
+	    Folder = GLib.Path.get_dirname (filePath);
+	    
+	    int index = Name.index_of(".");
+	    if (index != -1){
+			Title = Name[0:Name.last_index_of(".")];
+			Extension = Name[Name.last_index_of("."):Name.length];
+		}
+		else{
+			Title = Name;
+			Extension = "";
+		}
+	}
 }
 
 public class Main : GLib.Object
 {
 	public Gee.ArrayList<MediaFile> InputFiles;
-	public Gee.ArrayList<ScriptFile> ScriptFiles;
 
-	public string DataDirectory;
+	public string ScriptsFolder_Official = "";
+	public string ScriptsFolder_Custom = "";
+	public string PresetsFolder_Official = "";
+	public string PresetsFolder_Custom = "";
+	
 	public string TempDirectory;
 	public string OutputDirectory = "";
 	public string BackupDirectory = "";
@@ -349,7 +372,6 @@ public class Main : GLib.Object
 	public bool AdminMode = false;
 	public bool BackgroundMode = false;
 	public bool WaitingForShutdown = false;
-	public bool Installed = false;
 	public bool ShowNotificationPopups = false;
 	
 	private Regex regex_generic;
@@ -428,9 +450,7 @@ public class Main : GLib.Object
 				case "--script":
 					k++;
 					if (k < args.length){
-						if (App.select_script(args[k]) == false) {
-							return 1;
-						}
+						App.SelectedScript = new ScriptFile(args[k]);
 					}
 					break;
 					
@@ -562,8 +582,7 @@ Notes:
 	public Main(string arg0)
 	{
 		InputFiles = new Gee.ArrayList<MediaFile>();
-		ScriptFiles = new Gee.ArrayList<ScriptFile>();
-		
+
 		// check for admin priviledges
 		
 		AdminMode = Utility.user_is_admin ();
@@ -583,67 +602,24 @@ Notes:
 		this.OutputDirectory = "";
 		this.BackupDirectory = "";
 		
-		// check if app is installed
-		
-		string sharePath = "/usr/share/selene/scripts";
-		string appPath = (File.new_for_path (arg0)).get_parent ().get_path ();
+		string sharedDataFolder = "/usr/share/selene";
+		string userDataFolder = homeDir + "/.config/selene";
+		//string appPath = (File.new_for_path (arg0)).get_parent ().get_path ();
 
-		if (Utility.dir_exists (appPath + "/selene-scripts"))
-			this.Installed = false;
-		else
-			this.Installed = true;
+		ConfigDirectory = userDataFolder;
+		ScriptsFolder_Official = sharedDataFolder + "/scripts";
+		ScriptsFolder_Custom = userDataFolder + "/scripts";
+		PresetsFolder_Official = sharedDataFolder + "/presets";
+		PresetsFolder_Custom = userDataFolder + "/presets";
 		
-		// Set Data & Config dir paths -------		
-		
-		if (Installed){
-			this.ConfigDirectory = homeDir + "/.config/selene";
-			this.DataDirectory = homeDir + "/.config/selene/scripts";
-		}
-		else{
-			this.ConfigDirectory = appPath;
-			this.DataDirectory = appPath + "/selene-scripts";
-		}
-
 		Utility.create_dir (this.ConfigDirectory);
-		Utility.create_dir (this.DataDirectory);
+		Utility.create_dir (this.ScriptsFolder_Custom);
+		Utility.create_dir (this.PresetsFolder_Custom);
 
-		// load scripts
-		
-		reload_scripts ();
-
-		// check if script dir is empty
-		
-		if (this.ScriptFiles.size == 0){
-			if (Utility.dir_exists (sharePath)){
-				
-				// copy installed scripts
-				
-				log_msg ("Script directory is empty!");
-				log_msg ("Copying scripts from '%s'".printf (sharePath));
-				
-				try{
-					var dataDir = File.parse_name (sharePath);
-					var enumerator = dataDir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-					FileInfo fileInfo;
-					
-					while ((fileInfo = enumerator.next_file ()) != null){
-						if (fileInfo.get_name().down().has_suffix(".sh")){
-							File file = File.new_for_path (sharePath + "/" + fileInfo.get_name());
-							Utility.copy_file (file.get_path(), this.DataDirectory + "/" + file.get_basename());
-						}
-					}
-				}
-				catch (Error e) {
-					log_error (e.message);
-				}
-				
-				reload_scripts ();
-			}
-		}
-		
 		// additional info
 		
-		log_msg ("Loading scripts from '%s'".printf(DataDirectory));
+		log_msg ("Loading scripts from:\n'%s' (User Scripts)\n'%s' (Official Scripts)".printf(this.ScriptsFolder_Custom,this.ScriptsFolder_Official));
+		log_msg ("Loading presets from:\n'%s' (User Presets)\n'%s' (Official Presets)".printf(this.PresetsFolder_Custom,this.PresetsFolder_Official));
 		log_msg ("Using temp folder '%s'".printf(TempDirectory));
 
 		// init config
@@ -724,97 +700,6 @@ Notes:
 		}
 	}
 
-	public void reload_scripts ()
-	{
-		try
-		{
-			var dataDir = File.parse_name (DataDirectory);
-	        var enumerator = dataDir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-	
-	        FileInfo file;
-	        while ((file = enumerator.next_file ()) != null) {
-		        add_script (DataDirectory + "/" + file.get_name());
-	        } 
-        }
-        catch(Error e){
-	        log_error (e.message);
-	    }
-	}
-	
-	public bool select_script (string scriptFile)
-	{
-		// check if only script name has been specified
-		if (scriptFile.index_of ("/") == -1) {
-			string sh = DataDirectory + "/" + scriptFile;
-			if (sh.down().has_suffix(".sh") == false){
-				sh = sh + ".sh";
-			}
-
-			if (Utility.file_exists (sh)){
-				SelectedScript = find_script(sh);
-				if (SelectedScript == null){
-					SelectedScript = add_script (sh);
-				}
-				return true;
-			}
-		}
-		
-		// resolve the full path and check
-		string filePath = Utility.resolve_relative_path(scriptFile);
-		SelectedScript = find_script(filePath);
-		if (SelectedScript == null){
-			SelectedScript = add_script (filePath);
-		}
-		
-		if (SelectedScript == null){
-			log_error ("Script file not found!");
-			return false;
-		}
-		else{
-			log_msg ("Selected Script: '%s'".printf (SelectedScript.Path));
-			return true;
-		}
-	}
-	
-	public ScriptFile? add_script (string filePath)
-	{
-		try{
-			if (Utility.file_exists(filePath) == false) {
-				return null;
-			}
-			
-			File file = File.parse_name (filePath);
-			FileInfo finfo = file.query_info ("*", FileQueryInfoFlags.NONE, null);
-			string fname = finfo.get_name().down();
-            if (fname.has_suffix (".sh"))
-            {	
-	            ScriptFile sh = new ScriptFile() ;
-	            sh.Path = filePath;
-	            sh.Name = finfo.get_name();
-	            sh.Title = sh.Name[0:sh.Name.length - 3];
-	            
-	            this.ScriptFiles.add(sh);
-	            return sh;
-            }
-        }
-        catch(Error e){
-	        log_error (e.message);
-	    }
-	    
-        return null;
-	}
-	
-	public ScriptFile? find_script (string filePath)
-	{
-		foreach(ScriptFile sh in this.ScriptFiles){
-			if (sh.Path == filePath){
-				return sh;
-			}
-		}
-		
-		return null;
-	}
-	
 	public MediaFile? find_input_file (string filePath)
 	{
 		foreach(MediaFile mf in this.InputFiles){
@@ -858,7 +743,7 @@ Notes:
 		
 		string sh = settings.get_string ("last-script");
 		if (sh != null && sh.length > 0) {
-			select_script(sh);
+			SelectedScript = new ScriptFile(sh);
 		}
 	}
 	
@@ -899,13 +784,15 @@ Notes:
 
 	public void convert_begin ()
 	{
+		//check for empty list
 		if (InputFiles.size == 0){
 			log_error ("Input queue is empty! Please add some files.");
 			return;
 		}
 		
 		log_msg ("Starting batch of %d file(s):".printf(InputFiles.size), true);
-
+		
+		//check and create output dir
 		if (this.OutputDirectory.length > 0) { 
 			Utility.create_dir (this.OutputDirectory); 
 			log_msg ("Files will be saved in '%s'".printf(this.OutputDirectory));
@@ -913,20 +800,31 @@ Notes:
 		else{
 			log_msg ("Files will be saved in source directory");
 		}
-		
+
+		//check and create backup dir
 		if (this.BackupDirectory.length > 0) { 
 			Utility.create_dir (this.BackupDirectory); 
 			log_msg ("Source files will be moved to '%s'".printf(this.BackupDirectory));
 		}	
 		
+		//initialize batch control variables
 		BatchStarted = true;
 		BatchCompleted = false;
 		Aborted = false;
 		Status = AppStatus.RUNNING;
 		
+		//initialize file status
+		foreach (MediaFile mf in InputFiles) {
+			mf.Status = FileStatus.PENDING;
+			mf.ProgressText = "Queued";
+			mf.ProgressPercent = 0;
+		}
+		
 		//if (ConsoleMode)
 			//progressTimerID = Timeout.add (500, update_progress);
 			
+		//save config and begin
+		save_config ();
 		convert_next ();
 	}
 	
@@ -943,23 +841,40 @@ Notes:
 	{
 		MediaFile nextFile = null;
 		
+		//find next pending file
 		foreach (MediaFile mf in InputFiles) {
 			if (mf.Status == FileStatus.PENDING){
 				nextFile = mf;
 				break;
 			}
 		}
-			
+		
+		//encode the file
 		if (!Aborted && nextFile != null){
 			convert_file(nextFile);
 		}
 		else{
 			Status = AppStatus.IDLE;
+			
+			//handle shutdown for console mode
+			if (ConsoleMode){
+				if (Shutdown){
+					log_msg ("System will shutdown in one minute!");
+					log_msg ("Enter any key to Cancel...");
+					shutdownTimerID = Timeout.add (60000, shutdown);
+					WaitingForShutdown = true;
+				}
+				//exit app for console mode
+				exit_app ();
+			}
+			
+			//shutdown will be handled by GUI window for GUI-mode
 		}
 	}
 	
 	public void convert_finish ()
-	{
+	{	
+		//reset file status
 		foreach(MediaFile mf in this.InputFiles) {
 			mf.Status = FileStatus.PENDING;
 			mf.ProgressText = "Queued";
@@ -969,18 +884,7 @@ Notes:
 		//if (ConsoleMode)
 			//Source.remove (progressTimerID);
 
-		save_config ();
-		
-		if (ConsoleMode){
-			if (Shutdown){
-				log_msg ("System will shutdown in one minute!");
-				log_msg ("Enter any key to Cancel...");
-				shutdownTimerID = Timeout.add (60000, shutdown);
-				WaitingForShutdown = true;
-			}
-			exit_app ();
-		}
-		
+		//reset batch control variables
 		BatchStarted = true;
 		BatchCompleted = true;
 		Aborted = false;
@@ -993,7 +897,7 @@ Notes:
 		
 		if (Utility.file_exists (mf.Path) == false) { return false; }
 		
-		// prepare 
+		//prepare file
 		CurrentFile = mf;
 		CurrentFile.prepare (this.TempDirectory);		
 		CurrentFile.Status = FileStatus.RUNNING;
@@ -1009,14 +913,12 @@ Notes:
 		StatusLine = "";
 		CurrentLine = "";
 		
-		// convert file
+		//convert file
+		string scriptText = build_script (CurrentFile);
+		string scriptPath = save_script (CurrentFile, scriptText);
+		retVal = run_script (CurrentFile, scriptPath);
 		
-		string script = build_script ();
-		save_script (script);
-		retVal = run_script ();
-		
-		// move input files to backup location
-		
+		//move files to backup location
 		if ((BackupDirectory.length > 0) && (Utility.dir_exists (BackupDirectory))){
 			Utility.move_file (CurrentFile.Path, BackupDirectory + "/" + CurrentFile.Name);
 			if (CurrentFile.SubFile != null){
@@ -1027,7 +929,7 @@ Notes:
 		return retVal;
 	}
 	
-	private string build_script ()
+	private string build_script (MediaFile mf)
 	{
 		var script = new StringBuilder ();
 		script.append ("#!/bin/bash\n");
@@ -1035,28 +937,28 @@ Notes:
 		
 		// insert variables -----------------
       
-      	script.append ("tempDir='" + escape (CurrentFile.TempDirectory) + "'\n");
-      	script.append ("inDir='" + escape (CurrentFile.Location) + "'\n");
+      	script.append ("tempDir='" + escape (mf.TempDirectory) + "'\n");
+      	script.append ("inDir='" + escape (mf.Location) + "'\n");
       	if (OutputDirectory.length == 0){
-      		script.append ("outDir='" + escape (CurrentFile.Location) + "'\n");
+      		script.append ("outDir='" + escape (mf.Location) + "'\n");
       	} else{
 	      	script.append ("outDir='" + escape (OutputDirectory) + "'\n");
 	    }
-      	script.append ("logFile='" + escape (CurrentFile.LogFile) + "'\n");
+      	script.append ("logFile='" + escape (mf.LogFile) + "'\n");
       	script.append ("\n");
-        script.append ("inFile='" + escape (CurrentFile.Path) + "'\n");
-        script.append ("name='" + escape (CurrentFile.Name) + "'\n");
-        script.append ("title='" + escape (CurrentFile.Title) + "'\n");
-        script.append ("ext='" + escape (CurrentFile.Extension) + "'\n");
-        script.append ("duration='" + escape ("%.0f".printf(CurrentFile.Duration / 1000)) + "'\n");
-        script.append ("hasAudio=" + (CurrentFile.HasAudio ? "1" : "0") + "\n");
-        script.append ("hasVideo=" + (CurrentFile.HasVideo ? "1" : "0") + "\n");
+        script.append ("inFile='" + escape (mf.Path) + "'\n");
+        script.append ("name='" + escape (mf.Name) + "'\n");
+        script.append ("title='" + escape (mf.Title) + "'\n");
+        script.append ("ext='" + escape (mf.Extension) + "'\n");
+        script.append ("duration='" + escape ("%.0f".printf(mf.Duration / 1000)) + "'\n");
+        script.append ("hasAudio=" + (mf.HasAudio ? "1" : "0") + "\n");
+        script.append ("hasVideo=" + (mf.HasVideo ? "1" : "0") + "\n");
         script.append ("\n");
         
-	    if (CurrentFile.SubFile != null){
-			script.append ("subFile='" + escape (CurrentFile.SubFile) + "'\n");
-			script.append ("subName='" + escape (CurrentFile.SubName) + "'\n");
-			script.append ("subExt='" + escape (CurrentFile.SubExt) + "'\n");
+	    if (mf.SubFile != null){
+			script.append ("subFile='" + escape (mf.SubFile) + "'\n");
+			script.append ("subName='" + escape (mf.SubName) + "'\n");
+			script.append ("subExt='" + escape (mf.SubExt.down()) + "'\n");
 		}
 		else {
 			script.append ("subFile=''\n");
@@ -1064,60 +966,76 @@ Notes:
 			script.append ("subExt=''\n");
 		}
 		script.append ("\n");
-		
-		
 		script.append ("""scriptDir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"""");
 		script.append ("\n");
 		script.append ("cd \"$scriptDir\"\n");
 		
-		// read script template ---------------
+		if (SelectedScript.Extension == ".sh") {
 
-	    try {
-		    var fileScript = File.parse_name (SelectedScript.Path);
-	        var dis = new DataInputStream (fileScript.read ());
+			// read and modify script template ---------------
 
-	        MatchInfo match;
-	        Regex rxCrop_libav = new Regex ("""avconv.*-vf.*(crop=[^, ]+)""");
-	        Regex rxCrop_x264 = new Regex ("""x264.*(--vf|--video-filter).*(crop:[^/ ]+)""");
-	        Regex rxCrop_f2t = new Regex ("""ffmpeg2theora.*""");
-	        Regex rxCrop_f2t_left = new Regex ("""ffmpeg2theora.*(--cropleft [0-9]+) """);
-	        Regex rxCrop_f2t_right = new Regex ("""ffmpeg2theora.*(--cropright [0-9]+) """);
-	        Regex rxCrop_f2t_top = new Regex ("""ffmpeg2theora.*(--croptop [0-9]+) """);
-	        Regex rxCrop_f2t_bottom = new Regex ("""ffmpeg2theora.*(--cropbottom [0-9]+) """);
-	        
-	        string line = dis.read_line (null);
-	        while (line != null) {
-		        line = line.replace ("${audiodec}", """avconv -i "${inFile}" -f wav -acodec pcm_s16le -vn -y -""");
-		        
-		        if (CurrentFile.crop_enabled ()){
-					if (rxCrop_libav.match (line, 0, out match)){
-						line = line.replace (match.fetch(1), "crop=" + CurrentFile.crop_values_libav ());
-					}
-					else if (rxCrop_x264.match (line, 0, out match)){
-						line = line.replace (match.fetch(2), "crop:" + CurrentFile.crop_values_x264 ());
-					}
-					else if (rxCrop_f2t.match (line, 0, out match)){
-						if (rxCrop_f2t_left.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "--cropleft " + CurrentFile.CropL.to_string());
-						}
-						if (rxCrop_f2t_right.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "--cropright " + CurrentFile.CropR.to_string());
-						}
-						if (rxCrop_f2t_top.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "--croptop " + CurrentFile.CropT.to_string());
-						}
-						if (rxCrop_f2t_bottom.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "--cropbottom " + CurrentFile.CropB.to_string());
-						}
-					}
-		        }
+			try {
+				var fileScript = File.parse_name (SelectedScript.Path);
+				var dis = new DataInputStream (fileScript.read ());
 
-		        script.append (line + "\n");
-		        line = dis.read_line (null);
-	        }
-	    } catch (Error e) {
-	        log_error (e.message);
-	    }
+				MatchInfo match;
+				Regex rxCrop_libav = new Regex ("""avconv.*-vf.*(crop=[^, ]+)""");
+				Regex rxCrop_x264 = new Regex ("""x264.*(--vf|--video-filter).*(crop:[^/ ]+)""");
+				Regex rxCrop_f2t = new Regex ("""ffmpeg2theora.*""");
+				Regex rxCrop_f2t_left = new Regex ("""ffmpeg2theora.*(--cropleft [0-9]+) """);
+				Regex rxCrop_f2t_right = new Regex ("""ffmpeg2theora.*(--cropright [0-9]+) """);
+				Regex rxCrop_f2t_top = new Regex ("""ffmpeg2theora.*(--croptop [0-9]+) """);
+				Regex rxCrop_f2t_bottom = new Regex ("""ffmpeg2theora.*(--cropbottom [0-9]+) """);
+				
+				string line = dis.read_line (null);
+				while (line != null) {
+					line = line.replace ("${audiodec}", """avconv -i "${inFile}" -f wav -acodec pcm_s16le -vn -y -""");
+					
+					if (mf.crop_enabled ()){
+						if (rxCrop_libav.match (line, 0, out match)){
+							line = line.replace (match.fetch(1), "crop=" + mf.crop_values_libav ());
+						}
+						else if (rxCrop_x264.match (line, 0, out match)){
+							line = line.replace (match.fetch(2), "crop:" + mf.crop_values_x264 ());
+						}
+						else if (rxCrop_f2t.match (line, 0, out match)){
+							if (rxCrop_f2t_left.match (line, 0, out match)){
+								line = line.replace (match.fetch(1), "--cropleft " + mf.CropL.to_string());
+							}
+							if (rxCrop_f2t_right.match (line, 0, out match)){
+								line = line.replace (match.fetch(1), "--cropright " + mf.CropR.to_string());
+							}
+							if (rxCrop_f2t_top.match (line, 0, out match)){
+								line = line.replace (match.fetch(1), "--croptop " + mf.CropT.to_string());
+							}
+							if (rxCrop_f2t_bottom.match (line, 0, out match)){
+								line = line.replace (match.fetch(1), "--cropbottom " + mf.CropB.to_string());
+							}
+						}
+					}
+
+					script.append (line + "\n");
+					line = dis.read_line (null);
+				}
+			} catch (Error e) {
+				log_error (e.message);
+			}
+		}
+		else if (SelectedScript.Extension == ".json") {
+			var parser = new Json.Parser();
+			try{
+				parser.load_from_file(SelectedScript.Path);
+			} catch (Error e) {
+				log_error (e.message);
+			}
+			var node = parser.get_root();
+			var config = node.get_object();
+
+			script.append (get_preset_commandline (mf, config));
+			
+			//copy preset to temp folder for debugging
+			Utility.copy_file(SelectedScript.Path, mf.TempDirectory + "/preset.json");
+		}
 		
 		script.append ("exitCode=$?\n");
 		script.append ("echo ${exitCode} > ${exitCode}\n");
@@ -1129,28 +1047,28 @@ Notes:
 		return txt.replace ("'","'\\''");
 	}
 	
-	private bool save_script (string scriptText)
+	private string save_script (MediaFile mf, string scriptText)
 	{
 		try{
 			// create new script file
-	        var file = File.new_for_path (CurrentFile.ScriptFile);
+	        var file = File.new_for_path (mf.ScriptFile);
 	        var file_stream = file.create (FileCreateFlags.REPLACE_DESTINATION);
 			var data_stream = new DataOutputStream (file_stream);
 	        data_stream.put_string (scriptText);
 	        data_stream.close();
 
 	        // set execute permission
-	        Utility.chmod (CurrentFile.ScriptFile, "u+x");
+	        Utility.chmod (mf.ScriptFile, "u+x");
        	} 
 	    catch (Error e) {
 	        log_error (e.message);
-	        return false;
+	        return "";
 	    }
 	    
-	    return true;
+	    return mf.ScriptFile;
 	}
 
-	private bool run_script ()
+	private bool run_script (MediaFile mf, string scriptFile)
 	{
 		bool retVal = false;
 		
@@ -1159,7 +1077,7 @@ Notes:
 		else
 			log_msg ("Converting...");
 			
-		string scriptFile = CurrentFile.ScriptFile;
+		//string scriptFile = CurrentFile.ScriptFile;
 		//string audioTempFile = mFile.TempDir + "/audio.mka";
 		//string videoTempFile = mFile.TempDir + "/video.mkv";
 		
@@ -1201,7 +1119,7 @@ Notes:
 			
 			// create log file
 			
-	        var file = File.new_for_path (CurrentFile.LogFile);
+	        var file = File.new_for_path (mf.LogFile);
 	        var file_stream = file.create (FileCreateFlags.REPLACE_DESTINATION);
 			dsLog = new DataOutputStream (file_stream);
 	        
@@ -1240,22 +1158,22 @@ Notes:
 	    else{
 		    log_msg ("Done");
 		    if (ShowNotificationPopups)
-				Utility.notify_send ("File Complete", CurrentFile.Name, 2000, "low");
+				Utility.notify_send ("File Complete", mf.Name, 2000, "low");
 		}
 		
 		// check for errors
-        if (Utility.file_exists (CurrentFile.TempDirectory + "/0"))
+        if (Utility.file_exists (mf.TempDirectory + "/0"))
         {
-			CurrentFile.Status = FileStatus.SUCCESS;
-			CurrentFile.ProgressText = "Done";
-			CurrentFile.ProgressPercent = 100;
+			mf.Status = FileStatus.SUCCESS;
+			mf.ProgressText = "Done";
+			mf.ProgressPercent = 100;
 			retVal = true;
 		}
 		else
 		{
-			CurrentFile.Status = FileStatus.ERROR;
-			CurrentFile.ProgressText = "Error";
-			CurrentFile.ProgressPercent = 0;
+			mf.Status = FileStatus.ERROR;
+			mf.ProgressText = "Error";
+			mf.ProgressPercent = 0;
 			retVal = false;
 		}
 		
@@ -1432,6 +1350,428 @@ Notes:
 		return true;
 	}
 	
+	private string get_preset_commandline (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		//insert temporary file names ------------
+		
+		s += "\n";
+		s += "outputFile=\"${outDir}/${title}" + general.get_string_member("extension") + "\"\n";
+		s += "tempVideo=\"${tempDir}/video" + general.get_string_member("extension") + "\"\n";
+		switch (audio.get_string_member("codec")) {
+			case "mp3lame":
+				s += "tempAudio=\"${tempDir}/audio.mp3\"\n";
+				break;
+			case "neroaac":
+				s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
+				break;
+		}
+		s += "\n";
+		
+		//create command line --------------
+		
+		string format = general.get_string_member("format");
+		string acodec = audio.get_string_member("codec");
+		string vcodec = video.get_string_member("codec");
+		
+		switch (format)
+		{
+			case "mkv":
+			case "mp4v":
+				//encode video
+				switch (vcodec)
+				{
+					case "x264":
+						s += encode_video_x264(mf,settings);
+						break;
+				}
+				
+				if (mf.HasAudio && acodec != "disable") {
+					//encode audio
+					switch (acodec) {
+						case "mp3lame":
+							s += encode_audio_mp3lame(mf,settings);
+							break;
+						case "neroaac":
+							s += encode_audio_neroaac(mf,settings);
+							break;
+					}
+					//mux audio & video
+					switch (format){
+						case "mkv":
+							s += mux_mkvmerge(mf,settings);
+							break;
+						case "mp4v":
+							s += mux_mp4box(mf,settings);
+							break;
+					}
+				}
+
+				break;
+			case "mp3":
+				s += encode_audio_mp3lame(mf,settings);
+				break;
+			case "mp4a":
+				s += encode_audio_neroaac(mf,settings);
+				break;
+		}
+		
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string encode_video_x264 (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+
+		bool usePiping = true;
+		if (video.get_string_member("fpsNum") == "0" && video.get_string_member("fpsDenom") == "0") {
+			usePiping = false;
+		}
+		
+		if (usePiping) {
+			s += "avconv -i \"${inFile}\" -copyinkf -an -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
+			if (video.get_string_member("fpsNum") != "0" && video.get_string_member("fpsDenom") != "0") {
+				s += " -r " + video.get_string_member("fpsNum") + "/" + video.get_string_member("fpsDenom");
+			}
+			s += " -y - | ";
+		}
+		
+		s += "x264";
+		s += " --preset " + video.get_string_member("preset");
+		s += " --profile " + video.get_string_member("profile");
+		s += " --crf " + video.get_string_member("crf");
+		
+		// filters ----------
+		
+		string vf = "";
+		
+		//cropping
+		if (mf.crop_enabled()) {
+			vf += "/crop:" + mf.crop_values_x264();
+		}
+
+		//resizing
+		int w,h;
+		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
+		//debug("%d %d ".printf(w,h) + rescale.to_string());
+		if (rescale) {
+			string method = video.get_string_member("resizingMethod");
+			vf += "/resize:width=%d,height=%d,method=%s".printf(w,h,method);
+		}
+		
+		if (vf.length > 0){
+			s += " --vf " + vf[1:vf.length];
+		}
+		
+		//---------------
+		
+		//other options
+		if (video.get_string_member("options").strip() != "") {
+			s += " " +  video.get_string_member("options").strip();
+		}
+	
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			//encode to tempVideo
+			s += " -o \"${tempVideo}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " -o \"${outputFile}\"";
+		}
+		
+		if (usePiping) {
+			//encode from StdInput
+			s += " -";
+			s += " --input-res %dx%d".printf(mf.SourceWidth, mf.SourceHeight); //TODO: Resizing should be done by x264
+			s += " --fps %s/%s".printf(video.get_string_member("fpsNum"), video.get_string_member("fpsDenom"));
+		}
+		else {
+			//encode from input file
+			s += " \"${inFile}\"";
+		}
+
+		s += "\n";
+		
+		return s;
+	}
+	
+	private bool calculate_video_resolution (MediaFile mf, Json.Object settings, out int OutputWidth, out int OutputHeight)
+	{
+		bool rescale = false;
+		
+		OutputWidth = mf.SourceWidth;
+		OutputHeight = mf.SourceHeight;
+		
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		
+		if (mf.crop_enabled()){
+			OutputWidth -= (mf.CropL + mf.CropR);
+            OutputHeight -= (mf.CropT + mf.CropB);
+            debug("Cropped: %.0fx%.0f".printf(OutputWidth,OutputHeight));
+		}
+		
+		int maxw = int.parse(video.get_string_member("frameWidth"));
+		int maxh = int.parse(video.get_string_member("frameHeight"));
+		double iw = OutputWidth;
+		double ow = iw;
+		double ih = OutputHeight;
+		double oh = ih;
+		
+		//flags for checking if resizing is actually required
+		bool noResize = false;
+		bool isUpscale = false;
+		bool isSameSize = false;
+		
+		if (maxw == 0 && maxh == 0) {
+			//do nothing
+			noResize = true;
+		}
+		else if (maxw == 0){
+			oh = maxh;
+			ow = oh * (iw / ih);
+			ow = Math.floor(ow);
+			ow = ow - (ow % 4);
+			debug("User height: %.0f".printf(maxh));
+			debug("Set width: %.0f".printf(ow));
+		}
+		else if (maxh == 0){
+			ow = maxw;
+			oh = ow * (ih / iw);
+			oh = Math.floor(oh);
+			oh = oh - (oh % 4);
+			debug("User width: %.0f".printf(maxw));
+			debug("Set height: %.0f".printf(oh));
+		}
+		else{
+			if (video.get_boolean_member("fitToBox") == false) {
+				ow = maxw;
+				oh = maxh;
+			}
+			else {
+				debug("FitToBox is enabled");
+				
+				//fit height
+				if (maxh > 0) {
+					if (oh > maxh) { oh = maxh; }
+					ow = oh * (iw / ih);
+					ow = Math.floor(ow);
+					ow = ow - (ow % 4);
+					
+					debug("Fit width: %.0f".printf(ow));
+					rescale = true;
+				}
+
+				//fit width
+				if (maxw > 0) {
+					if (ow > maxw) { ow = maxw; }
+					oh = ow * (ih / iw);
+					oh = Math.floor(oh);
+					oh = oh - (oh % 4);
+					debug("Fit height: %.0f".printf(oh));
+					rescale = true;
+				}
+			}
+		}
+
+		//check if video should be upscaled
+        if (video.get_boolean_member("noUpscaling")) {
+			if ((ow * oh) > (iw * ih)) {
+				debug("NoUpscaling is enabled");
+				debug("Will not resize since (%.0f * %.0f) > (%.0f * %.0f)".printf(ow,oh,iw,ih));
+				isUpscale = true;
+			}
+		}
+		
+		//check if final size is same as original size
+		if ((ow == OutputWidth)&&(oh == OutputHeight)) {
+			isSameSize = true;
+		}
+		
+		if (noResize || isUpscale || isSameSize) {
+			//do not resize
+			return false;
+		}
+		else {
+			//resize
+			OutputWidth = (int) ow;
+			OutputHeight = (int) oh;
+			debug("Resized: %.0fx%.0f".printf(ow,oh));
+			return true;
+		}
+	}
+	
+	
+	private string encode_audio_avconv (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		return s;
+	}
+	
+	private string encode_audio_mp3lame (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += "avconv -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - ";
+		s += "|lame --nohist --brief -q 5 --replaygain-fast";
+		switch (audio.get_string_member("mode")){
+			case "vbr":
+				s += " -V " + audio.get_string_member("quality");
+				break;
+			case "abr":
+				s += " --abr " + audio.get_string_member("bitrate");
+				break;
+			case "cbr":
+				s += " -b " + audio.get_string_member("bitrate");
+				break;
+			case "cbr-strict":
+				s += " -b " + audio.get_string_member("bitrate") + " --cbr";
+				break;
+		}
+		s += " -";
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " \"${outputFile}\"";
+		}
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string encode_audio_neroaac (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += "avconv -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - | ";
+		s += "neroAacEnc -ignorelength";
+		switch (audio.get_string_member("mode")){
+			case "vbr":
+				s += " -q " + audio.get_string_member("quality");
+				break;
+			case "abr":
+				s += " -br " + audio.get_string_member("bitrate");
+				break;
+			case "cbr":
+				s += " -cbr " + audio.get_string_member("bitrate");
+				break;
+		}
+		s += " -if -";
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " -of \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " -of \"${outputFile}\"";
+		}
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string mux_mkvmerge (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += "mkvmerge --output \"${outputFile}\"";
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			s += " --compression -1:none \"${tempAudio}\"";
+		}
+		s += " --compression -1:none \"${tempVideo}\"";
+		if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa"){
+			s += " --compression -1:none \"${subFile}\"";
+		}
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string mux_mp4box (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string format = general.get_string_member("format");
+		
+		s += "MP4Box -new";
+		
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			s += " -add \"${tempAudio}\"";
+		}
+		
+		s += " -add \"${tempVideo}\"";
+		
+		if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml"){
+			s += " -add \"${subFile}\"";
+		}
+		
+		s += " \"${outputFile}\"";
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string mux_avconv (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string format = general.get_string_member("format");
+		
+		s += "avconv ";
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			s += " -i \"${tempAudio}\"";
+		}
+		s += " -i \"${tempVideo}\"";
+		
+		/*TODO: Mux SRT
+		 * if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa"){
+			s += " --compression -1:none \"${subFile}\"";
+		}
+		* */
+		
+		switch(format){
+			case "mp4v":
+				s += " -f mp4";
+				break;
+		}
+		s += " -c:a copy -c:v copy -sn";
+		s += " -y \"${outputFile}\"";
+		s += "\n";
+		
+		return s;
+	}
 }
 
 

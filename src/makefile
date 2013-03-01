@@ -7,7 +7,7 @@ man1dir = $(mandir)/man1
 CFLAGS = --std=c99
 
 all:
-	valac "Main.vala" "Utility.vala" "MainWindow.vala" "PrefWindow.vala" "FileInfoWindow.vala" -o selene --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-1.0
+	valac "Main.vala" "Utility.vala" "MainWindow.vala" "PrefWindow.vala" "ConfigWindow.vala" "FileInfoWindow.vala" -o selene --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-1.0 --pkg libsoup-2.4 --pkg json-glib-1.0
 
 clean:
 	rm -rf *.o selene
@@ -21,16 +21,21 @@ install:
 	mkdir -p $(DESTDIR)$(launcherdir)
 	mkdir -p $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	mkdir -p $(DESTDIR)$(sharedir)/selene/scripts
+	mkdir -p $(DESTDIR)$(sharedir)/selene/presets
 	
 	install -m 0755 selene $(DESTDIR)$(bindir)
 	install -m 0755 selene-scripts/* $(DESTDIR)$(sharedir)/selene/scripts
-	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
+	install -m 0755 selene-presets/* $(DESTDIR)$(sharedir)/selene/presets
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
+	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
+	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
+
+uninstall:
+	rm -f $(DESTDIR)$(bindir)/selene
+	rm -f $(DESTDIR)$(bindir)/selene-admin
+	rm -rf $(DESTDIR)$(sharedir)/selene/scripts
+	rm -rf $(DESTDIR)$(sharedir)/selene/presets
+	rm -f $(DESTDIR)$(launcherdir)/Selene.desktop
+	rm -f $(DESTDIR)$(sharedir)/glib-2.0/schemas/apps.selene.gschema.xml
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	
-uninstall:
-	rm -f /usr/bin/selene
-	rm -f /usr/bin/selene-admin
-	rm -rf /usr/share/selene-scripts
-	rm -f /usr/share/glib-2.0/schemas/apps.selene.gschema.xml
-	glib-compile-schemas /usr/share/glib-2.0/schemas/

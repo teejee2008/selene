@@ -27,6 +27,8 @@ public const string AppVersion = "1.0";
 public const bool LogTimestamp = true;
 */
 
+using Gtk;
+
 public void log_msg (string message, bool highlight = false)
 {
 	string msg = "";
@@ -654,6 +656,39 @@ namespace Utility
     {
 		while(Gtk.events_pending ())
 			Gtk.main_iteration ();
+	}
+
+	public bool Combo_SelectValue (ComboBox combo, int index, string val)
+	{
+		TreeIter iter;
+		string comboVal;
+		TreeModel model = (TreeModel) combo.model;
+		
+		bool iterExists = model.get_iter_first (out iter);
+		while (iterExists){
+			model.get(iter, 1, out comboVal);
+			if (comboVal == val){
+				combo.set_active_iter(iter);
+				return true;
+			}
+			iterExists = model.iter_next (ref iter);
+		} 
+		
+		return false;
+	}
+	
+	public string Combo_GetSelectedValue (ComboBox combo, int index, string default_value)
+	{
+		if (combo.model == null) { return default_value; }
+		if (combo.active < 0) { return default_value; }
+		
+		TreeIter iter;
+		string val = "";
+		combo.get_active_iter (out iter);
+		TreeModel model = (TreeModel) combo.model;
+		model.get(iter, index, out val);
+			
+		return val;
 	}
 }
 
