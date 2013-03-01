@@ -1,0 +1,31 @@
+{
+  "general" : {
+    "format" : "mp3",
+    "extension" : ".mp3",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "MP3 Audio (*.mp3)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable",
+    "profile" : "high",
+    "preset" : "medium",
+    "crf" : "22",
+    "options" : "",
+    "frameSize" : "disable",
+    "frameWidth" : "0",
+    "frameHeight" : "0",
+    "resizingMethod" : "bicubic",
+    "noUpscaling" : true,
+    "fitToBox" : true,
+    "fpsNum" : "0",
+    "fpsDenom" : "0"
+  },
+  "audio" : {
+    "codec" : "mp3lame",
+    "mode" : "vbr",
+    "bitrate" : "128",
+    "quality" : "4"
+  }
+}

@@ -531,7 +531,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		model.set (iter,0,"Lanczos",1,"lanczos");
 
 		//chkFitToBox
-		chkFitToBox = new CheckButton.with_label("Do not Stretch/Squeeze Video (Fit-to-box)");
+		chkFitToBox = new CheckButton.with_label("Do not stretch or squeeze the video (Fit-to-box)");
 		chkFitToBox.active = true;
 		gridVideoFilters.attach(chkFitToBox,0,++row,2,1);
 		
@@ -1108,7 +1108,11 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		
 		format = general.get_string_member("format");
 		extension = general.get_string_member("extension");
-
+		//preset_name = general.get_string_member("presetName"); //set from file name
+		preset_version = general.get_string_member("presetVersion");
+		author_name = general.get_string_member("authorName");
+		author_email = general.get_string_member("authorEmail");
+		
 		switch(video.get_string_member("codec"))
 		{
 			case "x264":

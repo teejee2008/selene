@@ -1,0 +1,31 @@
+{
+  "general" : {
+    "format" : "mp4v",
+    "extension" : ".mp4",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "MP4 Video (x264 & aac)(*.mp4)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "x264",
+    "profile" : "high",
+    "preset" : "medium",
+    "crf" : "22",
+    "options" : "",
+    "frameSize" : "disable",
+    "frameWidth" : "0",
+    "frameHeight" : "0",
+    "resizingMethod" : "bicubic",
+    "noUpscaling" : true,
+    "fitToBox" : true,
+    "fpsNum" : "0",
+    "fpsDenom" : "0"
+  },
+  "audio" : {
+    "codec" : "neroaac",
+    "mode" : "vbr",
+    "bitrate" : "160",
+    "quality" : "0.5"
+  }
+}
