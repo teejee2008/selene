@@ -10,7 +10,7 @@ Homepage: http://teejeetech.blogspot.com/2013/01/selene-media-encoder-for-ubuntu
 
 Package: selene
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, x264, lame, mkvtoolnix, ffmpeg2theora, opus-tools
+Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, x264, lame, mkvtoolnix, ffmpeg2theora, opus-tools, gpac
 #Recommends: 
 Description: Simple audio/video transcoder for Linux.
  Selene is an audio/video converter for linux that uses simple bash scripts for
