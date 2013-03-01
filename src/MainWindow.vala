@@ -681,7 +681,6 @@ public class MainWindow : Gtk.Window
 	    window.run();
 	    
 	    cmbScriptFolder_changed();
-	    
 	}
 	
 	private void btnPresetEdit_clicked ()
@@ -699,6 +698,8 @@ public class MainWindow : Gtk.Window
 	    window.show_all();
 	    window.load_script();
 	    window.run();
+	    
+	    cmbScriptFolder_changed();
 	}
 
 	// statusbar -------------------
