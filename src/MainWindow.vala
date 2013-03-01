@@ -1354,7 +1354,6 @@ This program is free for personal and commercial use and comes with absolutely n
 					model.set (iter, InputField.FILE_PROGRESS_TEXT, null);
 				}
 
-				statusbar_default_message ();
 				lblStatus.label = statusLine;
 				break;
 		}

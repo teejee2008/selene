@@ -382,6 +382,7 @@ public class Main : GLib.Object
 	private Regex regex_x264;
 	private Regex regex_ffmpeg2theora;
 	private Regex regex_ffmpeg2theora2;
+	private Regex regex_opus;
 	
 	private string tempLine;
 	private MatchInfo match;
@@ -644,8 +645,11 @@ Notes:
 			
 			//  0:00:00.66 audio: 57kbps video: 404kbps, time elapsed: 00:00:00 
 			regex_ffmpeg2theora = new Regex ("""([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*) audio: ([0-9]+)kbps video: ([0-9]+)kbps""");
-			//  0:00:01.16 audio: 54kbps video: 396kbps, ET: 00:22:56, est. size: 85.1 MB
-			regex_ffmpeg2theora2 = new Regex ("""([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*) audio: ([0-9]+)kbps video: ([0-9]+)kbps, ET: ([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*), est. size: ([0-9]+[.]?[0-9]* [a-zA-Z]*)""");
+			
+			//[/] 00:00:28.21 16.3x realtime, 60.68kbit/s
+			//[-] 00:01:48.09   16x realtime,  60.7kbit/s
+			regex_opus = new Regex ("""\[.\] ([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*) [ ]*([0-9]+)[.]?[0-9]*x realtime, [ ]*([0-9]+)[.]?[0-9]*kbit/s""");
+
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -1202,25 +1206,12 @@ Notes:
 	public bool update_progress ()
 	{		
 		tempLine = App.CurrentLine;
-		if (tempLine == null){ return true; }
-		
+
+		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
 		if (tempLine.index_of ("overread, skip") != -1){ return true; }
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
 		
-		StatusLine = tempLine;
-
-		if (regex_generic.match (tempLine, 0, out match)){
-			dblVal = double.parse(match.fetch(1));
-			Progress = dblVal / 100;
-
-			if (regex_mkvmerge.match (tempLine, 0, out match)){
-				StatusLine = "(mkvmerge) %.0f %%".printf(Progress * 100);
-			}
-			else if (regex_x264.match (tempLine, 0, out match)){
-				StatusLine = "(x264) %s fps, %s kbps, eta %s".printf(match.fetch(1),match.fetch(2),match.fetch(3));
-			}
-		}
-		else if (regex_libav.match (tempLine, 0, out match)){
+		if (regex_libav.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 
@@ -1230,6 +1221,9 @@ Notes:
 			else if (regex_libav_audio.match (tempLine, 0, out match)){
 				StatusLine = "(avconv) %s kbps, %s kb".printf(match.fetch(2), match.fetch(1));
 			}
+			else {
+				StatusLine = tempLine;
+			}
 		}
 		else if (regex_ffmpeg2theora.match (tempLine, 0, out match)){
 			dblVal = Utility.parse_time (match.fetch(1));
@@ -1238,6 +1232,31 @@ Notes:
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
 				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
 			}
+			else {
+				StatusLine = tempLine;
+			}
+		}
+		else if (regex_opus.match (tempLine, 0, out match)){
+			dblVal = Utility.parse_time (match.fetch(1));
+			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			StatusLine = "(opusenc) %sx, %s kbps".printf(match.fetch(2), match.fetch(3));
+		}
+		else if (regex_generic.match (tempLine, 0, out match)){
+			dblVal = double.parse(match.fetch(1));
+			Progress = dblVal / 100;
+
+			if (regex_mkvmerge.match (tempLine, 0, out match)){
+				StatusLine = "(mkvmerge) %.0f %%".printf(Progress * 100);
+			}
+			else if (regex_x264.match (tempLine, 0, out match)){
+				StatusLine = "(x264) %s fps, %s kbps, eta %s".printf(match.fetch(1),match.fetch(2),match.fetch(3));
+			}
+			else {
+				StatusLine = tempLine;
+			}
+		}
+		else {
+			StatusLine = tempLine;
 		}
 		
 		CurrentFile.ProgressPercent = (int)(Progress * 100);
@@ -1418,6 +1437,9 @@ Notes:
 				break;
 			case "mp4a":
 				s += encode_audio_neroaac(mf,settings);
+				break;
+			case "opus":
+				s += encode_audio_opus(mf,settings);
 				break;
 		}
 		
@@ -1686,6 +1708,47 @@ Notes:
 		else {
 			//encode to outputFile
 			s += " -of \"${outputFile}\"";
+		}
+		s += "\n";
+		
+		return s;
+	}
+	
+	private string encode_audio_opus (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += "avconv -nostats -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - | ";
+		s += "opusenc";
+		s += " --bitrate " + audio.get_string_member("bitrate");
+		//options
+		switch (audio.get_string_member("mode")){
+			case "vbr":
+				s += " --vbr";
+				break;
+			case "abr":
+				s += " --cvbr";
+				break;
+			case "cbr":
+				s += " --hard-cbr";
+				break;
+		}
+		
+		//input
+		s += " -";
+		
+		//output
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " \"${outputFile}\"";
 		}
 		s += "\n";
 		

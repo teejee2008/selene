@@ -185,15 +185,16 @@ public class ConfigWindow : Dialog {
 		model.set (iter,0,"FLAC Audio (*.flac)",1,"flac");
 		model.append (out iter);
 		model.set (iter,0,"OGG Vorbis Audio (*.ogg)",1,"ogg");
-		model.append (out iter);
-		model.set (iter,0,"Opus Audio (*.opus)",1,"opus");
+		
 		model.append (out iter);
 		model.set (iter,0,"MP2 Audio (*.mp2)",1,"mp2");*/
 		model.append (out iter);
 		model.set (iter,0,"MP3 Audio (*.mp3)",1,"mp3");
 		model.append (out iter);
 		model.set (iter,0,"MP4 Audio (*.mp4)",1,"mp4a");
-
+		model.append (out iter);
+		model.set (iter,0,"Opus Audio (*.opus)",1,"opus");
+		
 		cmbFileFormat = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbFileFormat.pack_start( textCell, false );
@@ -752,6 +753,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				break;
 			case "mp3":
 			case "mp4a":
+			case "opus":
 				model.append (out iter);
 				model.set (iter,0,"Disable Video",1,"disable");
 				cmbVCodec.set_active(0);
@@ -761,6 +763,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		switch (format) {
 			case "mp3":
 			case "mp4a":
+			case "opus":
 				gridVideo.sensitive = false;
 				gridVideoFilters.sensitive = false;
 				break;
@@ -803,6 +806,12 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(0);
 				break;
+				
+			case "opus":
+				model.append (out iter);
+				model.set (iter,0,"Opus",1,"opus");
+				cmbACodec.set_active(0);
+				break;
 		}
 	}
 	
@@ -813,6 +822,18 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioMode.set_model(model);
+		
+		switch (acodec){
+			case "mp3lame":
+			case "neroaac":
+				lblAudioQuality.visible = true;
+				spinAudioQuality.visible = true;
+				break;
+			case "opus":
+				lblAudioQuality.visible = false;
+				spinAudioQuality.visible = false;
+				break;
+		}
 		
 		switch (acodec){
 			case "mp3lame":
@@ -827,6 +848,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(128, 32, 320, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
 				
 				spinAudioQuality.adjustment.configure(4, 0, 9, 1, 1, 0);
@@ -849,6 +871,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(160, 8, 400, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
 
 				spinAudioQuality.adjustment.configure(0.5, 0.0, 1.0, 0.1, 0.1, 0);
@@ -866,8 +889,23 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				spinAudioQuality.digits = 1;
 				
 				cmbAudioMode.sensitive = true;
-				spinAudioBitrate.sensitive = true;
-				spinAudioQuality.sensitive = true;
+				cmbAudioMode_changed();
+				break;
+			
+			case "opus":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate / Fixed Quality",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.append (out iter);
+				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				cmbAudioMode.set_active(0);
+				
+				spinAudioBitrate.adjustment.configure(128, 6, 2000, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
+				spinAudioBitrate.digits = 0;
+				
+				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
 				
@@ -883,8 +921,14 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 	{
 		switch (Utility.Combo_GetSelectedValue(cmbAudioMode,1,"vbr")) {
 			case "vbr":
-				spinAudioBitrate.sensitive = false;
-				spinAudioQuality.sensitive = true;
+				if (acodec == "opus") {
+					spinAudioBitrate.sensitive = true;
+					spinAudioQuality.sensitive = false;
+				}
+				else {
+					spinAudioBitrate.sensitive = false;
+					spinAudioQuality.sensitive = true;
+				}
 				break;
 			case "abr":
 			case "cbr":
@@ -1135,9 +1179,14 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		switch(audio.get_string_member("codec"))
 		{
 			case "mp3lame":
+			case "neroaac":
 				audio_mode = audio.get_string_member("mode");
 				audio_bitrate = audio.get_string_member("bitrate");
 				audio_quality = audio.get_string_member("quality");
+				break;
+			case "opus":
+				audio_mode = audio.get_string_member("mode");
+				audio_bitrate = audio.get_string_member("bitrate");
 				break;
 		}
 	}
