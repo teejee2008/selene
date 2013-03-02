@@ -994,7 +994,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				model.set (iter,0,"Constant Bitrate",1,"cbr");
 				cmbAudioMode.set_active(0);
 				
-				spinAudioBitrate.adjustment.configure(128, 6, 2000, 1, 1, 0);
+				spinAudioBitrate.adjustment.configure(128, 6, 510, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
 				
