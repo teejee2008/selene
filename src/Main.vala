@@ -28,7 +28,7 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.3";
+public const string AppVersion = "1.4";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
@@ -91,6 +91,7 @@ public class MediaFile : GLib.Object
 	public bool HasVideo = false;
 	public int SourceWidth = 0;
 	public int SourceHeight = 0;
+	public int AudioChannels = 0;
 	
 	public string ScriptFile;
 	public string TempDirectory;
@@ -214,6 +215,13 @@ public class MediaFile : GLib.Object
 							break;
 						case "height":
 							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip ());
+							break;
+					}
+				}
+				else if (sectionType == "audio"){
+					switch (key.down ()) {
+						case "channel(s)":
+							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip ());
 							break;
 					}
 				}
@@ -1553,7 +1561,7 @@ Notes:
 		if (mf.crop_enabled()){
 			OutputWidth -= (mf.CropL + mf.CropR);
             OutputHeight -= (mf.CropT + mf.CropB);
-            debug("Cropped: %.0fx%.0f".printf(OutputWidth,OutputHeight));
+            log_msg("Cropped: %.0fx%.0f".printf(OutputWidth,OutputHeight));
 		}
 		
 		int maxw = int.parse(video.get_string_member("frameWidth"));
@@ -1577,16 +1585,16 @@ Notes:
 			ow = oh * (iw / ih);
 			ow = Math.floor(ow);
 			ow = ow - (ow % 4);
-			debug("User height: %.0f".printf(maxh));
-			debug("Set width: %.0f".printf(ow));
+			log_msg("User height: %.0f".printf(maxh));
+			log_msg("Set width: %.0f".printf(ow));
 		}
 		else if (maxh == 0){
 			ow = maxw;
 			oh = ow * (ih / iw);
 			oh = Math.floor(oh);
 			oh = oh - (oh % 4);
-			debug("User width: %.0f".printf(maxw));
-			debug("Set height: %.0f".printf(oh));
+			log_msg("User width: %.0f".printf(maxw));
+			log_msg("Set height: %.0f".printf(oh));
 		}
 		else{
 			if (video.get_boolean_member("fitToBox") == false) {
@@ -1594,7 +1602,7 @@ Notes:
 				oh = maxh;
 			}
 			else {
-				debug("FitToBox is enabled");
+				log_msg("FitToBox is enabled");
 				
 				//fit height
 				if (maxh > 0) {
@@ -1603,7 +1611,7 @@ Notes:
 					ow = Math.floor(ow);
 					ow = ow - (ow % 4);
 					
-					debug("Fit width: %.0f".printf(ow));
+					log_msg("Fit width: %.0f".printf(ow));
 					rescale = true;
 				}
 
@@ -1613,7 +1621,7 @@ Notes:
 					oh = ow * (ih / iw);
 					oh = Math.floor(oh);
 					oh = oh - (oh % 4);
-					debug("Fit height: %.0f".printf(oh));
+					log_msg("Fit height: %.0f".printf(oh));
 					rescale = true;
 				}
 			}
@@ -1622,8 +1630,8 @@ Notes:
 		//check if video should be upscaled
         if (video.get_boolean_member("noUpscaling")) {
 			if ((ow * oh) > (iw * ih)) {
-				debug("NoUpscaling is enabled");
-				debug("Will not resize since (%.0f * %.0f) > (%.0f * %.0f)".printf(ow,oh,iw,ih));
+				log_msg("NoUpscaling is enabled");
+				log_msg("Will not resize since (%.0f * %.0f) > (%.0f * %.0f)".printf(ow,oh,iw,ih));
 				isUpscale = true;
 			}
 		}
@@ -1641,7 +1649,7 @@ Notes:
 			//resize
 			OutputWidth = (int) ow;
 			OutputHeight = (int) oh;
-			debug("Resized: %.0fx%.0f".printf(ow,oh));
+			log_msg("Resized: %.0fx%.0f".printf(ow,oh));
 			return true;
 		}
 	}
@@ -1785,6 +1793,7 @@ Notes:
 		string s = "";
 		
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string acodec = audio.get_string_member("codec");
 		string channels = audio.get_string_member("channels");
 		string sampling = audio.get_string_member("samplingRate");
 		
@@ -1799,7 +1808,13 @@ Notes:
 		//format
 		s += " -f wav -acodec pcm_s16le";
 		//channels
-		if (channels != "disable"){
+		if (channels == "disable"){
+			if (acodec == "mp3lame" && mf.AudioChannels > 2){
+				s += " -ac 2";
+				log_msg ("Downmixing to stereo, LAME does not support more than 2 channels");
+			}
+		}
+		else{
 			s += " -ac " + channels;
 		}
 		//sampling
