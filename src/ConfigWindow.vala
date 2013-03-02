@@ -1078,8 +1078,8 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioChannels.set_model(model);
 		switch (acodec){
-			//case "mp3lame":
 			case "neroaac":
+			case "opus":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
