@@ -17,15 +17,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=2
-FILE_NAME_0=30540;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+current_page=0
+FILE_NAME_0=23132;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
 FILE_NAME_1=1990;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_2=43607;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_3=4968;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_2=45939;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_3=40333;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
 FILE_NAME_4=0;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
-FILE_NAME_5=960;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_6=12286;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
-FILE_NAME_7=310;Sh;0;16;1;1;0;%2Ftmp%2Fselene%2F1362106845%20-%20dvd.vob%2Fconvert.sh;0;4
+FILE_NAME_5=14714;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_6=2102;None;0;16;1;1;0;%2Ftmp%2Fselene%2F1362167100%20-%20gangnam.flv%2Flog.txt;0;4
 
 [VTE]
 last_dir=/home/teejee

@@ -77,6 +77,8 @@ public class ConfigWindow : Dialog {
 	private Label lblHeaderPreset;
 	private Label lblHeaderFrameSize;
 	private Label lblHeaderFrameRate;
+	private Label lblHeaderAudioSampleRate;
+	private Label lblHeaderAudioChannels;
 	
 	private Label lblFrameSize;
 	private ComboBox cmbFrameSize;
@@ -122,6 +124,12 @@ public class ConfigWindow : Dialog {
 	
 	private Label lblPresetVersion;
 	private Entry txtPresetVersion;
+	
+	private Label lblAudioSampleRate;
+	private ComboBox cmbAudioSampleRate;
+	
+	private Label lblAudioChannels;
+	private ComboBox cmbAudioChannels;
 	
 	private Button btnSave;
 	private Button btnCancel;
@@ -703,6 +711,49 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		model.set (iter,0,"Music",1,"music");
 		cmbOpusOptimize.set_model(model);
 		
+		//Audio Filters tab ---------------------------------------------
+		
+		//lblAudioFilters
+		lblAudioFilters = new Label ("Audio Processing");
+
+        //gridAudioFilters
+        gridAudioFilters = new Grid ();
+        gridAudioFilters.set_column_spacing (6);
+        gridAudioFilters.set_row_spacing (6);
+        gridAudioFilters.margin = 12;
+        gridAudioFilters.visible = false;
+        tabMain.append_page (gridAudioFilters, lblAudioFilters);
+		
+		row = -1;
+		
+		//lblAudioSampleRate
+		lblAudioSampleRate = new Gtk.Label("Sampling Rate (Hz)");
+		lblAudioSampleRate.xalign = (float) 0.0;
+		gridAudioFilters.attach(lblAudioSampleRate,0,++row,1,1);
+		
+		//cmbAudioSampleRate
+		cmbAudioSampleRate = new ComboBox();
+		textCell = new CellRendererText();
+        cmbAudioSampleRate.pack_start(textCell, false);        
+        cmbAudioSampleRate.hexpand = true;
+        //cmbAudioSampleRate.entry_text_column = 0;
+        cmbAudioSampleRate.set_attributes(textCell, "text", 0);
+        gridAudioFilters.attach(cmbAudioSampleRate,1,row,1,1);
+        
+		//lblAudioChannels
+		lblAudioChannels = new Gtk.Label("Channels");
+		lblAudioChannels.xalign = (float) 0.0;
+		gridAudioFilters.attach(lblAudioChannels,0,++row,1,1);
+		
+		//cmbAudioChannels
+		cmbAudioChannels = new ComboBox();
+		textCell = new CellRendererText();
+        cmbAudioChannels.pack_start(textCell, false);
+        cmbAudioChannels.hexpand = true;
+        //cmbAudioChannels.entry_text_column = 0;
+        cmbAudioChannels.set_attributes(textCell, "text", 0);
+        gridAudioFilters.attach(cmbAudioChannels,1,row,1,1);
+		
 		//defaults
 		cmbFileFormat.set_active(0);
 		cmbAudioMode.set_active(0);
@@ -846,30 +897,41 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 	{
 		ListStore model;
 		TreeIter iter;
-		
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		cmbAudioMode.set_model(model);
-		
+
+		//show & hide options
 		switch (acodec){
-			case "mp3lame":
-			case "neroaac":
-				lblAudioQuality.visible = true;
-				spinAudioQuality.visible = true;
-				lblOpusOptimize.visible = false;
-				cmbOpusOptimize.visible = false;
-				break;
 			case "opus":
 				lblAudioQuality.visible = false;
 				spinAudioQuality.visible = false;
 				lblOpusOptimize.visible = true;
 				cmbOpusOptimize.visible = true;
 				break;
+			default:
+				lblAudioQuality.visible = true;
+				spinAudioQuality.visible = true;
+				lblOpusOptimize.visible = false;
+				cmbOpusOptimize.visible = false;
+				break;
 		}
+		
+		//disable options when audio is disabled
+		switch (acodec){
+			case "disable":
+				gridAudioFilters.sensitive = false;
+				break;
+			default:
+				gridAudioFilters.sensitive = true;
+				break;
+		}
+		
+		//populate encoding modes
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbAudioMode.set_model(model);
 		
 		switch (acodec){
 			case "mp3lame":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate / Fixed Quality",1,"vbr");
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
 				model.append (out iter);
 				model.set (iter,0,"Average Bitrate",1,"abr");
 				model.append (out iter);
@@ -894,7 +956,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				
 			case "neroaac":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate / Fixed Quality",1,"vbr");
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
 				model.append (out iter);
 				model.set (iter,0,"Average Bitrate",1,"abr");
 				model.append (out iter);
@@ -925,7 +987,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 			
 			case "opus":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate / Fixed Quality",1,"vbr");
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
 				model.append (out iter);
 				model.set (iter,0,"Average Bitrate",1,"abr");
 				model.append (out iter);
@@ -940,10 +1002,108 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				cmbAudioMode_changed();
 				break;
 				
-			case "disable":
+			default: //disable
 				cmbAudioMode.sensitive = false;
 				spinAudioBitrate.sensitive = false;
 				spinAudioQuality.sensitive = false;
+				break;
+		}
+		
+		//populate sampling rates
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbAudioSampleRate.set_model(model);
+		switch (acodec){
+			case "mp3lame":
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"8000",1,"8000");
+				model.append (out iter);
+				model.set (iter,0,"11025",1,"11025");
+				model.append (out iter);
+				model.set (iter,0,"12000",1,"12000");
+				model.append (out iter);
+				model.set (iter,0,"16000",1,"16000");
+				model.append (out iter);
+				model.set (iter,0,"22050",1,"22050");
+				model.append (out iter);
+				model.set (iter,0,"24000",1,"24000");
+				model.append (out iter);
+				model.set (iter,0,"32000",1,"32000");
+				model.append (out iter);
+				model.set (iter,0,"44100",1,"44100");
+				model.append (out iter);
+				model.set (iter,0,"48000",1,"48000");
+				cmbAudioSampleRate.set_active(0);
+				break;
+				
+			case "neroaac":
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"8000",1,"8000");
+				model.append (out iter);
+				model.set (iter,0,"11025",1,"11025");
+				model.append (out iter);
+				model.set (iter,0,"12000",1,"12000");
+				model.append (out iter);
+				model.set (iter,0,"16000",1,"16000");
+				model.append (out iter);
+				model.set (iter,0,"22050",1,"22050");
+				model.append (out iter);
+				model.set (iter,0,"24000",1,"24000");
+				model.append (out iter);
+				model.set (iter,0,"32000",1,"32000");
+				model.append (out iter);
+				model.set (iter,0,"44100",1,"44100");
+				model.append (out iter);
+				model.set (iter,0,"48000",1,"48000");
+				model.append (out iter);
+				model.set (iter,0,"88200",1,"88200");
+				model.append (out iter);
+				model.set (iter,0,"96000",1,"96000");
+				cmbAudioSampleRate.set_active(0);
+				break;
+				
+			case "opus":
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"44100",1,"44100");
+				cmbAudioSampleRate.set_active(0);
+				break;
+		}
+		
+		//populate channels
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbAudioChannels.set_model(model);
+		switch (acodec){
+			//case "mp3lame":
+			case "neroaac":
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"1",1,"1");
+				model.append (out iter);
+				model.set (iter,0,"2",1,"2");
+				model.append (out iter);
+				model.set (iter,0,"3",1,"3");
+				model.append (out iter);
+				model.set (iter,0,"4",1,"4");
+				model.append (out iter);
+				model.set (iter,0,"5",1,"5");
+				model.append (out iter);
+				model.set (iter,0,"6",1,"6");
+				cmbAudioChannels.set_active(0);
+				break;
+			default:
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"1",1,"1");
+				model.append (out iter);
+				model.set (iter,0,"2",1,"2");
+				cmbAudioChannels.set_active(0);
 				break;
 		}
 	}
@@ -1144,6 +1304,8 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		audio.set_string_member("bitrate",audio_bitrate);
 		audio.set_string_member("quality",audio_quality);
 		audio.set_string_member("opusOptimize",audio_opus_optimize);
+		audio.set_string_member("channels",audio_channels);
+		audio.set_string_member("samplingRate",audio_sampling);
 		
 		var filePath = Folder + "/" + txtPresetName.text + ".json";
 		var json = new Json.Generator();
@@ -1222,6 +1384,9 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				audio_opus_optimize = audio.get_string_member("opusOptimize");
 				break;
 		}
+		
+		audio_channels = audio.get_string_member("channels");
+		audio_sampling = audio.get_string_member("samplingRate");
 	}
 
 	public string format
@@ -1461,6 +1626,26 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		}
         set { 
 			spinAudioQuality.set_value(double.parse(value));
+		}
+    }
+    
+    public string audio_channels
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbAudioChannels,1,"disable");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbAudioChannels, 1, value);
+		}
+    }
+    
+    public string audio_sampling
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbAudioSampleRate,1,"disable");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbAudioSampleRate, 1, value);
 		}
     }
 }

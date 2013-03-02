@@ -1649,8 +1649,8 @@ Notes:
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
-		s += "avconv -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - ";
-		s += "|lame --nohist --brief -q 5 --replaygain-fast";
+		s += decode_audio_avconv(mf, settings, false);
+		s += "lame --nohist --brief -q 5 --replaygain-fast";
 		switch (audio.get_string_member("mode")){
 			case "vbr":
 				s += " -V " + audio.get_string_member("quality");
@@ -1687,7 +1687,7 @@ Notes:
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
-		s += "avconv -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - | ";
+		s += decode_audio_avconv(mf, settings, false);
 		s += "neroAacEnc -ignorelength";
 		switch (audio.get_string_member("mode")){
 			case "vbr":
@@ -1722,7 +1722,7 @@ Notes:
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
-		s += "avconv -nostats -i \"${inFile}\" -f wav -acodec pcm_s16le -ac 2 -vn -y - | ";
+		s += decode_audio_avconv(mf, settings, true);
 		s += "opusenc";
 		s += " --bitrate " + audio.get_string_member("bitrate");
 		//options
@@ -1763,6 +1763,38 @@ Notes:
 			s += " \"${outputFile}\"";
 		}
 		s += "\n";
+		
+		return s;
+	}
+	
+	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent)
+	{
+		string s = "";
+		
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string channels = audio.get_string_member("channels");
+		string sampling = audio.get_string_member("samplingRate");
+		
+		s += "avconv";
+		
+		//progress info
+		if (silent){
+			s += " -nostats";
+		}
+		//input
+		s += " -i \"${inFile}\"";
+		//format
+		s += " -f wav -acodec pcm_s16le";
+		//channels
+		if (channels != "disable"){
+			s += " -ac " + channels;
+		}
+		//sampling
+		if (sampling != "disable"){
+			s += " -ar " + sampling;
+		}
+		//output
+		s += " -vn -y - | ";
 		
 		return s;
 	}
