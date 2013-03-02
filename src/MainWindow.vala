@@ -55,11 +55,13 @@ public class MainWindow : Gtk.Window
 	private Label lblStatus;
 	private Gtk.Menu menuFile;
 	private ImageMenuItem miFileInfo;
+	private ImageMenuItem miFileInfoOutput;
 	private ImageMenuItem miFileSkip;	
 	private Gtk.MenuItem miFileCropAuto;
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePreview;
 	private Gtk.MenuItem miFileSeparator1;
+	private Gtk.MenuItem miFileSeparator2;
 	private Gtk.MenuItem miFileOpenTemp;
 	private Gtk.MenuItem miFileOpenOutput;
 	private TreeViewColumn colName;
@@ -403,12 +405,12 @@ public class MainWindow : Gtk.Window
 		// miFileRemove
 		miFileRemove = new ImageMenuItem.from_stock(Stock.REMOVE, null);
 		miFileRemove.activate.connect(miFileRemove_clicked);
-		menuFile.append(miFileRemove);
+		menuFile.append(miFileRemove);	
 		
 		// miFileSeparator1
 		miFileSeparator1 = new Gtk.MenuItem();
 		miFileSeparator1.override_color (StateFlags.NORMAL, gray);
-		menuFile.append(miFileSeparator1);	
+		menuFile.append(miFileSeparator1);
 		
 		// miFileOpenTemp
 		miFileOpenTemp = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
@@ -422,10 +424,22 @@ public class MainWindow : Gtk.Window
 		miFileOpenOutput.activate.connect(miFileOpenOutput_clicked);
 		menuFile.append(miFileOpenOutput);
 		
+		// miFileSeparator2
+		miFileSeparator2 = new Gtk.MenuItem();
+		miFileSeparator2.override_color (StateFlags.NORMAL, gray);
+		menuFile.append(miFileSeparator2);
+		
 		// miFileInfo
 		miFileInfo = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileInfo.label = "File Info (Source)";
 		miFileInfo.activate.connect(miFileInfo_clicked);
 		menuFile.append(miFileInfo);
+		
+		// miFileInfoOutput
+		miFileInfoOutput = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileInfoOutput.label = "File Info (Output)";
+		miFileInfoOutput.activate.connect(miFileInfoOutput_clicked);
+		menuFile.append(miFileInfoOutput);
 		
 		menuFile.show_all();
 		
@@ -801,11 +815,13 @@ public class MainWindow : Gtk.Window
 				miFileOpenOutput.visible = false;
 				
 				miFileInfo.visible = true;
+				miFileInfoOutput.visible = false;
 				miFilePreview.visible = true;
 				miFileCropAuto.visible = true;
 				miFileRemove.visible = true;
 				miFileSeparator1.visible = true;
-
+				miFileSeparator2.visible = false;
+				
 				miFileInfo.sensitive = (selection.count_selected_rows() == 1);
 				miFilePreview.sensitive = (selection.count_selected_rows() == 1);
 				miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
@@ -816,6 +832,7 @@ public class MainWindow : Gtk.Window
 				
 				miFileSkip.visible = true;
 				miFileSeparator1.visible = true;
+				miFileSeparator2.visible = false;
 				miFileOpenTemp.visible = true;
 				miFileOpenOutput.visible = true;
 				
@@ -841,6 +858,7 @@ public class MainWindow : Gtk.Window
 				}
 
 				miFileInfo.visible = false;
+				miFileInfoOutput.visible = false;
 				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
@@ -861,11 +879,21 @@ public class MainWindow : Gtk.Window
 				}
 				
 				miFileSkip.visible = false;
-				miFileInfo.visible = false;
+				miFileInfo.visible = true;
+				miFileInfoOutput.visible = true;
 				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
 				miFileSeparator1.visible = false;
+				miFileSeparator2.visible = true;
+
+				string outpath = App.InputFiles[index].OutputFilePath;
+				if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
+					miFileInfoOutput.sensitive = true;
+				}
+				else{
+					miFileInfoOutput.sensitive = false;
+				}
 				break;
 		}
 		
@@ -893,6 +921,27 @@ public class MainWindow : Gtk.Window
 		}
     }
     
+    private void miFileInfoOutput_clicked () 
+    {
+		TreeSelection selection = tvFiles.get_selection ();
+		
+		if (selection.count_selected_rows () > 0){
+			TreeModel model;
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+			TreePath path = lst.nth_data (0);
+			int index = int.parse (path.to_string ());
+			
+			MediaFile mf = App.InputFiles[index];
+
+			if (Utility.file_exists(mf.OutputFilePath)){
+				MediaFile mfOutput = new MediaFile(mf.OutputFilePath);
+				var window = new FileInfoWindow(mfOutput);
+				window.show_all ();
+				window.run ();
+			}
+		}	
+	}
+	
     private void miFileCropAuto_clicked () 
     {
 		TreeSelection selection = tvFiles.get_selection ();

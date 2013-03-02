@@ -28,7 +28,7 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.2";
+public const string AppVersion = "1.3";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
@@ -95,6 +95,7 @@ public class MediaFile : GLib.Object
 	public string ScriptFile;
 	public string TempDirectory;
 	public string LogFile;
+	public string OutputFilePath;
 	
 	public MediaFile(string filePath)
 	{
@@ -225,6 +226,7 @@ public class MediaFile : GLib.Object
 		this.TempDirectory = baseTempDir + "/" + Utility.timestamp2() + " - " + this.Name;
 		this.LogFile = this.TempDirectory + "/" + "log.txt";
 		this.ScriptFile = this.TempDirectory + "/convert.sh";
+		this.OutputFilePath = "";
 		Utility.create_dir (this.TempDirectory);
 	}
 	
@@ -1444,6 +1446,15 @@ Notes:
 		}
 		
 		s += "\n";
+		
+		//set output file path
+		string outpath = "";
+		if (OutputDirectory.length == 0){
+      		outpath = mf.Location;
+      	} else{
+	      	outpath = OutputDirectory;
+	    }
+		mf.OutputFilePath = outpath + "/" + mf.Title + general.get_string_member("extension") ;
 		
 		return s;
 	}

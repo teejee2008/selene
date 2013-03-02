@@ -714,7 +714,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//Audio Filters tab ---------------------------------------------
 		
 		//lblAudioFilters
-		lblAudioFilters = new Label ("Audio Processing");
+		lblAudioFilters = new Label ("Filters");
 
         //gridAudioFilters
         gridAudioFilters = new Grid ();
