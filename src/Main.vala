@@ -138,7 +138,7 @@ public class MediaFile : GLib.Object
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
 		            string fname = fileInfo.get_name().down();
-		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")))
+		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
 		            {
 			            SubName = fileInfo.get_name ();
 			            SubFile = Location + "/" + SubName;
