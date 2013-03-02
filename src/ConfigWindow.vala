@@ -1014,6 +1014,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		cmbAudioSampleRate.set_model(model);
 		switch (acodec){
 			case "mp3lame":
+			case "opus":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
@@ -1065,11 +1066,9 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				cmbAudioSampleRate.set_active(0);
 				break;
 				
-			case "opus":
+			default:
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
-				model.append (out iter);
-				model.set (iter,0,"44100",1,"44100");
 				cmbAudioSampleRate.set_active(0);
 				break;
 		}
