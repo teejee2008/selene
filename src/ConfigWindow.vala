@@ -79,6 +79,7 @@ public class ConfigWindow : Dialog {
 	private Label lblHeaderFrameRate;
 
 	private Gtk.Image imgAudioCodec;
+	private Gtk.Image imgVideoCodec;
 	private Gtk.Image imgFileFormat;
 	
 	private Label lblFrameSize;
@@ -280,7 +281,9 @@ public class ConfigWindow : Dialog {
 		
 		//imgFileFormat
 		imgFileFormat = new Gtk.Image();
-		imgFileFormat.vexpand = true;
+		imgFileFormat.margin_top = 6;
+		imgFileFormat.margin_bottom = 6;
+		imgFileFormat.expand = true;
         gridGeneral.attach(imgFileFormat,0,++row,2,1);
         
 		//Video tab ---------------------------------------------
@@ -413,13 +416,21 @@ Larger values  = Less quality, Smaller files"""
 		txtVCodecOptions.editable = true;
 		txtVCodecOptions.buffer.text = "";
 		txtVCodecOptions.expand = true;
+		//txtVCodecOptions.set_size_request(-1,100);
 		txtVCodecOptions.set_wrap_mode (Gtk.WrapMode.WORD);
 		
 		Gtk.ScrolledWindow scrollWin = new Gtk.ScrolledWindow (null, null);
 		scrollWin.set_shadow_type (ShadowType.ETCHED_IN);
 		scrollWin.add (txtVCodecOptions);
+		//scrollWin.set_size_request(-1,100);
 		gridVideo.attach(scrollWin,0,++row,2,1);
 		
+		//imgVideoCodec
+		imgVideoCodec = new Gtk.Image();
+		imgVideoCodec.margin_top = 6;
+		imgVideoCodec.margin_bottom = 6;
+        gridVideo.attach(imgVideoCodec,0,++row,2,1);
+        
 		//Video Filters tab ---------------------------------------------
 		
 		//lblVideoFilters
@@ -719,7 +730,9 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		
 		//imgAudioCodec
 		imgAudioCodec = new Gtk.Image();
-		imgAudioCodec.vexpand = true;
+		imgAudioCodec.margin_top = 6;
+		imgAudioCodec.margin_bottom = 6;
+		imgAudioCodec.expand = true;
         gridAudio.attach(imgAudioCodec,0,++row,2,1);
         
 		//Audio Filters tab ---------------------------------------------
@@ -792,8 +805,6 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		ListStore model;
 		TreeIter iter;
 		
-		string format = Utility.Combo_GetSelectedValue(cmbFileFormat,1,"mkv");
-
 		//populate file extensions ---------------------------
 		
 		model = new ListStore(2, typeof(string), typeof(string));
@@ -1296,8 +1307,17 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 	
 	private void cmbVCodec_changed ()
 	{
-		
-		
+		//set logo
+		switch (vcodec){
+			case "x264":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/x264.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
+			default:
+				imgVideoCodec.clear();
+				break;
+		}
 	}
 	
 	private void btnSave_clicked ()
