@@ -389,6 +389,7 @@ public class MainWindow : Gtk.Window
 
 		// miFileSkip
 		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
+		miFileSkip.label = "Skip File";
 		miFileSkip.activate.connect (() => { App.stop_file (); });
 		menuFile.append(miFileSkip);
 		
