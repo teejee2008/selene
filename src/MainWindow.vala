@@ -39,6 +39,7 @@ public class MainWindow : Gtk.Window
     private ToolButton btnClearFiles;
     private ToolButton btnAppSettings;
     private ToolButton btnAbout;
+    private ToolButton btnOpenOutputFolder;
     
     private Button btnOpenScriptFolder;
 	private Button btnPresetNew;
@@ -186,6 +187,16 @@ public class MainWindow : Gtk.Window
 		separator.set_expand (true);
 		toolbar.add (separator);
 
+		//btnOpenOutputFolder
+		btnOpenOutputFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
+		//btnOpenOutputFolder.is_important = true;
+		btnOpenOutputFolder.label = "Output Folder";
+		btnOpenOutputFolder.clicked.connect (btnOpenOutputFolder_click);
+		btnOpenOutputFolder.set_tooltip_text ("Open output folder");
+		btnOpenOutputFolder.visible = false;
+		btnOpenOutputFolder.no_show_all = true;
+		toolbar.add (btnOpenOutputFolder);
+		
 		//btnAppSettings
 		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
 		btnAppSettings.label = "";
@@ -331,23 +342,6 @@ public class MainWindow : Gtk.Window
         
         populate_script_folders();
         
-        /*
-        //populate
-        foreach(ScriptFile sh in App.ScriptFiles){
-        	model1.append( out iter );
-        	model1.set( iter, 0, sh);
-        }
-        
-        //select default script
-        if (App.SelectedScript != null){
-			ScriptFile sh = App.find_script(App.SelectedScript.Path);
-	        cmbScriptFile.set_active(App.ScriptFiles.index_of(sh));
-	    }
-	    else{
-			cmbScriptFile.set_active(0);
-		}
-*/
-
 		//btnPresetNew
 		btnPresetNew = new Button();
 		btnPresetNew.set_image (new Image.from_stock (Stock.ADD, IconSize.MENU));
@@ -370,11 +364,9 @@ public class MainWindow : Gtk.Window
         hboxScript.add (btnOpenScriptFolder);
         
 		// lblStatus
-		lblStatus = new Label ("test");
-		//lblStatus.margin_bottom = 6;
-		//lblStatus.margin_bottom = 6;
+		lblStatus = new Label("");
 		lblStatus.ellipsize = Pango.EllipsizeMode.END;
-		vboxMain2.pack_start (lblStatus, false, false, 6);
+		vboxMain2.pack_start(lblStatus, false, false, 6);
 		
 		// hboxProgress
 		hboxProgress = new Box (Orientation.HORIZONTAL, 5);
@@ -428,7 +420,7 @@ public class MainWindow : Gtk.Window
 		
 		// miFileOpenLogFile
 		miFileOpenLogFile = new ImageMenuItem.from_stock(Stock.INFO, null);
-		miFileOpenLogFile.label = "Open Log";
+		miFileOpenLogFile.label = "Open Log File";
 		miFileOpenLogFile.activate.connect(miFileOpenLogFile_clicked);
 		menuFile.append(miFileOpenLogFile);
 		
@@ -1044,6 +1036,13 @@ public class MainWindow : Gtk.Window
 		}
     }
     
+    private void btnOpenOutputFolder_click()
+    {
+		if (App.OutputDirectory.length > 0 && Utility.dir_exists(App.OutputDirectory)){
+			Utility.exo_open_folder (App.OutputDirectory);
+		}
+	}
+	
 	private void set_busy (bool busy) 
 	{
 		Gdk.Cursor? cursor = null;
@@ -1311,9 +1310,9 @@ This program is free for personal and commercial use and comes with absolutely n
 		
 		btnShutdown.visible = App.AdminMode;
 		btnBackground.visible = App.AdminMode;
-		btnBackground.visible = App.AdminMode;
         btnBackground.active = App.BackgroundMode;
-        
+        btnOpenOutputFolder.visible = Utility.dir_exists(App.OutputDirectory);
+		
 		btnStart.visible = false;
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
@@ -1350,7 +1349,8 @@ This program is free for personal and commercial use and comes with absolutely n
 		
 		btnShutdown.visible = false;
 		btnBackground.visible = false;
-
+		btnOpenOutputFolder.visible = false;
+		
 		btnPause.visible = false;
 		btnStop.visible = false;
 		btnFinish.visible = false;
