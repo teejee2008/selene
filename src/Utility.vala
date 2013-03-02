@@ -590,7 +590,7 @@ namespace Utility
 	    }
 	}
 	
-	public int exo_open (string txt)
+	public int exo_open_folder (string txt)
 	{
 		string path;
 		
@@ -617,6 +617,23 @@ namespace Utility
 		return -1;
 	}
 
+	public int exo_open_textfile (string txt)
+	{
+		string path;
+		
+		path = get_cmd_path ("exo-open");
+		if ((path != null)&&(path != "")){
+			return execute_command_sync ("exo-open " + double_quote (txt));
+		}
+
+		path = get_cmd_path ("gedit");
+		if ((path != null)&&(path != "")){
+			return execute_command_sync ("gedit " + double_quote (txt));
+		}
+
+		return -1;
+	}
+	
 	public int chmod (string file, string permission)
 	{
 		return execute_command_sync ("chmod " + permission + " " + double_quote (file));

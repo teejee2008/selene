@@ -64,6 +64,7 @@ public class MainWindow : Gtk.Window
 	private Gtk.MenuItem miFileSeparator2;
 	private Gtk.MenuItem miFileOpenTemp;
 	private Gtk.MenuItem miFileOpenOutput;
+	private Gtk.MenuItem miFileOpenLogFile;
 	private TreeViewColumn colName;
 	private TreeViewColumn colSize;
 	private TreeViewColumn colDuration;
@@ -425,19 +426,25 @@ public class MainWindow : Gtk.Window
 		miFileOpenOutput.activate.connect(miFileOpenOutput_clicked);
 		menuFile.append(miFileOpenOutput);
 		
+		// miFileOpenLogFile
+		miFileOpenLogFile = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileOpenLogFile.label = "Open Log";
+		miFileOpenLogFile.activate.connect(miFileOpenLogFile_clicked);
+		menuFile.append(miFileOpenLogFile);
+		
 		// miFileSeparator2
 		miFileSeparator2 = new Gtk.MenuItem();
 		miFileSeparator2.override_color (StateFlags.NORMAL, gray);
 		menuFile.append(miFileSeparator2);
 		
 		// miFileInfo
-		miFileInfo = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileInfo = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
 		miFileInfo.label = "File Info (Source)";
 		miFileInfo.activate.connect(miFileInfo_clicked);
 		menuFile.append(miFileInfo);
 		
 		// miFileInfoOutput
-		miFileInfoOutput = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileInfoOutput = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
 		miFileInfoOutput.label = "File Info (Output)";
 		miFileInfoOutput.activate.connect(miFileInfoOutput_clicked);
 		menuFile.append(miFileInfoOutput);
@@ -683,7 +690,22 @@ public class MainWindow : Gtk.Window
 		TreeIter iter;
 		cmbScriptFolder.get_active_iter(out iter);
 		model.get (iter, 0, out path, -1);
-		Utility.exo_open (path); 
+		Utility.exo_open_folder (path); 
+	}
+	
+	private void miFileOpenLogFile_clicked()
+	{
+		TreeSelection selection = tvFiles.get_selection ();
+		
+		if (selection.count_selected_rows () > 0){
+			TreeModel model;
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+			TreePath path = lst.nth_data (0);
+			int index = int.parse (path.to_string ());
+			
+			MediaFile mf = App.InputFiles[index];
+			Utility.exo_open_textfile (mf.LogFile); 
+		}	
 	}
 
 	private void btnPresetNew_clicked ()
@@ -814,6 +836,7 @@ public class MainWindow : Gtk.Window
 				miFileSkip.visible = false;
 				miFileOpenTemp.visible = false;
 				miFileOpenOutput.visible = false;
+				miFileOpenLogFile.visible = false;
 				
 				miFileInfo.visible = true;
 				miFileInfoOutput.visible = false;
@@ -836,6 +859,7 @@ public class MainWindow : Gtk.Window
 				miFileSeparator2.visible = false;
 				miFileOpenTemp.visible = true;
 				miFileOpenOutput.visible = true;
+				miFileOpenLogFile.visible = false;
 				
 				if (selection.count_selected_rows() == 1){
 					if (App.InputFiles[index].Status == FileStatus.RUNNING){
@@ -869,6 +893,7 @@ public class MainWindow : Gtk.Window
 			
 				miFileOpenTemp.visible = true;
 				miFileOpenOutput.visible = true;
+				miFileOpenLogFile.visible = true;
 				
 				if (index != -1){
 					miFileOpenTemp.sensitive = true;
@@ -992,7 +1017,7 @@ public class MainWindow : Gtk.Window
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string ());
 			MediaFile mf = App.InputFiles[index];
-			Utility.exo_open (mf.TempDirectory);
+			Utility.exo_open_folder (mf.TempDirectory);
 		}
     }
     
@@ -1012,9 +1037,9 @@ public class MainWindow : Gtk.Window
 			MediaFile mf = App.InputFiles[index];
 			
 			if (App.OutputDirectory.length == 0){
-				Utility.exo_open (mf.Location);
+				Utility.exo_open_folder (mf.Location);
 			} else{
-				Utility.exo_open (App.OutputDirectory);
+				Utility.exo_open_folder (App.OutputDirectory);
 			}
 		}
     }
