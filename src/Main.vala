@@ -350,6 +350,7 @@ public class Main : GLib.Object
 	public string ScriptsFolder_Custom = "";
 	public string PresetsFolder_Official = "";
 	public string PresetsFolder_Custom = "";
+	public string SharedImagesFolder = "";
 	
 	public string TempDirectory;
 	public string OutputDirectory = "";
@@ -614,6 +615,7 @@ Notes:
 		ScriptsFolder_Custom = userDataFolder + "/scripts";
 		PresetsFolder_Official = sharedDataFolder + "/presets";
 		PresetsFolder_Custom = userDataFolder + "/presets";
+		SharedImagesFolder = sharedDataFolder + "/images";
 		
 		Utility.create_dir (this.ConfigDirectory);
 		Utility.create_dir (this.ScriptsFolder_Custom);

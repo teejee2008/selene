@@ -77,8 +77,9 @@ public class ConfigWindow : Dialog {
 	private Label lblHeaderPreset;
 	private Label lblHeaderFrameSize;
 	private Label lblHeaderFrameRate;
-	private Label lblHeaderAudioSampleRate;
-	private Label lblHeaderAudioChannels;
+
+	private Gtk.Image imgAudioCodec;
+	private Gtk.Image imgFileFormat;
 	
 	private Label lblFrameSize;
 	private ComboBox cmbFrameSize;
@@ -138,7 +139,7 @@ public class ConfigWindow : Dialog {
 	{
 		this.deletable = false; // remove window close button
 		this.modal = true;
-		set_default_size (350, 450);	
+		set_default_size (350, 500);	
 		
 		int row = 0;
         Gtk.ListStore model;
@@ -277,6 +278,11 @@ public class ConfigWindow : Dialog {
 		txtAuthorEmail.text = "";
 		gridGeneral.attach(txtAuthorEmail,1,row,1,1);
 		
+		//imgFileFormat
+		imgFileFormat = new Gtk.Image();
+		imgFileFormat.vexpand = true;
+        gridGeneral.attach(imgFileFormat,0,++row,2,1);
+        
 		//Video tab ---------------------------------------------
 		
 		//lblVideo
@@ -711,6 +717,11 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		model.set (iter,0,"Music",1,"music");
 		cmbOpusOptimize.set_model(model);
 		
+		//imgAudioCodec
+		imgAudioCodec = new Gtk.Image();
+		imgAudioCodec.vexpand = true;
+        gridAudio.attach(imgAudioCodec,0,++row,2,1);
+        
 		//Audio Filters tab ---------------------------------------------
 		
 		//lblAudioFilters
@@ -891,6 +902,23 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				cmbACodec.set_active(0);
 				break;
 		}
+		
+		//set logo
+		switch (format){
+			case "mkv":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/matroska.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
+			case "opus":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/opus.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
+			default:
+				imgFileFormat.clear();
+				break;
+		}
 	}
 	
 	private void cmbACodec_changed ()
@@ -994,7 +1022,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				model.set (iter,0,"Constant Bitrate",1,"cbr");
 				cmbAudioMode.set_active(0);
 				
-				spinAudioBitrate.adjustment.configure(128, 6, 510, 1, 1, 0);
+				spinAudioBitrate.adjustment.configure(128, 6, 512, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
 				
@@ -1103,6 +1131,23 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				model.append (out iter);
 				model.set (iter,0,"2",1,"2");
 				cmbAudioChannels.set_active(0);
+				break;
+		}
+		
+		//set logo
+		switch (acodec){
+			case "opus":
+				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/opus.png");
+				imgAudioCodec.xalign = (float) 0.5;
+				imgAudioCodec.yalign = (float) 1.0;
+				break;
+			/*case "neroaac":
+				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/aac.png");
+				imgAudioCodec.xalign = (float) 1.0;
+				imgAudioCodec.yalign = (float) 1.0;
+				break;*/
+			default:
+				imgAudioCodec.clear();
 				break;
 		}
 	}

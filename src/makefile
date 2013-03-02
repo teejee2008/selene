@@ -22,10 +22,12 @@ install:
 	mkdir -p $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	mkdir -p $(DESTDIR)$(sharedir)/selene/scripts
 	mkdir -p $(DESTDIR)$(sharedir)/selene/presets
+	mkdir -p $(DESTDIR)$(sharedir)/selene/images
 	
 	install -m 0755 selene $(DESTDIR)$(bindir)
 	install -m 0755 selene-scripts/* $(DESTDIR)$(sharedir)/selene/scripts
 	install -m 0755 selene-presets/* $(DESTDIR)$(sharedir)/selene/presets
+	install -m 0755 images/* $(DESTDIR)$(sharedir)/selene/images
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
 	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
@@ -35,6 +37,7 @@ uninstall:
 	rm -f $(DESTDIR)$(bindir)/selene-admin
 	rm -rf $(DESTDIR)$(sharedir)/selene/scripts
 	rm -rf $(DESTDIR)$(sharedir)/selene/presets
+	rm -rf $(DESTDIR)$(sharedir)/selene/images
 	rm -f $(DESTDIR)$(launcherdir)/Selene.desktop
 	rm -f $(DESTDIR)$(sharedir)/glib-2.0/schemas/apps.selene.gschema.xml
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
