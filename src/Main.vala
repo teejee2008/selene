@@ -28,7 +28,7 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.4";
+public const string AppVersion = "2.0";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
