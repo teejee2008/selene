@@ -1388,6 +1388,7 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
 		//insert temporary file names ------------
 		
@@ -1422,8 +1423,8 @@ Notes:
 						break;
 				}
 				
+				//encode audio
 				if (mf.HasAudio && acodec != "disable") {
-					//encode audio
 					switch (acodec) {
 						case "mp3lame":
 							s += encode_audio_mp3lame(mf,settings);
@@ -1432,24 +1433,28 @@ Notes:
 							s += encode_audio_neroaac(mf,settings);
 							break;
 					}
-					//mux audio & video
-					switch (format){
-						case "mkv":
-							s += mux_mkvmerge(mf,settings);
-							break;
-						case "mp4v":
-							s += mux_mp4box(mf,settings);
-							break;
-					}
 				}
-
+				
+				//mux audio, video and subs
+				switch (format){
+					case "mkv":
+						s += mux_mkvmerge(mf,settings);
+						break;
+					case "mp4v":
+						s += mux_mp4box(mf,settings);
+						break;
+				}
+					
 				break;
+				
 			case "mp3":
 				s += encode_audio_mp3lame(mf,settings);
 				break;
+				
 			case "mp4a":
 				s += encode_audio_neroaac(mf,settings);
 				break;
+				
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				break;
@@ -1541,7 +1546,7 @@ Notes:
 		//add output file path placeholder
 		s += " -o {outputFile}";
 		
-		//determine output file path
+		/*//determine output file path
 		string finalOutput = "";
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			//encode to tempVideo
@@ -1550,7 +1555,7 @@ Notes:
 		else {
 			//encode to outputFile
 			finalOutput = "\"${outputFile}\"";
-		}
+		}*/
 		
 		if (usePiping) {
 			//encode from StdInput
@@ -1567,12 +1572,12 @@ Notes:
 		
 		if (video.get_string_member("mode") == "2pass"){
 			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
-			temp += s.replace("{passNumber}","2").replace("{outputFile}",finalOutput);
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
 			s = temp;
 		}
 		else
 		{
-			s = s.replace("{outputFile}",finalOutput);
+			s = s.replace("{outputFile}","\"${tempVideo}\"");
 		}
 		
 		return s;
@@ -1866,16 +1871,22 @@ Notes:
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
 		s += "mkvmerge --output \"${outputFile}\"";
+		
+		//add video
+		s += " --compression -1:none \"${tempVideo}\"";
+		
+		//add audio
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			s += " --compression -1:none \"${tempAudio}\"";
 		}
-		s += " --compression -1:none \"${tempVideo}\"";
 		
+		//add subs
 		if (subs.get_string_member("mode") == "embed") {
 			if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa") {
 				s += " --compression -1:none \"${subFile}\"";
 			}
 		}
+		
 		s += "\n";
 		
 		return s;
