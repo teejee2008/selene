@@ -1491,10 +1491,24 @@ Notes:
 		}
 		
 		s += "x264";
+		
+		if (video.get_string_member("mode") == "2pass"){
+			s += " --pass {passNumber}"; 
+		}
+		
 		s += " --preset " + video.get_string_member("preset");
 		s += " --profile " + video.get_string_member("profile");
-		s += " --crf " + video.get_string_member("crf");
 		
+		switch(video.get_string_member("mode")){
+			case "vbr":
+				s += " --crf " + video.get_string_member("quality");
+				break;
+			case "abr":
+			case "2pass":
+				s += " --bitrate " + video.get_string_member("bitrate");
+				break;
+		}
+	
 		// filters ----------
 		
 		string vf = "";
@@ -1523,14 +1537,19 @@ Notes:
 		if (video.get_string_member("options").strip() != "") {
 			s += " " +  video.get_string_member("options").strip();
 		}
-	
+				
+		//add output file path placeholder
+		s += " -o {outputFile}";
+		
+		//determine output file path
+		string finalOutput = "";
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			//encode to tempVideo
-			s += " -o \"${tempVideo}\"";
+			finalOutput = "\"${tempVideo}\"";
 		}
 		else {
 			//encode to outputFile
-			s += " -o \"${outputFile}\"";
+			finalOutput = "\"${outputFile}\"";
 		}
 		
 		if (usePiping) {
@@ -1545,6 +1564,16 @@ Notes:
 		}
 
 		s += "\n";
+		
+		if (video.get_string_member("mode") == "2pass"){
+			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}",finalOutput);
+			s = temp;
+		}
+		else
+		{
+			s = s.replace("{outputFile}",finalOutput);
+		}
 		
 		return s;
 	}

@@ -61,6 +61,12 @@ public class ConfigWindow : Dialog {
 	private Label lblVCodec;
 	private ComboBox cmbVCodec;
 	
+	private Label lblVideoMode;
+	private ComboBox cmbVideoMode;
+	
+	private Label lblVideoBitrate;
+	private SpinButton spinVideoBitrate;
+	
 	private ComboBox cmbX264Preset;
 	private Label lblX264Preset;
 	//private Scale scaleX264Preset;
@@ -69,8 +75,8 @@ public class ConfigWindow : Dialog {
 	private Label lblX264Profile;
 	//private Scale scaleX264Profile;
 	
-	private Label lblCRF;
-	private SpinButton spinCRF;
+	private Label lblVideoQuality;
+	private SpinButton spinVideoQuality;
 	//private Scale scaleCRF;
 
 	private Label lblHeaderFileFormat;
@@ -315,6 +321,47 @@ public class ConfigWindow : Dialog {
         cmbVCodec.changed.connect(cmbVCodec_changed);
         gridVideo.attach(cmbVCodec,1,row,1,1);
         
+        //lblVideoMode
+		lblVideoMode = new Gtk.Label("Encoding Mode");
+		lblVideoMode.xalign = (float) 0.0;
+		lblVideoMode.hexpand = true;
+		gridVideo.attach(lblVideoMode,0,++row,2,1);
+		
+		//cmbVideoMode
+		cmbVideoMode = new ComboBox();
+		textCell = new CellRendererText();
+        cmbVideoMode.pack_start( textCell, false );
+        cmbVideoMode.set_attributes( textCell, "text", 0 );
+        cmbVideoMode.changed.connect(cmbVideoMode_changed);
+        gridVideo.attach(cmbVideoMode,1,row,1,1);
+
+        //lblVideoBitrate
+		lblVideoBitrate = new Gtk.Label("Bitrate (kbps)");
+		lblVideoBitrate.xalign = (float) 0.0;
+		lblVideoBitrate.set_tooltip_text ("");
+		gridVideo.attach(lblVideoBitrate,0,++row,1,1);
+
+		//spinVideoBitrate
+		Gtk.Adjustment adjVideoBitrate = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
+		spinVideoBitrate = new Gtk.SpinButton (adjVideoBitrate, 0.1, 2);
+		gridVideo.attach(spinVideoBitrate,1,row,1,1);
+		
+        //lblVideoQuality
+		lblVideoQuality = new Gtk.Label("Quality");
+		lblVideoQuality.xalign = (float) 0.0;
+		lblVideoQuality.set_tooltip_text (
+"""Compression Vs Quality
+
+Smaller values = Better quality, Larger Files
+Larger values  = Less quality, Smaller files"""
+		);
+		gridVideo.attach(lblVideoQuality,0,++row,1,1);
+
+		//spinVideoQuality
+		Gtk.Adjustment adjVideoQuality = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
+		spinVideoQuality = new Gtk.SpinButton (adjVideoQuality, 0.1, 2);
+		gridVideo.attach(spinVideoQuality,1,row,1,1);
+		
         //lblPreset
 		lblX264Preset = new Gtk.Label("Preset");
 		lblX264Preset.xalign = (float) 0.0;
@@ -385,24 +432,6 @@ Change this option only if you are encoding for a particular device"""
         cmbX264Profile.pack_start( textCell, false );
         cmbX264Profile.set_attributes( textCell, "text", 0 );
         gridVideo.attach(cmbX264Profile,1,row,1,1);
-        
-        //lblCrf
-		lblCRF = new Gtk.Label("CRF");
-		lblCRF.xalign = (float) 0.0;
-		lblCRF.set_tooltip_text (
-"""Compression Vs Quality
-
-Smaller values = Better quality, Larger Files
-Larger values  = Less quality, Smaller files"""
-		);
-		gridVideo.attach(lblCRF,0,++row,1,1);
-
-		//adjCRF
-		Gtk.Adjustment adjCRF = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
-
-		//spinCRF
-		spinCRF = new Gtk.SpinButton (adjCRF, 0.1, 2);
-		gridVideo.attach(spinCRF,1,row,1,1);
 		
 		//lblVCodecOptions
 		lblVCodecOptions = new Gtk.Label("X264 Options");
@@ -708,6 +737,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//lblOpusOptimize
 		lblOpusOptimize = new Gtk.Label("Optimization");
 		lblOpusOptimize.xalign = (float) 0.0;
+		lblOpusOptimize.no_show_all = true;
 		gridAudio.attach(lblOpusOptimize,0,++row,1,1);
 
 		//cmbOpusOptimize
@@ -716,6 +746,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbOpusOptimize.pack_start(textCell, false);
         cmbOpusOptimize.set_attributes(textCell, "text", 0);
         cmbOpusOptimize.hexpand = true;
+        cmbOpusOptimize.no_show_all = true;
         gridAudio.attach(cmbOpusOptimize,1,row,1,1);
         
         //populate
@@ -781,6 +812,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//defaults
 		cmbFileFormat.set_active(0);
 		cmbAudioMode.set_active(0);
+		cmbVideoMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
@@ -1165,7 +1197,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 	
 	private void cmbAudioMode_changed()
 	{
-		switch (Utility.Combo_GetSelectedValue(cmbAudioMode,1,"vbr")) {
+		switch (audio_mode) {
 			case "vbr":
 				if (acodec == "opus") {
 					spinAudioBitrate.sensitive = true;
@@ -1307,6 +1339,44 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 	
 	private void cmbVCodec_changed ()
 	{
+		ListStore model;
+		TreeIter iter;
+		
+		//populate encoding modes
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbVideoMode.set_model(model);
+		
+		switch (vcodec){
+			case "x264":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate / CRF",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
+				cmbVideoMode.set_active(0);
+				
+				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.set_tooltip_text ("");
+				spinVideoBitrate.digits = 0;
+				
+				spinVideoQuality.adjustment.configure(23.0, 0, 51, 1, 1, 0);
+				spinVideoQuality.set_tooltip_text ("");
+				spinVideoQuality.digits = 1;
+				
+				cmbVideoMode.sensitive = true;
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = true;
+				cmbVideoMode_changed();
+				break;
+				
+			default: //disable
+				cmbVideoMode.sensitive = false;
+				spinVideoBitrate.sensitive = false;
+				spinVideoQuality.sensitive = false;
+				break;
+		}
+		
 		//set logo
 		switch (vcodec){
 			case "x264":
@@ -1316,6 +1386,25 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				break;
 			default:
 				imgVideoCodec.clear();
+				break;
+		}
+	}
+	
+	private void cmbVideoMode_changed()
+	{
+		switch (video_mode) {
+			case "vbr":
+				spinVideoBitrate.sensitive = false;
+				spinVideoQuality.sensitive = true;
+				break;
+			case "abr":
+			case "2pass":
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = false;
+				break;
+			default:
+				spinVideoBitrate.sensitive = false;
+				spinVideoQuality.sensitive = false;
 				break;
 		}
 	}
@@ -1351,7 +1440,9 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		video.set_string_member("codec",vcodec);
 		video.set_string_member("profile",x264_profile);
 		video.set_string_member("preset",x264_preset);
-		video.set_string_member("crf",x264_crf);
+		video.set_string_member("mode",video_mode);
+		video.set_string_member("bitrate",video_bitrate);
+		video.set_string_member("quality",video_quality);
 		video.set_string_member("options",x264_options);
 		video.set_string_member("frameSize",frame_size);
 		video.set_string_member("frameWidth",frame_width);
@@ -1420,10 +1511,13 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 			case "x264":
 				x264_profile = video.get_string_member("profile");
 				x264_preset = video.get_string_member("preset");
-				x264_crf = video.get_string_member("crf");
 				x264_options = video.get_string_member("options");
 				break;
 		}
+		
+		video_mode = video.get_string_member("mode");
+		video_bitrate = video.get_string_member("bitrate");
+		video_quality = video.get_string_member("quality");
 		
 		frame_size = video.get_string_member("frameSize");
 		frame_width = video.get_string_member("frameWidth");
@@ -1523,6 +1617,36 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		}
     }
     
+    public string video_mode
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbVideoMode,1,"vbr");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbVideoMode,1,value);
+		}
+    }
+
+    public string video_bitrate
+	{
+        owned get { 
+			return spinVideoBitrate.get_value().to_string(); 
+		}
+        set { 
+			spinVideoBitrate.set_value(double.parse(value));
+		}
+    }
+    
+    public string video_quality
+	{
+        owned get { 
+			return spinVideoQuality.get_value().to_string(); 
+		}
+        set { 
+			spinVideoQuality.get_adjustment().set_value(double.parse(value));
+		}
+    }
+    
 	public string x264_preset 
 	{
         owned get { 
@@ -1542,17 +1666,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 			Utility.Combo_SelectValue(cmbX264Profile, 1, value);
 		}
     }
-    
-    public string x264_crf 
-	{
-        owned get { 
-			return spinCRF.get_value().to_string(); 
-		}
-        set { 
-			spinCRF.get_adjustment().set_value(double.parse(value));
-		}
-    }
-    
+
     public string x264_options
 	{
         owned get { 
@@ -1666,7 +1780,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
     public string audio_opus_optimize
 	{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbOpusOptimize,1,"music");
+			return Utility.Combo_GetSelectedValue(cmbOpusOptimize,1,"none");
 		}
         set { 
 			Utility.Combo_SelectValue(cmbOpusOptimize, 1, value);
