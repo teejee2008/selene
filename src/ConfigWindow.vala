@@ -43,6 +43,9 @@ public class ConfigWindow : Dialog {
 	private Label lblAudio;
 	private Grid gridAudio;
 	
+	private Label lblSubtitle;
+	private Grid gridSubtitle;
+	
 	private Label lblVideoFilters;
 	private Grid gridVideoFilters;
 	
@@ -138,6 +141,11 @@ public class ConfigWindow : Dialog {
 	
 	private Label lblAudioChannels;
 	private ComboBox cmbAudioChannels;
+	
+	private Label lblSubtitleMode;
+	private ComboBox cmbSubtitleMode;
+	
+	private Label lblSubFormatMessage;
 	
 	private Button btnSave;
 	private Button btnCancel;
@@ -310,8 +318,7 @@ public class ConfigWindow : Dialog {
 		//lblVCodec
 		lblVCodec = new Gtk.Label("Format / Codec");
 		lblVCodec.xalign = (float) 0.0;
-		lblVCodec.hexpand = true;
-		gridVideo.attach(lblVCodec,0,++row,2,1);
+		gridVideo.attach(lblVCodec,0,++row,1,1);
 		
 		//cmbVCodec
 		cmbVCodec = new ComboBox();
@@ -319,13 +326,13 @@ public class ConfigWindow : Dialog {
         cmbVCodec.pack_start( textCell, false );
         cmbVCodec.set_attributes( textCell, "text", 0 );
         cmbVCodec.changed.connect(cmbVCodec_changed);
+        cmbVCodec.hexpand = true;
         gridVideo.attach(cmbVCodec,1,row,1,1);
         
         //lblVideoMode
 		lblVideoMode = new Gtk.Label("Encoding Mode");
 		lblVideoMode.xalign = (float) 0.0;
-		lblVideoMode.hexpand = true;
-		gridVideo.attach(lblVideoMode,0,++row,2,1);
+		gridVideo.attach(lblVideoMode,0,++row,1,1);
 		
 		//cmbVideoMode
 		cmbVideoMode = new ComboBox();
@@ -374,7 +381,7 @@ Slower Preset = Slower Encoding, Smaller Files
 This option only affects Encoding Speed and File Size.
 It does not affect Video Quality (which is controlled by CRF value)"""
 		);
-		gridVideo.attach(lblX264Preset,0,++row,2,1);
+		gridVideo.attach(lblX264Preset,0,++row,1,1);
 		
 		//cmbx264Preset
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
@@ -507,6 +514,7 @@ Change this option only if you are encoding for a particular device"""
         cmbFrameSize.pack_start( textCell, false );
         cmbFrameSize.set_attributes( textCell, "text", 0 );
         cmbFrameSize.changed.connect(cmbFrameSize_changed);
+        cmbFrameSize.hexpand = true;
         gridVideoFilters.attach(cmbFrameSize,1,row,1,1);
 
         //lblFrameSizeCustom
@@ -557,7 +565,6 @@ Examples:
         cmbResizingMethod.pack_start(textCell, false);
         cmbResizingMethod.set_attributes(textCell, "text", 0);
         cmbResizingMethod.changed.connect(cmbAudioMode_changed);
-        cmbResizingMethod.hexpand = true;
         cmbResizingMethod.set_tooltip_text (
 """The resizing filter affects the sharpness and compressibility of the video.
 For example, the 'Lanzos' filter gives sharper video but the extra detail results in slightly bigger files.
@@ -687,8 +694,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//lblACodec
 		lblACodec = new Gtk.Label("Format / Codec");
 		lblACodec.xalign = (float) 0.0;
-		lblACodec.hexpand = true;
-		gridAudio.attach(lblACodec,0,++row,2,1);
+		gridAudio.attach(lblACodec,0,++row,1,1);
 		
 		//cmbACodec
 		cmbACodec = new ComboBox();
@@ -696,6 +702,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbACodec.pack_start(textCell, false);
         cmbACodec.set_attributes(textCell, "text", 0);
         cmbACodec.changed.connect(cmbACodec_changed);
+        cmbACodec.hexpand = true;
         gridAudio.attach(cmbACodec,1,row,1,1);
         
 		//lblAudioMode
@@ -709,7 +716,6 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbAudioMode.pack_start(textCell, false);
         cmbAudioMode.set_attributes(textCell, "text", 0);
         cmbAudioMode.changed.connect(cmbAudioMode_changed);
-        cmbAudioMode.hexpand = true;
         gridAudio.attach(cmbAudioMode,1,row,1,1);
         
 		//lblAudioBitrate
@@ -745,7 +751,6 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		textCell = new CellRendererText();
         cmbOpusOptimize.pack_start(textCell, false);
         cmbOpusOptimize.set_attributes(textCell, "text", 0);
-        cmbOpusOptimize.hexpand = true;
         cmbOpusOptimize.no_show_all = true;
         gridAudio.attach(cmbOpusOptimize,1,row,1,1);
         
@@ -804,15 +809,60 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		cmbAudioChannels = new ComboBox();
 		textCell = new CellRendererText();
         cmbAudioChannels.pack_start(textCell, false);
-        cmbAudioChannels.hexpand = true;
         //cmbAudioChannels.entry_text_column = 0;
         cmbAudioChannels.set_attributes(textCell, "text", 0);
         gridAudioFilters.attach(cmbAudioChannels,1,row,1,1);
+				
+		//Subtitles tab ---------------------------------------------
 		
-		//defaults
+		//lblSubtitle
+		lblSubtitle = new Label ("Subs");
+
+        //gridSubtitle
+        gridSubtitle = new Grid ();
+        gridSubtitle.set_column_spacing (6);
+        gridSubtitle.set_row_spacing (6);
+        gridSubtitle.margin = 12;
+        gridSubtitle.visible = false;
+        tabMain.append_page (gridSubtitle, lblSubtitle);
+		
+		row = -1;
+		
+		//lblSubtitleMode
+		lblSubtitleMode = new Gtk.Label("Subtitles");
+		lblSubtitleMode.xalign = (float) 0.0;
+		lblSubtitleMode.set_tooltip_text (
+"""Embed - Subtitle files will be combined with the output file.
+Since the subtitles are added as a separate track, 
+it can be switched off.
+
+Render - Subtitles are rendered/burned on the video.
+These subtitles cannot be switched off.""");
+		gridSubtitle.attach(lblSubtitleMode,0,++row,1,1);
+		
+		//cmbSubtitleMode
+		cmbSubtitleMode = new ComboBox();
+		textCell = new CellRendererText();
+        cmbSubtitleMode.pack_start( textCell, false );
+        cmbSubtitleMode.set_attributes( textCell, "text", 0 );
+        cmbSubtitleMode.changed.connect(cmbSubtitleMode_changed);
+        cmbSubtitleMode.hexpand = true;
+        gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
+        
+        //lblSubFormatMessage
+		lblSubFormatMessage = new Gtk.Label("Subtitles");
+		lblSubFormatMessage.xalign = (float) 0.0;
+		lblSubFormatMessage.hexpand = true;
+		lblSubFormatMessage.margin_top = 6;
+		lblSubFormatMessage.margin_bottom = 6;
+		gridSubtitle.attach(lblSubFormatMessage,0,++row,2,1);
+
+		//Defaults --------------------------------
+		
 		cmbFileFormat.set_active(0);
-		cmbAudioMode.set_active(0);
-		cmbVideoMode.set_active(0);
+		//cmbAudioMode.set_active(0);
+		//cmbVideoMode.set_active(0);
+		//cmbSubtitleMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
@@ -946,7 +996,24 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 				break;
 		}
 		
+		//populate subtitle options
+		
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbSubtitleMode.set_model(model);
+		
+		switch (format){
+			case "mkv":
+			case "mp4v":
+				model.append (out iter);
+				model.set (iter,0,"No Subtitles",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"Embed / Soft Subs",1,"embed");
+				cmbSubtitleMode.set_active(1);
+				break;
+		}
+
 		//set logo
+		
 		switch (format){
 			case "mkv":
 				imgFileFormat.set_from_file(App.SharedImagesFolder + "/matroska.png");
@@ -1409,6 +1476,39 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		}
 	}
 	
+	private void cmbSubtitleMode_changed()
+	{
+		string msg =
+"""
+
+Subtitle files should be present in the same folder
+and file name should start with same name as input file
+
+So if your input file is 'movie.avi',
+the subtitle file can be named like movie.srt, 
+movie_en.srt, movie_1.srt, etc.""";
+
+		switch(subtitle_mode){
+			case "embed":
+				switch(format){
+					case "mkv":
+						lblSubFormatMessage.label = "Supported Formats: SRT, SUB, SSA" + msg;
+						break;
+					case "mp4v":
+						lblSubFormatMessage.label = "Supported Formats: SRT, SUB, TTXT, XML" + msg;
+						break;
+					default:
+					lblSubFormatMessage.label = "";
+					break;
+				}
+				break;
+				
+			default:
+				lblSubFormatMessage.label = "";
+				break;
+		}
+	}
+
 	private void btnSave_clicked ()
 	{
 		if (txtPresetName.text.length < 1) {
@@ -1427,6 +1527,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		var general = new Json.Object();
 		var video = new Json.Object();
 		var audio = new Json.Object();
+		var subs = new Json.Object();
 		
 		config.set_object_member("general",general);
 		general.set_string_member("format",format);
@@ -1461,6 +1562,9 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		audio.set_string_member("opusOptimize",audio_opus_optimize);
 		audio.set_string_member("channels",audio_channels);
 		audio.set_string_member("samplingRate",audio_sampling);
+		
+		config.set_object_member("subtitle",subs);
+		subs.set_string_member("mode",subtitle_mode);
 		
 		var filePath = Folder + "/" + txtPresetName.text + ".json";
 		var json = new Json.Generator();
@@ -1498,6 +1602,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         Json.Object general = (Json.Object) config.get_object_member("general");
 		Json.Object video = (Json.Object) config.get_object_member("video");
 		Json.Object audio = (Json.Object) config.get_object_member("audio");
+		Json.Object subs = (Json.Object) config.get_object_member("subtitle");
 		
 		format = general.get_string_member("format");
 		extension = general.get_string_member("extension");
@@ -1545,6 +1650,8 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		
 		audio_channels = audio.get_string_member("channels");
 		audio_sampling = audio.get_string_member("samplingRate");
+		
+		subtitle_mode = subs.get_string_member("mode");
 	}
 
 	public string format
@@ -1824,6 +1931,16 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		}
         set { 
 			Utility.Combo_SelectValue(cmbAudioSampleRate, 1, value);
+		}
+    }
+    
+    public string subtitle_mode
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbSubtitleMode,1,"disable");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbSubtitleMode, 1, value);
 		}
     }
 }

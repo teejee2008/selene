@@ -1863,14 +1863,18 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
 		s += "mkvmerge --output \"${outputFile}\"";
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			s += " --compression -1:none \"${tempAudio}\"";
 		}
 		s += " --compression -1:none \"${tempVideo}\"";
-		if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa"){
-			s += " --compression -1:none \"${subFile}\"";
+		
+		if (subs.get_string_member("mode") == "embed") {
+			if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa") {
+				s += " --compression -1:none \"${subFile}\"";
+			}
 		}
 		s += "\n";
 		
@@ -1884,8 +1888,8 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
-		string format = general.get_string_member("format");
-		
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+
 		s += "MP4Box -new";
 		
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
@@ -1894,8 +1898,10 @@ Notes:
 		
 		s += " -add \"${tempVideo}\"";
 		
-		if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml"){
-			s += " -add \"${subFile}\"";
+		if (subs.get_string_member("mode") == "embed") {
+			if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml"){
+				s += " -add \"${subFile}\"";
+			}
 		}
 		
 		s += " \"${outputFile}\"";
