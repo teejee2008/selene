@@ -1009,9 +1009,35 @@ These subtitles cannot be switched off.""");
 				break;
 				
 			case "wav":
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 8-bit Signed / Libav",1,"pcm_s8");
 				model.append (out iter);
-				model.set (iter,0,"PCM 16-bit LE / Libav",1,"pcm_s16le");
-				cmbACodec.set_active(0);
+				model.set (iter,0,"PCM 8-bit Unsigned / Libav",1,"pcm_u8");
+				model.append (out iter);
+				model.set (iter,0,"PCM 16-bit Signed LE / Libav",1,"pcm_s16le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 16-bit Signed BE / Libav",1,"pcm_s16be");
+				model.append (out iter);
+				model.set (iter,0,"PCM 16-bit Unsigned LE / Libav",1,"pcm_u16le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 16-bit Unsigned BE / Libav",1,"pcm_u16be");
+				model.append (out iter);
+				model.set (iter,0,"PCM 24-bit Signed LE / Libav",1,"pcm_s24le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 24-bit Signed BE / Libav",1,"pcm_s24be");
+				model.append (out iter);
+				model.set (iter,0,"PCM 24-bit Unsigned LE / Libav",1,"pcm_u24le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 24-bit Unsigned BE / Libav",1,"pcm_u24be");
+				model.append (out iter);
+				model.set (iter,0,"PCM 32-bit Signed LE / Libav",1,"pcm_s32le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 32-bit Signed BE / Libav",1,"pcm_s32be");
+				model.append (out iter);
+				model.set (iter,0,"PCM 32-bit Unsigned LE / Libav",1,"pcm_u32le");
+				//model.append (out iter);
+				//model.set (iter,0,"PCM 32-bit Unsigned BE / Libav",1,"pcm_u32be");
+				cmbACodec.set_active(2);
 				break;
 		}
 		
@@ -1071,7 +1097,20 @@ These subtitles cannot be switched off.""");
 				lblOpusOptimize.visible = true;
 				cmbOpusOptimize.visible = true;
 				break;
+			case "pcm_s8":
+			case "pcm_u8":
 			case "pcm_s16le":
+			case "pcm_s16be":
+			case "pcm_u16le":
+			case "pcm_u16be":
+			case "pcm_s24le":
+			case "pcm_s24be":
+			case "pcm_u24le":
+			case "pcm_u24be":
+			case "pcm_s32le":
+			case "pcm_s32be":
+			case "pcm_u32le":
+			case "pcm_u32be":
 			case "flac":
 				lblAudioBitrate.visible = false;
 				spinAudioBitrate.visible = false;
@@ -1200,8 +1239,21 @@ These subtitles cannot be switched off.""");
 				cmbAudioMode_changed();
 				break;
 
-			case "flac":
+			case "pcm_s8":
+			case "pcm_u8":
 			case "pcm_s16le":
+			case "pcm_s16be":
+			case "pcm_u16le":
+			case "pcm_u16be":
+			case "pcm_s24le":
+			case "pcm_s24be":
+			case "pcm_u24le":
+			case "pcm_u24be":
+			case "pcm_s32le":
+			case "pcm_s32be":
+			case "pcm_u32le":
+			case "pcm_u32be":
+			case "flac":
 				model.append (out iter);
 				model.set (iter,0,"Lossless",1,"lossless");
 				cmbAudioMode.set_active(0);
@@ -1244,7 +1296,22 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"48000",1,"48000");
 				cmbAudioSampleRate.set_active(0);
 				break;
-				
+			
+			case "pcm_s8":
+			case "pcm_u8":
+			case "pcm_s16le":
+			case "pcm_s16be":
+			case "pcm_u16le":
+			case "pcm_u16be":
+			case "pcm_s24le":
+			case "pcm_s24be":
+			case "pcm_u24le":
+			case "pcm_u24be":
+			case "pcm_s32le":
+			case "pcm_s32be":
+			case "pcm_u32le":
+			case "pcm_u32be":
+			case "flac":
 			case "neroaac":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
@@ -1272,10 +1339,8 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"96000",1,"96000");
 				cmbAudioSampleRate.set_active(0);
 				break;
-				
+			
 			case "ac3":
-			case "flac":
-			case "pcm_s16le":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
@@ -1302,7 +1367,20 @@ These subtitles cannot be switched off.""");
 		switch (acodec){
 			case "ac3":
 			case "flac":
+			case "pcm_s8":
+			case "pcm_u8":
 			case "pcm_s16le":
+			case "pcm_s16be":
+			case "pcm_u16le":
+			case "pcm_u16be":
+			case "pcm_s24le":
+			case "pcm_s24be":
+			case "pcm_u24le":
+			case "pcm_u24be":
+			case "pcm_s32le":
+			case "pcm_s32be":
+			case "pcm_u32le":
+			case "pcm_u32be":
 			case "neroaac":
 			case "opus":
 				model.append (out iter);

@@ -1842,7 +1842,8 @@ Notes:
 				s += " -f flac -acodec flac";
 				break;
 			case "wav":
-				s += " -f wav -acodec pcm_s16le";
+				s += " -f wav";
+				s += " -acodec " + audio.get_string_member("codec");
 				break;
 		}
 		
