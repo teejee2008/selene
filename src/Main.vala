@@ -28,7 +28,7 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "2.0";
+public const string AppVersion = "1.5";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
@@ -1458,6 +1458,12 @@ Notes:
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				break;
+				
+			case "ac3":
+			case "flac":
+			case "wav":
+				s += encode_audio_avconv(mf,settings);
+				break;
 		}
 		
 		s += "\n";
@@ -1478,9 +1484,9 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
-		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		bool usePiping = true;
 		if (video.get_string_member("fpsNum") == "0" && video.get_string_member("fpsDenom") == "0") {
@@ -1688,14 +1694,6 @@ Notes:
 		}
 	}
 	
-	
-	private string encode_audio_avconv (MediaFile mf, Json.Object settings)
-	{
-		string s = "";
-		
-		return s;
-	}
-	
 	private string encode_audio_mp3lame (MediaFile mf, Json.Object settings)
 	{
 		string s = "";
@@ -1822,15 +1820,57 @@ Notes:
 		return s;
 	}
 	
+	private string encode_audio_avconv (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+
+		string format = general.get_string_member("format");
+		
+		s += "avconv";
+		s += " -i \"${inFile}\"";
+		
+		switch (format){
+			case "ac3":
+				s += " -f ac3 -acodec ac3";
+				s += " -b:a " + audio.get_string_member("bitrate") + "k";
+				break;
+			case "flac":
+				s += " -f flac -acodec flac";
+				break;
+			case "wav":
+				s += " -f wav -acodec pcm_s16le";
+				break;
+		}
+		
+		//channels
+		string channels = audio.get_string_member("channels");
+		if (channels != "disable"){
+			s += " -ac " + channels;
+		}
+
+		//sampling
+		string sampling = audio.get_string_member("samplingRate");
+		if (sampling != "disable"){
+			s += " -ar " + sampling;
+		}
+		
+		s += " -vn -sn";
+		s += " -y \"${outputFile}\"";
+		
+		return s;
+	}
+	
 	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent)
 	{
 		string s = "";
 		
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string acodec = audio.get_string_member("codec");
-		string channels = audio.get_string_member("channels");
-		string sampling = audio.get_string_member("samplingRate");
-		
+
 		s += "avconv";
 		
 		//progress info
@@ -1839,9 +1879,12 @@ Notes:
 		}
 		//input
 		s += " -i \"${inFile}\"";
+		
 		//format
 		s += " -f wav -acodec pcm_s16le";
+		
 		//channels
+		string channels = audio.get_string_member("channels");
 		if (channels == "disable"){
 			if (acodec == "mp3lame" && mf.AudioChannels > 2){
 				s += " -ac 2";
@@ -1852,6 +1895,7 @@ Notes:
 			s += " -ac " + channels;
 		}
 		//sampling
+		string sampling = audio.get_string_member("samplingRate");
 		if (sampling != "disable"){
 			s += " -ar " + sampling;
 		}
@@ -1865,8 +1909,8 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
@@ -1896,8 +1940,8 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
@@ -1926,7 +1970,7 @@ Notes:
 		string s = "";
 		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string format = general.get_string_member("format");
 		

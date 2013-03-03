@@ -1,15 +1,11 @@
-selene (1.2) quantal; urgency=low
+selene (2.0) quantal; urgency=low
 
-  * v1.2, Rev:23, 2013-02-06
+  * v2.0, Rev:50, 2013-03-03
   
-  * Duration was displayed incorrectly 
+  * Added presets with GUI options for editing audio & video settings 
   
-  * Scripts updated to use LAME for mp3 encoding instead of avconv
-
-  * Disable options for removing files from list while jobs are running
-
-  * Add scripts for MP3 and WMA encoding
+  * Presets - Added MKV, MP4, MP3 and Opus encoding
 
   * Bug fixes
   
- -- Tony George <tony.george.kol@gmail.com>  Sat, 02 Feb 2013 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 02 Mar 2013 10:00:00 +0530

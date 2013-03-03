@@ -212,15 +212,19 @@ public class ConfigWindow : Dialog {
 		model.set (iter,0,"FLAC Audio (*.flac)",1,"flac");
 		model.append (out iter);
 		model.set (iter,0,"OGG Vorbis Audio (*.ogg)",1,"ogg");
-		
+		*/
 		model.append (out iter);
-		model.set (iter,0,"MP2 Audio (*.mp2)",1,"mp2");*/
+		model.set (iter,0,"AC3 Audio (*.ac3)",1,"ac3");
+		model.append (out iter);
+		model.set (iter,0,"FLAC Audio (*.flac)",1,"flac");
 		model.append (out iter);
 		model.set (iter,0,"MP3 Audio (*.mp3)",1,"mp3");
 		model.append (out iter);
 		model.set (iter,0,"MP4 Audio (*.mp4)",1,"mp4a");
 		model.append (out iter);
 		model.set (iter,0,"Opus Audio (*.opus)",1,"opus");
+		model.append (out iter);
+		model.set (iter,0,"WAV Audio (*.wav)",1,"wav");
 		
 		cmbFileFormat = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
@@ -933,9 +937,7 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"X264 / H.264 / AVC",1,"x264");
 				cmbVCodec.set_active(0);
 				break;
-			case "mp3":
-			case "mp4a":
-			case "opus":
+			default:
 				model.append (out iter);
 				model.set (iter,0,"Disable Video",1,"disable");
 				cmbVCodec.set_active(0);
@@ -943,15 +945,14 @@ These subtitles cannot be switched off.""");
 		}
 		
 		switch (format) {
-			case "mp3":
-			case "mp4a":
-			case "opus":
-				gridVideo.sensitive = false;
-				gridVideoFilters.sensitive = false;
-				break;
-			default:
+			case "mkv":
+			case "mp4v":
 				gridVideo.sensitive = true;
 				gridVideoFilters.sensitive = true;
+				break;
+			default:
+				gridVideo.sensitive = false;
+				gridVideoFilters.sensitive = false;
 				break;
 		}
 		
@@ -994,6 +995,24 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"Opus",1,"opus");
 				cmbACodec.set_active(0);
 				break;
+				
+			case "ac3":
+				model.append (out iter);
+				model.set (iter,0,"AC3 / Libav",1,"ac3");
+				cmbACodec.set_active(0);
+				break;
+				
+			case "flac":
+				model.append (out iter);
+				model.set (iter,0,"FLAC / Libav",1,"flac");
+				cmbACodec.set_active(0);
+				break;
+				
+			case "wav":
+				model.append (out iter);
+				model.set (iter,0,"PCM 16-bit LE / Libav",1,"pcm_s16le");
+				cmbACodec.set_active(0);
+				break;
 		}
 		
 		//populate subtitle options
@@ -1004,11 +1023,17 @@ These subtitles cannot be switched off.""");
 		switch (format){
 			case "mkv":
 			case "mp4v":
+				gridSubtitle.sensitive = true;
+				
 				model.append (out iter);
 				model.set (iter,0,"No Subtitles",1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"Embed / Soft Subs",1,"embed");
 				cmbSubtitleMode.set_active(1);
+				break;
+				
+			default:
+				gridSubtitle.sensitive = false;
 				break;
 		}
 
@@ -1039,12 +1064,34 @@ These subtitles cannot be switched off.""");
 		//show & hide options
 		switch (acodec){
 			case "opus":
+				lblAudioBitrate.visible = true;
+				spinAudioBitrate.visible = true;
 				lblAudioQuality.visible = false;
 				spinAudioQuality.visible = false;
 				lblOpusOptimize.visible = true;
 				cmbOpusOptimize.visible = true;
 				break;
-			default:
+			case "pcm_s16le":
+			case "flac":
+				lblAudioBitrate.visible = false;
+				spinAudioBitrate.visible = false;
+				lblAudioQuality.visible = false;
+				spinAudioQuality.visible = false;
+				lblOpusOptimize.visible = false;
+				cmbOpusOptimize.visible = false;
+				break;
+			case "ac3":
+				lblAudioBitrate.visible = true;
+				spinAudioBitrate.visible = true;
+				lblAudioQuality.visible = false;
+				spinAudioQuality.visible = false;
+				lblOpusOptimize.visible = false;
+				cmbOpusOptimize.visible = false;
+				break;
+			case "neroaac":
+			case "mp3lame":
+				lblAudioBitrate.visible = true;
+				spinAudioBitrate.visible = true;
 				lblAudioQuality.visible = true;
 				spinAudioQuality.visible = true;
 				lblOpusOptimize.visible = false;
@@ -1139,6 +1186,28 @@ These subtitles cannot be switched off.""");
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
+			
+			case "ac3":
+				model.append (out iter);
+				model.set (iter,0,"Fixed Bitrate",1,"cbr");
+				cmbAudioMode.set_active(0);
+				
+				spinAudioBitrate.adjustment.configure(128, 1, 512, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
+				spinAudioBitrate.digits = 0;
+				
+				cmbAudioMode.sensitive = true;
+				cmbAudioMode_changed();
+				break;
+
+			case "flac":
+			case "pcm_s16le":
+				model.append (out iter);
+				model.set (iter,0,"Lossless",1,"lossless");
+				cmbAudioMode.set_active(0);
+				
+				cmbAudioMode.sensitive = true;
+				break;
 				
 			default: //disable
 				cmbAudioMode.sensitive = false;
@@ -1204,6 +1273,22 @@ These subtitles cannot be switched off.""");
 				cmbAudioSampleRate.set_active(0);
 				break;
 				
+			case "ac3":
+			case "flac":
+			case "pcm_s16le":
+				model.append (out iter);
+				model.set (iter,0,"No Change",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"24000",1,"24000");
+				model.append (out iter);
+				model.set (iter,0,"32000",1,"32000");
+				model.append (out iter);
+				model.set (iter,0,"44100",1,"44100");
+				model.append (out iter);
+				model.set (iter,0,"48000",1,"48000");
+				cmbAudioSampleRate.set_active(0);
+				break;
+				
 			default:
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
@@ -1215,6 +1300,9 @@ These subtitles cannot be switched off.""");
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioChannels.set_model(model);
 		switch (acodec){
+			case "ac3":
+			case "flac":
+			case "pcm_s16le":
 			case "neroaac":
 			case "opus":
 				model.append (out iter);
@@ -1231,9 +1319,12 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"5",1,"5");
 				model.append (out iter);
 				model.set (iter,0,"6",1,"6");
+				model.append (out iter);
+				model.set (iter,0,"7",1,"7");
 				cmbAudioChannels.set_active(0);
 				break;
-			default:
+
+			default: //mp3lame
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
