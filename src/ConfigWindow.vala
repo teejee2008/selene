@@ -72,16 +72,16 @@ public class ConfigWindow : Dialog {
 	
 	private ComboBox cmbX264Preset;
 	private Label lblX264Preset;
-	//private Scale scaleX264Preset;
-	
-	private ComboBox cmbX264Profile;
+
 	private Label lblX264Profile;
-	//private Scale scaleX264Profile;
-	
+	private ComboBox cmbX264Profile;
+
 	private Label lblVideoQuality;
 	private SpinButton spinVideoQuality;
-	//private Scale scaleCRF;
-
+	
+	private Label lblVP8Speed;
+	private ComboBox cmbVP8Speed;
+	
 	private Label lblHeaderFileFormat;
 	private Label lblHeaderPreset;
 	private Label lblHeaderFrameSize;
@@ -204,15 +204,10 @@ public class ConfigWindow : Dialog {
 		model.set (iter,0,"Matroska Video (*.mkv)",1,"mkv");
 		model.append (out iter);
 		model.set (iter,0,"MPEG4 Video (*.mp4)",1,"mp4v");
-		
-		/*model.append (out iter);
+		model.append (out iter);
 		model.set (iter,0,"OGG Theora Video (*.ogv)",1,"ogv");
-		
 		model.append (out iter);
-		model.set (iter,0,"FLAC Audio (*.flac)",1,"flac");
-		model.append (out iter);
-		model.set (iter,0,"OGG Vorbis Audio (*.ogg)",1,"ogg");
-		*/
+		model.set (iter,0,"WebM Video (*.webm)",1,"webm");
 		model.append (out iter);
 		model.set (iter,0,"AC3 Audio (*.ac3)",1,"ac3");
 		model.append (out iter);
@@ -221,6 +216,8 @@ public class ConfigWindow : Dialog {
 		model.set (iter,0,"MP3 Audio (*.mp3)",1,"mp3");
 		model.append (out iter);
 		model.set (iter,0,"MP4 Audio (*.mp4)",1,"mp4a");
+		model.append (out iter);
+		model.set (iter,0,"OGG Vorbis Audio (*.ogg)",1,"ogg");
 		model.append (out iter);
 		model.set (iter,0,"Opus Audio (*.opus)",1,"opus");
 		model.append (out iter);
@@ -444,9 +441,49 @@ Change this option only if you are encoding for a particular device"""
         cmbX264Profile.set_attributes( textCell, "text", 0 );
         gridVideo.attach(cmbX264Profile,1,row,1,1);
 		
+		//lblVP8Speed
+		lblVP8Speed = new Gtk.Label("Speed");
+		lblVP8Speed.xalign = (float) 0.0;
+		lblVP8Speed.set_tooltip_text (
+"""Compression Vs Encoding Speed
+
+This setting has a big impact on encoding speed.
+The 'slowest' setting is around 8 times slower
+than the 'fastest'. 
+
+Use a slower setting for better quality and 
+a faster setting to save time.
+"""
+		);
+		gridVideo.attach(lblVP8Speed,0,++row,1,1);
+		
+		//cmbVP8Speed
+		cmbVP8Speed = new ComboBox();
+		textCell = new CellRendererText();
+        cmbVP8Speed.pack_start( textCell, false );
+        cmbVP8Speed.set_attributes( textCell, "text", 0 );
+        gridVideo.attach(cmbVP8Speed,1,row,1,1);
+        
+        //populate
+        model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, "Slowest (--cpu-used=0)", 1, "good_0");
+		model.append (out iter);
+		model.set (iter, 0, "Slower (--cpu-used=1)", 1, "good_1");
+		model.append (out iter);
+		model.set (iter, 0, "Slow (--cpu-used=2)", 1, "good_2");
+		model.append (out iter);
+		model.set (iter, 0, "Medium (--cpu-used=3)", 1, "good_3");
+		model.append (out iter);
+		model.set (iter, 0, "Fast (--cpu-used=4)", 1, "good_4");
+		model.append (out iter);
+		model.set (iter, 0, "Fastest (--cpu-used=5)", 1, "good_5");
+		cmbVP8Speed.set_model(model);
+		
 		//lblVCodecOptions
-		lblVCodecOptions = new Gtk.Label("X264 Options");
+		lblVCodecOptions = new Gtk.Label("Extra Options");
 		lblVCodecOptions.xalign = (float) 0.0;
+		lblVCodecOptions.margin_top = 6;
 		gridVideo.attach(lblVCodecOptions,0,++row,1,1);
 		
 		//txtVCodecOptions
@@ -569,35 +606,12 @@ Examples:
         cmbResizingMethod.pack_start(textCell, false);
         cmbResizingMethod.set_attributes(textCell, "text", 0);
         cmbResizingMethod.changed.connect(cmbAudioMode_changed);
+        cmbResizingMethod.no_show_all = true;
         cmbResizingMethod.set_tooltip_text (
 """The resizing filter affects the sharpness and compressibility of the video.
 For example, the 'Lanzos' filter gives sharper video but the extra detail results in slightly bigger files.
 The 'Bilinear' filter gives smoother video (less detail) which results in slightly smaller files""");
         gridVideoFilters.attach(cmbResizingMethod,1,row,1,1);
-        
-        //populate
-        model = new Gtk.ListStore (2, typeof (string), typeof (string));
-        cmbResizingMethod.set_model(model);
-		model.append (out iter);
-		model.set (iter,0,"Fast Bilinear",1,"fastbilinear");
-		model.append (out iter);
-		model.set (iter,0,"Bilinear",1,"bilinear");
-		model.append (out iter);
-		model.set (iter,0,"Bicubic",1,"bicubic");
-		model.append (out iter);
-		model.set (iter,0,"Experimental",1,"experimental");
-		model.append (out iter);
-		model.set (iter,0,"Point",1,"point");
-		model.append (out iter);
-		model.set (iter,0,"Area",1,"area");
-		model.append (out iter);
-		model.set (iter,0,"Bicublin",1,"bicublin");
-		model.append (out iter);
-		model.set (iter,0,"Gaussian",1,"gauss");
-		model.append (out iter);
-		model.set (iter,0,"Sinc",1,"sinc");
-		model.append (out iter);
-		model.set (iter,0,"Lanczos",1,"lanczos");
 
 		//chkFitToBox
 		chkFitToBox = new CheckButton.with_label("Do not stretch or squeeze the video (Fit-to-box)");
@@ -868,12 +882,13 @@ These subtitles cannot be switched off.""");
 		//cmbVideoMode.set_active(0);
 		//cmbSubtitleMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
+		cmbVP8Speed.set_active(1);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
 		cmbFrameSize.set_active (0);
-		cmbResizingMethod.set_active (2);
-		cmbFileExtension.set_active (0);
+		//cmbResizingMethod.set_active (2);
+		//cmbFileExtension.set_active (0);
 		
 		// Actions ----------------------------------------------
 		
@@ -918,6 +933,13 @@ These subtitles cannot be switched off.""");
 				model.set(iter, 0, "OGG", 1, ".ogg");
 				cmbFileExtension.set_active(0);
 				break;
+			case "ogg":
+				model.append(out iter);
+				model.set(iter, 0, "OGG", 1, ".ogg");
+				model.append(out iter);
+				model.set(iter, 0, "OGA", 1, ".oga");
+				cmbFileExtension.set_active(0);
+				break;
 			default:
 				model.append(out iter);
 				model.set(iter, 0, format.up(), 1, "." + format);
@@ -937,6 +959,16 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"X264 / H.264 / AVC",1,"x264");
 				cmbVCodec.set_active(0);
 				break;
+			case "ogv":
+				model.append (out iter);
+				model.set (iter,0,"Theora",1,"theora");
+				cmbVCodec.set_active(0);
+				break;
+			case "webm":
+				model.append (out iter);
+				model.set (iter,0,"VP8",1,"vp8");
+				cmbVCodec.set_active(0);
+				break;
 			default:
 				model.append (out iter);
 				model.set (iter,0,"Disable Video",1,"disable");
@@ -947,6 +979,8 @@ These subtitles cannot be switched off.""");
 		switch (format) {
 			case "mkv":
 			case "mp4v":
+			case "ogv":
+			case "webm":
 				gridVideo.sensitive = true;
 				gridVideoFilters.sensitive = true;
 				break;
@@ -977,7 +1011,22 @@ These subtitles cannot be switched off.""");
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
 				break;
-				
+			
+			case "ogv":
+			case "webm":
+				model.append (out iter);
+				model.set (iter,0,"Disable Audio",1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"Vorbis",1,"vorbis");
+				cmbACodec.set_active(1);
+				break;
+			
+			case "ogg":
+				model.append (out iter);
+				model.set (iter,0,"Vorbis",1,"vorbis");
+				cmbACodec.set_active(0);
+				break;
+
 			case "mp3":
 				model.append (out iter);
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
@@ -1049,6 +1098,8 @@ These subtitles cannot be switched off.""");
 		switch (format){
 			case "mkv":
 			case "mp4v":
+			case "ogg":
+			case "ogv":
 				gridSubtitle.sensitive = true;
 				
 				model.append (out iter);
@@ -1073,6 +1124,11 @@ These subtitles cannot be switched off.""");
 				break;
 			case "opus":
 				imgFileFormat.set_from_file(App.SharedImagesFolder + "/opus.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
+			case "webm":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/webm.png");
 				imgFileFormat.xalign = (float) 0.5;
 				imgFileFormat.yalign = (float) 1.0;
 				break;
@@ -1129,6 +1185,7 @@ These subtitles cannot be switched off.""");
 				break;
 			case "neroaac":
 			case "mp3lame":
+			case "vorbis":
 				lblAudioBitrate.visible = true;
 				spinAudioBitrate.visible = true;
 				lblAudioQuality.visible = true;
@@ -1226,6 +1283,25 @@ These subtitles cannot be switched off.""");
 				cmbAudioMode_changed();
 				break;
 			
+			case "vorbis":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate",1,"abr");
+				cmbAudioMode.set_active(0);
+				
+				spinAudioBitrate.adjustment.configure(128, 32, 500, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
+				spinAudioBitrate.digits = 0;
+				
+				spinAudioQuality.adjustment.configure(3, -2, 10, 1, 1, 0);
+				spinAudioQuality.set_tooltip_text ("");
+				spinAudioQuality.digits = 1;
+				
+				cmbAudioMode.sensitive = true;
+				cmbAudioMode_changed();
+				break;
+				
 			case "ac3":
 				model.append (out iter);
 				model.set (iter,0,"Fixed Bitrate",1,"cbr");
@@ -1313,6 +1389,7 @@ These subtitles cannot be switched off.""");
 			case "pcm_u32be":
 			case "flac":
 			case "neroaac":
+			case "vorbis":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
@@ -1383,6 +1460,7 @@ These subtitles cannot be switched off.""");
 			case "pcm_u32be":
 			case "neroaac":
 			case "opus":
+			case "vorbis":
 				model.append (out iter);
 				model.set (iter,0,"No Change",1,"disable");
 				model.append (out iter);
@@ -1449,6 +1527,165 @@ These subtitles cannot be switched off.""");
 			case "cbr-strict":
 				spinAudioBitrate.sensitive = true;
 				spinAudioQuality.sensitive = false;
+				break;
+		}
+	}
+
+	private void cmbVCodec_changed ()
+	{
+		ListStore model;
+		TreeIter iter;
+		
+		//hide options
+		switch (vcodec){
+			case "x264":
+				lblX264Preset.visible = true;
+				cmbX264Preset.visible = true;
+				lblX264Profile.visible = true;
+				cmbX264Profile.visible = true;
+				lblX264Preset.visible = true;
+				cmbX264Preset.visible = true;
+				break;
+			default:
+				lblX264Preset.visible = false;
+				cmbX264Preset.visible = false;
+				lblX264Profile.visible = false;
+				cmbX264Profile.visible = false;
+				lblX264Preset.visible = false;
+				cmbX264Preset.visible = false;
+				break;
+		}
+		
+		//populate encoding modes
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbVideoMode.set_model(model);
+		
+		switch (vcodec){
+			case "x264":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate / CRF",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
+				cmbVideoMode.set_active(0);
+				
+				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.set_tooltip_text ("");
+				spinVideoBitrate.digits = 0;
+				
+				spinVideoQuality.adjustment.configure(23.0, 0, 51, 1, 1, 0);
+				spinVideoQuality.set_tooltip_text ("");
+				spinVideoQuality.digits = 1;
+				
+				cmbVideoMode.sensitive = true;
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = true;
+				cmbVideoMode_changed();
+				break;
+			
+			case "theora":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.append (out iter);
+				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
+				cmbVideoMode.set_active(0);
+				
+				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.set_tooltip_text ("");
+				spinVideoBitrate.digits = 0;
+				
+				spinVideoQuality.adjustment.configure(6, 0, 10, 1, 1, 0);
+				spinVideoQuality.set_tooltip_text ("");
+				spinVideoQuality.digits = 1;
+				
+				cmbVideoMode.sensitive = true;
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = true;
+				cmbVideoMode_changed();
+				break;
+			
+			case "vp8":
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,"Variable Bitrate (2pass)",1,"2pass");
+				model.append (out iter);
+				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				//model.append (out iter);
+				//model.set (iter,0,"Constrained Quality",1,"cq");
+				cmbVideoMode.set_active(0);
+				
+				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.set_tooltip_text ("");
+				spinVideoBitrate.digits = 0;
+				
+				spinVideoQuality.adjustment.configure(10, 0, 63, 1, 1, 0);
+				spinVideoQuality.set_tooltip_text ("");
+				spinVideoQuality.digits = 0;
+				
+				cmbVideoMode.sensitive = true;
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = true;
+				cmbVideoMode_changed();
+				break;
+				
+			default: //disable
+				cmbVideoMode.sensitive = false;
+				spinVideoBitrate.sensitive = false;
+				spinVideoQuality.sensitive = false;
+				break;
+		}
+		
+		//populate resize methods
+        model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		cmbResizingMethod.set_model(model);
+		
+		switch (vcodec){
+			case "x264":
+				lblResizingMethod.visible = true;
+				cmbResizingMethod.visible = true;
+				model.append (out iter);
+				model.set (iter,0,"Fast Bilinear",1,"fastbilinear");
+				model.append (out iter);
+				model.set (iter,0,"Bilinear",1,"bilinear");
+				model.append (out iter);
+				model.set (iter,0,"Bicubic",1,"bicubic");
+				model.append (out iter);
+				model.set (iter,0,"Experimental",1,"experimental");
+				model.append (out iter);
+				model.set (iter,0,"Point",1,"point");
+				model.append (out iter);
+				model.set (iter,0,"Area",1,"area");
+				model.append (out iter);
+				model.set (iter,0,"Bicublin",1,"bicublin");
+				model.append (out iter);
+				model.set (iter,0,"Gaussian",1,"gauss");
+				model.append (out iter);
+				model.set (iter,0,"Sinc",1,"sinc");
+				model.append (out iter);
+				model.set (iter,0,"Lanczos",1,"lanczos");
+				cmbResizingMethod.set_active(2);
+				break;
+				
+			default:
+				lblResizingMethod.visible = false;
+				cmbResizingMethod.visible = false;
+				break;
+			
+		}
+
+		//set logo
+		switch (vcodec){
+			case "x264":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/x264.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
+			default:
+				imgVideoCodec.clear();
 				break;
 		}
 	}
@@ -1573,76 +1810,46 @@ These subtitles cannot be switched off.""");
 		}*/
 	}
 	
-	private void cmbVCodec_changed ()
-	{
-		ListStore model;
-		TreeIter iter;
-		
-		//populate encoding modes
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		cmbVideoMode.set_model(model);
-		
-		switch (vcodec){
-			case "x264":
-				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate / CRF",1,"vbr");
-				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
-				model.append (out iter);
-				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
-				cmbVideoMode.set_active(0);
-				
-				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
-				spinVideoBitrate.set_tooltip_text ("");
-				spinVideoBitrate.digits = 0;
-				
-				spinVideoQuality.adjustment.configure(23.0, 0, 51, 1, 1, 0);
-				spinVideoQuality.set_tooltip_text ("");
-				spinVideoQuality.digits = 1;
-				
-				cmbVideoMode.sensitive = true;
-				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = true;
-				cmbVideoMode_changed();
-				break;
-				
-			default: //disable
-				cmbVideoMode.sensitive = false;
-				spinVideoBitrate.sensitive = false;
-				spinVideoQuality.sensitive = false;
-				break;
-		}
-		
-		//set logo
-		switch (vcodec){
-			case "x264":
-				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/x264.png");
-				imgVideoCodec.xalign = (float) 0.5;
-				imgVideoCodec.yalign = (float) 1.0;
-				break;
-			default:
-				imgVideoCodec.clear();
-				break;
-		}
-	}
-	
 	private void cmbVideoMode_changed()
 	{
-		switch (video_mode) {
-			case "vbr":
-				spinVideoBitrate.sensitive = false;
-				spinVideoQuality.sensitive = true;
-				break;
-			case "abr":
-			case "2pass":
-				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = false;
+		switch(vcodec){
+			case "vp8":
+				switch (video_mode) {
+					case "cq":
+						spinVideoBitrate.sensitive = false;
+						spinVideoQuality.sensitive = true;
+						break;
+					case "vbr":
+					case "cbr":
+					case "2pass":
+						spinVideoBitrate.sensitive = true;
+						spinVideoQuality.sensitive = false;
+						break;
+					default:
+						spinVideoBitrate.sensitive = false;
+						spinVideoQuality.sensitive = false;
+						break;
+				}
 				break;
 			default:
-				spinVideoBitrate.sensitive = false;
-				spinVideoQuality.sensitive = false;
+				switch (video_mode) {
+					case "vbr":
+						spinVideoBitrate.sensitive = false;
+						spinVideoQuality.sensitive = true;
+						break;
+					case "abr":
+					case "2pass":
+						spinVideoBitrate.sensitive = true;
+						spinVideoQuality.sensitive = false;
+						break;
+					default:
+						spinVideoBitrate.sensitive = false;
+						spinVideoQuality.sensitive = false;
+						break;
+				}
 				break;
 		}
+		
 	}
 	
 	private void cmbSubtitleMode_changed()
@@ -1666,9 +1873,15 @@ movie_en.srt, movie_1.srt, etc.""";
 					case "mp4v":
 						lblSubFormatMessage.label = "Supported Formats: SRT, SUB, TTXT, XML" + msg;
 						break;
+					case "ogv":
+						lblSubFormatMessage.label = "Supported Formats: SRT" + msg;
+						break;
+					case "ogg":
+						lblSubFormatMessage.label = "Supported Formats: SRT, LRC" + msg;
+						break;
 					default:
-					lblSubFormatMessage.label = "";
-					break;
+						lblSubFormatMessage.label = "";
+						break;
 				}
 				break;
 				
@@ -1713,6 +1926,7 @@ movie_en.srt, movie_1.srt, etc.""";
 		video.set_string_member("mode",video_mode);
 		video.set_string_member("bitrate",video_bitrate);
 		video.set_string_member("quality",video_quality);
+		video.set_string_member("speed",video_speed);
 		video.set_string_member("options",x264_options);
 		video.set_string_member("frameSize",frame_size);
 		video.set_string_member("frameWidth",frame_width);
@@ -1720,6 +1934,7 @@ movie_en.srt, movie_1.srt, etc.""";
 		video.set_string_member("resizingMethod",resizing_method);
 		video.set_boolean_member("noUpscaling",no_upscaling);
 		video.set_boolean_member("fitToBox",fit_to_box);
+		video.set_string_member("fps",frame_rate);
 		video.set_string_member("fpsNum",frame_rate_num);
 		video.set_string_member("fpsDenom",frame_rate_denom);
 		
@@ -1773,6 +1988,8 @@ movie_en.srt, movie_1.srt, etc.""";
 		Json.Object audio = (Json.Object) config.get_object_member("audio");
 		Json.Object subs = (Json.Object) config.get_object_member("subtitle");
 		
+		//general ----------------------------
+		
 		format = general.get_string_member("format");
 		extension = general.get_string_member("extension");
 		//preset_name = general.get_string_member("presetName"); //set from file name
@@ -1780,18 +1997,24 @@ movie_en.srt, movie_1.srt, etc.""";
 		author_name = general.get_string_member("authorName");
 		author_email = general.get_string_member("authorEmail");
 		
-		switch(video.get_string_member("codec"))
-		{
+		//video --------------------------
+		
+		vcodec = video.get_string_member("codec");
+		switch(vcodec){
 			case "x264":
 				x264_profile = video.get_string_member("profile");
 				x264_preset = video.get_string_member("preset");
 				x264_options = video.get_string_member("options");
 				break;
+			case "vp8":
+				video_speed = video.get_string_member("speed");
+				break;
 		}
-		
 		video_mode = video.get_string_member("mode");
 		video_bitrate = video.get_string_member("bitrate");
 		video_quality = video.get_string_member("quality");
+		
+		//video filters ------------------------
 		
 		frame_size = video.get_string_member("frameSize");
 		frame_width = video.get_string_member("frameWidth");
@@ -1799,26 +2022,25 @@ movie_en.srt, movie_1.srt, etc.""";
 		resizing_method = video.get_string_member("resizingMethod");
 		no_upscaling = video.get_boolean_member("noUpscaling");
 		fit_to_box = video.get_boolean_member("fitToBox");
+		frame_rate = video.get_string_member("fps");
 		frame_rate_num = video.get_string_member("fpsNum");
 		frame_rate_denom = video.get_string_member("fpsDenom");
-				
-		switch(audio.get_string_member("codec"))
-		{
-			case "mp3lame":
-			case "neroaac":
-				audio_mode = audio.get_string_member("mode");
-				audio_bitrate = audio.get_string_member("bitrate");
-				audio_quality = audio.get_string_member("quality");
-				break;
+		
+		//audio ---------------------
+		
+		acodec = audio.get_string_member("codec");
+		switch(acodec){
 			case "opus":
-				audio_mode = audio.get_string_member("mode");
-				audio_bitrate = audio.get_string_member("bitrate");
 				audio_opus_optimize = audio.get_string_member("opusOptimize");
 				break;
 		}
-		
+		audio_mode = audio.get_string_member("mode");
+		audio_bitrate = audio.get_string_member("bitrate");
+		audio_quality = audio.get_string_member("quality");
 		audio_channels = audio.get_string_member("channels");
 		audio_sampling = audio.get_string_member("samplingRate");
+		
+		//subtitles --------------
 		
 		subtitle_mode = subs.get_string_member("mode");
 	}
@@ -1916,7 +2138,7 @@ movie_en.srt, movie_1.srt, etc.""";
     public string video_quality
 	{
         owned get { 
-			return spinVideoQuality.get_value().to_string(); 
+			return "%.1f".printf(spinVideoQuality.get_value()); 
 		}
         set { 
 			spinVideoQuality.get_adjustment().set_value(double.parse(value));
@@ -1952,6 +2174,17 @@ movie_en.srt, movie_1.srt, etc.""";
 			txtVCodecOptions.buffer.text = value;
 		}
     }
+
+    public string video_speed
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbVP8Speed,1,"good");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbVP8Speed, 1, value);
+		}
+    }
+    
     
     public string frame_size
 	{
@@ -2010,6 +2243,16 @@ movie_en.srt, movie_1.srt, etc.""";
 		}
         set { 
 			chkNoUpScale.set_active((bool)value);
+		}
+    }
+    
+    public string frame_rate
+	{
+        owned get { 
+			return Utility.Combo_GetSelectedValue(cmbFPS,1,"disable");
+		}
+        set { 
+			Utility.Combo_SelectValue(cmbFPS, 1, value);
 		}
     }
     
@@ -2076,7 +2319,7 @@ movie_en.srt, movie_1.srt, etc.""";
     public string audio_quality
 	{
         owned get { 
-			return spinAudioQuality.get_value().to_string(); 
+			return "%.1f".printf(spinAudioQuality.get_value()); 
 		}
         set { 
 			spinAudioQuality.set_value(double.parse(value));

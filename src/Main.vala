@@ -28,7 +28,7 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.5";
+public const string AppVersion = "1.6";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
@@ -91,12 +91,14 @@ public class MediaFile : GLib.Object
 	public bool HasVideo = false;
 	public int SourceWidth = 0;
 	public int SourceHeight = 0;
+	public double SourceFrameRate = 0;
 	public int AudioChannels = 0;
 	
 	public string ScriptFile;
 	public string TempDirectory;
 	public string LogFile;
 	public string OutputFilePath;
+	public long OutputFrameCount = 0;
 	
 	public MediaFile(string filePath)
 	{
@@ -216,6 +218,9 @@ public class MediaFile : GLib.Object
 						case "height":
 							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip ());
 							break;
+						case "frame rate":
+							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip ());
+							break;
 					}
 				}
 				else if (sectionType == "audio"){
@@ -236,6 +241,14 @@ public class MediaFile : GLib.Object
 		this.ScriptFile = this.TempDirectory + "/convert.sh";
 		this.OutputFilePath = "";
 		Utility.create_dir (this.TempDirectory);
+		
+		//initialize output frame count
+		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
+			OutputFrameCount = (long) ((Duration / 1000.0) * (SourceFrameRate));
+		}
+		else{
+			OutputFrameCount = 0;
+		}
 	}
 	
 	public bool crop_detect ()
@@ -393,7 +406,9 @@ public class Main : GLib.Object
 	private Regex regex_x264;
 	private Regex regex_ffmpeg2theora;
 	private Regex regex_ffmpeg2theora2;
+	private Regex regex_ffmpeg2theora3;
 	private Regex regex_opus;
+	private Regex regex_vpxenc;
 	
 	private string tempLine;
 	private MatchInfo match;
@@ -656,12 +671,18 @@ Notes:
 			regex_x264 = new Regex("""\[[0-9]+[.]?[0-9]*%\] [0-9]+/[0-9]+ frames, ([0-9]+)[.]?[0-9]* fps, ([0-9]+)[.]?[0-9]* kb/s, eta ([0-9:.]+)""");
 			
 			//  0:00:00.66 audio: 57kbps video: 404kbps, time elapsed: 00:00:00 
-			regex_ffmpeg2theora = new Regex ("""([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*) audio: ([0-9]+)kbps video: ([0-9]+)kbps""");
+			regex_ffmpeg2theora = new Regex ("""([0-9:.]+)[ ]*audio:[ ]*([0-9]+)kbps[ ]*video:[ ]*([0-9]+)kbps""");
+			// 0:00:00.92 audio: 98kbps video: 87kbps, ET: 00:00:10, est. size: 0.2 MB
+			regex_ffmpeg2theora2 = new Regex ("""([0-9:.]+)[ ]*audio:[ ]*([0-9]+)kbps[ ]*video:[ ]*([0-9]+)kbps,[ ]*ET:[ ]*([0-9:.]+),[ ]*est. size:[ ]*([0-9.]+)""");
+			//Scanning first pass pos: 0:00:00.00 ET: 00:00:00
+			regex_ffmpeg2theora3 = new Regex ("""Scanning first pass pos:[ ]*([0-9:.]+)[ ]*ET:[ ]*([0-9:.]+)""");
 			
 			//[/] 00:00:28.21 16.3x realtime, 60.68kbit/s
 			//[-] 00:01:48.09   16x realtime,  60.7kbit/s
-			regex_opus = new Regex ("""\[.\] ([0-9]+[:][0-9]+[:][0-9]+[.]?[0-9]*) [ ]*([0-9]+)[.]?[0-9]*x realtime, [ ]*([0-9]+)[.]?[0-9]*kbit/s""");
-
+			regex_opus = new Regex ("""\[.\][ ]*([0-9:.]+)[ ]*([0-9]+)[.]?[0-9]*x realtime,[ ]*([0-9]+)[.]?[0-9]*kbit/s""");
+			
+			//Pass 1/1 frame    2/1       6755B
+			regex_vpxenc = new Regex ("""(Pass[ ]*[0-9]+/[0-9]+)[ ]*frame[ ]*([0-9]+)/[0-9]+[ ]*([0-9]+)B""");
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -1169,30 +1190,37 @@ Notes:
 	    	stdout.printf ("\r%s\r", blankLine);
 	    }
 	    
-        if (Aborted)
-	        log_msg ("Stopped!");
-	    else{
-		    log_msg ("Done");
-		    if (ShowNotificationPopups)
-				Utility.notify_send ("File Complete", mf.Name, 2000, "low");
-		}
-		
-		// check for errors
-        if (Utility.file_exists (mf.TempDirectory + "/0"))
-        {
+	    if (Utility.file_exists (mf.TempDirectory + "/0")) {
 			mf.Status = FileStatus.SUCCESS;
 			mf.ProgressText = "Done";
 			mf.ProgressPercent = 100;
 			retVal = true;
+			
+			log_msg ("Completed");
+			if (ShowNotificationPopups){
+				Utility.notify_send ("File Completed", mf.Name, 2000, "low");
+			}
 		}
-		else
-		{
+		else{
 			mf.Status = FileStatus.ERROR;
 			mf.ProgressText = "Error";
 			mf.ProgressPercent = 0;
 			retVal = false;
+			
+			log_msg ("Failed");
+			if (ShowNotificationPopups){
+				Utility.notify_send ("File Failed", mf.Name, 2000, "low");
+			}
 		}
-		
+			
+	    
+	    if (Aborted) {
+	        log_msg ("Stopped!");
+		}
+		else {
+			
+		}
+
 		// convert next file
 		convert_next();
 		
@@ -1242,16 +1270,26 @@ Notes:
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			StatusLine = "(ffmpeg2theora) %s+%s kbps".printf(match.fetch(2), match.fetch(3));
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
-				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
+				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s mb, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
 			}
 			else {
 				StatusLine = tempLine;
 			}
 		}
+		else if (regex_ffmpeg2theora3.match (tempLine, 0, out match)){
+			dblVal = Utility.parse_time (match.fetch(1));
+			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			StatusLine = "(ffmpeg2theora) Scanning first pass, eta %s".printf(match.fetch(2));
+		}
 		else if (regex_opus.match (tempLine, 0, out match)){
 			dblVal = Utility.parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			StatusLine = "(opusenc) %sx, %s kbps".printf(match.fetch(2), match.fetch(3));
+		}
+		else if (regex_vpxenc.match (tempLine, 0, out match)){
+			dblVal = double.parse(match.fetch(2));
+			Progress = dblVal / App.CurrentFile.OutputFrameCount;
+			StatusLine = "(vpxenc) %s, %s frames, %.0f kb".printf(match.fetch(1), match.fetch(2), double.parse(match.fetch(3))/1000);
 		}
 		else if (regex_generic.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
@@ -1388,7 +1426,7 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
-		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
 		//insert temporary file names ------------
 		
@@ -1401,6 +1439,12 @@ Notes:
 				break;
 			case "neroaac":
 				s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
+				break;
+			case "vorbis":
+				s += "tempAudio=\"${tempDir}/audio.ogg\"\n";
+				break;
+			case "opus":
+				s += "tempAudio=\"${tempDir}/audio.opus\"\n";
 				break;
 		}
 		s += "\n";
@@ -1415,11 +1459,15 @@ Notes:
 		{
 			case "mkv":
 			case "mp4v":
+			case "webm":
 				//encode video
 				switch (vcodec)
 				{
 					case "x264":
 						s += encode_video_x264(mf,settings);
+						break;
+					case "vp8":
+						s += encode_video_vpxenc(mf,settings);
 						break;
 				}
 				
@@ -1432,12 +1480,16 @@ Notes:
 						case "neroaac":
 							s += encode_audio_neroaac(mf,settings);
 							break;
+						case "vorbis":
+							s += encode_audio_oggenc(mf,settings);
+							break;
 					}
 				}
 				
 				//mux audio, video and subs
 				switch (format){
 					case "mkv":
+					case "webm":
 						s += mux_mkvmerge(mf,settings);
 						break;
 					case "mp4v":
@@ -1445,6 +1497,10 @@ Notes:
 						break;
 				}
 					
+				break;
+			
+			case "ogv":
+				s += encode_video_ffmpeg2theora(mf,settings);
 				break;
 				
 			case "mp3":
@@ -1459,6 +1515,10 @@ Notes:
 				s += encode_audio_opus(mf,settings);
 				break;
 				
+			case "ogg":
+				s += encode_audio_oggenc(mf,settings);
+				break;
+
 			case "ac3":
 			case "flac":
 			case "wav":
@@ -1495,9 +1555,14 @@ Notes:
 		
 		if (usePiping) {
 			s += "avconv -i \"${inFile}\" -copyinkf -an -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
-			if (video.get_string_member("fpsNum") != "0" && video.get_string_member("fpsDenom") != "0") {
-				s += " -r " + video.get_string_member("fpsNum") + "/" + video.get_string_member("fpsDenom");
+
+			int fpsNum = int.parse(video.get_string_member("fpsNum"));
+			int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
+			if (fpsNum != 0 && fpsDenom != 0) {
+				s += " -r %d/%d".printf(fpsNum,fpsDenom);
+				mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
 			}
+		
 			s += " -y - | ";
 		}
 		
@@ -1532,7 +1597,6 @@ Notes:
 		//resizing
 		int w,h;
 		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
-		//debug("%d %d ".printf(w,h) + rescale.to_string());
 		if (rescale) {
 			string method = video.get_string_member("resizingMethod");
 			vf += "/resize:width=%d,height=%d,method=%s".printf(w,h,method);
@@ -1585,6 +1649,259 @@ Notes:
 		{
 			s = s.replace("{outputFile}","\"${tempVideo}\"");
 		}
+		
+		return s;
+	}
+	
+	private string encode_video_ffmpeg2theora (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		
+		s += "ffmpeg2theora";
+		s += " \"${inFile}\"";
+
+		switch(video.get_string_member("mode")){
+			case "vbr":
+				s += " --videoquality " + video.get_string_member("quality");
+				break;
+			case "abr":
+				s += " --videobitrate " + video.get_string_member("bitrate");
+				break;
+			case "2pass":
+				s += " --two-pass --videobitrate " + video.get_string_member("bitrate");
+				break;
+		}
+	
+		//cropping
+		if (mf.crop_enabled()) {
+			s += " --croptop %d --cropbottom %d --cropleft %d --cropright %d".printf(mf.CropT,mf.CropB,mf.CropL,mf.CropR);
+		}
+
+		//resizing
+		int w,h;
+		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
+		if (rescale) {
+			s += " --width %d --height %d".printf(w,h);
+		}
+		
+		//fps
+		int fpsNum = int.parse(video.get_string_member("fpsNum"));
+		int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
+		if (fpsNum != 0 && fpsDenom != 0) {
+			s += " --framerate %d/%d".printf(fpsNum,fpsDenom);
+			mf.OutputFrameCount = (long) Math.floor((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
+		}
+		
+		//audio
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			//mode
+			switch (audio.get_string_member("mode")){
+				case "vbr":
+					s += " --audioquality " + audio.get_string_member("quality");
+					break;
+				case "abr":
+					s += " --audiobitrate " + audio.get_string_member("bitrate");
+					break;
+			}
+
+			//channels
+			string channels = audio.get_string_member("channels");
+			if (channels != "disable"){
+				s += " --channels " + channels;
+			}
+
+			//sampling
+			string sampling = audio.get_string_member("samplingRate");
+			if (sampling != "disable"){
+				s += " --samplerate " + sampling;
+			}
+		}
+		else {
+			s += " --noaudio";
+		}
+		
+		//subs
+		if (subs.get_string_member("mode") == "embed") {
+			if (mf.SubExt == ".srt"){
+				s += " --subtitles \"${subFile}\"";
+			}
+		}
+		else {
+			s += " --nosubtitles";
+		}
+		
+		//other options
+		if (video.get_string_member("options").strip() != "") {
+			s += " " +  video.get_string_member("options").strip();
+		}
+				
+		s += " --output \"${outputFile}\"";
+
+		s += "\n";
+
+		return s;
+	}
+	
+	/*
+	private string encode_video_avconv (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += "avconv";
+		s += " -i \"${inFile}\"";
+		s += " -f " + general.get_string_member("format");
+		s += " -an -sn -c:v libvpx";
+
+		if (video.get_string_member("mode") == "2pass"){
+			s += " -pass {passNumber}"; 
+		}
+		
+		string kbps = video.get_string_member("bitrate");
+		switch(video.get_string_member("mode")){
+			case "vbr":
+			case "2pass":
+				s += " -b:v %sk".printf(kbps);
+				break;
+			case "cbr":
+				s += " -minrate %sk -maxrate %sk -b:v %sk".printf(kbps,kbps,kbps);
+				break;
+			case "cq":
+				s += " -crf %s".printf(video.get_string_member("quality"));
+				break;
+		}
+		
+		s += " -deadline " + video.get_string_member("speed");
+		
+		// filters ----------
+		
+		//fps
+		if (video.get_string_member("fpsNum") != "0" && video.get_string_member("fpsDenom") != "0") {
+			s += " -r " + video.get_string_member("fpsNum") + "/" + video.get_string_member("fpsDenom");
+		}
+		
+		string vf = "";
+		
+		//cropping
+		if (mf.crop_enabled()) {
+			vf += ",crop=%s".printf(mf.crop_values_libav());
+		}
+
+		//resizing
+		int w,h;
+		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
+		if (rescale) {
+			vf += ",scale=%d:%d".printf(w,h);
+		}
+
+		if (vf.length > 0){
+			s += " -vf " + vf[1:vf.length];
+		}
+		
+		//---------------
+		
+		//other options
+		if (video.get_string_member("options").strip() != "") {
+			s += " " +  video.get_string_member("options").strip();
+		}
+				
+		//add output file path placeholder
+		s += " -y {outputFile}";
+		
+		s += "\n";
+		
+		if (video.get_string_member("mode") == "2pass"){
+			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
+			s = temp;
+		}
+		else
+		{
+			s = s.replace("{outputFile}","\"${tempVideo}\"");
+		}
+		
+		return s;
+	}
+*/
+
+	private string encode_video_vpxenc (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		
+		s += decode_video_avconv(mf,settings,true);
+		s += "vpxenc";
+
+		if (video.get_string_member("mode") == "2pass"){
+			s += " --passes=2"; 
+		}
+		
+		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
+		switch(video.get_string_member("mode")){
+			case "vbr":
+			case "2pass":
+				s += " --end-usage=vbr --target-bitrate=" + video.get_string_member("bitrate");
+				break;
+			case "cbr":
+				s += " --end-usage=cbr --target-bitrate=" + video.get_string_member("bitrate");
+				break;
+			case "cq":
+				s += " --end-usage=cq --cq-level=" + vquality;
+				break;
+		}
+		
+		s += " --good";
+		switch(video.get_string_member("speed")){
+			case "good_0":
+				s += " --cpu-used=0";
+				break;
+			case "good_1":
+				s += " --cpu-used=1";
+				break;
+			case "good_2":
+				s += " --cpu-used=2";
+				break;
+			case "good_3":
+				s += " --cpu-used=3";
+				break;
+			case "good_4":
+				s += " --cpu-used=4";
+				break;
+			case "good_5":
+				s += " --cpu-used=5";
+				break;
+		}
+
+		//---------------
+		
+		//other options
+		if (video.get_string_member("options").strip() != "") {
+			s += " " +  video.get_string_member("options").strip();
+		}
+		
+		//specify input dimensions (required)
+		int w,h;
+		calculate_video_resolution(mf, settings, out w, out h);
+		s += " --width=%d --height=%d".printf(w,h);
+			
+		//output
+		s += " -o ${tempVideo}";
+		
+		//input
+		s += " -";
+
+		s += "\n";
 		
 		return s;
 	}
@@ -1698,7 +2015,7 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
@@ -1736,7 +2053,7 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
@@ -1771,7 +2088,7 @@ Notes:
 	{
 		string s = "";
 		
-		Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		
@@ -1865,6 +2182,108 @@ Notes:
 		return s;
 	}
 	
+	private string encode_audio_oggenc (MediaFile mf, Json.Object settings)
+	{
+		string s = "";
+		
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		
+		s += decode_audio_avconv(mf, settings, true);
+		s += "oggenc --quiet";
+		
+		//mode
+		switch (audio.get_string_member("mode")){
+			case "vbr":
+				s += " --bitrate " + audio.get_string_member("bitrate");
+				break;
+			case "abr":
+				s += " --quality " + audio.get_string_member("quality");
+				break;
+		}
+		
+		//subs
+		if (subs.get_string_member("mode") == "embed") {
+			if (mf.SubExt == ".srt" || mf.SubExt == ".lrc") {
+				s += " --lyrics \"${subFile}\"";
+			}
+		}
+
+		//output
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " --output \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " --output \"${outputFile}\"";
+		}
+		
+		//input
+		s += " -";
+		
+		s += "\n";
+		
+		return s;
+	}
+
+	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent)
+	{
+		string s = "";
+		
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		
+		s += "avconv";
+		
+		//progress info
+		if (silent){
+			s += " -nostats";
+		}
+		//input
+		s += " -i \"${inFile}\"";
+		
+		//format
+		s += " -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
+		
+		//fps
+		int fpsNum = int.parse(video.get_string_member("fpsNum"));
+		int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
+		if (fpsNum != 0 && fpsDenom != 0) {
+			s += " -r %d/%d".printf(fpsNum,fpsDenom);
+			mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
+		}
+		
+		string vf = "";
+		
+		//cropping
+		if (mf.crop_enabled()) {
+			vf += ",crop=%s".printf(mf.crop_values_libav());
+		}
+
+		//resizing
+		int w,h;
+		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
+		if (rescale) {
+			vf += ",scale=%d:%d".printf(w,h);
+		}
+
+		if (vf.length > 0){
+			s += " -vf " + vf[1:vf.length];
+		}
+		
+		//---------------
+		
+		//output
+		s += " -an -sn -y - | ";
+		
+		return s;
+	}
+	
 	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent)
 	{
 		string s = "";
@@ -1895,11 +2314,13 @@ Notes:
 		else{
 			s += " -ac " + channels;
 		}
+		
 		//sampling
 		string sampling = audio.get_string_member("samplingRate");
 		if (sampling != "disable"){
 			s += " -ar " + sampling;
 		}
+		
 		//output
 		s += " -vn -y - | ";
 		
@@ -1910,12 +2331,22 @@ Notes:
 	{
 		string s = "";
 		
-		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object general = (Json.Object) settings.get_object_member("general");
 		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
-		s += "mkvmerge --output \"${outputFile}\"";
+		string format = general.get_string_member("format");
+		
+		s += "mkvmerge";
+		
+		//webm compliance
+		if (format == "webm") {
+			s += " --webm";
+		}
+	
+		//output
+		s += " --output \"${outputFile}\"";
 		
 		//add video
 		s += " --compression -1:none \"${tempVideo}\"";
@@ -1926,10 +2357,15 @@ Notes:
 		}
 		
 		//add subs
-		if (subs.get_string_member("mode") == "embed") {
-			if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa") {
-				s += " --compression -1:none \"${subFile}\"";
+		if (format != "webm") {
+			if (subs.get_string_member("mode") == "embed") {
+				if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa") {
+					s += " --compression -1:none \"${subFile}\"";
+				}
 			}
+		}
+		else{
+			//WebM currently does not support subtitles
 		}
 		
 		s += "\n";
