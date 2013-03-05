@@ -1844,7 +1844,7 @@ Notes:
 		s += "vpxenc";
 
 		if (video.get_string_member("mode") == "2pass"){
-			s += " --passes=2"; 
+			s += " --passes=2 --pass={passNumber} --fpf=stats"; 
 		}
 		
 		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
@@ -1896,12 +1896,22 @@ Notes:
 		s += " --width=%d --height=%d".printf(w,h);
 			
 		//output
-		s += " -o \"${tempVideo}\"";
+		s += " -o {outputFile}";
 		
 		//input
 		s += " -";
 
 		s += "\n";
+		
+		if (video.get_string_member("mode") == "2pass"){
+			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
+			s = temp;
+		}
+		else
+		{
+			s = s.replace("{outputFile}","\"${tempVideo}\"");
+		}
 		
 		return s;
 	}

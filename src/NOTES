@@ -1,0 +1,14 @@
+
+oggenc
+========
+Supports muxing of SRT and LRC files if compiled with libkate support
+
+vpxenc
+========
+Automatic 2 pass encoding (using --passes=2) will not work when video is piped
+used avconv (since input stream will be closed after the first pass).
+Both passes must be done separately:
+Pass1: --passes=2 --pass=1 --fpf=stats
+Pass2: --passes=2 --pass=2 --fpf=stats
+
+
