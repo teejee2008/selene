@@ -1309,8 +1309,13 @@ Notes:
 			StatusLine = tempLine;
 		}
 		
-		CurrentFile.ProgressPercent = (int)(Progress * 100);
-
+		if (Progress < 1) {
+			CurrentFile.ProgressPercent = (int)(Progress * 100);
+		}
+		else{
+			CurrentFile.ProgressPercent = 100;
+		}
+		
 		if (ConsoleMode){
 			stdout.printf ("\r%s\r", blankLine[0:78]);
 			if (Status == AppStatus.RUNNING){
@@ -2412,7 +2417,7 @@ Notes:
 		return s;
 	}
 	
-	private string mux_avconv (MediaFile mf, Json.Object settings)
+	/*private string mux_avconv (MediaFile mf, Json.Object settings)
 	{
 		string s = "";
 		
@@ -2427,12 +2432,6 @@ Notes:
 		}
 		s += " -i \"${tempVideo}\"";
 		
-		/*TODO: Mux SRT
-		 * if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa"){
-			s += " --compression -1:none \"${subFile}\"";
-		}
-		* */
-		
 		switch(format){
 			case "mp4v":
 				s += " -f mp4";
@@ -2444,6 +2443,7 @@ Notes:
 		
 		return s;
 	}
+	*/
 }
 
 

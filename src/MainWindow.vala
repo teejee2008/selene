@@ -1425,7 +1425,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				}
 				
 				if (model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string ())){
-					model.set (iter, InputField.FILE_PROGRESS, (int)(App.Progress * 100));
+					model.set (iter, InputField.FILE_PROGRESS, App.CurrentFile.ProgressPercent);
 					model.set (iter, InputField.FILE_PROGRESS_TEXT, null);
 				}
 
