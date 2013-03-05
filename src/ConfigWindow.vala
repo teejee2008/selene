@@ -185,7 +185,7 @@ public class ConfigWindow : Dialog {
 		row = -1;
 		
 		//lblHeaderFileFormat
-		lblHeaderFileFormat = new Gtk.Label("<b>File Format &amp; Extension:</b>");
+		lblHeaderFileFormat = new Gtk.Label("<b>File Format:</b>");
 		lblHeaderFileFormat.set_use_markup(true);
 		lblHeaderFileFormat.xalign = (float) 0.0;
 		//lblHeaderFileFormat.margin_top = 6;
@@ -242,7 +242,7 @@ public class ConfigWindow : Dialog {
         gridGeneral.attach(cmbFileExtension,1,row,1,1);
         
         //lblHeaderPreset
-		lblHeaderPreset = new Gtk.Label("<b>Preset Properties:</b>");
+		lblHeaderPreset = new Gtk.Label("<b>Preset:</b>");
 		lblHeaderPreset.set_use_markup(true);
 		lblHeaderPreset.xalign = (float) 0.0;
 		lblHeaderPreset.margin_top = 6;
