@@ -1541,7 +1541,7 @@ These subtitles cannot be switched off.""");
 		ListStore model;
 		TreeIter iter;
 		
-		//hide options
+		//show x264 options
 		switch (vcodec){
 			case "x264":
 				lblX264Preset.visible = true;
@@ -1558,6 +1558,18 @@ These subtitles cannot be switched off.""");
 				cmbX264Profile.visible = false;
 				lblX264Preset.visible = false;
 				cmbX264Preset.visible = false;
+				break;
+		}
+		
+		//show vp8 options
+		switch (vcodec){
+			case "vp8":
+				lblVP8Speed.visible = true;
+				cmbVP8Speed.visible = true;
+				break;
+			default:
+				lblVP8Speed.visible = false;
+				cmbVP8Speed.visible = false;
 				break;
 		}
 		
