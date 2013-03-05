@@ -357,31 +357,22 @@ public class ConfigWindow : Dialog {
         //lblVideoQuality
 		lblVideoQuality = new Gtk.Label("Quality");
 		lblVideoQuality.xalign = (float) 0.0;
-		lblVideoQuality.set_tooltip_text (
-"""Compression Vs Quality
-
-Smaller values = Better quality, Larger Files
-Larger values  = Less quality, Smaller files"""
-		);
 		gridVideo.attach(lblVideoQuality,0,++row,1,1);
 
 		//spinVideoQuality
 		Gtk.Adjustment adjVideoQuality = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
 		spinVideoQuality = new Gtk.SpinButton (adjVideoQuality, 0.1, 2);
+		spinVideoQuality.set_tooltip_text (
+"""Compression Vs Quality
+
+Smaller values = Better quality, Larger Files
+Larger values  = Less quality, Smaller files"""
+		);
 		gridVideo.attach(spinVideoQuality,1,row,1,1);
 		
         //lblPreset
 		lblX264Preset = new Gtk.Label("Preset");
 		lblX264Preset.xalign = (float) 0.0;
-		lblX264Preset.set_tooltip_text (
-"""Compression Vs Encoding Speed
-
-Faster Preset = Faster Encoding, Larger Files
-Slower Preset = Slower Encoding, Smaller Files
-
-This option only affects Encoding Speed and File Size.
-It does not affect Video Quality (which is controlled by CRF value)"""
-		);
 		gridVideo.attach(lblX264Preset,0,++row,1,1);
 		
 		//cmbx264Preset
@@ -405,19 +396,20 @@ It does not affect Video Quality (which is controlled by CRF value)"""
 		textCell = new CellRendererText();
         cmbX264Preset.pack_start( textCell, false );
         cmbX264Preset.set_attributes( textCell, "text", 0 );
+        cmbX264Preset.set_tooltip_text (
+"""Compression Vs Encoding Speed
+
+Faster Preset = Faster Encoding, Larger Files
+Slower Preset = Slower Encoding, Smaller Files
+
+This option only affects Encoding Speed and File Size.
+It does not affect Video Quality (which is controlled by CRF value)"""
+		);
         gridVideo.attach(cmbX264Preset,1,row,1,1);
 
 		//lblProfile
 		lblX264Profile = new Gtk.Label("Profile");
 		lblX264Profile.xalign = (float) 0.0;
-		lblX264Profile.set_tooltip_text (
-"""Compression Vs Device Compatibility
-
-Baseline = Worse compression, Playable on more devices (mobiles and PMPs)
-High Profile = Best compression, Not playable on some devices
-
-Change this option only if you are encoding for a particular device"""
-		);
 		gridVideo.attach(lblX264Profile,0,++row,1,1);
 	
 		//cmbX264Profile
@@ -439,12 +431,27 @@ Change this option only if you are encoding for a particular device"""
 		textCell = new CellRendererText();
         cmbX264Profile.pack_start( textCell, false );
         cmbX264Profile.set_attributes( textCell, "text", 0 );
+        cmbX264Profile.set_tooltip_text (
+"""Compression Vs Device Compatibility
+
+Baseline = Worse compression, Playable on more devices (mobiles and PMPs)
+High Profile = Best compression, Not playable on some devices
+
+Change this option only if you are encoding for a particular device"""
+		);
         gridVideo.attach(cmbX264Profile,1,row,1,1);
 		
 		//lblVP8Speed
 		lblVP8Speed = new Gtk.Label("Speed");
 		lblVP8Speed.xalign = (float) 0.0;
-		lblVP8Speed.set_tooltip_text (
+		gridVideo.attach(lblVP8Speed,0,++row,1,1);
+		
+		//cmbVP8Speed
+		cmbVP8Speed = new ComboBox();
+		textCell = new CellRendererText();
+        cmbVP8Speed.pack_start( textCell, false );
+        cmbVP8Speed.set_attributes( textCell, "text", 0 );
+        cmbVP8Speed.set_tooltip_text (
 """Compression Vs Encoding Speed
 
 This setting has a big impact on encoding speed.
@@ -455,13 +462,6 @@ Use a slower setting for better quality and
 a faster setting to save time.
 """
 		);
-		gridVideo.attach(lblVP8Speed,0,++row,1,1);
-		
-		//cmbVP8Speed
-		cmbVP8Speed = new ComboBox();
-		textCell = new CellRendererText();
-        cmbVP8Speed.pack_start( textCell, false );
-        cmbVP8Speed.set_attributes( textCell, "text", 0 );
         gridVideo.attach(cmbVP8Speed,1,row,1,1);
         
         //populate
@@ -557,19 +557,22 @@ a faster setting to save time.
         cmbFrameSize.changed.connect(cmbFrameSize_changed);
         cmbFrameSize.hexpand = true;
         gridVideoFilters.attach(cmbFrameSize,1,row,1,1);
+		
+		
+		string fps = """Set either Width or Height, leave the other as 0 (it will be calculated automatically).
+Setting both width and height is not recommended, since the video may get stretched or squeezed.
+Use the 'Fit-To-Box' option to avoid changes to aspect ratio.
+
+Examples:
+0 x 0   => No Change
+0 x 480 => sets Height to 480 and Width is calculated automatically
+800 x 0 => sets Width to 800 and Height is calculated automatically""";
 
         //lblFrameSizeCustom
 		lblFrameSizeCustom = new Gtk.Label("Width x Height");
 		lblFrameSizeCustom.xalign = (float) 0.0;
 		lblFrameSizeCustom.no_show_all = true;
-		lblFrameSizeCustom.set_tooltip_text (
-"""Set either Width or Height, leave the other as 0 (it will be calculated automatically).
-Setting both width and height is not recommended, since the video may get stretched or squeezed.
-
-Examples:
-0 x 0   => No Change
-0 x 480 => sets Height to 480 and Width is calculated automatically
-800 x 0 => sets Width to 800 and Height is calculated automatically""");
+		lblFrameSizeCustom.set_tooltip_text (fps);
 		gridVideoFilters.attach(lblFrameSizeCustom,0,++row,1,1);
 		
         //hboxFrameSize
@@ -659,16 +662,18 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbFPS.changed.connect(cmbFPS_changed);
         gridVideoFilters.attach(cmbFPS,1,row,1,1);
         
-		//lblFPSCustom
-		lblFPSCustom = new Gtk.Label("FPS Ratio");
-		lblFPSCustom.xalign = (float) 0.0;
-		lblFPSCustom.no_show_all = true;
-		lblFPSCustom.set_tooltip_text (
+        string tt = 
 """Examples:
 0 / 0  => No Change
 25 / 1 => 25fps
 30 / 1 => 30fps
-30000 / 1001 => 29.97fps""");
+30000 / 1001 => 29.97fps""";
+
+		//lblFPSCustom
+		lblFPSCustom = new Gtk.Label("FPS Ratio");
+		lblFPSCustom.xalign = (float) 0.0;
+		lblFPSCustom.no_show_all = true;
+		lblFPSCustom.set_tooltip_text (tt);
 		gridVideoFilters.attach(lblFPSCustom,0,++row,1,1);
 
         //hboxFrameRate
@@ -682,7 +687,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		spinFPSNum.xalign = (float) 0.5;
 		spinFPSNum.no_show_all = true;
 		spinFPSNum.width_chars = 5;
-		spinFPSNum.set_tooltip_text ("Frames/sec Numerator");
+		spinFPSNum.set_tooltip_text ("Numerator");
 		hboxFPS.pack_start(spinFPSNum, false, false, 0);
 		
 		//spinFPSDenom
@@ -691,7 +696,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		spinFPSDenom.xalign = (float) 0.5;
 		spinFPSDenom.no_show_all = true;
 		spinFPSDenom.width_chars = 5;
-		spinFPSDenom.set_tooltip_text ("Frames/sec Denominator");
+		spinFPSDenom.set_tooltip_text ("Denominator");
 		hboxFPS.pack_start(spinFPSDenom, false, false, 5);
 				
 		// Audio tab --------------------------------------------------
@@ -849,13 +854,6 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//lblSubtitleMode
 		lblSubtitleMode = new Gtk.Label("Subtitles");
 		lblSubtitleMode.xalign = (float) 0.0;
-		lblSubtitleMode.set_tooltip_text (
-"""Embed - Subtitle files will be combined with the output file.
-Since the subtitles are added as a separate track, 
-it can be switched off.
-
-Render - Subtitles are rendered/burned on the video.
-These subtitles cannot be switched off.""");
 		gridSubtitle.attach(lblSubtitleMode,0,++row,1,1);
 		
 		//cmbSubtitleMode
@@ -865,6 +863,13 @@ These subtitles cannot be switched off.""");
         cmbSubtitleMode.set_attributes( textCell, "text", 0 );
         cmbSubtitleMode.changed.connect(cmbSubtitleMode_changed);
         cmbSubtitleMode.hexpand = true;
+        cmbSubtitleMode.set_tooltip_text (
+"""Embed - Subtitle files will be combined with the output file.
+Since the subtitles are added as a separate track, 
+it can be switched off.
+
+Render - Subtitles are rendered/burned on the video.
+These subtitles cannot be switched off.""");
         gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
         
         //lblSubFormatMessage
