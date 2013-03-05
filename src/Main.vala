@@ -1896,7 +1896,7 @@ Notes:
 		s += " --width=%d --height=%d".printf(w,h);
 			
 		//output
-		s += " -o ${tempVideo}";
+		s += " -o \"${tempVideo}\"";
 		
 		//input
 		s += " -";
