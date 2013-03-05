@@ -882,7 +882,7 @@ These subtitles cannot be switched off.""");
 		//cmbVideoMode.set_active(0);
 		//cmbSubtitleMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
-		cmbVP8Speed.set_active(1);
+		cmbVP8Speed.set_active(3);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
