@@ -366,12 +366,12 @@ public class MainWindow : Gtk.Window
         
         //btnPresetEdit
 		btnPresetEdit = new Button();
-		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.MENU));
-		btnPresetEdit.label = "Edit";
+		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.BUTTON));
+		//btnPresetEdit.label = "Edit";
 		btnPresetEdit.image_position = PositionType.TOP;
         btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
         btnPresetEdit.set_tooltip_text ("Edit Preset");
-        btnPresetEdit.set_size_request(60,-1);
+        btnPresetEdit.set_size_request(50,-1);
         gridConfig.attach(btnPresetEdit,2,0,1,2);
         
 		//btnPresetNew
@@ -385,7 +385,7 @@ public class MainWindow : Gtk.Window
 		btnOpenScriptFolder = new Button();
 		btnOpenScriptFolder.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
         btnOpenScriptFolder.clicked.connect (btnOpenScriptFolder_clicked);
-        btnOpenScriptFolder.set_tooltip_text ("Open script folder");
+        btnOpenScriptFolder.set_tooltip_text ("Open Folder");
         gridConfig.attach(btnOpenScriptFolder,3,1,1,1);
         
 		// lblStatus
