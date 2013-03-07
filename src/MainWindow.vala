@@ -51,6 +51,8 @@ public class MainWindow : Gtk.Window
 	private Box hboxProgress;
 	private ComboBox cmbScriptFile;
 	private ComboBox cmbScriptFolder;
+	private Label lblScriptFile;
+	private Label lblScriptFolder;
 	private TreeView tvFiles;
 	private ScrolledWindow swFiles;
 	private Label lblStatus;
@@ -72,7 +74,8 @@ public class MainWindow : Gtk.Window
 	private TreeViewColumn colCrop;
 	private TreeViewColumn colProgress;
 	private TreeViewColumn colSpacer;
-
+	private Grid gridConfig;
+	
 	private Regex regexGeneric;
 	private Regex regexMkvMerge;
 	private Regex regexFFmpeg;
@@ -311,62 +314,85 @@ public class MainWindow : Gtk.Window
         tvFiles.drag_data_received.connect(this.on_drag_data_received);
 		
 		vboxMain.add (vboxMain2);
-		
+
 		//hboxScript
 		hboxScript = new Box (Orientation.HORIZONTAL, 6);
 		hboxScript.homogeneous = false;
-        vboxMain2.pack_start (hboxScript, true, true, 6);
+        //vboxMain2.pack_start (hboxScript, true, true, 6);
         
-        //cmbScriptFolder ---------------------
-
+        //Config ---------------------------------------------------
+        
+        //gridConfig
+        gridConfig = new Grid ();
+        gridConfig.set_column_spacing (6);
+        gridConfig.set_row_spacing (6);
+        gridConfig.visible = false;
+        gridConfig.margin_top = 6;
+        gridConfig.margin_bottom = 6;
+        vboxMain2.add (gridConfig);
+		
+		//lblScriptFolder
+		lblScriptFolder = new Gtk.Label("Folder");
+		lblScriptFolder.xalign = (float) 0.0;
+		gridConfig.attach(lblScriptFolder,0,0,1,1);
+		
+        //cmbScriptFolder 
 		cmbScriptFolder = new ComboBox();
-		cmbScriptFolder.set_size_request(100,-1);
-		cmbScriptFolder.set_tooltip_text ("Folder");
-		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
-		hboxScript.pack_start (cmbScriptFolder, true, true, 0);
-
 		CellRendererText cellScriptFolder = new CellRendererText();
         cmbScriptFolder.pack_start( cellScriptFolder, false );
         cmbScriptFolder.set_cell_data_func (cellScriptFolder, cellScriptFolder_render);
+        cmbScriptFolder.set_size_request(100,-1);
+		cmbScriptFolder.set_tooltip_text ("Folder");
+		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
+		gridConfig.attach(cmbScriptFolder,1,0,1,1);
 		
-		//cmbScriptFile ----------------------
+		//lblScriptFile
+		lblScriptFile = new Gtk.Label("Preset");
+		lblScriptFile.xalign = (float) 0.0;
+		gridConfig.attach(lblScriptFile,0,1,1,1);
 		
+		//cmbScriptFile
 		cmbScriptFile = new ComboBox();
-		hboxScript.pack_start (cmbScriptFile, true, true, 0);
-		
+		cmbScriptFile.hexpand = true;
 		CellRendererText cellScriptFile = new CellRendererText();
         cmbScriptFile.pack_start( cellScriptFile, false );
         cmbScriptFile.set_cell_data_func (cellScriptFile, cellScriptFile_render);
         cmbScriptFile.set_tooltip_text ("Encoding Script or Preset File");
         cmbScriptFile.changed.connect(cmbScriptFile_changed);
+        gridConfig.attach(cmbScriptFile,1,1,1,1);
         
+        //populate
         populate_script_folders();
+        
+        //btnPresetEdit
+		btnPresetEdit = new Button();
+		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.MENU));
+		btnPresetEdit.label = "Edit";
+		btnPresetEdit.image_position = PositionType.TOP;
+        btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
+        btnPresetEdit.set_tooltip_text ("Edit Preset");
+        btnPresetEdit.set_size_request(60,-1);
+        gridConfig.attach(btnPresetEdit,2,0,1,2);
         
 		//btnPresetNew
 		btnPresetNew = new Button();
 		btnPresetNew.set_image (new Image.from_stock (Stock.ADD, IconSize.MENU));
         btnPresetNew.clicked.connect (btnPresetNew_clicked);
         btnPresetNew.set_tooltip_text ("New Preset");
-        hboxScript.add (btnPresetNew);
-        
-        //btnPresetEdit
-		btnPresetEdit = new Button();
-		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.MENU));
-        btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
-        btnPresetEdit.set_tooltip_text ("Edit Preset");
-        hboxScript.add (btnPresetEdit);
-        
+        gridConfig.attach(btnPresetNew,3,0,1,1);
+
         //btnOpenScriptFolder
 		btnOpenScriptFolder = new Button();
 		btnOpenScriptFolder.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
         btnOpenScriptFolder.clicked.connect (btnOpenScriptFolder_clicked);
         btnOpenScriptFolder.set_tooltip_text ("Open script folder");
-        hboxScript.add (btnOpenScriptFolder);
+        gridConfig.attach(btnOpenScriptFolder,3,1,1,1);
         
 		// lblStatus
 		lblStatus = new Label("");
 		lblStatus.ellipsize = Pango.EllipsizeMode.END;
-		vboxMain2.pack_start(lblStatus, false, false, 6);
+		lblStatus.margin_top = 6;
+		gridConfig.attach(lblStatus,0,2,4,1);
 		
 		// hboxProgress
 		hboxProgress = new Box (Orientation.HORIZONTAL, 5);
