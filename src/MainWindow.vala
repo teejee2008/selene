@@ -579,6 +579,8 @@ public class MainWindow : Gtk.Window
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
+		
+		App.SelectedScript = sh;
 	}
 	
 	private bool select_script (string filePath)
@@ -720,15 +722,19 @@ public class MainWindow : Gtk.Window
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
-
-	    var window = new ConfigWindow();
-	    window.Folder = sh.Folder;
-	    window.Name = sh.Title;
-	    window.show_all();
-	    window.load_script();
-	    window.run();
-	    
-	    cmbScriptFolder_changed();
+		
+		if (sh.Extension == ".json") {
+			var window = new ConfigWindow();
+			window.Folder = sh.Folder;
+			window.Name = sh.Title;
+			window.show_all();
+			window.load_script();
+			window.run();
+			cmbScriptFolder_changed();
+		}
+		else if (sh.Extension == ".sh") {
+			Utility.exo_open_textfile(sh.Path); 
+		}
 	}
 
 	// statusbar -------------------

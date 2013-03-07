@@ -628,7 +628,7 @@ namespace Utility
 
 		path = get_cmd_path ("gedit");
 		if ((path != null)&&(path != "")){
-			return execute_command_sync ("gedit " + double_quote (txt));
+			return execute_command_sync ("gedit --new-document " + double_quote (txt));
 		}
 
 		return -1;
