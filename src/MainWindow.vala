@@ -47,8 +47,6 @@ public class MainWindow : Gtk.Window
 	
 	private Box vboxMain;
 	private Box vboxMain2;
-	private Box hboxScript;
-	private Box hboxProgress;
 	private ComboBox cmbScriptFile;
 	private ComboBox cmbScriptFolder;
 	private Label lblScriptFile;
@@ -189,16 +187,6 @@ public class MainWindow : Gtk.Window
 		separator.set_draw (false);
 		separator.set_expand (true);
 		toolbar.add (separator);
-
-		//btnOpenOutputFolder
-		btnOpenOutputFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
-		//btnOpenOutputFolder.is_important = true;
-		btnOpenOutputFolder.label = "Output Folder";
-		btnOpenOutputFolder.clicked.connect (btnOpenOutputFolder_click);
-		btnOpenOutputFolder.set_tooltip_text ("Open output folder");
-		btnOpenOutputFolder.visible = false;
-		btnOpenOutputFolder.no_show_all = true;
-		toolbar.add (btnOpenOutputFolder);
 		
 		//btnAppSettings
 		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
@@ -234,6 +222,16 @@ public class MainWindow : Gtk.Window
         btnBackground.set_tooltip_text ("Run processes with lower priority");
         toolbar.add (btnBackground);
         
+        //btnOpenOutputFolder
+		btnOpenOutputFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
+		//btnOpenOutputFolder.is_important = true;
+		btnOpenOutputFolder.label = "Output";
+		btnOpenOutputFolder.clicked.connect (btnOpenOutputFolder_click);
+		btnOpenOutputFolder.set_tooltip_text ("Open output folder");
+		btnOpenOutputFolder.visible = false;
+		btnOpenOutputFolder.no_show_all = true;
+		toolbar.add (btnOpenOutputFolder);
+		
 		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
@@ -315,11 +313,6 @@ public class MainWindow : Gtk.Window
 		
 		vboxMain.add (vboxMain2);
 
-		//hboxScript
-		hboxScript = new Box (Orientation.HORIZONTAL, 6);
-		hboxScript.homogeneous = false;
-        //vboxMain2.pack_start (hboxScript, true, true, 6);
-        
         //Config ---------------------------------------------------
         
         //gridConfig
@@ -388,20 +381,14 @@ public class MainWindow : Gtk.Window
         btnOpenScriptFolder.set_tooltip_text ("Open Folder");
         gridConfig.attach(btnOpenScriptFolder,3,1,1,1);
         
-		// lblStatus
+		//lblStatus
 		lblStatus = new Label("");
 		lblStatus.ellipsize = Pango.EllipsizeMode.END;
 		lblStatus.margin_top = 6;
-		gridConfig.attach(lblStatus,0,2,4,1);
+		lblStatus.margin_bottom = 6;
+		vboxMain2.add (lblStatus);
 		
-		// hboxProgress
-		hboxProgress = new Box (Orientation.HORIZONTAL, 5);
-		hboxProgress.visible = false;
-		hboxProgress.no_show_all = true;
-		hboxProgress.homogeneous = true;
-        vboxMain.add (hboxProgress);
-
-		statusbar_default_message ();
+		statusbar_default_message();
 		
 		// menuFile
 		menuFile = new Gtk.Menu();
@@ -1263,10 +1250,10 @@ This program is free for personal and commercial use and comes with absolutely n
 		App.Shutdown = btnShutdown.active;
 		
 		if (App.Shutdown){
-			log_msg ("Shutdown Activated\n");
+			log_msg ("Shutdown Enabled\n");
 		}
 		else{
-			log_msg ("Shutdown Deactivated\n");
+			log_msg ("Shutdown Disabled\n");
 		}
 	}
 	
@@ -1336,8 +1323,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	
 	public void convert_prepare ()
 	{
-		hboxScript.visible = false;
-		hboxProgress.visible = true;
+		gridConfig.visible = false;
 		btnShutdown.active = App.Shutdown;
 		
 		btnShutdown.visible = App.AdminMode;
@@ -1367,8 +1353,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	
 	public void convert_finish ()
 	{
-		hboxScript.visible = true;
-		hboxProgress.visible = false;
+		gridConfig.visible = true;
 
 		colCrop.visible = true;
 		colProgress.visible = false;

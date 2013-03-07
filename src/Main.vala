@@ -1114,10 +1114,6 @@ Notes:
 		else
 			log_msg ("Converting...");
 			
-		//string scriptFile = CurrentFile.ScriptFile;
-		//string audioTempFile = mFile.TempDir + "/audio.mka";
-		//string videoTempFile = mFile.TempDir + "/video.mkv";
-		
 		string[] argv = new string[1];
 		argv[0] = scriptFile;
 		
@@ -1128,7 +1124,7 @@ Notes:
 
 		try {
 			
-			// execute script file
+			//execute script file ---------------------
 			
 			Process.spawn_async_with_pipes(
 			    null, //working dir
@@ -1145,8 +1141,7 @@ Notes:
 			
 			set_priority ();
 			
-			// create stream readers
-			
+			//create stream readers
 			UnixInputStream uisOut = new UnixInputStream(output_fd, false);
 			UnixInputStream uisErr = new UnixInputStream(error_fd, false);
 			disOut = new DataInputStream(uisOut);
@@ -1154,13 +1149,12 @@ Notes:
 			disOut.newline_type = DataStreamNewlineType.ANY;
 			disErr.newline_type = DataStreamNewlineType.ANY;
 			
-			// create log file
-			
+			//create log file
 	        var file = File.new_for_path (mf.LogFile);
 	        var file_stream = file.create (FileCreateFlags.REPLACE_DESTINATION);
 			dsLog = new DataOutputStream (file_stream);
 	        
-        	// start another thread for reading error stream
+        	//start another thread for reading error stream
         	
         	try {
 			    Thread.create<void> (read_std_err, true);
@@ -1168,13 +1162,10 @@ Notes:
 		        log_error (e.message);
 		    }
 		    
-		    // start reading output stream in current thread 
-		    
+		    //start reading output stream in current thread 
 		    outLine = disOut.read_line (null);
 		   	while (outLine != null) {
-		        CurrentLine = outLine.strip();
-		        dsLog.put_string (outLine + "\n");
-		        update_progress ();
+		        update_progress (outLine.strip());
 		        outLine = disOut.read_line (null);
         	}
         	
@@ -1212,8 +1203,7 @@ Notes:
 				Utility.notify_send ("File Failed", mf.Name, 2000, "low");
 			}
 		}
-			
-	    
+
 	    if (Aborted) {
 	        log_msg ("Stopped!");
 		}
@@ -1232,9 +1222,7 @@ Notes:
 		try{
 			errLine = disErr.read_line (null);
 		    while (errLine != null) {
-		        CurrentLine = errLine.strip();
-		        dsLog.put_string (errLine + "\n");
-		        update_progress ();
+		        update_progress (errLine.strip());
 		        errLine = disErr.read_line (null);
 			}
 		}
@@ -1243,10 +1231,10 @@ Notes:
 		}	
 	}
 	
-	public bool update_progress ()
+	public bool update_progress (string line)
 	{		
-		tempLine = App.CurrentLine;
-
+		tempLine = line;
+		
 		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
 		if (tempLine.index_of ("overread, skip") != -1){ return true; }
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
@@ -1268,12 +1256,12 @@ Notes:
 		else if (regex_ffmpeg2theora.match (tempLine, 0, out match)){
 			dblVal = Utility.parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
-			StatusLine = "(ffmpeg2theora) %s+%s kbps".printf(match.fetch(2), match.fetch(3));
+			
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
 				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s mb, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
 			}
 			else {
-				StatusLine = tempLine;
+				StatusLine = "(ffmpeg2theora) %s+%s kbps".printf(match.fetch(2), match.fetch(3));
 			}
 		}
 		else if (regex_ffmpeg2theora3.match (tempLine, 0, out match)){
@@ -1307,6 +1295,12 @@ Notes:
 		}
 		else {
 			StatusLine = tempLine;
+			try{
+				dsLog.put_string (tempLine + "\n");
+			}
+			catch (Error e) {
+				log_error (e.message);
+			}
 		}
 		
 		if (Progress < 1) {
