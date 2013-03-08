@@ -444,11 +444,13 @@ Change this option only if you are encoding for a particular device"""
 		//lblVP8Speed
 		lblVP8Speed = new Gtk.Label("Speed");
 		lblVP8Speed.xalign = (float) 0.0;
+		lblVP8Speed.no_show_all = true;
 		gridVideo.attach(lblVP8Speed,0,++row,1,1);
 		
 		//cmbVP8Speed
 		cmbVP8Speed = new ComboBox();
 		textCell = new CellRendererText();
+		cmbVP8Speed.no_show_all = true;
         cmbVP8Speed.pack_start( textCell, false );
         cmbVP8Speed.set_attributes( textCell, "text", 0 );
         cmbVP8Speed.set_tooltip_text (
