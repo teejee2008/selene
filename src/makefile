@@ -25,9 +25,11 @@ install:
 	mkdir -p $(DESTDIR)$(sharedir)/selene/images
 	
 	install -m 0755 selene $(DESTDIR)$(bindir)
-	install -m 0755 selene-scripts/* $(DESTDIR)$(sharedir)/selene/scripts
-	install -m 0755 selene-presets/* $(DESTDIR)$(sharedir)/selene/presets
-	install -m 0755 images/* $(DESTDIR)$(sharedir)/selene/images
+	cp -dpr --no-preserve=ownership -t (DESTDIR)$(sharedir)/selene/scripts scripts/*
+	cp -dpr --no-preserve=ownership -t (DESTDIR)$(sharedir)/selene/presets presets/*
+	cp -dpr --no-preserve=ownership -t (DESTDIR)$(sharedir)/selene/images  images/*
+	chmod --recursive a=0755 (DESTDIR)$(sharedir)/selene/*
+	
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
 	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
