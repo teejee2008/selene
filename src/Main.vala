@@ -455,7 +455,7 @@ public class Main : GLib.Object
 		*/
 		
 		App = new Main(args[0]);
-	    
+
 	    // check if terminal supports colors
 		
 		string term = Environment.get_variable ("TERM").down ();

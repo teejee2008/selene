@@ -354,9 +354,6 @@ public class MainWindow : Gtk.Window
         cmbScriptFile.changed.connect(cmbScriptFile_changed);
         gridConfig.attach(cmbScriptFile,1,1,1,1);
         
-        //populate
-        populate_script_folders();
-        
         //btnPresetEdit
 		btnPresetEdit = new Button();
 		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.BUTTON));
@@ -485,8 +482,12 @@ public class MainWindow : Gtk.Window
 		catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
-
-		select_script(App.SelectedScript.Path);
+     
+        //populate scripts
+        populate_script_folders();
+        
+        //select script
+		select_script();
 	}
 	
 	// script dropdown handlers -----------------------
@@ -596,12 +597,20 @@ public class MainWindow : Gtk.Window
 		App.SelectedScript = sh;
 	}
 	
-	private bool select_script (string filePath)
+	private bool select_script ()
 	{
+		if ((App.SelectedScript == null)||(Utility.file_exists(App.SelectedScript.Path) == false)){
+			cmbScriptFolder.set_active(1);
+			cmbScriptFile.set_active(0);
+			return false;
+		}
+		
+		string filePath = App.SelectedScript.Path;
+		
 		string dirPath = GLib.Path.get_dirname(filePath);
 		bool retVal = false;
 		TreeIter iter;
-		
+
 		//select folder
 		TreeStore model = (TreeStore) cmbScriptFolder.model;
 		for (bool next = model.get_iter_first (out iter); next; next = model.iter_next (ref iter)) {
@@ -617,7 +626,7 @@ public class MainWindow : Gtk.Window
 				if (retVal) { break; }
 			}
 		}
-		
+
 		//check if selected file is in some other folder
 		if (retVal == false){
 			//select "Other" folder
@@ -633,7 +642,7 @@ public class MainWindow : Gtk.Window
 			//select it
 			cmbScriptFile.set_active(0); 
 		}
-		
+
 		//select file
 		ListStore model1 = (ListStore) cmbScriptFile.model;
 		for (bool next = model1.get_iter_first (out iter); next; next = model1.iter_next (ref iter)) {
@@ -645,7 +654,7 @@ public class MainWindow : Gtk.Window
 				break;
 			}
 		}
-
+		
 		return retVal;
 	}
 	
