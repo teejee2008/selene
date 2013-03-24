@@ -17,16 +17,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=6
-FILE_NAME_0=1025;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
-FILE_NAME_1=1990;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_2=20870;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_3=0;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
+current_page=0
+FILE_NAME_0=36590;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+FILE_NAME_1=2064;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
+FILE_NAME_2=9768;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_3=3970;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
 FILE_NAME_4=13728;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
-FILE_NAME_5=21963;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_6=1718;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_7=105;None;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fbuilddeb-binary;0;4
-FILE_NAME_8=5275;C;0;16;1;1;0;%2Fusr%2Finclude%2Fglib-2.0%2Fglib%2Fgstrfuncs.h;0;4
+FILE_NAME_5=21606;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_6=628;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
 
 [VTE]
 last_dir=/home/teejee

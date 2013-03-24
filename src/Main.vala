@@ -372,11 +372,12 @@ public class Main : GLib.Object
 	public string PresetsFolder_Official = "";
 	public string PresetsFolder_Custom = "";
 	public string SharedImagesFolder = "";
+	public string UserDataDirectory;
+	public string SharedDataDirectory;
 	
 	public string TempDirectory;
 	public string OutputDirectory = "";
 	public string BackupDirectory = "";
-	private string ConfigDirectory;
 
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
@@ -629,18 +630,17 @@ Notes:
 		this.OutputDirectory = "";
 		this.BackupDirectory = "";
 		
-		string sharedDataFolder = "/usr/share/selene";
-		string userDataFolder = homeDir + "/.config/selene";
+		SharedDataDirectory = "/usr/share/selene";
+		UserDataDirectory = homeDir + "/.config/selene";
 		//string appPath = (File.new_for_path (arg0)).get_parent ().get_path ();
 
-		ConfigDirectory = userDataFolder;
-		ScriptsFolder_Official = sharedDataFolder + "/scripts";
-		ScriptsFolder_Custom = userDataFolder + "/scripts";
-		PresetsFolder_Official = sharedDataFolder + "/presets";
-		PresetsFolder_Custom = userDataFolder + "/presets";
-		SharedImagesFolder = sharedDataFolder + "/images";
+		ScriptsFolder_Official = SharedDataDirectory + "/scripts";
+		ScriptsFolder_Custom = UserDataDirectory + "/scripts";
+		PresetsFolder_Official = SharedDataDirectory + "/presets";
+		PresetsFolder_Custom = UserDataDirectory + "/presets";
+		SharedImagesFolder = SharedDataDirectory + "/images";
 		
-		Utility.create_dir (this.ConfigDirectory);
+		Utility.create_dir (this.UserDataDirectory);
 		Utility.create_dir (this.ScriptsFolder_Custom);
 		Utility.create_dir (this.PresetsFolder_Custom);
 

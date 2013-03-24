@@ -1139,6 +1139,23 @@ These subtitles cannot be switched off.""");
 				imgFileFormat.xalign = (float) 0.5;
 				imgFileFormat.yalign = (float) 1.0;
 				break;
+			case "ogg":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/vorbis.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
+			case "ac3":
+			case "flac":
+			case "wav":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/libav.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
+			/*case "mp3":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/lame.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;*/
 			default:
 				imgFileFormat.clear();
 				break;
@@ -1502,6 +1519,36 @@ These subtitles cannot be switched off.""");
 		switch (acodec){
 			case "opus":
 				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/opus.png");
+				imgAudioCodec.xalign = (float) 0.5;
+				imgAudioCodec.yalign = (float) 1.0;
+				break;
+			case "mp3lame":
+				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/lame.png");
+				imgAudioCodec.xalign = (float) 0.5;
+				imgAudioCodec.yalign = (float) 1.0;
+				break;
+			case "vorbis":
+				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/vorbis.png");
+				imgAudioCodec.xalign = (float) 0.5;
+				imgAudioCodec.yalign = (float) 1.0;
+				break;
+			case "ac3":
+			case "flac":
+			case "pcm_s8":
+			case "pcm_u8":
+			case "pcm_s16le":
+			case "pcm_s16be":
+			case "pcm_u16le":
+			case "pcm_u16be":
+			case "pcm_s24le":
+			case "pcm_s24be":
+			case "pcm_u24le":
+			case "pcm_u24be":
+			case "pcm_s32le":
+			case "pcm_s32be":
+			case "pcm_u32le":
+			case "pcm_u32be":
+				imgAudioCodec.set_from_file(App.SharedImagesFolder + "/libav.png");
 				imgAudioCodec.xalign = (float) 0.5;
 				imgAudioCodec.yalign = (float) 1.0;
 				break;

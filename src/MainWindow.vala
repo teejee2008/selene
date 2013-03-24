@@ -506,16 +506,12 @@ public class MainWindow : Gtk.Window
 		*/
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "Scripts");
+		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "scripts");
 		iter_append_children (model, iter0, App.ScriptsFolder_Custom);
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Presets");
+		model.set (iter0, 0, App.PresetsFolder_Custom,1, "presets");
 	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
-	    
-	    model.append (out iter0, null);
-		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Other");
-	    //iter_append_children (model, iter0, "");
 	}
 	
 	private void iter_append_children (TreeStore model, TreeIter iter0, string path)
@@ -530,7 +526,7 @@ public class MainWindow : Gtk.Window
 				if (file.get_file_type() == FileType.DIRECTORY){
 					string dirPath = dir.resolve_relative_path(file.get_name()).get_path();
 					//string dirName = file.get_name();
-					string dirName = dirPath.replace(App.ScriptsFolder_Custom,"").replace(App.PresetsFolder_Custom,"");
+					string dirName = dirPath.replace(App.UserDataDirectory + "/","");
 					
 					model.append(out iter1, iter0);
 					model.set(iter1, 0, dirPath, 1, dirName);
@@ -550,8 +546,14 @@ public class MainWindow : Gtk.Window
 		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 		
-		if (cmbScriptFolder.active == 2){ return; }
-
+		switch(cmbScriptFolder.active){
+			case 0:
+			case 1:
+				break;
+			case 2:
+				return;
+		}
+		
 		string path = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 		
 		try
@@ -600,7 +602,6 @@ public class MainWindow : Gtk.Window
 		
 		var settings = new GLib.Settings ("apps.selene");
 		settings.set_string ("last-script", sh.Path);
-		debug("last=" + sh.Path);
 	}
 	
 	private bool select_script ()
@@ -635,8 +636,8 @@ public class MainWindow : Gtk.Window
 
 		//check if selected file is in some other folder
 		if (retVal == false){
-			//select "Other" folder
-			cmbScriptFolder.set_active(4); 
+			//unselect
+			cmbScriptFolder.set_active(-1); 
 			
 			//add the selected file
 			ListStore model1 = new ListStore(2, typeof(ScriptFile), typeof(string));
@@ -730,22 +731,21 @@ public class MainWindow : Gtk.Window
 		}	
 	}
 
-	private void btnPresetNew_clicked ()
-    {
-	    var window = new ConfigWindow();
+	private void preset_create ()
+	{
+		var window = new ConfigWindow();
 	    window.Folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 	    window.Name = "New Preset";
 	    //window.CreateNew = true;
 	    window.show_all();
 	    window.run();
-	    
+
+	    //App.SelectedScript will be set on click of 'Save' button
 	    cmbScriptFolder_changed();
 	}
 	
-	private void btnPresetEdit_clicked ()
-    {
-		if ((cmbScriptFile.model == null)||(cmbScriptFile.active < 0)) { return; }
-		
+	private void preset_edit ()
+	{
 		ScriptFile sh;
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
@@ -760,9 +760,71 @@ public class MainWindow : Gtk.Window
 			window.run();
 			cmbScriptFolder_changed();
 		}
-		else if (sh.Extension == ".sh") {
+	}
+	
+	private void script_create ()
+	{
+		string folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+		
+		int k = 0;
+		string new_script = "%s/new_script.sh".printf(folder);
+		while (Utility.file_exists(new_script)){
+			new_script = "%s/new_script_%d.sh".printf(folder,++k);
+		}
+		
+		Utility.write_file(new_script,"");
+		Utility.exo_open_textfile(new_script); 
+		
+		App.SelectedScript = new ScriptFile(new_script);
+		cmbScriptFolder_changed();
+	}
+	
+	private void script_edit ()
+	{
+		ScriptFile sh;
+		TreeIter iter;
+		cmbScriptFile.get_active_iter(out iter);
+		cmbScriptFile.model.get (iter, 0, out sh, -1);
+		
+		if (sh.Extension == ".sh") {
 			Utility.exo_open_textfile(sh.Path); 
 		}
+	}
+	
+	private void btnPresetNew_clicked ()
+    {
+		switch (cmbScriptFolder.active){
+			case 0:
+				script_create();
+				break;
+			case 1:
+				preset_create();
+				break;
+		}
+	}
+
+	private void btnPresetEdit_clicked ()
+    {
+		if ((cmbScriptFile.model == null)||(cmbScriptFile.active < 0)) {
+			switch (cmbScriptFolder.active){
+				case 0:
+					script_create();
+					break;
+				case 1:
+					preset_create();
+					break;
+			}
+		}
+		else {
+			switch (cmbScriptFolder.active){
+				case 0:
+					script_edit();
+					break;
+				case 1:
+					preset_edit();
+					break;
+			}
+		}	
 	}
 
 	// statusbar -------------------
