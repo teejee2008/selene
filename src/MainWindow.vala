@@ -560,11 +560,16 @@ public class MainWindow : Gtk.Window
 		{
 			var dir = File.parse_name (path);
 	        var enumerator = dir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-
+			Gee.ArrayList<string> files = new Gee.ArrayList<string>();
+			
 	        FileInfo file;
 	        while ((file = enumerator.next_file ()) != null) {
-		        string filePath = dir.resolve_relative_path(file.get_name()).get_path();
-		        string fileName = file.get_name();
+				files.add(dir.resolve_relative_path(file.get_name()).get_path());
+	        } 
+	        files.sort_with_data((a,b) => { return strcmp((string)a, (string)b); });
+	        
+	        foreach(string filePath in files){
+		        string fileName = File.new_for_path(filePath).get_basename();
 		        
 		        if (Utility.file_exists(filePath)){
 					ScriptFile sh = new ScriptFile(filePath);
@@ -578,8 +583,8 @@ public class MainWindow : Gtk.Window
 						}
 					}
 				}
-	        } 
-	        
+			}
+
 	        if (cmbScriptFile.active < 0) {
 				cmbScriptFile.set_active(0);
 			}

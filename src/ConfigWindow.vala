@@ -1144,6 +1144,11 @@ These subtitles cannot be switched off.""");
 				imgFileFormat.xalign = (float) 0.5;
 				imgFileFormat.yalign = (float) 1.0;
 				break;
+			case "ogv":
+				imgFileFormat.set_from_file(App.SharedImagesFolder + "/theora.png");
+				imgFileFormat.xalign = (float) 0.5;
+				imgFileFormat.yalign = (float) 1.0;
+				break;
 			case "ac3":
 			case "flac":
 			case "wav":
@@ -1750,6 +1755,11 @@ These subtitles cannot be switched off.""");
 				imgVideoCodec.xalign = (float) 0.5;
 				imgVideoCodec.yalign = (float) 1.0;
 				break;
+			case "theora":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/theora.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
 			default:
 				imgVideoCodec.clear();
 				break;
@@ -1987,31 +1997,35 @@ movie_en.srt, movie_1.srt, etc.""";
 		
 		config.set_object_member("video",video);
 		video.set_string_member("codec",vcodec);
-		video.set_string_member("profile",x264_profile);
-		video.set_string_member("preset",x264_preset);
-		video.set_string_member("mode",video_mode);
-		video.set_string_member("bitrate",video_bitrate);
-		video.set_string_member("quality",video_quality);
-		video.set_string_member("speed",video_speed);
-		video.set_string_member("options",x264_options);
-		video.set_string_member("frameSize",frame_size);
-		video.set_string_member("frameWidth",frame_width);
-		video.set_string_member("frameHeight",frame_height);
-		video.set_string_member("resizingMethod",resizing_method);
-		video.set_boolean_member("noUpscaling",no_upscaling);
-		video.set_boolean_member("fitToBox",fit_to_box);
-		video.set_string_member("fps",frame_rate);
-		video.set_string_member("fpsNum",frame_rate_num);
-		video.set_string_member("fpsDenom",frame_rate_denom);
-		
+		if (vcodec != "disable") {
+			video.set_string_member("profile",x264_profile);
+			video.set_string_member("preset",x264_preset);
+			video.set_string_member("mode",video_mode);
+			video.set_string_member("bitrate",video_bitrate);
+			video.set_string_member("quality",video_quality);
+			video.set_string_member("speed",video_speed);
+			video.set_string_member("options",x264_options);
+			video.set_string_member("frameSize",frame_size);
+			video.set_string_member("frameWidth",frame_width);
+			video.set_string_member("frameHeight",frame_height);
+			video.set_string_member("resizingMethod",resizing_method);
+			video.set_boolean_member("noUpscaling",no_upscaling);
+			video.set_boolean_member("fitToBox",fit_to_box);
+			video.set_string_member("fps",frame_rate);
+			video.set_string_member("fpsNum",frame_rate_num);
+			video.set_string_member("fpsDenom",frame_rate_denom);
+		}
+	
 		config.set_object_member("audio",audio);
 		audio.set_string_member("codec",acodec);
-		audio.set_string_member("mode",audio_mode);
-		audio.set_string_member("bitrate",audio_bitrate);
-		audio.set_string_member("quality",audio_quality);
-		audio.set_string_member("opusOptimize",audio_opus_optimize);
-		audio.set_string_member("channels",audio_channels);
-		audio.set_string_member("samplingRate",audio_sampling);
+		if (acodec != "disable") {
+			audio.set_string_member("mode",audio_mode);
+			audio.set_string_member("bitrate",audio_bitrate);
+			audio.set_string_member("quality",audio_quality);
+			audio.set_string_member("opusOptimize",audio_opus_optimize);
+			audio.set_string_member("channels",audio_channels);
+			audio.set_string_member("samplingRate",audio_sampling);
+		}
 		
 		config.set_object_member("subtitle",subs);
 		subs.set_string_member("mode",subtitle_mode);

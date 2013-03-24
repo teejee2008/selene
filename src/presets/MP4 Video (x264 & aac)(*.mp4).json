@@ -11,7 +11,10 @@
     "codec" : "x264",
     "profile" : "high",
     "preset" : "medium",
-    "crf" : "22",
+    "mode" : "vbr",
+    "bitrate" : "800",
+    "quality" : "23.0",
+    "speed" : "good_3",
     "options" : "",
     "frameSize" : "disable",
     "frameWidth" : "0",
@@ -19,6 +22,7 @@
     "resizingMethod" : "bicubic",
     "noUpscaling" : true,
     "fitToBox" : true,
+    "fps" : "disable",
     "fpsNum" : "0",
     "fpsDenom" : "0"
   },
@@ -26,6 +30,12 @@
     "codec" : "neroaac",
     "mode" : "vbr",
     "bitrate" : "160",
-    "quality" : "0.5"
+    "quality" : "0.5",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "embed"
   }
 }

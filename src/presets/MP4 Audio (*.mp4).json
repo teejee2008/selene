@@ -8,24 +8,18 @@
     "presetVersion" : "1.0"
   },
   "video" : {
-    "codec" : "disable",
-    "profile" : "high",
-    "preset" : "medium",
-    "crf" : "22",
-    "options" : "",
-    "frameSize" : "disable",
-    "frameWidth" : "0",
-    "frameHeight" : "0",
-    "resizingMethod" : "bicubic",
-    "noUpscaling" : true,
-    "fitToBox" : true,
-    "fpsNum" : "0",
-    "fpsDenom" : "0"
+    "codec" : "disable"
   },
   "audio" : {
     "codec" : "neroaac",
     "mode" : "vbr",
     "bitrate" : "160",
-    "quality" : "0.5"
+    "quality" : "0.5",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "disable"
   }
 }
