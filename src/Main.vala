@@ -219,6 +219,7 @@ public class MediaFile : GLib.Object
 							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip ());
 							break;
 						case "frame rate":
+						case "original frame rate":
 							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip ());
 							break;
 					}
@@ -241,7 +242,7 @@ public class MediaFile : GLib.Object
 		this.ScriptFile = this.TempDirectory + "/convert.sh";
 		this.OutputFilePath = "";
 		Utility.create_dir (this.TempDirectory);
-		
+
 		//initialize output frame count
 		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
 			OutputFrameCount = (long) ((Duration / 1000.0) * (SourceFrameRate));
