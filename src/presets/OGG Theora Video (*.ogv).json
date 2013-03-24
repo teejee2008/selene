@@ -1,0 +1,41 @@
+{
+  "general" : {
+    "format" : "ogv",
+    "extension" : ".ogv",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "OGG Theora Video (*.ogv)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "theora",
+    "profile" : "high",
+    "preset" : "medium",
+    "mode" : "vbr",
+    "bitrate" : "800",
+    "quality" : "6.0",
+    "speed" : "good_3",
+    "options" : "",
+    "frameSize" : "disable",
+    "frameWidth" : "0",
+    "frameHeight" : "0",
+    "resizingMethod" : "cubic",
+    "noUpscaling" : true,
+    "fitToBox" : true,
+    "fps" : "disable",
+    "fpsNum" : "0",
+    "fpsDenom" : "0"
+  },
+  "audio" : {
+    "codec" : "vorbis",
+    "mode" : "vbr",
+    "bitrate" : "128",
+    "quality" : "3.0",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "embed"
+  }
+}

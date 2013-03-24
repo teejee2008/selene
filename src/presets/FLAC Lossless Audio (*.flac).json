@@ -1,0 +1,25 @@
+{
+  "general" : {
+    "format" : "flac",
+    "extension" : ".flac",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "FLAC Lossless Audio (*.flac)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable"
+  },
+  "audio" : {
+    "codec" : "flac",
+    "mode" : "lossless",
+    "bitrate" : "128",
+    "quality" : "4.0",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "disable"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "general" : {
+    "format" : "wav",
+    "extension" : ".wav",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "WAV Audio (*.wav)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable"
+  },
+  "audio" : {
+    "codec" : "pcm_u16le",
+    "mode" : "lossless",
+    "bitrate" : "128",
+    "quality" : "3.0",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "disable"
+  }
+}

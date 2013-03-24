@@ -1,0 +1,25 @@
+{
+  "general" : {
+    "format" : "ac3",
+    "extension" : ".ac3",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "AC3 Audio (*.ac3)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable"
+  },
+  "audio" : {
+    "codec" : "ac3",
+    "mode" : "cbr",
+    "bitrate" : "448",
+    "quality" : "4.0",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "disable"
+  }
+}
