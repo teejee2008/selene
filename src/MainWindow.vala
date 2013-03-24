@@ -482,11 +482,9 @@ public class MainWindow : Gtk.Window
 		catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
-     
-        //populate scripts
+		
+        //populate and select script
         populate_script_folders();
-        
-        //select script
 		select_script();
 	}
 	
@@ -498,27 +496,26 @@ public class MainWindow : Gtk.Window
 		cmbScriptFolder.set_model(model);
 		TreeIter iter0;
 
-		model.append (out iter0, null);
+		/*model.append (out iter0, null);
 		model.set (iter0, 0, App.ScriptsFolder_Official, 1, "Official Scripts");
 		iter_append_children (model, iter0, App.ScriptsFolder_Official);
 		
 		model.append (out iter0, null);
 		model.set (iter0, 0, App.PresetsFolder_Official,1, "Official Presets");
 		iter_append_children (model, iter0, App.PresetsFolder_Official);
+		*/
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "Custom Scripts");
+		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "Scripts");
 		iter_append_children (model, iter0, App.ScriptsFolder_Custom);
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Custom Presets");
+		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Presets");
 	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
 	    
 	    model.append (out iter0, null);
 		model.set (iter0, 0, App.PresetsFolder_Custom,1, "Other");
-	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
-	    
-	    cmbScriptFolder.set_active(0);
+	    //iter_append_children (model, iter0, "");
 	}
 	
 	private void iter_append_children (TreeStore model, TreeIter iter0, string path)
@@ -532,7 +529,8 @@ public class MainWindow : Gtk.Window
 			while ((file = enumerator.next_file()) != null) {
 				if (file.get_file_type() == FileType.DIRECTORY){
 					string dirPath = dir.resolve_relative_path(file.get_name()).get_path();
-					string dirName = file.get_name();
+					//string dirName = file.get_name();
+					string dirName = dirPath.replace(App.ScriptsFolder_Custom,"").replace(App.PresetsFolder_Custom,"");
 					
 					model.append(out iter1, iter0);
 					model.set(iter1, 0, dirPath, 1, dirName);
@@ -552,7 +550,7 @@ public class MainWindow : Gtk.Window
 		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 		
-		if (cmbScriptFolder.active == 4){ return; }
+		if (cmbScriptFolder.active == 2){ return; }
 
 		string path = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 		
@@ -579,6 +577,10 @@ public class MainWindow : Gtk.Window
 					}
 				}
 	        } 
+	        
+	        if (cmbScriptFile.active < 0) {
+				cmbScriptFile.set_active(0);
+			}
         }
         catch(Error e){
 	        log_error (e.message);
@@ -595,6 +597,10 @@ public class MainWindow : Gtk.Window
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 		
 		App.SelectedScript = sh;
+		
+		var settings = new GLib.Settings ("apps.selene");
+		settings.set_string ("last-script", sh.Path);
+		debug("last=" + sh.Path);
 	}
 	
 	private bool select_script ()

@@ -2019,45 +2019,51 @@ movie_en.srt, movie_1.srt, etc.""";
 		//video --------------------------
 		
 		vcodec = video.get_string_member("codec");
-		switch(vcodec){
-			case "x264":
-				x264_profile = video.get_string_member("profile");
-				x264_preset = video.get_string_member("preset");
-				x264_options = video.get_string_member("options");
-				break;
-			case "vp8":
-				video_speed = video.get_string_member("speed");
-				break;
+		
+		if (vcodec != "disable") {
+			switch(vcodec){
+				case "x264":
+					x264_profile = video.get_string_member("profile");
+					x264_preset = video.get_string_member("preset");
+					x264_options = video.get_string_member("options");
+					break;
+				case "vp8":
+					video_speed = video.get_string_member("speed");
+					break;
+			}
+			video_mode = video.get_string_member("mode");
+			video_bitrate = video.get_string_member("bitrate");
+			video_quality = video.get_string_member("quality");
+			
+			//video filters ------------------------
+			
+			frame_size = video.get_string_member("frameSize");
+			frame_width = video.get_string_member("frameWidth");
+			frame_height = video.get_string_member("frameHeight");
+			resizing_method = video.get_string_member("resizingMethod");
+			no_upscaling = video.get_boolean_member("noUpscaling");
+			fit_to_box = video.get_boolean_member("fitToBox");
+			frame_rate = video.get_string_member("fps");
+			frame_rate_num = video.get_string_member("fpsNum");
+			frame_rate_denom = video.get_string_member("fpsDenom");
 		}
-		video_mode = video.get_string_member("mode");
-		video_bitrate = video.get_string_member("bitrate");
-		video_quality = video.get_string_member("quality");
-		
-		//video filters ------------------------
-		
-		frame_size = video.get_string_member("frameSize");
-		frame_width = video.get_string_member("frameWidth");
-		frame_height = video.get_string_member("frameHeight");
-		resizing_method = video.get_string_member("resizingMethod");
-		no_upscaling = video.get_boolean_member("noUpscaling");
-		fit_to_box = video.get_boolean_member("fitToBox");
-		frame_rate = video.get_string_member("fps");
-		frame_rate_num = video.get_string_member("fpsNum");
-		frame_rate_denom = video.get_string_member("fpsDenom");
-		
+	
 		//audio ---------------------
 		
 		acodec = audio.get_string_member("codec");
-		switch(acodec){
-			case "opus":
-				audio_opus_optimize = audio.get_string_member("opusOptimize");
-				break;
+		
+		if (acodec != "disable") {
+			switch(acodec){
+				case "opus":
+					audio_opus_optimize = audio.get_string_member("opusOptimize");
+					break;
+			}
+			audio_mode = audio.get_string_member("mode");
+			audio_bitrate = audio.get_string_member("bitrate");
+			audio_quality = audio.get_string_member("quality");
+			audio_channels = audio.get_string_member("channels");
+			audio_sampling = audio.get_string_member("samplingRate");
 		}
-		audio_mode = audio.get_string_member("mode");
-		audio_bitrate = audio.get_string_member("bitrate");
-		audio_quality = audio.get_string_member("quality");
-		audio_channels = audio.get_string_member("channels");
-		audio_sampling = audio.get_string_member("samplingRate");
 		
 		//subtitles --------------
 		

@@ -540,7 +540,7 @@ public class Main : GLib.Object
 			App.ConsoleMode = false;
 		
 		// show window
-		
+
 		if (App.ConsoleMode){
 			if (App.InputFiles.size == 0){
 				log_error ("Input queue is empty! Please specify files to convert.");
@@ -765,19 +765,19 @@ Notes:
 	{
 		var settings = new GLib.Settings ("apps.selene");
 		string val;
-		
+
 		val = settings.get_string ("backup-dir");
 		if (Utility.dir_exists(val))
 			BackupDirectory = val;
 		else
 			BackupDirectory = "";
-		
+
 		val = settings.get_string ("output-dir");
 		if (Utility.dir_exists(val))
 			OutputDirectory = val;
 		else 
 			OutputDirectory = "";
-		
+
 		string sh = settings.get_string ("last-script");
 		if (sh != null && sh.length > 0) {
 			SelectedScript = new ScriptFile(sh);
@@ -786,7 +786,10 @@ Notes:
 	
 	public void exit_app ()
 	{
-		save_config ();
+		//GSettings does not get enough time to commit changes
+		//Settings will be saved at multiple points, instead of through save_config()
+		//save_config (); 
+		
 		Gtk.main_quit ();
 	}
 	
