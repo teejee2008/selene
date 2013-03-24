@@ -12,8 +12,8 @@ Package: selene
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, vorbis-tools, opus-tools, vpx-tools, x264, lame, mkvtoolnix, ffmpeg2theora, gpac
 #Recommends: 
-Description: Simple audio/video transcoder for Linux.
- Selene is an audio/video converter for linux that uses simple bash scripts for
- transcoding the input files. The scripts can use any command line utility for
- encoding input files. Selene displays the encoding progress along with options
- to pause/resume/shutdown, etc.
+Description: An audio-video converter for Linux.
+ Selene is an audio/video converter for linux for converting files to OGG,OGV,
+ MKV,MP4,WEBM,OPUS,AAC,FLAC,MP3 and WAV formats. It aims to provide a simple
+ GUI for converting files to popular formats along with a powerful
+ command-line interface for automated/unattended encoding.
