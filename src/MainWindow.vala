@@ -61,6 +61,8 @@ public class MainWindow : Gtk.Window
 	private Gtk.MenuItem miFileCropAuto;
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePreview;
+	private Gtk.MenuItem miFilePlaySource;
+	private Gtk.MenuItem miFilePlayOutput;
 	private Gtk.MenuItem miFileSeparator1;
 	private Gtk.MenuItem miFileSeparator2;
 	private Gtk.MenuItem miFileOpenTemp;
@@ -433,11 +435,23 @@ public class MainWindow : Gtk.Window
 		miFileOpenLogFile.label = "Open Log File";
 		miFileOpenLogFile.activate.connect(miFileOpenLogFile_clicked);
 		menuFile.append(miFileOpenLogFile);
-		
+
 		// miFileSeparator2
 		miFileSeparator2 = new Gtk.MenuItem();
 		miFileSeparator2.override_color (StateFlags.NORMAL, gray);
 		menuFile.append(miFileSeparator2);
+		
+		// miFilePlaySource
+		miFilePlaySource = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
+		miFilePlaySource.label = "Play File (Source)";
+		miFilePlaySource.activate.connect(miFilePlaySource_clicked);
+		menuFile.append(miFilePlaySource);
+		
+		// miFilePlayOutput
+		miFilePlayOutput = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
+		miFilePlayOutput.label = "Play File (Output)";
+		miFilePlayOutput.activate.connect(miFilePlayOutput_clicked);
+		menuFile.append(miFilePlayOutput);
 		
 		// miFileInfo
 		miFileInfo = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
@@ -934,6 +948,8 @@ public class MainWindow : Gtk.Window
 				miFileInfo.visible = true;
 				miFileInfoOutput.visible = false;
 				miFilePreview.visible = true;
+				miFilePlaySource.visible = true;
+				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = true;
 				miFileRemove.visible = true;
 				miFileSeparator1.visible = true;
@@ -941,6 +957,7 @@ public class MainWindow : Gtk.Window
 				
 				miFileInfo.sensitive = (selection.count_selected_rows() == 1);
 				miFilePreview.sensitive = (selection.count_selected_rows() == 1);
+				miFilePlaySource.sensitive = (selection.count_selected_rows() == 1);
 				miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
 				miFileRemove.sensitive = (selection.count_selected_rows() > 0);
 				break;
@@ -978,6 +995,8 @@ public class MainWindow : Gtk.Window
 				miFileInfo.visible = false;
 				miFileInfoOutput.visible = false;
 				miFilePreview.visible = false;
+				miFilePlaySource.visible = false;
+				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
 				break;
@@ -1000,6 +1019,8 @@ public class MainWindow : Gtk.Window
 				miFileSkip.visible = false;
 				miFileInfo.visible = true;
 				miFileInfoOutput.visible = true;
+				miFilePlaySource.visible = true;
+				miFilePlayOutput.visible = true;
 				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
@@ -1009,9 +1030,11 @@ public class MainWindow : Gtk.Window
 				string outpath = App.InputFiles[index].OutputFilePath;
 				if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
 					miFileInfoOutput.sensitive = true;
+					miFilePlayOutput.sensitive = true;
 				}
 				else{
 					miFileInfoOutput.sensitive = false;
+					miFilePlayOutput.sensitive = false;
 				}
 				break;
 		}
@@ -1177,15 +1200,43 @@ public class MainWindow : Gtk.Window
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			TreeIter iter;
-			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string ());
-			MediaFile file = App.InputFiles[index];
+			MediaFile mf = App.InputFiles[index];
 			
-			file.preview_output ();
+			mf.preview_output();
+		}
+	}
+	
+    private void miFilePlayOutput_clicked () 
+    {
+		TreeSelection selection = tvFiles.get_selection ();
+		
+		if (selection.count_selected_rows () > 0){
+			TreeModel model;
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+			TreePath path = lst.nth_data (0);
+			int index = int.parse (path.to_string ());
+			MediaFile mf = App.InputFiles[index];
+			
+			mf.play_output();
 		}
     }
     
+    private void miFilePlaySource_clicked () 
+    {
+		TreeSelection selection = tvFiles.get_selection ();
+		
+		if (selection.count_selected_rows () > 0){
+			TreeModel model;
+			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+			TreePath path = lst.nth_data (0);
+			int index = int.parse (path.to_string ());
+			MediaFile mf = App.InputFiles[index];
+			
+			mf.play_source();
+		}
+    }
+
 	private void refresh_file_list (bool refresh_model)
 	{
 		ListStore inputStore = new ListStore (9, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));

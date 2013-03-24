@@ -335,6 +335,36 @@ public class MediaFile : GLib.Object
 	        log_error (e.message);
 	    }
 	}
+
+	public void play_source ()
+	{
+		if(Utility.file_exists(Path)){
+			string output = "";
+			string error = "";
+			
+			try {
+				Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path), out output, out error);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+		}
+	}
+	
+	public void play_output ()
+	{
+		if(Utility.file_exists(OutputFilePath)){
+			string output = "";
+			string error = "";
+			
+			try {
+				Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (OutputFilePath), out output, out error);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+		}
+	}
 }
 
 public class ScriptFile : GLib.Object
