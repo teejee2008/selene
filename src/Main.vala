@@ -675,6 +675,13 @@ Notes:
 		Utility.create_dir (this.ScriptsFolder_Custom);
 		Utility.create_dir (this.PresetsFolder_Custom);
 
+		// create a copy of official scripts & presets on first run
+		
+		if (Utility.dir_exists (ScriptsFolder_Official)){
+			Utility.rsync(ScriptsFolder_Official, ScriptsFolder_Custom, false, false);
+			Utility.rsync(PresetsFolder_Official, PresetsFolder_Custom, false, false);
+		}
+
 		// additional info
 		
 		log_msg ("Loading scripts from:\n'%s' (User Scripts)\n'%s' (Official Scripts)".printf(this.ScriptsFolder_Custom,this.ScriptsFolder_Official));

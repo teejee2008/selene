@@ -655,10 +655,20 @@ namespace Utility
 		return execute_command_sync (s);
 	}
 	
+	public int rsync (string sourceDirectory, string destDirectory, bool updateExisting, bool deleteExtra)
+	{
+		string cmd = "rsync --recursive --perms --chmod=a=rwx";
+		cmd += updateExisting ? "" : " --ignore-existing";
+		cmd += deleteExtra ? "" : " --delete";
+		cmd += " " + double_quote(sourceDirectory + "//");
+		cmd += " " + double_quote(destDirectory);
+		return execute_command_sync (cmd);
+	}
+	
 	public string get_cmd_path (string cmd)
 	{
 		try {
-			int exitCode;
+			int exitCode; 
 			string stdout, stderr;
 			Process.spawn_command_line_sync("which " + cmd, out stdout, out stderr, out exitCode);
 	        return stdout;
