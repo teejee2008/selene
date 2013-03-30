@@ -9,12 +9,9 @@
   },
   "video" : {
     "codec" : "theora",
-    "profile" : "high",
-    "preset" : "medium",
     "mode" : "vbr",
     "bitrate" : "800",
     "quality" : "6.0",
-    "speed" : "good_3",
     "options" : "",
     "frameSize" : "disable",
     "frameWidth" : "0",
@@ -31,7 +28,6 @@
     "mode" : "vbr",
     "bitrate" : "128",
     "quality" : "3.0",
-    "opusOptimize" : "none",
     "channels" : "disable",
     "samplingRate" : "disable"
   },

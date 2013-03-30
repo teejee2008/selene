@@ -9,8 +9,6 @@
   },
   "video" : {
     "codec" : "vp8",
-    "profile" : "high",
-    "preset" : "medium",
     "mode" : "vbr",
     "bitrate" : "800",
     "quality" : "10.0",
@@ -31,7 +29,6 @@
     "mode" : "vbr",
     "bitrate" : "128",
     "quality" : "3.0",
-    "opusOptimize" : "none",
     "channels" : "disable",
     "samplingRate" : "disable"
   },

@@ -10,7 +10,7 @@ Homepage: http://teejeetech.blogspot.com/2013/01/selene-media-encoder-for-ubuntu
 
 Package: selene
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, vorbis-tools, opus-tools, vpx-tools, x264, lame, mkvtoolnix, ffmpeg2theora, gpac
+Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, vorbis-tools, opus-tools, vpx-tools, x264, lame, mkvtoolnix, ffmpeg2theora, gpac rsync
 #Recommends: 
 Description: An audio-video converter for Linux.
  Selene is an audio/video converter for linux for converting files to OGG,OGV,

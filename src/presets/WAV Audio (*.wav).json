@@ -15,7 +15,6 @@
     "mode" : "lossless",
     "bitrate" : "128",
     "quality" : "3.0",
-    "opusOptimize" : "none",
     "channels" : "disable",
     "samplingRate" : "disable"
   },

@@ -659,7 +659,7 @@ namespace Utility
 	{
 		string cmd = "rsync --recursive --perms --chmod=a=rwx";
 		cmd += updateExisting ? "" : " --ignore-existing";
-		cmd += deleteExtra ? "" : " --delete";
+		cmd += deleteExtra ? " --delete" : "";
 		cmd += " " + double_quote(sourceDirectory + "//");
 		cmd += " " + double_quote(destDirectory);
 		return execute_command_sync (cmd);

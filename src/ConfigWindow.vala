@@ -1998,12 +1998,16 @@ movie_en.srt, movie_1.srt, etc.""";
 		config.set_object_member("video",video);
 		video.set_string_member("codec",vcodec);
 		if (vcodec != "disable") {
-			video.set_string_member("profile",x264_profile);
-			video.set_string_member("preset",x264_preset);
 			video.set_string_member("mode",video_mode);
 			video.set_string_member("bitrate",video_bitrate);
 			video.set_string_member("quality",video_quality);
-			video.set_string_member("speed",video_speed);
+			if (vcodec == "x264"){
+				video.set_string_member("profile",x264_profile);
+				video.set_string_member("preset",x264_preset);
+			}
+			if (vcodec == "vp8"){
+				video.set_string_member("speed",video_speed);
+			}
 			video.set_string_member("options",x264_options);
 			video.set_string_member("frameSize",frame_size);
 			video.set_string_member("frameWidth",frame_width);
@@ -2022,7 +2026,9 @@ movie_en.srt, movie_1.srt, etc.""";
 			audio.set_string_member("mode",audio_mode);
 			audio.set_string_member("bitrate",audio_bitrate);
 			audio.set_string_member("quality",audio_quality);
-			audio.set_string_member("opusOptimize",audio_opus_optimize);
+			if (acodec == "opus"){
+				audio.set_string_member("opusOptimize",audio_opus_optimize);
+			}
 			audio.set_string_member("channels",audio_channels);
 			audio.set_string_member("samplingRate",audio_sampling);
 		}
@@ -2114,14 +2120,12 @@ movie_en.srt, movie_1.srt, etc.""";
 		acodec = audio.get_string_member("codec");
 		
 		if (acodec != "disable") {
-			switch(acodec){
-				case "opus":
-					audio_opus_optimize = audio.get_string_member("opusOptimize");
-					break;
-			}
 			audio_mode = audio.get_string_member("mode");
 			audio_bitrate = audio.get_string_member("bitrate");
 			audio_quality = audio.get_string_member("quality");
+			if (acodec == "opus"){
+				audio_opus_optimize = audio.get_string_member("opusOptimize");
+			}
 			audio_channels = audio.get_string_member("channels");
 			audio_sampling = audio.get_string_member("samplingRate");
 		}

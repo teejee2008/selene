@@ -9,12 +9,11 @@
   },
   "video" : {
     "codec" : "x264",
-    "profile" : "high",
-    "preset" : "medium",
     "mode" : "vbr",
     "bitrate" : "800",
     "quality" : "23.0",
-    "speed" : "good_3",
+    "profile" : "high",
+    "preset" : "medium",
     "options" : "",
     "frameSize" : "disable",
     "frameWidth" : "0",
@@ -31,7 +30,6 @@
     "mode" : "vbr",
     "bitrate" : "160",
     "quality" : "0.5",
-    "opusOptimize" : "none",
     "channels" : "disable",
     "samplingRate" : "disable"
   },

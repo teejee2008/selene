@@ -15,7 +15,6 @@
     "mode" : "vbr",
     "bitrate" : "128",
     "quality" : "4.0",
-    "opusOptimize" : "none",
     "channels" : "disable",
     "samplingRate" : "disable"
   },
