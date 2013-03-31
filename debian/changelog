@@ -1,6 +1,6 @@
-selene (2.0) quantal; urgency=high
+selene (2.0.1) quantal; urgency=high
 
-  * v2.0, Rev:83, 2013-03-30
+  * v2.0.1, Rev:85, 2013-03-30
   
   * Added GUI dialogs for audio & video settings 
   
