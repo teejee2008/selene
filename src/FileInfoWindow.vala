@@ -61,7 +61,7 @@ public class FileInfoWindow : Dialog {
 		TreeIter iter1;
 		int index = -1;
 		infoStore.append (out iter0, null);
-		infoStore.remove (ref iter0);
+		//infoStore.remove (ref iter0);
 		
 		foreach (string line in file.InfoText.split ("\n")){
 			if (line.strip () == "") { continue; }

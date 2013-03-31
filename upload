@@ -1,1 +1,1 @@
-dput ppa:teejee2008/ppa ../build-area/selene*.changes
+dput ppa:teejee2008/ppa ../builds/selene*.changes
