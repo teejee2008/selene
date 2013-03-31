@@ -28,13 +28,12 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.8";
+public const string AppVersion = "2.0";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
 const string GETTEXT_PACKAGE = "selene";
 const string LOCALE_DIR = "/usr/share/locale";
-const string VERSION = "1.0";
 
 public enum FileStatus
 {
