@@ -1,0 +1,4 @@
+xgettext --language=C --keyword=_ --escape --sort-output -o selene.pot src/*.vala
+
+echo "Finished"
+read dummy

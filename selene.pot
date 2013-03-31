@@ -1,0 +1,808 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-31 11:03+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/ConfigWindow.vala:468
+msgid ""
+"<b>Additional Options</b>\n"
+"These options will be passed to the encoder\n"
+"on the command line. Please do not specify\n"
+"any options that are already provided by the GUI."
+msgstr ""
+
+#: src/PrefWindow.vala:72
+msgid "<b>Backup Folder</b>"
+msgstr ""
+
+#: src/ConfigWindow.vala:404
+msgid ""
+"<b>Compression Vs Device Compatibility</b>\n"
+"'High' profile gives the best compression.\n"
+"Change this to 'Baseline' or 'Main' only if you are encoding\n"
+"for a particular device (mobile,PMP,etc) which does not\n"
+"support the 'High' profile"
+msgstr ""
+
+#: src/ConfigWindow.vala:372
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Slower presets give better compression and smaller files\n"
+"but take more time to encode."
+msgstr ""
+
+#: src/ConfigWindow.vala:434
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Use a slower setting for better quality.\n"
+"The slowest setting is around 8 times slower than the fastest."
+msgstr ""
+
+#: src/ConfigWindow.vala:358
+msgid ""
+"<b>Compression Vs Quality</b>\n"
+"Smaller values give better quality video and larger files"
+msgstr ""
+
+#: src/ConfigWindow.vala:835
+msgid ""
+"<b>Embed</b> - Subtitle files will be combined with the output file.\n"
+"Since the subtitles are added as a separate track,\n"
+"it can be switched off when playing the video."
+msgstr ""
+
+#: src/ConfigWindow.vala:651
+msgid ""
+"<b>Examples:</b>\n"
+"0 / 0  => No Change\n"
+"25 / 1 => 25 fps\n"
+"30 / 1 => 30 fps\n"
+"30000 / 1001 => 29.97 fps"
+msgstr ""
+
+#: src/PrefWindow.vala:49
+msgid "<b>Output Folder</b>"
+msgstr ""
+
+#: src/ConfigWindow.vala:837
+msgid ""
+"<b>Render</b> - Subtitles are rendered/burned on the video.\n"
+"These subtitles cannot be switched off since they become a part of the video"
+msgstr ""
+
+#: src/ConfigWindow.vala:616
+msgid "<b>Resample:</b>"
+msgstr ""
+
+#: src/ConfigWindow.vala:516
+msgid "<b>Resize:</b>"
+msgstr ""
+
+#: src/MainWindow.vala:170
+msgid "Abort"
+msgstr ""
+
+#: src/MainWindow.vala:200
+msgid "About"
+msgstr ""
+
+#: src/MainWindow.vala:1289
+msgid "Add File(s)"
+msgstr ""
+
+#: src/MainWindow.vala:131
+msgid "Add file(s)"
+msgstr ""
+
+#: src/Main.vala:851
+msgid "All files removed"
+msgstr ""
+
+#: src/MainWindow.vala:1348
+msgid "An audio-video encoder for Linux"
+msgstr ""
+
+#: src/MainWindow.vala:194
+msgid "Application Settings"
+msgstr ""
+
+#: src/ConfigWindow.vala:686
+msgid "Audio"
+msgstr ""
+
+#: src/ConfigWindow.vala:277
+msgid "Author"
+msgstr ""
+
+#: src/MainWindow.vala:398
+msgid "AutoCrop Video"
+msgstr ""
+
+#: src/ConfigWindow.vala:1223 src/ConfigWindow.vala:1248
+#: src/ConfigWindow.vala:1279 src/ConfigWindow.vala:1296
+#: src/ConfigWindow.vala:1616 src/ConfigWindow.vala:1639
+msgid "Average Bitrate"
+msgstr ""
+
+#: src/ConfigWindow.vala:1618 src/ConfigWindow.vala:1641
+msgid "Average Bitrate (2-pass)"
+msgstr ""
+
+#: src/MainWindow.vala:215
+msgid "Background"
+msgstr ""
+
+#: src/PrefWindow.vala:80
+msgid "Backup Location"
+msgstr ""
+
+#: src/ConfigWindow.vala:348 src/ConfigWindow.vala:726
+msgid "Bitrate (kbps)"
+msgstr ""
+
+#: src/Main.vala:1371 src/Main.vala:1386
+msgid "Cancelled"
+msgstr ""
+
+#: src/ConfigWindow.vala:808
+msgid "Channels"
+msgstr ""
+
+#: src/Main.vala:1241
+msgid "Completed"
+msgstr ""
+
+#: src/ConfigWindow.vala:1225 src/ConfigWindow.vala:1250
+#: src/ConfigWindow.vala:1281 src/ConfigWindow.vala:1664
+msgid "Constant Bitrate"
+msgstr ""
+
+#: src/ConfigWindow.vala:1227
+msgid "Constant Bitrate (Strict)"
+msgstr ""
+
+#: src/Main.vala:1147 src/Main.vala:1422
+msgid "Converting..."
+msgstr ""
+
+#: src/MainWindow.vala:898
+#, c-format
+msgid "Converting: '%s'"
+msgstr ""
+
+#: src/Main.vala:1145 src/Main.vala:1420
+msgid "Converting: Enter (q) to quit or (p) to pause..."
+msgstr ""
+
+#: src/MainWindow.vala:274
+msgid "CropVideo (L:T:R:B)"
+msgstr ""
+
+#: src/ConfigWindow.vala:532 src/ConfigWindow.vala:634
+msgid "Custom"
+msgstr ""
+
+#: src/ConfigWindow.vala:680
+msgid "Denominator"
+msgstr ""
+
+#: src/ConfigWindow.vala:985 src/ConfigWindow.vala:993
+#: src/ConfigWindow.vala:1002
+msgid "Disable Audio"
+msgstr ""
+
+#: src/ConfigWindow.vala:958
+msgid "Disable Video"
+msgstr ""
+
+#: src/PrefWindow.vala:89
+msgid "Do not move input files"
+msgstr ""
+
+#: src/ConfigWindow.vala:603
+msgid "Do not stretch or squeeze the video (Fit-To-Box)"
+msgstr ""
+
+#: src/Main.vala:1218
+msgid "Done"
+msgstr ""
+
+#: src/MainWindow.vala:886
+msgid "Drag files on this window or click the 'Add' button"
+msgstr ""
+
+#: src/MainWindow.vala:266
+msgid "Duration"
+msgstr ""
+
+#: src/MainWindow.vala:361
+msgid "Edit Preset"
+msgstr ""
+
+#: src/ConfigWindow.vala:288
+msgid "Email"
+msgstr ""
+
+#: src/ConfigWindow.vala:1092
+msgid "Embed / Soft Subs"
+msgstr ""
+
+#: src/ConfigWindow.vala:1951
+msgid "Empty Preset Name"
+msgstr ""
+
+#: src/ConfigWindow.vala:335 src/ConfigWindow.vala:713
+msgid "Encoding Mode"
+msgstr ""
+
+#: src/MainWindow.vala:351
+msgid "Encoding Script or Preset File"
+msgstr ""
+
+#: src/Main.vala:932
+msgid "Enter any key to Cancel..."
+msgstr ""
+
+#: src/Main.vala:1228
+msgid "Error"
+msgstr ""
+
+#: src/ConfigWindow.vala:235
+msgid "Extension"
+msgstr ""
+
+#: src/ConfigWindow.vala:471
+msgid "Extra Options"
+msgstr ""
+
+#: src/ConfigWindow.vala:654
+msgid "FPS Ratio"
+msgstr ""
+
+#: src/Main.vala:1244
+msgid "Failed"
+msgstr ""
+
+#: src/ConfigWindow.vala:387
+msgid "Fast"
+msgstr ""
+
+#: src/ConfigWindow.vala:463
+msgid "Fast (--cpu-used=4)"
+msgstr ""
+
+#: src/ConfigWindow.vala:465
+msgid "Fastest (--cpu-used=5)"
+msgstr ""
+
+#: src/MainWindow.vala:248
+msgid "File"
+msgstr ""
+
+#: src/Main.vala:1223
+msgid "File Completed"
+msgstr ""
+
+#: src/Main.vala:1233
+msgid "File Failed"
+msgstr ""
+
+#: src/ConfigWindow.vala:189
+msgid "File Format:"
+msgstr ""
+
+#: src/MainWindow.vala:460
+msgid "File Info (Output)"
+msgstr ""
+
+#: src/MainWindow.vala:454
+msgid "File Info (Source)"
+msgstr ""
+
+#: src/Main.vala:830
+msgid "File added:"
+msgstr ""
+
+#: src/MainWindow.vala:915
+#, c-format
+msgid "File added: '%s'"
+msgstr ""
+
+#: src/Main.vala:844
+msgid "File removed:"
+msgstr ""
+
+#: src/MainWindow.vala:236
+msgid "File(s) to convert"
+msgstr ""
+
+#: src/Main.vala:867
+#, c-format
+msgid "Files will be saved in '%s'"
+msgstr ""
+
+#: src/Main.vala:870
+msgid "Files will be saved in source directory"
+msgstr ""
+
+#: src/ConfigWindow.vala:503 src/ConfigWindow.vala:781
+msgid "Filters"
+msgstr ""
+
+#: src/MainWindow.vala:178 src/MainWindow.vala:180
+msgid "Finish"
+msgstr ""
+
+#: src/ConfigWindow.vala:1313
+msgid "Fixed Bitrate"
+msgstr ""
+
+#: src/MainWindow.vala:326 src/MainWindow.vala:336
+msgid "Folder"
+msgstr ""
+
+#: src/Main.vala:491
+msgid "Following packages were not found:"
+msgstr ""
+
+#: src/ConfigWindow.vala:197
+msgid "Format"
+msgstr ""
+
+#: src/ConfigWindow.vala:321 src/ConfigWindow.vala:699
+msgid "Format / Codec"
+msgstr ""
+
+#: src/MainWindow.vala:1300
+msgid "Format not supported:"
+msgstr ""
+
+#: src/ConfigWindow.vala:624
+msgid "Frame Rate"
+msgstr ""
+
+#: src/ConfigWindow.vala:626
+msgid "Frames per second"
+msgstr ""
+
+#: src/ConfigWindow.vala:176
+msgid "General"
+msgstr ""
+
+#: src/ConfigWindow.vala:579
+msgid "Height"
+msgstr ""
+
+#: src/MainWindow.vala:1435
+msgid ""
+"Input queue is empty!\n"
+"Please add some files.\n"
+msgstr ""
+
+#: src/Main.vala:858
+msgid "Input queue is empty! Please add some files."
+msgstr ""
+
+#: src/Main.vala:569
+msgid "Input queue is empty! Please select files to convert."
+msgstr ""
+
+#: src/FileInfoWindow.vala:50
+msgid "Key"
+msgstr ""
+
+#: src/ConfigWindow.vala:1340
+msgid "Lossless"
+msgstr ""
+
+#: src/ConfigWindow.vala:389
+msgid "Medium"
+msgstr ""
+
+#: src/ConfigWindow.vala:461
+msgid "Medium (--cpu-used=3)"
+msgstr ""
+
+#: src/Main.vala:491
+msgid "Missing Dependency"
+msgstr ""
+
+#: src/ConfigWindow.vala:768
+msgid "Music"
+msgstr ""
+
+#: src/MainWindow.vala:1104
+msgid "N/A"
+msgstr ""
+
+#: src/ConfigWindow.vala:254
+msgid "Name"
+msgstr ""
+
+#: src/ConfigWindow.vala:261 src/MainWindow.vala:369
+msgid "New Preset"
+msgstr ""
+
+#: src/ConfigWindow.vala:530 src/ConfigWindow.vala:632
+#: src/ConfigWindow.vala:1360 src/ConfigWindow.vala:1400
+#: src/ConfigWindow.vala:1428 src/ConfigWindow.vala:1442
+#: src/ConfigWindow.vala:1471 src/ConfigWindow.vala:1491
+msgid "No Change"
+msgstr ""
+
+#: src/ConfigWindow.vala:1090
+msgid "No Subtitles"
+msgstr ""
+
+#: src/ConfigWindow.vala:611
+msgid "No Up-Scaling"
+msgstr ""
+
+#: src/ConfigWindow.vala:764
+msgid "None"
+msgstr ""
+
+#: src/Main.vala:491
+msgid "Not possible to continue!"
+msgstr ""
+
+#: src/ConfigWindow.vala:671
+msgid "Numerator"
+msgstr ""
+
+#: src/MainWindow.vala:376
+msgid "Open Folder"
+msgstr ""
+
+#: src/MainWindow.vala:431
+msgid "Open Log File"
+msgstr ""
+
+#: src/MainWindow.vala:425
+msgid "Open Output Folder"
+msgstr ""
+
+#: src/MainWindow.vala:419
+msgid "Open Temp Folder"
+msgstr ""
+
+#: src/MainWindow.vala:228
+msgid "Open output folder"
+msgstr ""
+
+#: src/ConfigWindow.vala:748
+msgid "Optimization"
+msgstr ""
+
+#: src/MainWindow.vala:226
+msgid "Output"
+msgstr ""
+
+#: src/PrefWindow.vala:57
+msgid "Output Location"
+msgstr ""
+
+#: src/MainWindow.vala:161 src/MainWindow.vala:1414 src/MainWindow.vala:1416
+msgid "Pause"
+msgstr ""
+
+#: src/Main.vala:1400 src/Main.vala:1405
+msgid "Paused"
+msgstr ""
+
+#: src/Main.vala:1403
+msgid "Paused: Enter (r) to resume..."
+msgstr ""
+
+#: src/MainWindow.vala:448
+msgid "Play File (Output)"
+msgstr ""
+
+#: src/MainWindow.vala:442
+msgid "Play File (Source)"
+msgstr ""
+
+#: src/ConfigWindow.vala:1951
+msgid "Please enter a name for this preset"
+msgstr ""
+
+#: src/ConfigWindow.vala:375 src/MainWindow.vala:341
+msgid "Preset"
+msgstr ""
+
+#: src/ConfigWindow.vala:246
+msgid "Preset:"
+msgstr ""
+
+#: src/MainWindow.vala:1528
+msgid "Press 'Cancel' to abort shutdown"
+msgstr ""
+
+#: src/MainWindow.vala:403
+msgid "Preview File"
+msgstr ""
+
+#: src/ConfigWindow.vala:407
+msgid "Profile"
+msgstr ""
+
+#: src/FileInfoWindow.vala:36
+msgid "Properties"
+msgstr ""
+
+#: src/ConfigWindow.vala:361 src/ConfigWindow.vala:737
+msgid "Quality"
+msgstr ""
+
+#: src/MainWindow.vala:1436
+msgid "Queue is Empty"
+msgstr ""
+
+#: src/Main.vala:888 src/Main.vala:949
+msgid "Queued"
+msgstr ""
+
+#: src/MainWindow.vala:143
+msgid "Remove all file(s)"
+msgstr ""
+
+#: src/MainWindow.vala:137
+msgid "Remove selected file(s)"
+msgstr ""
+
+#: src/ConfigWindow.vala:585
+msgid "Resizing Method"
+msgstr ""
+
+#: src/ConfigWindow.vala:523
+msgid "Resolution"
+msgstr ""
+
+#: src/MainWindow.vala:1408 src/MainWindow.vala:1410
+msgid "Resume"
+msgstr ""
+
+#: src/MainWindow.vala:220
+msgid "Run processes with lower priority"
+msgstr ""
+
+#: src/ConfigWindow.vala:794
+msgid "Sampling Rate (Hz)"
+msgstr ""
+
+#: src/PrefWindow.vala:66
+msgid "Save in input file location"
+msgstr ""
+
+#: src/MainWindow.vala:884
+msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr ""
+
+#: src/ConfigWindow.vala:550
+msgid ""
+"Set either Width or Height and leave the other as 0.\n"
+"It will be calculated automatically.\n"
+"\n"
+"Setting both width and height is not recommended\n"
+"since the video may get stretched or squeezed.\n"
+"\n"
+"Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
+msgstr ""
+
+#: src/MainWindow.vala:205
+msgid "Shutdown"
+msgstr ""
+
+#: src/MainWindow.vala:1385
+msgid "Shutdown Disabled"
+msgstr ""
+
+#: src/MainWindow.vala:1382
+msgid "Shutdown Enabled"
+msgstr ""
+
+#: src/MainWindow.vala:210
+msgid "Shutdown system after completion"
+msgstr ""
+
+#: src/MainWindow.vala:258
+msgid "Size"
+msgstr ""
+
+#: src/MainWindow.vala:393
+msgid "Skip File"
+msgstr ""
+
+#: src/ConfigWindow.vala:391
+msgid "Slow"
+msgstr ""
+
+#: src/ConfigWindow.vala:459
+msgid "Slow (--cpu-used=2)"
+msgstr ""
+
+#: src/ConfigWindow.vala:393
+msgid "Slower"
+msgstr ""
+
+#: src/ConfigWindow.vala:457
+msgid "Slower (--cpu-used=1)"
+msgstr ""
+
+#: src/ConfigWindow.vala:455
+msgid "Slowest (--cpu-used=0)"
+msgstr ""
+
+#: src/Main.vala:876
+#, c-format
+msgid "Source files will be moved to '%s'"
+msgstr ""
+
+#: src/Main.vala:976
+#, c-format
+msgid "Source: '%s'"
+msgstr ""
+
+#: src/ConfigWindow.vala:766
+msgid "Speech"
+msgstr ""
+
+#: src/ConfigWindow.vala:437
+msgid "Speed"
+msgstr ""
+
+#: src/MainWindow.vala:152 src/MainWindow.vala:154
+msgid "Start"
+msgstr ""
+
+#: src/Main.vala:862
+#, c-format
+msgid "Starting batch of %d file(s):"
+msgstr ""
+
+#: src/MainWindow.vala:285
+msgid "Status"
+msgstr ""
+
+#: src/Main.vala:1238
+msgid "Stopped!"
+msgstr ""
+
+#: src/ConfigWindow.vala:823
+msgid "Subs"
+msgstr ""
+
+#: src/ConfigWindow.vala:840
+msgid "Subtitle Mode"
+msgstr ""
+
+#: src/ConfigWindow.vala:855
+msgid "Subtitles"
+msgstr ""
+
+#: src/Main.vala:978
+#, c-format
+msgid "Subtitles: '%s'"
+msgstr ""
+
+#: src/ConfigWindow.vala:385
+msgid "SuperFast"
+msgstr ""
+
+#: src/ConfigWindow.vala:1924 src/ConfigWindow.vala:1927
+#: src/ConfigWindow.vala:1930 src/ConfigWindow.vala:1933
+msgid "Supported Formats:"
+msgstr ""
+
+#: src/MainWindow.vala:1530
+msgid "System shutdown"
+msgstr ""
+
+#: src/MainWindow.vala:1537
+#, c-format
+msgid "System shutdown was cancelled by user!"
+msgstr ""
+
+#: src/Main.vala:542
+msgid "System will be shutdown after completion"
+msgstr ""
+
+#: src/Main.vala:931 src/MainWindow.vala:1527
+msgid "System will shutdown in one minute!"
+msgstr ""
+
+#: src/ConfigWindow.vala:582
+msgid ""
+"The resizing filter affects the sharpness and compressibility of the video.\n"
+"For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
+"makes the video more difficult to compress resulting in slightly bigger "
+"files.\n"
+"The 'Bilinear' filter gives smoother video (less detail) and smaller files."
+msgstr ""
+
+#: src/ConfigWindow.vala:383
+msgid "UltraFast"
+msgstr ""
+
+#: src/Main.vala:834
+msgid "Unknown format:"
+msgstr ""
+
+#: src/MainWindow.vala:912
+#, c-format
+msgid "Unknown format: '%s'"
+msgstr ""
+
+#: src/FileInfoWindow.vala:51
+msgid "Value"
+msgstr ""
+
+#: src/ConfigWindow.vala:1221 src/ConfigWindow.vala:1246
+#: src/ConfigWindow.vala:1277 src/ConfigWindow.vala:1294
+#: src/ConfigWindow.vala:1637 src/ConfigWindow.vala:1660
+msgid "Variable Bitrate"
+msgstr ""
+
+#: src/ConfigWindow.vala:1662
+msgid "Variable Bitrate (2pass)"
+msgstr ""
+
+#: src/ConfigWindow.vala:1614
+msgid "Variable Bitrate / CRF"
+msgstr ""
+
+#: src/ConfigWindow.vala:266
+msgid "Version"
+msgstr ""
+
+#: src/ConfigWindow.vala:395
+msgid "VerySlow"
+msgstr ""
+
+#: src/ConfigWindow.vala:308
+msgid "Video"
+msgstr ""
+
+#: src/Main.vala:545
+msgid ""
+"Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
+msgstr ""
+
+#: src/ConfigWindow.vala:570
+msgid "Width"
+msgstr ""
+
+#: src/ConfigWindow.vala:553
+msgid "Width x Height"
+msgstr ""
+
+#: src/MainWindow.vala:890
+msgid ""
+"[Batch completed] Right-click for options or click 'Finish' to continue."
+msgstr ""
+
+#: src/MainWindow.vala:894
+msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
+msgstr ""
+
+#: src/MainWindow.vala:523
+msgid "presets"
+msgstr ""
+
+#: src/MainWindow.vala:519
+msgid "scripts"
+msgstr ""

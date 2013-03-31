@@ -20,7 +20,7 @@
  * 
  * 
  */
- 
+
 using GLib;
 using Gtk;
 using Gee;
@@ -28,15 +28,13 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "1.7";
+public const string AppVersion = "1.8";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
-/*
-const string GETTEXT_PACKAGE = Config.GETTEXT_PACKAGE;
-const string LOCALE_DIR = "/usr/local/lib/locale";
+const string GETTEXT_PACKAGE = "selene";
+const string LOCALE_DIR = "/usr/share/locale";
 const string VERSION = "1.0";
-*/
 
 public enum FileStatus
 {
@@ -83,7 +81,7 @@ public class MediaFile : GLib.Object
 	
 	public FileStatus Status = FileStatus.PENDING;
 	public bool IsValid;
-	public string ProgressText = "Queued";
+	public string ProgressText = _("Queued");
 	public int ProgressPercent = 0;
 	
 	public string InfoText;
@@ -303,7 +301,7 @@ public class MediaFile : GLib.Object
 		if (crop_enabled())
 			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
 		else if (AutoCropError)
-			return "N/A";
+			return _("N/A");
 		else
 			return "";
 	}
@@ -458,11 +456,12 @@ public class Main : GLib.Object
 	public static int main (string[] args) 
 	{
 		// set locale
-		/*Intl.setlocale(GLib.LocaleCategory.ALL, "");
-		Intl.bindtextdomain("selene", "/usr/local/share/locale");
-		Intl.bind_textdomain_codeset("selene", "UTF-8");
-		Intl.textdomain("selene");*/
 		
+		Intl.setlocale(GLib.LocaleCategory.MESSAGES, "");
+		Intl.textdomain(GETTEXT_PACKAGE);
+		Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "utf-8");
+		Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
+
 		// show help
 		
 		if (args.length > 1) {
@@ -477,15 +476,7 @@ public class Main : GLib.Object
 		// init app
 
 		Gtk.init (ref args);
-		
-		
-		/*
-		Intl.textdomain(GETTEXT_PACKAGE);
-		Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
-		Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-		Environment.set_application_name(GETTEXT_PACKAGE);
-		*/
-		
+
 		App = new Main(args[0]);
 
 	    // check if terminal supports colors
@@ -497,7 +488,7 @@ public class Main : GLib.Object
 		
 		string str = Utility.get_cmd_path ("mediainfo");
 		if ((str == null)||(str == "")){
-			Utility.messagebox_show("Missing Dependency", "Following packages were not found:\n\nmediainfo\n\nNot possible to continue!", true);
+			Utility.messagebox_show(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"), true);
 			return 1;
 		}
 		
@@ -548,10 +539,10 @@ public class Main : GLib.Object
 				case "--shutdown":
 					if (App.AdminMode) {
 						App.Shutdown = true;
-						log_msg ("System will be shutdown after completion");
+						log_msg (_("System will be shutdown after completion"));
 					}
 					else {
-						log_error ("Warning: User does not have Admin priviledges. '--shutdown' will be ignored.");
+						log_error (_("Warning: User does not have Admin priviledges. '--shutdown' will be ignored."));
 					}
 					break;
 				
@@ -575,7 +566,7 @@ public class Main : GLib.Object
 
 		if (App.ConsoleMode){
 			if (App.InputFiles.size == 0){
-				log_error ("Input queue is empty! Please specify files to convert.");
+				log_error (_("Input queue is empty! Please select files to convert."));
 				return 1;
 			}
 			App.start_input_thread ();
@@ -594,7 +585,7 @@ public class Main : GLib.Object
 	
 	public static string help_message ()
 	{
-		string msg = "\n" + AppName + " v" + AppVersion + " by Tony George (teejee2008@gmail.com)\n";
+		string msg = "\n" + AppName + " v" + AppVersion + " by Tony George (teejee2008@gmail.com)" + "\n";
 		msg += Environment.get_prgname () + " [options] <input-file-list>";
 		msg += 
 """
@@ -684,9 +675,9 @@ Notes:
 
 		// additional info
 		
-		log_msg ("Loading scripts from:\n'%s' (User Scripts)\n'%s' (Official Scripts)".printf(this.ScriptsFolder_Custom,this.ScriptsFolder_Official));
-		log_msg ("Loading presets from:\n'%s' (User Presets)\n'%s' (Official Presets)".printf(this.PresetsFolder_Custom,this.PresetsFolder_Official));
-		log_msg ("Using temp folder '%s'".printf(TempDirectory));
+		log_msg (_("Loading scripts from:") + " '%s'".printf(this.ScriptsFolder_Custom));
+		log_msg (_("Loading presets from:") + " '%s'".printf(this.PresetsFolder_Custom));
+		log_msg (_("Using temp folder:") + " '%s'".printf(TempDirectory));
 
 		// init config
 		
@@ -836,11 +827,11 @@ Notes:
 		MediaFile mFile = new MediaFile (filePath);
 		if (mFile.IsValid) {
 			InputFiles.add(mFile);
-			log_msg ("File added: '%s'".printf (mFile.Path));
+			log_msg (_("File added:") + " '%s'".printf (mFile.Path));
 			return true;
 		}
 		else{
-			log_error ("Unknown format: '%s'".printf (mFile.Path));
+			log_error (_("Unknown format:") + " '%s'".printf (mFile.Path));
 		}
 		
 		return false;
@@ -850,39 +841,39 @@ Notes:
 	{
 		foreach(MediaFile mf in file_list){
 			this.InputFiles.remove (mf);
-			log_msg ("File removed: '%s'".printf (mf.Path));
+			log_msg (_("File removed:") + " '%s'".printf (mf.Path));
 		}
 	}
 	
 	public void remove_all ()
 	{
 		this.InputFiles.clear();
-		log_msg ("All files removed");
+		log_msg (_("All files removed"));
 	}
 
 	public void convert_begin ()
 	{
 		//check for empty list
 		if (InputFiles.size == 0){
-			log_error ("Input queue is empty! Please add some files.");
+			log_error (_("Input queue is empty! Please add some files."));
 			return;
 		}
 		
-		log_msg ("Starting batch of %d file(s):".printf(InputFiles.size), true);
+		log_msg (_("Starting batch of %d file(s):").printf(InputFiles.size), true);
 		
 		//check and create output dir
 		if (this.OutputDirectory.length > 0) { 
 			Utility.create_dir (this.OutputDirectory); 
-			log_msg ("Files will be saved in '%s'".printf(this.OutputDirectory));
+			log_msg (_("Files will be saved in '%s'").printf(this.OutputDirectory));
 		}
 		else{
-			log_msg ("Files will be saved in source directory");
+			log_msg (_("Files will be saved in source directory"));
 		}
 
 		//check and create backup dir
 		if (this.BackupDirectory.length > 0) { 
 			Utility.create_dir (this.BackupDirectory); 
-			log_msg ("Source files will be moved to '%s'".printf(this.BackupDirectory));
+			log_msg (_("Source files will be moved to '%s'").printf(this.BackupDirectory));
 		}	
 		
 		//initialize batch control variables
@@ -894,7 +885,7 @@ Notes:
 		//initialize file status
 		foreach (MediaFile mf in InputFiles) {
 			mf.Status = FileStatus.PENDING;
-			mf.ProgressText = "Queued";
+			mf.ProgressText = _("Queued");
 			mf.ProgressPercent = 0;
 		}
 		
@@ -937,8 +928,8 @@ Notes:
 			//handle shutdown for console mode
 			if (ConsoleMode){
 				if (Shutdown){
-					log_msg ("System will shutdown in one minute!");
-					log_msg ("Enter any key to Cancel...");
+					log_msg (_("System will shutdown in one minute!"));
+					log_msg (_("Enter any key to Cancel..."));
 					shutdownTimerID = Timeout.add (60000, shutdown);
 					WaitingForShutdown = true;
 				}
@@ -955,7 +946,7 @@ Notes:
 		//reset file status
 		foreach(MediaFile mf in this.InputFiles) {
 			mf.Status = FileStatus.PENDING;
-			mf.ProgressText = "Queued";
+			mf.ProgressText = _("Queued");
 			mf.ProgressPercent = 0;
 		}
 		
@@ -982,9 +973,9 @@ Notes:
 		CurrentFile.ProgressText = null; // (not set) show value as percent
 		CurrentFile.ProgressPercent = 0;
 					
-		log_msg ("Source: '%s'".printf(CurrentFile.Path), true);
+		log_msg (_("Source:") + " '%s'".printf(CurrentFile.Path), true);
 		if (CurrentFile.SubFile != null){
-			log_msg ("Subtitles: '%s'".printf(CurrentFile.SubName));
+			log_msg (_("Subtitles:") + " '%s'".printf(CurrentFile.SubName));
 		}
 		
 		Progress = 0;
@@ -1151,9 +1142,9 @@ Notes:
 		bool retVal = false;
 		
 		if (ConsoleMode)
-			log_msg ("Converting: Enter (q) to quit or (p) to pause...");
+			log_msg (_("Converting: Enter (q) to quit or (p) to pause..."));
 		else
-			log_msg ("Converting...");
+			log_msg (_("Converting..."));
 			
 		string[] argv = new string[1];
 		argv[0] = scriptFile;
@@ -1224,32 +1215,33 @@ Notes:
 	    
 	    if (Utility.file_exists (mf.TempDirectory + "/0")) {
 			mf.Status = FileStatus.SUCCESS;
-			mf.ProgressText = "Done";
+			mf.ProgressText = _("Done");
 			mf.ProgressPercent = 100;
 			retVal = true;
-			
-			log_msg ("Completed");
+
 			if (ShowNotificationPopups){
-				Utility.notify_send ("File Completed", mf.Name, 2000, "low");
+				Utility.notify_send (_("File Completed"), mf.Name, 2000, "low");
 			}
 		}
 		else{
 			mf.Status = FileStatus.ERROR;
-			mf.ProgressText = "Error";
+			mf.ProgressText = _("Error");
 			mf.ProgressPercent = 0;
 			retVal = false;
 			
-			log_msg ("Failed");
 			if (ShowNotificationPopups){
-				Utility.notify_send ("File Failed", mf.Name, 2000, "low");
+				Utility.notify_send (_("File Failed"), mf.Name, 2000, "low");
 			}
 		}
 
 	    if (Aborted) {
-	        log_msg ("Stopped!");
+	        log_msg (_("Stopped!"));
 		}
-		else {
-			
+		else if (mf.Status == FileStatus.SUCCESS) {
+			log_msg (_("Completed"));
+		}
+		else if (mf.Status == FileStatus.ERROR) {
+			log_msg (_("Failed"));
 		}
 
 		// convert next file
@@ -1376,7 +1368,7 @@ Notes:
 		for(int k = InputFiles.index_of(CurrentFile); k < InputFiles.size; k++)
 		{
 			MediaFile mf  = InputFiles[k];
-			mf.ProgressText = "Cancelled";
+			mf.ProgressText = _("Cancelled");
 		}
 		
 	    Utility.process_kill (procID);
@@ -1391,7 +1383,7 @@ Notes:
 		
 		// this.Aborted = true; //Do not set Abort flag
 		CurrentFile.Status = FileStatus.SKIPPED;
-		CurrentFile.ProgressText = "Cancelled";
+		CurrentFile.ProgressText = _("Cancelled");
 
 	    Utility.process_kill (procID);
 	}
@@ -1405,12 +1397,12 @@ Notes:
 	    }
 		
 		Status = AppStatus.PAUSED;
-		CurrentFile.ProgressText = "Paused";
+		CurrentFile.ProgressText = _("Paused");
 		
 		if (ConsoleMode)
-			log_msg ("Paused: Enter (r) to resume...");
+			log_msg (_("Paused: Enter (r) to resume..."));
 		else
-			log_msg ("Paused");
+			log_msg (_("Paused"));
 	}
 	
 	public void resume ()
@@ -1425,9 +1417,9 @@ Notes:
 		CurrentFile.ProgressText = null;
 	    
 	    if (ConsoleMode)
-			log_msg ("Converting: Enter (q) to quit or (p) to pause...");
+			log_msg (_("Converting: Enter (q) to quit or (p) to pause..."));
 		else
-			log_msg ("Converting...");
+			log_msg (_("Converting..."));
 	}
 	
 	public void set_priority ()

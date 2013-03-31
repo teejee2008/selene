@@ -160,6 +160,7 @@ public class ConfigWindow : Dialog {
         Gtk.ListStore model;
         Gtk.CellRendererText textCell;
         Gtk.TreeIter iter;
+        string tt;
         
 		//get content area
 		vboxMain = get_content_area ();
@@ -172,7 +173,7 @@ public class ConfigWindow : Dialog {
 		//General tab ---------------------------------------------
 		
 		//lblGeneral
-		lblGeneral = new Label ("General");
+		lblGeneral = new Label (_("General"));
 
         //gridGeneral
         gridGeneral = new Grid ();
@@ -185,7 +186,7 @@ public class ConfigWindow : Dialog {
 		row = -1;
 		
 		//lblHeaderFileFormat
-		lblHeaderFileFormat = new Gtk.Label("<b>File Format:</b>");
+		lblHeaderFileFormat = new Gtk.Label(_("<b>File Format:</b>"));
 		lblHeaderFileFormat.set_use_markup(true);
 		lblHeaderFileFormat.xalign = (float) 0.0;
 		//lblHeaderFileFormat.margin_top = 6;
@@ -193,7 +194,7 @@ public class ConfigWindow : Dialog {
 		gridGeneral.attach(lblHeaderFileFormat,0,++row,2,1);
 				
 		//lblFileFormat
-		lblFileFormat = new Gtk.Label("Format");
+		lblFileFormat = new Gtk.Label(_("Format"));
 		lblFileFormat.xalign = (float) 0.0;
 		gridGeneral.attach(lblFileFormat,0,++row,1,1);
 		
@@ -201,27 +202,27 @@ public class ConfigWindow : Dialog {
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		
 		model.append (out iter);
-		model.set (iter,0,"Matroska Video (*.mkv)",1,"mkv");
+		model.set (iter,0,_("Matroska Video (*.mkv)"),1,"mkv");
 		model.append (out iter);
-		model.set (iter,0,"MPEG4 Video (*.mp4)",1,"mp4v");
+		model.set (iter,0,_("MPEG4 Video (*.mp4)"),1,"mp4v");
 		model.append (out iter);
-		model.set (iter,0,"OGG Theora Video (*.ogv)",1,"ogv");
+		model.set (iter,0,_("OGG Theora Video (*.ogv)"),1,"ogv");
 		model.append (out iter);
-		model.set (iter,0,"WebM Video (*.webm)",1,"webm");
+		model.set (iter,0,_("WebM Video (*.webm)"),1,"webm");
 		model.append (out iter);
-		model.set (iter,0,"AC3 Audio (*.ac3)",1,"ac3");
+		model.set (iter,0,_("AC3 Audio (*.ac3)"),1,"ac3");
 		model.append (out iter);
-		model.set (iter,0,"FLAC Audio (*.flac)",1,"flac");
+		model.set (iter,0,_("FLAC Audio (*.flac)"),1,"flac");
 		model.append (out iter);
-		model.set (iter,0,"MP3 Audio (*.mp3)",1,"mp3");
+		model.set (iter,0,_("MP3 Audio (*.mp3)"),1,"mp3");
 		model.append (out iter);
-		model.set (iter,0,"MP4 Audio (*.mp4)",1,"mp4a");
+		model.set (iter,0,_("MP4 Audio (*.mp4)"),1,"mp4a");
 		model.append (out iter);
-		model.set (iter,0,"OGG Vorbis Audio (*.ogg)",1,"ogg");
+		model.set (iter,0,_("OGG Vorbis Audio (*.ogg)"),1,"ogg");
 		model.append (out iter);
-		model.set (iter,0,"Opus Audio (*.opus)",1,"opus");
+		model.set (iter,0,_("Opus Audio (*.opus)"),1,"opus");
 		model.append (out iter);
-		model.set (iter,0,"WAV Audio (*.wav)",1,"wav");
+		model.set (iter,0,_("WAV Audio (*.wav)"),1,"wav");
 		
 		cmbFileFormat = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
@@ -231,7 +232,7 @@ public class ConfigWindow : Dialog {
         gridGeneral.attach(cmbFileFormat,1,row,1,1);
 
         //lblFileExtension
-		lblFileExtension = new Gtk.Label("Extension");
+		lblFileExtension = new Gtk.Label(_("Extension"));
 		lblFileExtension.xalign = (float) 0.0;
 		gridGeneral.attach(lblFileExtension,0,++row,1,1);
 
@@ -242,7 +243,7 @@ public class ConfigWindow : Dialog {
         gridGeneral.attach(cmbFileExtension,1,row,1,1);
         
         //lblHeaderPreset
-		lblHeaderPreset = new Gtk.Label("<b>Preset:</b>");
+		lblHeaderPreset = new Gtk.Label(_("<b>Preset:</b>"));
 		lblHeaderPreset.set_use_markup(true);
 		lblHeaderPreset.xalign = (float) 0.0;
 		lblHeaderPreset.margin_top = 6;
@@ -250,19 +251,19 @@ public class ConfigWindow : Dialog {
 		gridGeneral.attach(lblHeaderPreset,0,++row,2,1);
 		
         //lblPresetName
-		lblPresetName = new Gtk.Label("Name");
+		lblPresetName = new Gtk.Label(_("Name"));
 		lblPresetName.xalign = (float) 0.0;
 		gridGeneral.attach(lblPresetName,0,++row,1,1);
 		
 		//txtPresetName
 		txtPresetName = new Gtk.Entry();
 		txtPresetName.xalign = (float) 0.0;
-		txtPresetName.text = "New Preset";
+		txtPresetName.text = _("New Preset");
 		txtPresetName.hexpand = true;
 		gridGeneral.attach(txtPresetName,1,row,1,1);
 		
 		//lblPresetVersion
-		lblPresetVersion = new Gtk.Label("Version");
+		lblPresetVersion = new Gtk.Label(_("Version"));
 		lblPresetVersion.xalign = (float) 0.0;
 		gridGeneral.attach(lblPresetVersion,0,++row,1,1);
 		
@@ -273,7 +274,7 @@ public class ConfigWindow : Dialog {
 		gridGeneral.attach(txtPresetVersion,1,row,1,1);
 		
         //lblAuthorName
-		lblAuthorName = new Gtk.Label("Author");
+		lblAuthorName = new Gtk.Label(_("Author"));
 		lblAuthorName.xalign = (float) 0.0;
 		gridGeneral.attach(lblAuthorName,0,++row,1,1);
 		
@@ -284,7 +285,7 @@ public class ConfigWindow : Dialog {
 		gridGeneral.attach(txtAuthorName,1,row,1,1);
 		
 		//lblAuthorEmail
-		lblAuthorEmail = new Gtk.Label("Email");
+		lblAuthorEmail = new Gtk.Label(_("Email"));
 		lblAuthorEmail.xalign = (float) 0.0;
 		gridGeneral.attach(lblAuthorEmail,0,++row,1,1);
 		
@@ -304,7 +305,7 @@ public class ConfigWindow : Dialog {
 		//Video tab ---------------------------------------------
 		
 		//lblVideo
-		lblVideo = new Label("Video");
+		lblVideo = new Label(_("Video"));
 
         //gridVideo
         gridVideo = new Grid ();
@@ -317,7 +318,7 @@ public class ConfigWindow : Dialog {
 		row = -1;
 		
 		//lblVCodec
-		lblVCodec = new Gtk.Label("Format / Codec");
+		lblVCodec = new Gtk.Label(_("Format / Codec"));
 		lblVCodec.xalign = (float) 0.0;
 		gridVideo.attach(lblVCodec,0,++row,1,1);
 		
@@ -331,7 +332,7 @@ public class ConfigWindow : Dialog {
         gridVideo.attach(cmbVCodec,1,row,1,1);
         
         //lblVideoMode
-		lblVideoMode = new Gtk.Label("Encoding Mode");
+		lblVideoMode = new Gtk.Label(_("Encoding Mode"));
 		lblVideoMode.xalign = (float) 0.0;
 		gridVideo.attach(lblVideoMode,0,++row,1,1);
 		
@@ -344,7 +345,7 @@ public class ConfigWindow : Dialog {
         gridVideo.attach(cmbVideoMode,1,row,1,1);
 
         //lblVideoBitrate
-		lblVideoBitrate = new Gtk.Label("Bitrate (kbps)");
+		lblVideoBitrate = new Gtk.Label(_("Bitrate (kbps)"));
 		lblVideoBitrate.xalign = (float) 0.0;
 		lblVideoBitrate.set_tooltip_text ("");
 		gridVideo.attach(lblVideoBitrate,0,++row,1,1);
@@ -354,62 +355,58 @@ public class ConfigWindow : Dialog {
 		spinVideoBitrate = new Gtk.SpinButton (adjVideoBitrate, 0.1, 2);
 		gridVideo.attach(spinVideoBitrate,1,row,1,1);
 		
+		tt = _("<b>Compression Vs Quality</b>\nSmaller values give better quality video and larger files");
+		
         //lblVideoQuality
-		lblVideoQuality = new Gtk.Label("Quality");
+		lblVideoQuality = new Gtk.Label(_("Quality"));
 		lblVideoQuality.xalign = (float) 0.0;
+		lblVideoQuality.set_tooltip_markup(tt);
 		gridVideo.attach(lblVideoQuality,0,++row,1,1);
 
 		//spinVideoQuality
 		Gtk.Adjustment adjVideoQuality = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
 		spinVideoQuality = new Gtk.SpinButton (adjVideoQuality, 0.1, 2);
-		spinVideoQuality.set_tooltip_text (
-"""Compression Vs Quality
-
-Smaller values = Better quality, Larger Files
-Larger values  = Less quality, Smaller files"""
-		);
+		spinVideoQuality.set_tooltip_markup(tt);
 		gridVideo.attach(spinVideoQuality,1,row,1,1);
 		
+		tt = _("<b>Compression Vs Encoding Speed</b>\nSlower presets give better compression and smaller files\nbut take more time to encode.");
+		
         //lblPreset
-		lblX264Preset = new Gtk.Label("Preset");
+		lblX264Preset = new Gtk.Label(_("Preset"));
 		lblX264Preset.xalign = (float) 0.0;
+		lblX264Preset.set_tooltip_markup(tt);
 		gridVideo.attach(lblX264Preset,0,++row,1,1);
 		
 		//cmbx264Preset
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter, 0, "UltraFast", 1, "ultrafast");
+		model.set (iter, 0, _("UltraFast"), 1, "ultrafast");
 		model.append (out iter);
-		model.set (iter, 0, "SuperFast", 1, "superfast");
+		model.set (iter, 0, _("SuperFast"), 1, "superfast");
 		model.append (out iter);
-		model.set (iter, 0, "Fast", 1, "fast");
+		model.set (iter, 0, _("Fast"), 1, "fast");
 		model.append (out iter);
-		model.set (iter, 0, "Medium", 1, "medium");
+		model.set (iter, 0, _("Medium"), 1, "medium");
 		model.append (out iter);
-		model.set (iter, 0, "Slow", 1, "slow");
+		model.set (iter, 0, _("Slow"), 1, "slow");
 		model.append (out iter);
-		model.set (iter, 0, "Slower", 1, "slower");
+		model.set (iter, 0, _("Slower"), 1, "slower");
 		model.append (out iter);
-		model.set (iter, 0, "VerySlow", 1, "veryslow");
+		model.set (iter, 0, _("VerySlow"), 1, "veryslow");
 		
 		cmbX264Preset = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbX264Preset.pack_start( textCell, false );
         cmbX264Preset.set_attributes( textCell, "text", 0 );
-        cmbX264Preset.set_tooltip_text (
-"""Compression Vs Encoding Speed
-
-Faster Preset = Faster Encoding, Larger Files
-Slower Preset = Slower Encoding, Smaller Files
-
-This option only affects Encoding Speed and File Size.
-It does not affect Video Quality (which is controlled by CRF value)"""
-		);
+        cmbX264Preset.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Preset,1,row,1,1);
 
+		tt = _("<b>Compression Vs Device Compatibility</b>\n'High' profile gives the best compression.\nChange this to 'Baseline' or 'Main' only if you are encoding\nfor a particular device (mobiles,PMPs,etc) which does not\nsupport the 'High' profile");
+		
 		//lblProfile
-		lblX264Profile = new Gtk.Label("Profile");
+		lblX264Profile = new Gtk.Label(_("Profile"));
 		lblX264Profile.xalign = (float) 0.0;
+		lblX264Profile.set_tooltip_markup(tt);
 		gridVideo.attach(lblX264Profile,0,++row,1,1);
 	
 		//cmbX264Profile
@@ -431,20 +428,16 @@ It does not affect Video Quality (which is controlled by CRF value)"""
 		textCell = new CellRendererText();
         cmbX264Profile.pack_start( textCell, false );
         cmbX264Profile.set_attributes( textCell, "text", 0 );
-        cmbX264Profile.set_tooltip_text (
-"""Compression Vs Device Compatibility
-
-Baseline = Worse compression, Playable on more devices (mobiles and PMPs)
-High Profile = Best compression, Not playable on some devices
-
-Change this option only if you are encoding for a particular device"""
-		);
+        cmbX264Profile.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Profile,1,row,1,1);
+
+		tt = _("<b>Compression Vs Encoding Speed</b>\nUse a slower setting for better quality.\nThe slowest setting is around 8 times slower than the fastest.");
 		
 		//lblVP8Speed
-		lblVP8Speed = new Gtk.Label("Speed");
+		lblVP8Speed = new Gtk.Label(_("Speed"));
 		lblVP8Speed.xalign = (float) 0.0;
 		lblVP8Speed.no_show_all = true;
+		lblVP8Speed.set_tooltip_markup(tt);
 		gridVideo.attach(lblVP8Speed,0,++row,1,1);
 		
 		//cmbVP8Speed
@@ -453,39 +446,32 @@ Change this option only if you are encoding for a particular device"""
 		cmbVP8Speed.no_show_all = true;
         cmbVP8Speed.pack_start( textCell, false );
         cmbVP8Speed.set_attributes( textCell, "text", 0 );
-        cmbVP8Speed.set_tooltip_text (
-"""Compression Vs Encoding Speed
-
-This setting has a big impact on encoding speed.
-The 'slowest' setting is around 8 times slower
-than the 'fastest'. 
-
-Use a slower setting for better quality and 
-a faster setting to save time.
-"""
-		);
+        cmbVP8Speed.set_tooltip_markup(tt);
         gridVideo.attach(cmbVP8Speed,1,row,1,1);
         
         //populate
         model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter, 0, "Slowest (--cpu-used=0)", 1, "good_0");
+		model.set (iter, 0, _("Slowest (--cpu-used=0)"), 1, "good_0");
 		model.append (out iter);
-		model.set (iter, 0, "Slower (--cpu-used=1)", 1, "good_1");
+		model.set (iter, 0, _("Slower (--cpu-used=1)"), 1, "good_1");
 		model.append (out iter);
-		model.set (iter, 0, "Slow (--cpu-used=2)", 1, "good_2");
+		model.set (iter, 0, _("Slow (--cpu-used=2)"), 1, "good_2");
 		model.append (out iter);
-		model.set (iter, 0, "Medium (--cpu-used=3)", 1, "good_3");
+		model.set (iter, 0, _("Medium (--cpu-used=3)"), 1, "good_3");
 		model.append (out iter);
-		model.set (iter, 0, "Fast (--cpu-used=4)", 1, "good_4");
+		model.set (iter, 0, _("Fast (--cpu-used=4)"), 1, "good_4");
 		model.append (out iter);
-		model.set (iter, 0, "Fastest (--cpu-used=5)", 1, "good_5");
+		model.set (iter, 0, _("Fastest (--cpu-used=5)"), 1, "good_5");
 		cmbVP8Speed.set_model(model);
 		
+		tt = _("<b>Additional Options</b>\nThese options will be passed to the encoder\non the command line. Please do not specify\nany options that are already provided by the GUI.");
+		
 		//lblVCodecOptions
-		lblVCodecOptions = new Gtk.Label("Extra Options");
+		lblVCodecOptions = new Gtk.Label(_("Extra Options"));
 		lblVCodecOptions.xalign = (float) 0.0;
 		lblVCodecOptions.margin_top = 6;
+		lblVCodecOptions.set_tooltip_markup(tt);
 		gridVideo.attach(lblVCodecOptions,0,++row,1,1);
 		
 		//txtVCodecOptions
@@ -496,6 +482,7 @@ a faster setting to save time.
 		txtVCodecOptions.buffer.text = "";
 		txtVCodecOptions.expand = true;
 		//txtVCodecOptions.set_size_request(-1,100);
+		txtVCodecOptions.set_tooltip_markup(tt);
 		txtVCodecOptions.set_wrap_mode (Gtk.WrapMode.WORD);
 		
 		Gtk.ScrolledWindow scrollWin = new Gtk.ScrolledWindow (null, null);
@@ -513,7 +500,7 @@ a faster setting to save time.
 		//Video Filters tab ---------------------------------------------
 		
 		//lblVideoFilters
-		lblVideoFilters = new Label ("Filters");
+		lblVideoFilters = new Label (_("Filters"));
 
         //gridVideoFilters
         gridVideoFilters = new Grid ();
@@ -526,23 +513,23 @@ a faster setting to save time.
 		row = -1;
 		
 		//lblHeaderFrameSize
-		lblHeaderFrameSize = new Gtk.Label("<b>Resize:</b>");
+		lblHeaderFrameSize = new Gtk.Label(_("<b>Resize:</b>"));
 		lblHeaderFrameSize.set_use_markup(true);
 		lblHeaderFrameSize.xalign = (float) 0.0;
 		lblHeaderFrameSize.margin_bottom = 6;
 		gridVideoFilters.attach(lblHeaderFrameSize,0,++row,1,1);
 		
 		//lblFrameSize
-		lblFrameSize = new Gtk.Label("Resolution");
+		lblFrameSize = new Gtk.Label(_("Resolution"));
 		lblFrameSize.xalign = (float) 0.0;
 		gridVideoFilters.attach(lblFrameSize,0,++row,1,1);
 		
 		//cmbFrameSize
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter,0,"No Change",1,"disable");
+		model.set (iter,0,_("No Change"),1,"disable");
 		model.append (out iter);
-		model.set (iter,0,"Custom",1,"custom");
+		model.set (iter,0,_("Custom"),1,"custom");
 		model.append (out iter);
 		model.set (iter,0,"320p",1,"320p");
 		model.append (out iter);
@@ -560,23 +547,15 @@ a faster setting to save time.
         cmbFrameSize.hexpand = true;
         gridVideoFilters.attach(cmbFrameSize,1,row,1,1);
 		
-		
-		string fps = """Set either Width or Height, leave the other as 0 (it will be calculated automatically).
-Setting both width and height is not recommended, since the video may get stretched or squeezed.
-Use the 'Fit-To-Box' option to avoid changes to aspect ratio.
-
-Examples:
-0 x 0   => No Change
-0 x 480 => sets Height to 480 and Width is calculated automatically
-800 x 0 => sets Width to 800 and Height is calculated automatically""";
+		tt = _("Set either Width or Height and leave the other as 0.\nIt will be calculated automatically.\n\nSetting both width and height is not recommended\nsince the video may get stretched or squeezed.\n\nEnable the 'Fit-To-Box' option to avoid changes to aspect ratio.");
 
         //lblFrameSizeCustom
-		lblFrameSizeCustom = new Gtk.Label("Width x Height");
+		lblFrameSizeCustom = new Gtk.Label(_("Width x Height"));
 		lblFrameSizeCustom.xalign = (float) 0.0;
 		lblFrameSizeCustom.no_show_all = true;
-		lblFrameSizeCustom.set_tooltip_text (fps);
+		lblFrameSizeCustom.set_tooltip_markup (tt);
 		gridVideoFilters.attach(lblFrameSizeCustom,0,++row,1,1);
-		
+
         //hboxFrameSize
         hboxFrameSize = new Box (Orientation.HORIZONTAL, 0);
 		hboxFrameSize.homogeneous = false;
@@ -588,7 +567,7 @@ Examples:
 		spinFrameWidth.xalign = (float) 0.5;
 		spinFrameWidth.no_show_all = true;
 		spinFrameWidth.width_chars = 5;
-		spinFrameWidth.set_tooltip_text ("Width");
+		spinFrameWidth.set_tooltip_text (_("Width"));
 		hboxFrameSize.pack_start (spinFrameWidth, false, false, 0);
 
 		//spinHeight
@@ -597,12 +576,15 @@ Examples:
 		spinFrameHeight.xalign = (float) 0.5;
 		spinFrameHeight.no_show_all = true;
 		spinFrameHeight.width_chars = 5;
-		spinFrameHeight.set_tooltip_text ("Height");
+		spinFrameHeight.set_tooltip_text (_("Height"));
 		hboxFrameSize.pack_start (spinFrameHeight, false, false, 5);
 		
+		tt = _("The resizing filter affects the sharpness and compressibility of the video.\nFor example, the 'Lanzos' filter gives sharper video but the extra detail\nmakes the video more difficult to compress resulting in slightly bigger files.\nThe 'Bilinear' filter gives smoother video (less detail) and smaller files.");
+		
 		//lblResizingMethod
-		lblResizingMethod = new Gtk.Label("Resizing Method");
+		lblResizingMethod = new Gtk.Label(_("Resizing Method"));
 		lblResizingMethod.xalign = (float) 0.0;
+		lblResizingMethod.set_tooltip_markup(tt);
 		gridVideoFilters.attach(lblResizingMethod,0,++row,1,1);
 
 		//cmbResizingMethod
@@ -612,24 +594,27 @@ Examples:
         cmbResizingMethod.set_attributes(textCell, "text", 0);
         cmbResizingMethod.changed.connect(cmbAudioMode_changed);
         cmbResizingMethod.no_show_all = true;
-        cmbResizingMethod.set_tooltip_text (
-"""The resizing filter affects the sharpness and compressibility of the video.
-For example, the 'Lanzos' filter gives sharper video but the extra detail results in slightly bigger files.
-The 'Bilinear' filter gives smoother video (less detail) which results in slightly smaller files""");
+        cmbResizingMethod.set_tooltip_markup(tt);
         gridVideoFilters.attach(cmbResizingMethod,1,row,1,1);
 
+		tt = _("Fits the video in a box of given width and height.");
+		
 		//chkFitToBox
-		chkFitToBox = new CheckButton.with_label("Do not stretch or squeeze the video (Fit-to-box)");
+		chkFitToBox = new CheckButton.with_label(_("Do not stretch or squeeze the video (Fit-To-Box)"));
 		chkFitToBox.active = true;
+		chkFitToBox.set_tooltip_markup(tt);
 		gridVideoFilters.attach(chkFitToBox,0,++row,2,1);
 		
+		tt = _("Video will not be resized if it's smaller than the given width and height");
+		
 		//chkNoUpScale
-		chkNoUpScale = new CheckButton.with_label("No Up-Scaling");
+		chkNoUpScale = new CheckButton.with_label(_("No Up-Scaling"));
 		chkNoUpScale.active = true;
+		chkNoUpScale.set_tooltip_markup(tt);
 		gridVideoFilters.attach(chkNoUpScale,0,++row,2,1);
 
 		//lblHeaderFrameRate
-		lblHeaderFrameRate = new Gtk.Label("<b>Resample:</b>");
+		lblHeaderFrameRate = new Gtk.Label(_("<b>Resample:</b>"));
 		lblHeaderFrameRate.set_use_markup(true);
 		lblHeaderFrameRate.xalign = (float) 0.0;
 		lblHeaderFrameRate.margin_top = 6;
@@ -637,17 +622,17 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		gridVideoFilters.attach(lblHeaderFrameRate,0,++row,1,1);
 		
 		//lblFPS
-		lblFPS = new Gtk.Label("Frame Rate");
+		lblFPS = new Gtk.Label(_("Frame Rate"));
 		lblFPS.xalign = (float) 0.0;
-		lblFPS.set_tooltip_text ("");
+		lblFPS.set_tooltip_text (_("Frames/sec"));
 		gridVideoFilters.attach(lblFPS,0,++row,1,1);
 		
 		//cmbFPS
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter,0,"No Change",1,"disable");
+		model.set (iter,0,_("No Change"),1,"disable");
 		model.append (out iter);
-		model.set (iter,0,"Custom",1,"custom");
+		model.set (iter,0,_("Custom"),1,"custom");
 		model.append (out iter);
 		model.set (iter,0,"25",1,"25");
 		model.append (out iter);
@@ -664,18 +649,13 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbFPS.changed.connect(cmbFPS_changed);
         gridVideoFilters.attach(cmbFPS,1,row,1,1);
         
-        string tt = 
-"""Examples:
-0 / 0  => No Change
-25 / 1 => 25fps
-30 / 1 => 30fps
-30000 / 1001 => 29.97fps""";
+        tt = _("<b>Examples:</b>") + "\n0 / 0  => " + _("No Change") + "\n25 / 1 => 25 fps\n30 / 1 => 30 fps\n30000 / 1001 => 29.97 fps";
 
 		//lblFPSCustom
-		lblFPSCustom = new Gtk.Label("FPS Ratio");
+		lblFPSCustom = new Gtk.Label(_("FPS Ratio"));
 		lblFPSCustom.xalign = (float) 0.0;
 		lblFPSCustom.no_show_all = true;
-		lblFPSCustom.set_tooltip_text (tt);
+		lblFPSCustom.set_tooltip_markup (tt);
 		gridVideoFilters.attach(lblFPSCustom,0,++row,1,1);
 
         //hboxFrameRate
@@ -689,7 +669,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		spinFPSNum.xalign = (float) 0.5;
 		spinFPSNum.no_show_all = true;
 		spinFPSNum.width_chars = 5;
-		spinFPSNum.set_tooltip_text ("Numerator");
+		spinFPSNum.set_tooltip_text (_("Numerator"));
 		hboxFPS.pack_start(spinFPSNum, false, false, 0);
 		
 		//spinFPSDenom
@@ -698,13 +678,13 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		spinFPSDenom.xalign = (float) 0.5;
 		spinFPSDenom.no_show_all = true;
 		spinFPSDenom.width_chars = 5;
-		spinFPSDenom.set_tooltip_text ("Denominator");
+		spinFPSDenom.set_tooltip_text (_("Denominator"));
 		hboxFPS.pack_start(spinFPSDenom, false, false, 5);
 				
 		// Audio tab --------------------------------------------------
 		
 		//lblAudio
-		lblAudio = new Label ("Audio");
+		lblAudio = new Label (_("Audio"));
 
         //gridAudio
         gridAudio = new Grid ();
@@ -717,7 +697,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		row = -1;
 		
 		//lblACodec
-		lblACodec = new Gtk.Label("Format / Codec");
+		lblACodec = new Gtk.Label(_("Format / Codec"));
 		lblACodec.xalign = (float) 0.0;
 		gridAudio.attach(lblACodec,0,++row,1,1);
 		
@@ -731,7 +711,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         gridAudio.attach(cmbACodec,1,row,1,1);
         
 		//lblAudioMode
-		lblAudioMode = new Gtk.Label("Encoding Mode");
+		lblAudioMode = new Gtk.Label(_("Encoding Mode"));
 		lblAudioMode.xalign = (float) 0.0;
 		gridAudio.attach(lblAudioMode,0,++row,1,1);
 
@@ -744,7 +724,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         gridAudio.attach(cmbAudioMode,1,row,1,1);
         
 		//lblAudioBitrate
-		lblAudioBitrate = new Gtk.Label("Bitrate (kbps)");
+		lblAudioBitrate = new Gtk.Label(_("Bitrate (kbps)"));
 		lblAudioBitrate.xalign = (float) 0.0;
 		gridAudio.attach(lblAudioBitrate,0,++row,1,1);
 		
@@ -755,7 +735,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		gridAudio.attach(spinAudioBitrate,1,row,1,1);
 		
 		//lblAudioQuality
-		lblAudioQuality = new Gtk.Label("Quality");
+		lblAudioQuality = new Gtk.Label(_("Quality"));
 		lblAudioQuality.xalign = (float) 0.0;
 		gridAudio.attach(lblAudioQuality,0,++row,1,1);
 		
@@ -766,7 +746,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		gridAudio.attach(spinAudioQuality,1,row,1,1);
 		
 		//lblOpusOptimize
-		lblOpusOptimize = new Gtk.Label("Optimization");
+		lblOpusOptimize = new Gtk.Label(_("Optimization"));
 		lblOpusOptimize.xalign = (float) 0.0;
 		lblOpusOptimize.no_show_all = true;
 		gridAudio.attach(lblOpusOptimize,0,++row,1,1);
@@ -782,11 +762,11 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         //populate
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter,0,"None",1,"none");
+		model.set (iter,0,_("None"),1,"none");
 		model.append (out iter);
-		model.set (iter,0,"Speech",1,"speech");
+		model.set (iter,0,_("Speech"),1,"speech");
 		model.append (out iter);
-		model.set (iter,0,"Music",1,"music");
+		model.set (iter,0,_("Music"),1,"music");
 		cmbOpusOptimize.set_model(model);
 		
 		//imgAudioCodec
@@ -799,7 +779,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//Audio Filters tab ---------------------------------------------
 		
 		//lblAudioFilters
-		lblAudioFilters = new Label ("Filters");
+		lblAudioFilters = new Label (_("Filters"));
 
         //gridAudioFilters
         gridAudioFilters = new Grid ();
@@ -812,7 +792,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		row = -1;
 		
 		//lblAudioSampleRate
-		lblAudioSampleRate = new Gtk.Label("Sampling Rate (Hz)");
+		lblAudioSampleRate = new Gtk.Label(_("Sampling Rate (Hz)"));
 		lblAudioSampleRate.xalign = (float) 0.0;
 		gridAudioFilters.attach(lblAudioSampleRate,0,++row,1,1);
 		
@@ -826,7 +806,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         gridAudioFilters.attach(cmbAudioSampleRate,1,row,1,1);
         
 		//lblAudioChannels
-		lblAudioChannels = new Gtk.Label("Channels");
+		lblAudioChannels = new Gtk.Label(_("Channels"));
 		lblAudioChannels.xalign = (float) 0.0;
 		gridAudioFilters.attach(lblAudioChannels,0,++row,1,1);
 		
@@ -841,7 +821,7 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		//Subtitles tab ---------------------------------------------
 		
 		//lblSubtitle
-		lblSubtitle = new Label ("Subs");
+		lblSubtitle = new Label (_("Subs"));
 
         //gridSubtitle
         gridSubtitle = new Grid ();
@@ -853,9 +833,14 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
 		
 		row = -1;
 		
+		tt = _("<b>Embed</b> - Subtitle files will be combined with the output file.\nThese subtitles can be switched off since they are added as a separate track");
+		tt += "\n\n";
+		tt += _("<b>Render</b> - Subtitles are rendered/burned on the video.\nThese subtitles cannot be switched off since they become a part of the video");
+		
 		//lblSubtitleMode
-		lblSubtitleMode = new Gtk.Label("Subtitles");
+		lblSubtitleMode = new Gtk.Label(_("Subtitle Mode"));
 		lblSubtitleMode.xalign = (float) 0.0;
+		lblSubtitleMode.set_tooltip_markup (tt);
 		gridSubtitle.attach(lblSubtitleMode,0,++row,1,1);
 		
 		//cmbSubtitleMode
@@ -865,21 +850,16 @@ The 'Bilinear' filter gives smoother video (less detail) which results in slight
         cmbSubtitleMode.set_attributes( textCell, "text", 0 );
         cmbSubtitleMode.changed.connect(cmbSubtitleMode_changed);
         cmbSubtitleMode.hexpand = true;
-        cmbSubtitleMode.set_tooltip_text (
-"""Embed - Subtitle files will be combined with the output file.
-Since the subtitles are added as a separate track, 
-it can be switched off.
-
-Render - Subtitles are rendered/burned on the video.
-These subtitles cannot be switched off.""");
+        cmbSubtitleMode.set_tooltip_markup (tt);
         gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
         
         //lblSubFormatMessage
-		lblSubFormatMessage = new Gtk.Label("Subtitles");
+		lblSubFormatMessage = new Gtk.Label(_("Subtitles"));
 		lblSubFormatMessage.xalign = (float) 0.0;
 		lblSubFormatMessage.hexpand = true;
 		lblSubFormatMessage.margin_top = 6;
 		lblSubFormatMessage.margin_bottom = 6;
+		lblSubFormatMessage.set_use_markup(true);
 		gridSubtitle.attach(lblSubFormatMessage,0,++row,2,1);
 
 		//Defaults --------------------------------
@@ -978,7 +958,7 @@ These subtitles cannot be switched off.""");
 				break;
 			default:
 				model.append (out iter);
-				model.set (iter,0,"Disable Video",1,"disable");
+				model.set (iter,0,_("Disable Video"),1,"disable");
 				cmbVCodec.set_active(0);
 				break;
 		}
@@ -1005,7 +985,7 @@ These subtitles cannot be switched off.""");
 		switch (format) {
 			case "mkv":
 				model.append (out iter);
-				model.set (iter,0,"Disable Audio",1,"disable");
+				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
 				cmbACodec.set_active(1);
@@ -1013,7 +993,7 @@ These subtitles cannot be switched off.""");
 			
 			case "mp4v":
 				model.append (out iter);
-				model.set (iter,0,"Disable Audio",1,"disable");
+				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
@@ -1022,7 +1002,7 @@ These subtitles cannot be switched off.""");
 			case "ogv":
 			case "webm":
 				model.append (out iter);
-				model.set (iter,0,"Disable Audio",1,"disable");
+				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
 				cmbACodec.set_active(1);
@@ -1110,9 +1090,9 @@ These subtitles cannot be switched off.""");
 				gridSubtitle.sensitive = true;
 				
 				model.append (out iter);
-				model.set (iter,0,"No Subtitles",1,"disable");
+				model.set (iter,0,_("No Subtitles"),1,"disable");
 				model.append (out iter);
-				model.set (iter,0,"Embed / Soft Subs",1,"embed");
+				model.set (iter,0,_("Embed / Soft Subs"),1,"embed");
 				cmbSubtitleMode.set_active(1);
 				break;
 				
@@ -1241,13 +1221,13 @@ These subtitles cannot be switched off.""");
 		switch (acodec){
 			case "mp3lame":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				model.append (out iter);
-				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				model.append (out iter);
-				model.set (iter,0,"Constant Bitrate (Strict)",1,"cbr-strict");
+				model.set (iter,0,_("Constant Bitrate (Strict)"),1,"cbr-strict");
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(128, 32, 320, 1, 1, 0);
@@ -1266,11 +1246,11 @@ These subtitles cannot be switched off.""");
 				
 			case "neroaac":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				model.append (out iter);
-				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(160, 8, 400, 1, 1, 0);
@@ -1297,11 +1277,11 @@ These subtitles cannot be switched off.""");
 			
 			case "opus":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				model.append (out iter);
-				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(128, 6, 512, 1, 1, 0);
@@ -1314,9 +1294,9 @@ These subtitles cannot be switched off.""");
 			
 			case "vorbis":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(128, 32, 500, 1, 1, 0);
@@ -1333,7 +1313,7 @@ These subtitles cannot be switched off.""");
 				
 			case "ac3":
 				model.append (out iter);
-				model.set (iter,0,"Fixed Bitrate",1,"cbr");
+				model.set (iter,0,_("Fixed Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
 				
 				spinAudioBitrate.adjustment.configure(128, 1, 512, 1, 1, 0);
@@ -1360,7 +1340,7 @@ These subtitles cannot be switched off.""");
 			case "pcm_u32be":
 			case "flac":
 				model.append (out iter);
-				model.set (iter,0,"Lossless",1,"lossless");
+				model.set (iter,0,_("Lossless"),1,"lossless");
 				cmbAudioMode.set_active(0);
 				
 				cmbAudioMode.sensitive = true;
@@ -1380,7 +1360,7 @@ These subtitles cannot be switched off.""");
 			case "mp3lame":
 			case "opus":
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"8000",1,"8000");
 				model.append (out iter);
@@ -1420,7 +1400,7 @@ These subtitles cannot be switched off.""");
 			case "neroaac":
 			case "vorbis":
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"8000",1,"8000");
 				model.append (out iter);
@@ -1448,7 +1428,7 @@ These subtitles cannot be switched off.""");
 			
 			case "ac3":
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"24000",1,"24000");
 				model.append (out iter);
@@ -1462,7 +1442,7 @@ These subtitles cannot be switched off.""");
 				
 			default:
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				cmbAudioSampleRate.set_active(0);
 				break;
 		}
@@ -1491,7 +1471,7 @@ These subtitles cannot be switched off.""");
 			case "opus":
 			case "vorbis":
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"1",1,"1");
 				model.append (out iter);
@@ -1511,7 +1491,7 @@ These subtitles cannot be switched off.""");
 
 			default: //mp3lame
 				model.append (out iter);
-				model.set (iter,0,"No Change",1,"disable");
+				model.set (iter,0,_("No Change"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"1",1,"1");
 				model.append (out iter);
@@ -1634,11 +1614,11 @@ These subtitles cannot be switched off.""");
 		switch (vcodec){
 			case "x264":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate / CRF",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate / CRF"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
+				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
 				cmbVideoMode.set_active(0);
 				
 				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
@@ -1657,11 +1637,11 @@ These subtitles cannot be switched off.""");
 			
 			case "theora":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate",1,"abr");
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				model.append (out iter);
-				model.set (iter,0,"Average Bitrate (2-pass)",1,"2pass");
+				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
 				cmbVideoMode.set_active(0);
 				
 				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
@@ -1680,11 +1660,11 @@ These subtitles cannot be switched off.""");
 			
 			case "vp8":
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate",1,"vbr");
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
-				model.set (iter,0,"Variable Bitrate (2pass)",1,"2pass");
+				model.set (iter,0,_("Variable Bitrate (2pass)"),1,"2pass");
 				model.append (out iter);
-				model.set (iter,0,"Constant Bitrate",1,"cbr");
+				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				//model.append (out iter);
 				//model.set (iter,0,"Constrained Quality",1,"cq");
 				cmbVideoMode.set_active(0);
@@ -1930,30 +1910,22 @@ These subtitles cannot be switched off.""");
 	
 	private void cmbSubtitleMode_changed()
 	{
-		string msg =
-"""
-
-Subtitle files should be present in the same folder
-and file name should start with same name as input file
-
-So if your input file is 'movie.avi',
-the subtitle file can be named like movie.srt, 
-movie_en.srt, movie_1.srt, etc.""";
+		string msg = _("\n\nSubtitle files should be present in the same folder\nand should start with same name.");
 
 		switch(subtitle_mode){
 			case "embed":
 				switch(format){
 					case "mkv":
-						lblSubFormatMessage.label = "Supported Formats: SRT, SUB, SSA" + msg;
+						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, SUB, SSA</i>" + msg;
 						break;
 					case "mp4v":
-						lblSubFormatMessage.label = "Supported Formats: SRT, SUB, TTXT, XML" + msg;
+						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, SUB, TTXT, XML</i>" + msg;
 						break;
 					case "ogv":
-						lblSubFormatMessage.label = "Supported Formats: SRT" + msg;
+						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT</i>" + msg;
 						break;
 					case "ogg":
-						lblSubFormatMessage.label = "Supported Formats: SRT, LRC" + msg;
+						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, LRC</i>" + msg;
 						break;
 					default:
 						lblSubFormatMessage.label = "";
@@ -1971,7 +1943,7 @@ movie_en.srt, movie_1.srt, etc.""";
 	{
 		if (txtPresetName.text.length < 1) {
 			tabMain.page = 0;
-			Utility.messagebox_show("Empty Preset Name","Please enter a name for this preset",true);
+			Utility.messagebox_show(_("Empty Preset Name"),_("Please enter a name for this preset"),true);
 			return;
 		}
 		

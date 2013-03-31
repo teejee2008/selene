@@ -128,21 +128,19 @@ public class MainWindow : Gtk.Window
 		btnAddFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
 		btnAddFiles.is_important = true;
 		btnAddFiles.clicked.connect (btnAddFiles_clicked);
-		btnAddFiles.set_tooltip_text ("Add file(s)");
+		btnAddFiles.set_tooltip_text (_("Add file(s)"));
 		toolbar.add (btnAddFiles);
 
 		//btnRemoveFiles
 		btnRemoveFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.REMOVE);
-		btnRemoveFiles.label = "";
 		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
-		btnRemoveFiles.set_tooltip_text ("Remove selected file(s)");
+		btnRemoveFiles.set_tooltip_text (_("Remove selected file(s)"));
 		toolbar.add (btnRemoveFiles);
 		
 		//btnClearFiles
 		btnClearFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
-		btnClearFiles.label = "";
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
-		btnClearFiles.set_tooltip_text ("Remove all file(s)");
+		btnClearFiles.set_tooltip_text (_("Remove all file(s)"));
 		toolbar.add (btnClearFiles);
 		
 		//separator
@@ -151,16 +149,16 @@ public class MainWindow : Gtk.Window
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PLAY);
 		btnStart.is_important = true;
-		btnStart.label = "Start";
+		btnStart.label = _("Start");
 		btnStart.clicked.connect (start);
-		btnStart.set_tooltip_text ("Start");
+		btnStart.set_tooltip_text (_("Start"));
 		toolbar.add (btnStart);
 		
 		//btnPause
 		btnPause = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PAUSE);
 		btnPause.is_important = true;
 		btnPause.clicked.connect (btnPause_clicked);
-		btnPause.set_tooltip_text ("Pause");
+		btnPause.set_tooltip_text (_("Pause"));
 		btnPause.visible = false;
 		btnPause.no_show_all = true;
 		toolbar.add (btnPause);
@@ -169,7 +167,7 @@ public class MainWindow : Gtk.Window
 		btnStop = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_STOP);
 		btnStop.is_important = true;
 		btnStop.clicked.connect (btnStop_clicked);
-		btnStop.set_tooltip_text ("Abort");
+		btnStop.set_tooltip_text (_("Abort"));
 		btnStop.visible = false;
 		btnStop.no_show_all = true;
 		toolbar.add (btnStop);
@@ -177,9 +175,9 @@ public class MainWindow : Gtk.Window
 		//btnFinish
 		btnFinish = new Gtk.ToolButton.from_stock (Gtk.Stock.OK);
 		btnFinish.is_important = true;
-		btnFinish.label = "Finish";
+		btnFinish.label = _("Finish");
 		btnFinish.clicked.connect (() => {  convert_finish (); });
-		btnFinish.set_tooltip_text ("Finish");
+		btnFinish.set_tooltip_text (_("Finish"));
 		btnFinish.visible = false;
 		btnFinish.no_show_all = true;
 		toolbar.add (btnFinish);
@@ -192,44 +190,42 @@ public class MainWindow : Gtk.Window
 		
 		//btnAppSettings
 		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
-		btnAppSettings.label = "";
 		btnAppSettings.clicked.connect (btnAppSettings_clicked);
-		btnAppSettings.set_tooltip_text ("Application Settings");
+		btnAppSettings.set_tooltip_text (_("Application Settings"));
 		toolbar.add (btnAppSettings);
 		
 		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock (Gtk.Stock.ABOUT);
-		btnAbout.label = "";
 		btnAbout.clicked.connect (btnAbout_clicked);
-		btnAbout.set_tooltip_text ("About");
+		btnAbout.set_tooltip_text (_("About"));
 		toolbar.add (btnAbout);
 		
 		//btnShutdown
 		btnShutdown = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.QUIT);
-		btnShutdown.label = "Shutdown";
+		btnShutdown.label = _("Shutdown");
 		btnShutdown.visible = false;
 		btnShutdown.no_show_all = true;
 		btnShutdown.is_important = true;
 		btnShutdown.clicked.connect (btnShutdown_clicked);
-		btnShutdown.set_tooltip_text ("Shutdown system after completion");
+		btnShutdown.set_tooltip_text (_("Shutdown system after completion"));
 		toolbar.add (btnShutdown);
 		
 		//btnBackground
         btnBackground = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.SORT_ASCENDING);
-        btnBackground.label = "Background";
+        btnBackground.label = _("Background");
         btnBackground.visible = false;
         btnBackground.no_show_all = true;
         btnBackground.is_important = true;
         btnBackground.clicked.connect (btnBackground_clicked);
-        btnBackground.set_tooltip_text ("Run processes with lower priority");
+        btnBackground.set_tooltip_text (_("Run processes with lower priority"));
         toolbar.add (btnBackground);
         
         //btnOpenOutputFolder
 		btnOpenOutputFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
 		//btnOpenOutputFolder.is_important = true;
-		btnOpenOutputFolder.label = "Output";
+		btnOpenOutputFolder.label = _("Output");
 		btnOpenOutputFolder.clicked.connect (btnOpenOutputFolder_click);
-		btnOpenOutputFolder.set_tooltip_text ("Open output folder");
+		btnOpenOutputFolder.set_tooltip_text (_("Open output folder"));
 		btnOpenOutputFolder.visible = false;
 		btnOpenOutputFolder.no_show_all = true;
 		toolbar.add (btnOpenOutputFolder);
@@ -237,7 +233,7 @@ public class MainWindow : Gtk.Window
 		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
-		tvFiles.set_tooltip_text ("File(s) to convert");
+		tvFiles.set_tooltip_text (_("File(s) to convert"));
 		tvFiles.set_rules_hint (true);
 
 		swFiles = new ScrolledWindow(tvFiles.get_hadjustment (), tvFiles.get_vadjustment ());
@@ -249,7 +245,7 @@ public class MainWindow : Gtk.Window
 
 		//colName
 		colName = new TreeViewColumn();
-		colName.title = "File";
+		colName.title = _("File");
 		colName.expand = true;
 		CellRendererText cellName = new CellRendererText ();
 		cellName.ellipsize = Pango.EllipsizeMode.END;
@@ -259,7 +255,7 @@ public class MainWindow : Gtk.Window
 		
 		//colSize
 		colSize = new TreeViewColumn();
-		colSize.title = "Size";
+		colSize.title = _("Size");
 		CellRendererText cellSize = new CellRendererText ();
 		colSize.pack_start (cellSize, false);
 		colSize.set_attributes(cellSize, "text", InputField.FILE_SIZE);
@@ -267,7 +263,7 @@ public class MainWindow : Gtk.Window
 		
 		//colDuration
 		colDuration = new TreeViewColumn();
-		colDuration.title = "Duration";
+		colDuration.title = _("Duration");
 		CellRendererText cellDuration = new CellRendererText ();
 		colDuration.pack_start (cellDuration, false);
 		colDuration.set_attributes(cellDuration, "text", InputField.FILE_DURATION);
@@ -275,7 +271,7 @@ public class MainWindow : Gtk.Window
 
 		//colCrop
 		colCrop = new TreeViewColumn();
-		colCrop.title = "CropVideo (L:T:R:B)";
+		colCrop.title = _("CropVideo (L:T:R:B)");
 		colCrop.fixed_width = 100;
 		CellRendererText cellCrop = new CellRendererText ();
 		cellCrop.editable = true;
@@ -286,7 +282,7 @@ public class MainWindow : Gtk.Window
 		
 		//colProgress
 		colProgress = new TreeViewColumn();
-		colProgress.title = "Status";
+		colProgress.title = _("Status");
 		colProgress.fixed_width = 120;
 		CellRendererProgress2 cellProgress = new CellRendererProgress2();
 		cellProgress.height = 15;
@@ -327,7 +323,7 @@ public class MainWindow : Gtk.Window
         vboxMain2.add (gridConfig);
 		
 		//lblScriptFolder
-		lblScriptFolder = new Gtk.Label("Folder");
+		lblScriptFolder = new Gtk.Label(_("Folder"));
 		lblScriptFolder.xalign = (float) 0.0;
 		gridConfig.attach(lblScriptFolder,0,0,1,1);
 		
@@ -337,12 +333,12 @@ public class MainWindow : Gtk.Window
         cmbScriptFolder.pack_start( cellScriptFolder, false );
         cmbScriptFolder.set_cell_data_func (cellScriptFolder, cellScriptFolder_render);
         cmbScriptFolder.set_size_request(100,-1);
-		cmbScriptFolder.set_tooltip_text ("Folder");
+		cmbScriptFolder.set_tooltip_text (_("Folder"));
 		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
 		gridConfig.attach(cmbScriptFolder,1,0,1,1);
 		
 		//lblScriptFile
-		lblScriptFile = new Gtk.Label("Preset");
+		lblScriptFile = new Gtk.Label(_("Preset"));
 		lblScriptFile.xalign = (float) 0.0;
 		gridConfig.attach(lblScriptFile,0,1,1,1);
 		
@@ -352,7 +348,7 @@ public class MainWindow : Gtk.Window
 		CellRendererText cellScriptFile = new CellRendererText();
         cmbScriptFile.pack_start( cellScriptFile, false );
         cmbScriptFile.set_cell_data_func (cellScriptFile, cellScriptFile_render);
-        cmbScriptFile.set_tooltip_text ("Encoding Script or Preset File");
+        cmbScriptFile.set_tooltip_text (_("Encoding Script or Preset File"));
         cmbScriptFile.changed.connect(cmbScriptFile_changed);
         gridConfig.attach(cmbScriptFile,1,1,1,1);
         
@@ -362,7 +358,7 @@ public class MainWindow : Gtk.Window
 		//btnPresetEdit.label = "Edit";
 		btnPresetEdit.image_position = PositionType.TOP;
         btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
-        btnPresetEdit.set_tooltip_text ("Edit Preset");
+        btnPresetEdit.set_tooltip_text (_("Edit Preset"));
         btnPresetEdit.set_size_request(50,-1);
         gridConfig.attach(btnPresetEdit,2,0,1,2);
         
@@ -370,14 +366,14 @@ public class MainWindow : Gtk.Window
 		btnPresetNew = new Button();
 		btnPresetNew.set_image (new Image.from_stock (Stock.ADD, IconSize.MENU));
         btnPresetNew.clicked.connect (btnPresetNew_clicked);
-        btnPresetNew.set_tooltip_text ("New Preset");
+        btnPresetNew.set_tooltip_text (_("New Preset"));
         gridConfig.attach(btnPresetNew,3,0,1,1);
 
         //btnOpenScriptFolder
 		btnOpenScriptFolder = new Button();
 		btnOpenScriptFolder.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
         btnOpenScriptFolder.clicked.connect (btnOpenScriptFolder_clicked);
-        btnOpenScriptFolder.set_tooltip_text ("Open Folder");
+        btnOpenScriptFolder.set_tooltip_text (_("Open Folder"));
         gridConfig.attach(btnOpenScriptFolder,3,1,1,1);
         
 		//lblStatus
@@ -394,17 +390,17 @@ public class MainWindow : Gtk.Window
 
 		// miFileSkip
 		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
-		miFileSkip.label = "Skip File";
+		miFileSkip.label = _("Skip File");
 		miFileSkip.activate.connect (() => { App.stop_file (); });
 		menuFile.append(miFileSkip);
 		
 		// miFileCropAuto
-		miFileCropAuto = new Gtk.MenuItem.with_label ("AutoCrop Video");
+		miFileCropAuto = new Gtk.MenuItem.with_label (_("AutoCrop Video"));
 		miFileCropAuto.activate.connect(miFileCropAuto_clicked);
 		menuFile.append(miFileCropAuto);
 
 		// miFilePreview
-		miFilePreview = new Gtk.MenuItem.with_label ("Preview File");
+		miFilePreview = new Gtk.MenuItem.with_label (_("Preview File"));
 		miFilePreview.activate.connect(miFilePreview_clicked);
 		menuFile.append(miFilePreview);		
 		
@@ -420,19 +416,19 @@ public class MainWindow : Gtk.Window
 		
 		// miFileOpenTemp
 		miFileOpenTemp = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
-		miFileOpenTemp.label = "Open Temp Folder";
+		miFileOpenTemp.label = _("Open Temp Folder");
 		miFileOpenTemp.activate.connect(miFileOpenTemp_clicked);
 		menuFile.append(miFileOpenTemp);
 		
 		// miFileOpenOutput
 		miFileOpenOutput = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
-		miFileOpenOutput.label = "Open Output Folder";
+		miFileOpenOutput.label = _("Open Output Folder");
 		miFileOpenOutput.activate.connect(miFileOpenOutput_clicked);
 		menuFile.append(miFileOpenOutput);
 		
 		// miFileOpenLogFile
 		miFileOpenLogFile = new ImageMenuItem.from_stock(Stock.INFO, null);
-		miFileOpenLogFile.label = "Open Log File";
+		miFileOpenLogFile.label = _("Open Log File");
 		miFileOpenLogFile.activate.connect(miFileOpenLogFile_clicked);
 		menuFile.append(miFileOpenLogFile);
 
@@ -443,25 +439,25 @@ public class MainWindow : Gtk.Window
 		
 		// miFilePlaySource
 		miFilePlaySource = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
-		miFilePlaySource.label = "Play File (Source)";
+		miFilePlaySource.label = _("Play File (Source)");
 		miFilePlaySource.activate.connect(miFilePlaySource_clicked);
 		menuFile.append(miFilePlaySource);
 		
 		// miFilePlayOutput
 		miFilePlayOutput = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
-		miFilePlayOutput.label = "Play File (Output)";
+		miFilePlayOutput.label = _("Play File (Output)");
 		miFilePlayOutput.activate.connect(miFilePlayOutput_clicked);
 		menuFile.append(miFilePlayOutput);
 		
 		// miFileInfo
 		miFileInfo = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
-		miFileInfo.label = "File Info (Source)";
+		miFileInfo.label = _("File Info (Source)");
 		miFileInfo.activate.connect(miFileInfo_clicked);
 		menuFile.append(miFileInfo);
 		
 		// miFileInfoOutput
 		miFileInfoOutput = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
-		miFileInfoOutput.label = "File Info (Output)";
+		miFileInfoOutput.label = _("File Info (Output)");
 		miFileInfoOutput.activate.connect(miFileInfoOutput_clicked);
 		menuFile.append(miFileInfoOutput);
 		
@@ -520,11 +516,11 @@ public class MainWindow : Gtk.Window
 		*/
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.ScriptsFolder_Custom,1, "scripts");
+		model.set (iter0, 0, App.ScriptsFolder_Custom,1, _("scripts"));
 		iter_append_children (model, iter0, App.ScriptsFolder_Custom);
 		
 		model.append (out iter0, null);
-		model.set (iter0, 0, App.PresetsFolder_Custom,1, "presets");
+		model.set (iter0, 0, App.PresetsFolder_Custom,1, _("presets"));
 	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
 	}
 	
@@ -885,21 +881,21 @@ public class MainWindow : Gtk.Window
 		switch (App.Status){
 			case AppStatus.NOTSTARTED:
 				if (App.InputFiles.size > 0)
-					statusbar_show_message("Select a script from the dropdown and click 'Start' to begin", false, false);
+					statusbar_show_message(_("Select a script from the dropdown and click 'Start' to begin"), false, false);
 				else
-					statusbar_show_message("Drag files on this window or click the 'Add' button", false, false);
+					statusbar_show_message(_("Drag files on this window or click the 'Add' button"), false, false);
 				break;
 				
 			case AppStatus.IDLE:
-				statusbar_show_message("[Batch completed] Right-click for options or click 'Finish' to continue.", false, false);
+				statusbar_show_message(_("[Batch completed] Right-click for options or click 'Finish' to continue."), false, false);
 				break;
 				
 			case AppStatus.PAUSED:
-				statusbar_show_message("[Paused] Click 'Resume' to continue or 'Stop' to abort.", false, false);
+				statusbar_show_message(_("[Paused] Click 'Resume' to continue or 'Stop' to abort."), false, false);
 				break;
 				
 			case AppStatus.RUNNING:
-				statusbar_show_message("Converting: '%s'".printf (App.CurrentFile.Path), false, false);
+				statusbar_show_message(_("Converting: '%s'").printf (App.CurrentFile.Path), false, false);
 				break;
 		}
 	}
@@ -913,10 +909,10 @@ public class MainWindow : Gtk.Window
 			file = Uri.unescape_string (file);
 			bool valid = App.add_file (file);
 			if (!valid){
-				statusbar_show_message ("Unknown format: '%s'".printf (file), true, true);
+				statusbar_show_message (_("Unknown format: '%s'").printf (file), true, true);
 			}
 			else {
-				statusbar_show_message ("File added: '%s'".printf (file));
+				statusbar_show_message (_("File added: '%s'").printf (file));
 			}
 		}
         
@@ -1105,7 +1101,7 @@ public class MainWindow : Gtk.Window
 				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info ());
 			}
 			else{
-				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, "N/A");
+				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
 			}	
 			
 			do_events ();
@@ -1290,7 +1286,7 @@ public class MainWindow : Gtk.Window
 	
 	private void btnAddFiles_clicked ()
 	{
-		var dlgAddFiles = new Gtk.FileChooserDialog("Add File(s)", this, Gtk.FileChooserAction.OPEN,
+		var dlgAddFiles = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
 							Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
 							Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
 		dlgAddFiles.local_only = true;
@@ -1301,7 +1297,7 @@ public class MainWindow : Gtk.Window
 	 		foreach (string file in dlgAddFiles.get_filenames()){
 				bool added = App.add_file (file);
 				if (added == false){
-					statusbar_show_message ("Format not supported: '" + file + "'", true, true);
+					statusbar_show_message (_("Format not supported:") + "'" + file + "'", true, true);
 				}
 			}
 	 	}
@@ -1349,7 +1345,7 @@ public class MainWindow : Gtk.Window
 		dialog.translator_credits = null; 
 
 		dialog.program_name = "Selene Media Encoder";
-		dialog.comments = "An audio-video encoder for Linux";
+		dialog.comments = _("An audio-video encoder for Linux");
 		dialog.copyright = "Copyright © 2013 Tony George (teejee2008@gmail.com)";
 		dialog.version = AppVersion;
 
@@ -1383,10 +1379,10 @@ This program is free for personal and commercial use and comes with absolutely n
 		App.Shutdown = btnShutdown.active;
 		
 		if (App.Shutdown){
-			log_msg ("Shutdown Enabled\n");
+			log_msg (_("Shutdown Enabled") + "\n");
 		}
 		else{
-			log_msg ("Shutdown Disabled\n");
+			log_msg (_("Shutdown Disabled") + "\n");
 		}
 	}
 	
@@ -1409,15 +1405,15 @@ This program is free for personal and commercial use and comes with absolutely n
 		// set button statepause or resume based on value of field 'pause'
 		switch (App.Status){
 			case AppStatus.PAUSED:
-				btnPause.label = "Resume";
+				btnPause.label = _("Resume");
 				btnPause.stock_id = "gtk-media-play";
-				btnPause.set_tooltip_text ("Resume");
+				btnPause.set_tooltip_text (_("Resume"));
 				statusbar_default_message ();
 				break; 
 			case AppStatus.RUNNING:
-				btnPause.label = "Pause";
+				btnPause.label = _("Pause");
 				btnPause.stock_id = "gtk-media-pause";
-				btnPause.set_tooltip_text ("Pause");
+				btnPause.set_tooltip_text (_("Pause"));
 				statusbar_default_message ();
 				break; 
 		}
@@ -1436,8 +1432,8 @@ This program is free for personal and commercial use and comes with absolutely n
 	public void start ()
 	{
 		if (App.InputFiles.size == 0){
-			string msg = "Input queue is empty!\nPlease add some files.\n";
-			Utility.messagebox_show ("Queue is Empty", msg);
+			string msg = _("Input queue is empty!\nPlease add some files.\n");
+			Utility.messagebox_show (_("Queue is Empty"), msg);
 			return;
 		}	
 
@@ -1528,17 +1524,17 @@ This program is free for personal and commercial use and comes with absolutely n
 				
 				// check shutdown flag
 				if (App.Shutdown){
-					string msg = "System will shutdown in one minute!\n";
-					msg += "Press 'Cancel' to abort shutdown";
+					string msg = _("System will shutdown in one minute!") + "\n";
+					msg += _("Press 'Cancel' to abort shutdown");
 					var dialog = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL,Gtk.MessageType.INFO, Gtk.ButtonsType.CANCEL, msg);
-					dialog.set_title("System shutdown");
+					dialog.set_title(_("System shutdown"));
 					
 					uint shutdownTimerID = Timeout.add (60000, shutdown);
 					App.WaitingForShutdown = true;
 					if (dialog.run() == Gtk.ResponseType.CANCEL){
 						Source.remove (shutdownTimerID);
 						App.WaitingForShutdown = false;
-						stdout.printf ("System shutdown was cancelled by user!\n");
+						stdout.printf (_("System shutdown was cancelled by user!") + "\n");
 						dialog.destroy();
 					}
 				}

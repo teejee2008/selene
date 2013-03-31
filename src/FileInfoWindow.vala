@@ -33,7 +33,7 @@ public class FileInfoWindow : Dialog {
 	
 	public FileInfoWindow (MediaFile _file) 
 	{
-		this.title = "Properties";
+		this.title = _("Properties");
 		this.file = _file;
 		this.deletable = false; // remove window close button
 		this.modal = true;
@@ -46,10 +46,9 @@ public class FileInfoWindow : Dialog {
 		//tvInfo
 		tvInfo = new TreeView();
 		tvInfo.get_selection().mode = SelectionMode.MULTIPLE;
-		tvInfo.set_tooltip_text ("File(s) to convert");
 		tvInfo.headers_visible = false;
-		tvInfo.insert_column_with_attributes (-1, "Key", new CellRendererText (), "text", 0);
-		tvInfo.insert_column_with_attributes (-1, "Value", new CellRendererText (), "text", 1);
+		tvInfo.insert_column_with_attributes (-1, _("Key"), new CellRendererText (), "text", 0);
+		tvInfo.insert_column_with_attributes (-1, _("Value"), new CellRendererText (), "text", 1);
 		swInfo = new ScrolledWindow(tvInfo.get_hadjustment (), tvInfo.get_vadjustment ());
 		swInfo.set_shadow_type (ShadowType.ETCHED_IN);
 		swInfo.add (tvInfo);

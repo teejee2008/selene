@@ -46,7 +46,7 @@ public class PrefWindow : Dialog {
 		vboxMain.margin = 6;
 		
 		// lblOutput
-		lblOutput = new Label ("<b>Output Folder</b>");
+		lblOutput = new Label (_("<b>Output Folder</b>"));
 		lblOutput.set_use_markup(true);
 		lblOutput.halign = Align.START;
 		lblOutput.margin_bottom = 6;
@@ -54,7 +54,7 @@ public class PrefWindow : Dialog {
 		vboxMain.pack_start (lblOutput, false, true, 0);
 		
 		// fcbOutput
-		fcbOutput = new FileChooserButton ("Output Location", FileChooserAction.SELECT_FOLDER);
+		fcbOutput = new FileChooserButton (_("Output Location"), FileChooserAction.SELECT_FOLDER);
 		fcbOutput.set_sensitive(App.OutputDirectory.length > 0);
 		fcbOutput.margin_bottom = 6;
 		if ((App.OutputDirectory != null) && Utility.dir_exists (App.OutputDirectory)){
@@ -63,13 +63,13 @@ public class PrefWindow : Dialog {
 		vboxMain.add (fcbOutput);
 
 		// chkOutput
-		chkOutput = new CheckButton.with_label ("Save in input file location");
+		chkOutput = new CheckButton.with_label (_("Save in input file location"));
 		chkOutput.active = (App.OutputDirectory.length == 0);
 		chkOutput.clicked.connect (chkOutput_clicked);
 		vboxMain.pack_start (chkOutput, false, true, 0);
 				
 		// lblBackup
-		lblBackup = new Label ("<b>Backup Folder</b>");
+		lblBackup = new Label (_("<b>Backup Folder</b>"));
 		lblBackup.set_use_markup(true);
 		lblBackup.halign = Align.START;
 		lblBackup.margin_bottom = 6;
@@ -77,7 +77,7 @@ public class PrefWindow : Dialog {
 		vboxMain.pack_start (lblBackup, false, true, 0);
 	
 		// fcbBackup
-		fcbBackup = new FileChooserButton ("Backup Location", FileChooserAction.SELECT_FOLDER);
+		fcbBackup = new FileChooserButton (_("Backup Location"), FileChooserAction.SELECT_FOLDER);
 		fcbBackup.set_sensitive(App.BackupDirectory.length > 0);
 		fcbBackup.margin_bottom = 6;
 		if ((App.BackupDirectory.length > 0) && Utility.dir_exists (App.BackupDirectory)){
@@ -86,7 +86,7 @@ public class PrefWindow : Dialog {
 		vboxMain.add (fcbBackup);
 		
 		// chkBackup
-		chkBackup = new CheckButton.with_label ("Do not move input files");
+		chkBackup = new CheckButton.with_label (_("Do not move input files"));
 		chkBackup.active = (App.BackupDirectory.length == 0);
 		chkBackup.clicked.connect (chkBackup_clicked);
 		vboxMain.pack_start (chkBackup, false, true, 0);
