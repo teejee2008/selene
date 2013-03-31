@@ -15,5 +15,5 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, v
 Description: An audio-video converter for Linux.
  Selene is an audio/video converter for linux for converting files to OGG,OGV,
  MKV,MP4,WEBM,OPUS,AAC,FLAC,MP3 and WAV formats. It aims to provide a simple
- GUI for converting files to popular formats and a powerful command-line
- interface for automated/unattended encoding.
+ GUI for converting files to popular formats along with powerful command-line
+ options for automated/unattended encoding.

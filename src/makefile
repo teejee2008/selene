@@ -1,6 +1,7 @@
 prefix = /usr
 bindir = $(prefix)/bin
 sharedir = $(prefix)/share
+localedir = $(sharedir)/locale
 launcherdir = $(sharedir)/applications
 mandir = $(sharedir)/man
 man1dir = $(mandir)/man1
@@ -23,7 +24,7 @@ install:
 	mkdir -p $(DESTDIR)$(sharedir)/selene/scripts
 	mkdir -p $(DESTDIR)$(sharedir)/selene/presets
 	mkdir -p $(DESTDIR)$(sharedir)/selene/images
-	
+
 	install -m 0755 selene $(DESTDIR)$(bindir)
 	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene/scripts scripts/*
 	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene/presets presets/*

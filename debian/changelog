@@ -1,11 +1,11 @@
-selene (2.0) quantal; urgency=low
+selene (2.0) quantal; urgency=high
 
-  * v2.0, Rev:50, 2013-03-03
+  * v2.0, Rev:83, 2013-03-30
   
-  * Added presets with GUI options for editing audio & video settings 
+  * Added GUI dialogs for audio & video settings 
   
-  * Presets - Added MKV, MP4, MP3 and Opus encoding
+  * Added localization support
 
   * Bug fixes
   
- -- Tony George <tony.george.kol@gmail.com>  Sat, 02 Mar 2013 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 30 Mar 2013 10:00:00 +0530
