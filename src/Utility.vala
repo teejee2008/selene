@@ -25,6 +25,7 @@
 public const string AppName = "Selene Media Encoder";
 public const string AppVersion = "1.0";
 public const bool LogTimestamp = true;
+public const bool UseConsoleColors = true;
 */
 
 using Gtk;
@@ -233,7 +234,7 @@ namespace Utility
 		return output;
 	}
 	
-	public long[] get_process_children (Pid parentPid)
+	public int[] get_process_children (Pid parentPid)
 	{
 		string output;
 		
@@ -244,8 +245,8 @@ namespace Utility
 	        log_error (e.message);
 	    }
 			
-		long pid;
-		long[] procList = {};
+		int pid;
+		int[] procList = {};
 		string[] arr;
 		
 		foreach (string line in output.split ("\n")){
@@ -253,7 +254,7 @@ namespace Utility
 			if (arr.length < 1) { continue; }
 			
 			pid = 0;
-			pid = long.parse (arr[0]);
+			pid = int.parse (arr[0]);
 			
 			if (pid != 0){
 				procList += pid;
@@ -264,7 +265,7 @@ namespace Utility
 	
 	public void process_kill(Pid process_pid, bool killChildren = true)
 	{
-		long[] child_pids = get_process_children (process_pid);
+		int[] child_pids = get_process_children (process_pid);
 		Posix.kill (process_pid, 15);
 		
 		if (killChildren){
@@ -459,7 +460,7 @@ namespace Utility
 	        return "";
 	    }
 	}
-	
+
 	public bool execute_command_async (string cmd)
 	{
 		try {
@@ -664,6 +665,8 @@ namespace Utility
 		cmd += " " + double_quote(destDirectory);
 		return execute_command_sync (cmd);
 	}
+	
+
 	
 	public string get_cmd_path (string cmd)
 	{

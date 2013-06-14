@@ -824,7 +824,14 @@ Notes:
 	public bool add_file (string filePath)
 	{
 		MediaFile mFile = new MediaFile (filePath);
-		if (mFile.IsValid) {
+		
+		if (mFile.IsValid 
+			&& mFile.Extension != ".srt" 
+			&& mFile.Extension != ".sub" 
+			&& mFile.Extension != ".idx"
+			&& mFile.Extension != ".ssa"
+			) {
+				
 			InputFiles.add(mFile);
 			log_msg (_("File added:") + " '%s'".printf (mFile.Path));
 			return true;
