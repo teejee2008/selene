@@ -1226,7 +1226,7 @@ Notes:
 			retVal = true;
 
 			if (ShowNotificationPopups){
-				Utility.notify_send (_("File Completed"), mf.Name, 2000, "low");
+				Utility.notify_send (_("File Complete"), mf.Name, 2000, "low");
 			}
 		}
 		else{
@@ -1277,6 +1277,7 @@ Notes:
 		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
 		if (tempLine.index_of ("overread, skip") != -1){ return true; }
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
+		if (tempLine.index_of ("Converting: '") != -1){ return true; } //mkvmerge
 		
 		if (regex_libav.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
@@ -1365,7 +1366,7 @@ Notes:
 	
 	public void stop_batch ()
 	{
-		// we need to un-freeze the processes before we kill them
+		// we need to un-freeze the processes before we kill it
 		if (this.Status == AppStatus.PAUSED){
 			resume ();	
 		}
