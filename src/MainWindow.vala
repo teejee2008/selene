@@ -1085,7 +1085,7 @@ public class MainWindow : Gtk.Window
 		TreeSelection selection = tvFiles.get_selection ();
 		if (selection.count_selected_rows () == 0){ return; }
 			
-		set_busy (true);
+		set_busy (true,this);
 		
 		TreeModel model;
 		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
@@ -1107,7 +1107,7 @@ public class MainWindow : Gtk.Window
 			do_events ();
 		}
 
-		set_busy (false);
+		set_busy (false,this);
     }
     
     private void miFileRemove_clicked () 
@@ -1163,7 +1163,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
-	private void set_busy (bool busy) 
+	private void set_busy (bool busy, Gtk.Window win) 
 	{
 		Gdk.Cursor? cursor = null;
 
@@ -1173,8 +1173,9 @@ public class MainWindow : Gtk.Window
 		else{
 			cursor = new Gdk.Cursor(Gdk.CursorType.ARROW);
 		}
-
-		var window = get_window ();
+		
+		var window = win.get_window ();
+		
 		if (window != null) {
 			window.set_cursor (cursor);
 		}
@@ -1294,6 +1295,9 @@ public class MainWindow : Gtk.Window
  		dlgAddFiles.set_select_multiple (true);
 
  		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
+			
+			set_busy(true,dlgAddFiles);
+
 	 		foreach (string file in dlgAddFiles.get_filenames()){
 				bool added = App.add_file (file);
 				if (added == false){
@@ -1301,9 +1305,10 @@ public class MainWindow : Gtk.Window
 				}
 			}
 	 	}
-	 	
-	 	dlgAddFiles.destroy ();
+
 	 	refresh_file_list(true);
+	 	
+	 	dlgAddFiles.destroy (); //resets cursor
 	}
 	
 	private void btnRemoveFiles_clicked ()
