@@ -1,11 +1,7 @@
-selene (2.0.1) quantal; urgency=high
+selene (2.0.2) quantal; urgency=low
 
-  * v2.0.1, Rev:88, 2013-03-30
+  * Rev:93, 2013-06-16
   
-  * Added GUI dialogs for audio & video settings 
-  
-  * Added localization support
-
   * Bug fixes
   
- -- Tony George <tony.george.kol@gmail.com>  Sat, 30 Mar 2013 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sun, 16 Jun 2013 10:00:00 +0530
