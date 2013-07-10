@@ -133,12 +133,14 @@ public class MainWindow : Gtk.Window
 
 		//btnRemoveFiles
 		btnRemoveFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.REMOVE);
+		btnRemoveFiles.is_important = true;
 		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
 		btnRemoveFiles.set_tooltip_text (_("Remove selected file(s)"));
 		toolbar.add (btnRemoveFiles);
 		
 		//btnClearFiles
 		btnClearFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
+		btnClearFiles.is_important = true;
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
 		btnClearFiles.set_tooltip_text (_("Remove all file(s)"));
 		toolbar.add (btnClearFiles);

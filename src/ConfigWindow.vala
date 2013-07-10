@@ -649,12 +649,11 @@ public class ConfigWindow : Dialog {
         cmbFPS.changed.connect(cmbFPS_changed);
         gridVideoFilters.attach(cmbFPS,1,row,1,1);
         
-        tt = _("<b>Examples:</b>") + "\n0 / 0  => " + _("No Change") + "\n25 / 1 => 25 fps\n30 / 1 => 30 fps\n30000 / 1001 => 29.97 fps";
-
 		//lblFPSCustom
 		lblFPSCustom = new Gtk.Label(_("FPS Ratio"));
 		lblFPSCustom.xalign = (float) 0.0;
 		lblFPSCustom.no_show_all = true;
+		tt = "<b>" + _("Examples:") + "</b>\n0 / 0  => " + _("No Change") + "\n25 / 1 => 25 fps\n30 / 1 => 30 fps\n30000 / 1001 => 29.97 fps";
 		lblFPSCustom.set_tooltip_markup (tt);
 		gridVideoFilters.attach(lblFPSCustom,0,++row,1,1);
 
