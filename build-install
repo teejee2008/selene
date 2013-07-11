@@ -1,4 +1,4 @@
-./builddeb-binary
+./build-binary
 sudo gdebi --non-interactive ../builds/selene*.deb
 echo "Finished"
 read dummy
