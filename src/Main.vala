@@ -831,10 +831,24 @@ Notes:
 			&& mFile.Extension != ".idx"
 			&& mFile.Extension != ".ssa"
 			) {
-				
-			InputFiles.add(mFile);
-			log_msg (_("File added:") + " '%s'".printf (mFile.Path));
-			return true;
+			
+			bool duplicate = false;
+			foreach(MediaFile mf in InputFiles){
+				if (mf.Path == mFile.Path){
+					duplicate = true;
+					break;
+				}
+			}
+			
+			if (duplicate)
+			{
+				return true; //not an error since file is already added
+			}
+			else{
+				InputFiles.add(mFile);
+				log_msg (_("File added:") + " '%s'".printf (mFile.Path));
+				return true;
+			}
 		}
 		else{
 			log_error (_("Unknown format:") + " '%s'".printf (mFile.Path));
