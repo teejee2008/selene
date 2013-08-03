@@ -1,0 +1,25 @@
+{
+  "general" : {
+    "format" : "opus",
+    "extension" : ".opus",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "Opus Audio (*.opus)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable"
+  },
+  "audio" : {
+    "codec" : "opus",
+    "mode" : "vbr",
+    "bitrate" : "96",
+    "quality" : "4.0",
+    "opusOptimize" : "none",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "disable"
+  }
+}

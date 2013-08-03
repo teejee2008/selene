@@ -1,0 +1,24 @@
+{
+  "general" : {
+    "format" : "ogg",
+    "extension" : ".ogg",
+    "authorName" : "Tony George",
+    "authorEmail" : "teejee2008@gmail.com",
+    "presetName" : "OGG Vorbis Audio (*.ogg)",
+    "presetVersion" : "1.0"
+  },
+  "video" : {
+    "codec" : "disable"
+  },
+  "audio" : {
+    "codec" : "vorbis",
+    "mode" : "vbr",
+    "bitrate" : "128",
+    "quality" : "3.0",
+    "channels" : "disable",
+    "samplingRate" : "disable"
+  },
+  "subtitle" : {
+    "mode" : "embed"
+  }
+}
