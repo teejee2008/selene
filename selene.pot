@@ -1,23 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2013 Tony George (teejee2008@gmail.com)
+# Copyright (C) YEAR Tony George (teejee2008@gmail.com)
 # This file is distributed under the same license as the PACKAGE package.
-# Tony George teejee2008@gmail.com, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.0.1\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2013-03-31 17:21+0530\n"
+"POT-Creation-Date: 2013-08-03 12:51+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ConfigWindow.vala:1913
+#: src/ConfigWindow.vala:1912
 msgid ""
 "\n"
 "\n"
@@ -66,14 +66,10 @@ msgid ""
 "Smaller values give better quality video and larger files"
 msgstr ""
 
-#: src/ConfigWindow.vala:836
+#: src/ConfigWindow.vala:835
 msgid ""
 "<b>Embed</b> - Subtitle files will be combined with the output file.\n"
 "These subtitles can be switched off since they are added as a separate track"
-msgstr ""
-
-#: src/ConfigWindow.vala:652
-msgid "<b>Examples:</b>"
 msgstr ""
 
 #: src/ConfigWindow.vala:189
@@ -88,7 +84,7 @@ msgstr ""
 msgid "<b>Preset:</b>"
 msgstr ""
 
-#: src/ConfigWindow.vala:838
+#: src/ConfigWindow.vala:837
 msgid ""
 "<b>Render</b> - Subtitles are rendered/burned on the video.\n"
 "These subtitles cannot be switched off since they become a part of the video"
@@ -106,35 +102,47 @@ msgstr ""
 msgid "AC3 Audio (*.ac3)"
 msgstr ""
 
-#: src/MainWindow.vala:170
+#: src/MainWindow.vala:185
 msgid "Abort"
 msgstr ""
 
-#: src/MainWindow.vala:200
+#: src/MainWindow.vala:215
 msgid "About"
 msgstr ""
 
-#: src/MainWindow.vala:1289
+#: src/MainWindow.vala:1376
 msgid "Add File(s)"
 msgstr ""
 
-#: src/MainWindow.vala:131
+#: src/MainWindow.vala:141
+msgid "Add Files"
+msgstr ""
+
+#: src/MainWindow.vala:341
+msgid "Add New Preset"
+msgstr ""
+
+#: src/MainWindow.vala:339
+msgid "Add Preset"
+msgstr ""
+
+#: src/MainWindow.vala:144
 msgid "Add file(s)"
 msgstr ""
 
-#: src/Main.vala:850
+#: src/Main.vala:857
 msgid "All files removed"
 msgstr ""
 
-#: src/MainWindow.vala:1348
+#: src/MainWindow.vala:1439
 msgid "An audio-video encoder for Linux"
 msgstr ""
 
-#: src/MainWindow.vala:194
+#: src/MainWindow.vala:209
 msgid "Application Settings"
 msgstr ""
 
-#: src/ConfigWindow.vala:687
+#: src/ConfigWindow.vala:686
 msgid "Audio"
 msgstr ""
 
@@ -142,21 +150,21 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/MainWindow.vala:398
+#: src/MainWindow.vala:443
 msgid "AutoCrop Video"
 msgstr ""
 
-#: src/ConfigWindow.vala:1226 src/ConfigWindow.vala:1251
-#: src/ConfigWindow.vala:1282 src/ConfigWindow.vala:1299
-#: src/ConfigWindow.vala:1619 src/ConfigWindow.vala:1642
+#: src/ConfigWindow.vala:1225 src/ConfigWindow.vala:1250
+#: src/ConfigWindow.vala:1281 src/ConfigWindow.vala:1298
+#: src/ConfigWindow.vala:1618 src/ConfigWindow.vala:1641
 msgid "Average Bitrate"
 msgstr ""
 
-#: src/ConfigWindow.vala:1621 src/ConfigWindow.vala:1644
+#: src/ConfigWindow.vala:1620 src/ConfigWindow.vala:1643
 msgid "Average Bitrate (2-pass)"
 msgstr ""
 
-#: src/MainWindow.vala:215
+#: src/MainWindow.vala:230
 msgid "Background"
 msgstr ""
 
@@ -164,45 +172,49 @@ msgstr ""
 msgid "Backup Location"
 msgstr ""
 
-#: src/ConfigWindow.vala:348 src/ConfigWindow.vala:727
+#: src/ConfigWindow.vala:348 src/ConfigWindow.vala:726
 msgid "Bitrate (kbps)"
 msgstr ""
 
-#: src/Main.vala:1370 src/Main.vala:1385
+#: src/MainWindow.vala:361
+msgid "Browse"
+msgstr ""
+
+#: src/Main.vala:1378 src/Main.vala:1393
 msgid "Cancelled"
 msgstr ""
 
-#: src/ConfigWindow.vala:809
+#: src/ConfigWindow.vala:808
 msgid "Channels"
 msgstr ""
 
-#: src/Main.vala:1240
+#: src/Main.vala:1247
 msgid "Completed"
 msgstr ""
 
-#: src/ConfigWindow.vala:1228 src/ConfigWindow.vala:1253
-#: src/ConfigWindow.vala:1284 src/ConfigWindow.vala:1667
+#: src/ConfigWindow.vala:1227 src/ConfigWindow.vala:1252
+#: src/ConfigWindow.vala:1283 src/ConfigWindow.vala:1666
 msgid "Constant Bitrate"
 msgstr ""
 
-#: src/ConfigWindow.vala:1230
+#: src/ConfigWindow.vala:1229
 msgid "Constant Bitrate (Strict)"
 msgstr ""
 
-#: src/Main.vala:1146 src/Main.vala:1421
+#: src/Main.vala:1153 src/Main.vala:1429
 msgid "Converting..."
 msgstr ""
 
-#: src/MainWindow.vala:898
+#: src/MainWindow.vala:977
 #, c-format
 msgid "Converting: '%s'"
 msgstr ""
 
-#: src/Main.vala:1144 src/Main.vala:1419
+#: src/Main.vala:1151 src/Main.vala:1427
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
-#: src/MainWindow.vala:274
+#: src/MainWindow.vala:289
 msgid "CropVideo (L:T:R:B)"
 msgstr ""
 
@@ -210,16 +222,20 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/ConfigWindow.vala:681
+#: src/MainWindow.vala:348
+msgid "Delete Preset"
+msgstr ""
+
+#: src/ConfigWindow.vala:680
 msgid "Denominator"
 msgstr ""
 
-#: src/ConfigWindow.vala:988 src/ConfigWindow.vala:996
-#: src/ConfigWindow.vala:1005
+#: src/ConfigWindow.vala:987 src/ConfigWindow.vala:995
+#: src/ConfigWindow.vala:1004
 msgid "Disable Audio"
 msgstr ""
 
-#: src/ConfigWindow.vala:961
+#: src/ConfigWindow.vala:960
 msgid "Disable Video"
 msgstr ""
 
@@ -231,19 +247,19 @@ msgstr ""
 msgid "Do not stretch or squeeze the video (Fit-To-Box)"
 msgstr ""
 
-#: src/Main.vala:1217
+#: src/Main.vala:1224
 msgid "Done"
 msgstr ""
 
-#: src/MainWindow.vala:886
+#: src/MainWindow.vala:965
 msgid "Drag files on this window or click the 'Add' button"
 msgstr ""
 
-#: src/MainWindow.vala:266
+#: src/MainWindow.vala:281
 msgid "Duration"
 msgstr ""
 
-#: src/MainWindow.vala:361
+#: src/MainWindow.vala:355
 msgid "Edit Preset"
 msgstr ""
 
@@ -251,28 +267,32 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/ConfigWindow.vala:1095
+#: src/ConfigWindow.vala:1094
 msgid "Embed / Soft Subs"
 msgstr ""
 
-#: src/ConfigWindow.vala:1946
+#: src/ConfigWindow.vala:1945
 msgid "Empty Preset Name"
 msgstr ""
 
-#: src/ConfigWindow.vala:335 src/ConfigWindow.vala:714
+#: src/ConfigWindow.vala:335 src/ConfigWindow.vala:713
 msgid "Encoding Mode"
 msgstr ""
 
-#: src/MainWindow.vala:351
+#: src/MainWindow.vala:420
 msgid "Encoding Script or Preset File"
 msgstr ""
 
-#: src/Main.vala:931
+#: src/Main.vala:938
 msgid "Enter any key to Cancel..."
 msgstr ""
 
-#: src/Main.vala:1227
+#: src/Main.vala:1234
 msgid "Error"
+msgstr ""
+
+#: src/ConfigWindow.vala:656
+msgid "Examples:"
 msgstr ""
 
 #: src/ConfigWindow.vala:235
@@ -287,11 +307,11 @@ msgstr ""
 msgid "FLAC Audio (*.flac)"
 msgstr ""
 
-#: src/ConfigWindow.vala:655
+#: src/ConfigWindow.vala:653
 msgid "FPS Ratio"
 msgstr ""
 
-#: src/Main.vala:1243
+#: src/Main.vala:1250
 msgid "Failed"
 msgstr ""
 
@@ -307,57 +327,57 @@ msgstr ""
 msgid "Fastest (--cpu-used=5)"
 msgstr ""
 
-#: src/MainWindow.vala:248
+#: src/MainWindow.vala:263
 msgid "File"
 msgstr ""
 
-#: src/Main.vala:1222
-msgid "File Completed"
+#: src/Main.vala:1229
+msgid "File Complete"
 msgstr ""
 
-#: src/Main.vala:1232
+#: src/Main.vala:1239
 msgid "File Failed"
 msgstr ""
 
-#: src/MainWindow.vala:460
+#: src/MainWindow.vala:505
 msgid "File Info (Output)"
 msgstr ""
 
-#: src/MainWindow.vala:454
+#: src/MainWindow.vala:499
 msgid "File Info (Source)"
 msgstr ""
 
-#: src/Main.vala:829
+#: src/Main.vala:836
 msgid "File added:"
 msgstr ""
 
-#: src/MainWindow.vala:915
+#: src/MainWindow.vala:994
 #, c-format
 msgid "File added: '%s'"
 msgstr ""
 
-#: src/Main.vala:843
+#: src/Main.vala:850
 msgid "File removed:"
 msgstr ""
 
-#: src/MainWindow.vala:236
+#: src/MainWindow.vala:251
 msgid "File(s) to convert"
 msgstr ""
 
-#: src/Main.vala:866
+#: src/Main.vala:873
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: src/Main.vala:869
+#: src/Main.vala:876
 msgid "Files will be saved in source directory"
 msgstr ""
 
-#: src/ConfigWindow.vala:503 src/ConfigWindow.vala:782
+#: src/ConfigWindow.vala:503 src/ConfigWindow.vala:781
 msgid "Filters"
 msgstr ""
 
-#: src/MainWindow.vala:178 src/MainWindow.vala:180
+#: src/MainWindow.vala:193 src/MainWindow.vala:195
 msgid "Finish"
 msgstr ""
 
@@ -365,11 +385,11 @@ msgstr ""
 msgid "Fits the video in a box of given width and height."
 msgstr ""
 
-#: src/ConfigWindow.vala:1316
+#: src/ConfigWindow.vala:1315
 msgid "Fixed Bitrate"
 msgstr ""
 
-#: src/MainWindow.vala:326 src/MainWindow.vala:336
+#: src/MainWindow.vala:395 src/MainWindow.vala:405
 msgid "Folder"
 msgstr ""
 
@@ -381,11 +401,11 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: src/ConfigWindow.vala:321 src/ConfigWindow.vala:700
+#: src/ConfigWindow.vala:321 src/ConfigWindow.vala:699
 msgid "Format / Codec"
 msgstr ""
 
-#: src/MainWindow.vala:1300
+#: src/MainWindow.vala:1390
 msgid "Format not supported:"
 msgstr ""
 
@@ -405,13 +425,17 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: src/MainWindow.vala:1435
+#: src/MainWindow.vala:376 src/MainWindow.vala:378
+msgid "Info"
+msgstr ""
+
+#: src/MainWindow.vala:1526
 msgid ""
 "Input queue is empty!\n"
 "Please add some files.\n"
 msgstr ""
 
-#: src/Main.vala:857
+#: src/Main.vala:864
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
@@ -431,7 +455,7 @@ msgstr ""
 msgid "Loading scripts from:"
 msgstr ""
 
-#: src/ConfigWindow.vala:1343
+#: src/ConfigWindow.vala:1342
 msgid "Lossless"
 msgstr ""
 
@@ -463,11 +487,11 @@ msgstr ""
 msgid "Missing Dependency"
 msgstr ""
 
-#: src/ConfigWindow.vala:769
+#: src/ConfigWindow.vala:768
 msgid "Music"
 msgstr ""
 
-#: src/Main.vala:303 src/MainWindow.vala:1104
+#: src/Main.vala:303 src/MainWindow.vala:1190
 msgid "N/A"
 msgstr ""
 
@@ -475,19 +499,19 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/ConfigWindow.vala:261 src/MainWindow.vala:369
+#: src/ConfigWindow.vala:261
 msgid "New Preset"
 msgstr ""
 
 #: src/ConfigWindow.vala:530 src/ConfigWindow.vala:633
-#: src/ConfigWindow.vala:652 src/ConfigWindow.vala:1363
-#: src/ConfigWindow.vala:1403 src/ConfigWindow.vala:1431
-#: src/ConfigWindow.vala:1445 src/ConfigWindow.vala:1474
-#: src/ConfigWindow.vala:1494
+#: src/ConfigWindow.vala:656 src/ConfigWindow.vala:1362
+#: src/ConfigWindow.vala:1402 src/ConfigWindow.vala:1430
+#: src/ConfigWindow.vala:1444 src/ConfigWindow.vala:1473
+#: src/ConfigWindow.vala:1493
 msgid "No Change"
 msgstr ""
 
-#: src/ConfigWindow.vala:1093
+#: src/ConfigWindow.vala:1092
 msgid "No Subtitles"
 msgstr ""
 
@@ -495,7 +519,7 @@ msgstr ""
 msgid "No Up-Scaling"
 msgstr ""
 
-#: src/ConfigWindow.vala:765
+#: src/ConfigWindow.vala:764
 msgid "None"
 msgstr ""
 
@@ -503,7 +527,7 @@ msgstr ""
 msgid "Not possible to continue!"
 msgstr ""
 
-#: src/ConfigWindow.vala:672
+#: src/ConfigWindow.vala:671
 msgid "Numerator"
 msgstr ""
 
@@ -515,27 +539,27 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: src/MainWindow.vala:376
+#: src/MainWindow.vala:363
 msgid "Open Folder"
 msgstr ""
 
-#: src/MainWindow.vala:431
+#: src/MainWindow.vala:476
 msgid "Open Log File"
 msgstr ""
 
-#: src/MainWindow.vala:425
+#: src/MainWindow.vala:470
 msgid "Open Output Folder"
 msgstr ""
 
-#: src/MainWindow.vala:419
+#: src/MainWindow.vala:464
 msgid "Open Temp Folder"
 msgstr ""
 
-#: src/MainWindow.vala:228
+#: src/MainWindow.vala:243
 msgid "Open output folder"
 msgstr ""
 
-#: src/ConfigWindow.vala:749
+#: src/ConfigWindow.vala:748
 msgid "Optimization"
 msgstr ""
 
@@ -543,7 +567,7 @@ msgstr ""
 msgid "Opus Audio (*.opus)"
 msgstr ""
 
-#: src/MainWindow.vala:226
+#: src/MainWindow.vala:241
 msgid "Output"
 msgstr ""
 
@@ -551,39 +575,43 @@ msgstr ""
 msgid "Output Location"
 msgstr ""
 
-#: src/MainWindow.vala:161 src/MainWindow.vala:1414 src/MainWindow.vala:1416
+#: src/MainWindow.vala:176 src/MainWindow.vala:1505 src/MainWindow.vala:1507
 msgid "Pause"
 msgstr ""
 
-#: src/Main.vala:1399 src/Main.vala:1404
+#: src/Main.vala:1407 src/Main.vala:1412
 msgid "Paused"
 msgstr ""
 
-#: src/Main.vala:1402
+#: src/Main.vala:1410
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
-#: src/MainWindow.vala:448
+#: src/MainWindow.vala:493
 msgid "Play File (Output)"
 msgstr ""
 
-#: src/MainWindow.vala:442
+#: src/MainWindow.vala:487
 msgid "Play File (Source)"
 msgstr ""
 
-#: src/ConfigWindow.vala:1946
+#: src/ConfigWindow.vala:1945
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: src/ConfigWindow.vala:375 src/MainWindow.vala:341
+#: src/ConfigWindow.vala:375 src/MainWindow.vala:410
 msgid "Preset"
 msgstr ""
 
-#: src/MainWindow.vala:1528
+#: src/MainWindow.vala:868
+msgid "Preset deleted"
+msgstr ""
+
+#: src/MainWindow.vala:1621
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
-#: src/MainWindow.vala:403
+#: src/MainWindow.vala:448
 msgid "Preview File"
 msgstr ""
 
@@ -595,23 +623,23 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
-#: src/ConfigWindow.vala:361 src/ConfigWindow.vala:738
+#: src/ConfigWindow.vala:361 src/ConfigWindow.vala:737
 msgid "Quality"
 msgstr ""
 
-#: src/MainWindow.vala:1436
+#: src/MainWindow.vala:1527
 msgid "Queue is Empty"
 msgstr ""
 
-#: src/Main.vala:83 src/Main.vala:887 src/Main.vala:948
+#: src/Main.vala:83 src/Main.vala:894 src/Main.vala:955
 msgid "Queued"
 msgstr ""
 
-#: src/MainWindow.vala:143
+#: src/MainWindow.vala:158
 msgid "Remove all file(s)"
 msgstr ""
 
-#: src/MainWindow.vala:137
+#: src/MainWindow.vala:151
 msgid "Remove selected file(s)"
 msgstr ""
 
@@ -623,15 +651,15 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: src/MainWindow.vala:1408 src/MainWindow.vala:1410
+#: src/MainWindow.vala:1499 src/MainWindow.vala:1501
 msgid "Resume"
 msgstr ""
 
-#: src/MainWindow.vala:220
+#: src/MainWindow.vala:235
 msgid "Run processes with lower priority"
 msgstr ""
 
-#: src/ConfigWindow.vala:795
+#: src/ConfigWindow.vala:794
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
@@ -639,7 +667,7 @@ msgstr ""
 msgid "Save in input file location"
 msgstr ""
 
-#: src/MainWindow.vala:884
+#: src/MainWindow.vala:963
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
 
@@ -654,27 +682,27 @@ msgid ""
 "Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
 msgstr ""
 
-#: src/MainWindow.vala:205
+#: src/MainWindow.vala:220
 msgid "Shutdown"
 msgstr ""
 
-#: src/MainWindow.vala:1385
+#: src/MainWindow.vala:1476
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: src/MainWindow.vala:1382
+#: src/MainWindow.vala:1473
 msgid "Shutdown Enabled"
 msgstr ""
 
-#: src/MainWindow.vala:210
+#: src/MainWindow.vala:225
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: src/MainWindow.vala:258
+#: src/MainWindow.vala:273
 msgid "Size"
 msgstr ""
 
-#: src/MainWindow.vala:393
+#: src/MainWindow.vala:438
 msgid "Skip File"
 msgstr ""
 
@@ -698,16 +726,16 @@ msgstr ""
 msgid "Slowest (--cpu-used=0)"
 msgstr ""
 
-#: src/Main.vala:875
+#: src/Main.vala:882
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: src/Main.vala:975
+#: src/Main.vala:982
 msgid "Source:"
 msgstr ""
 
-#: src/ConfigWindow.vala:767
+#: src/ConfigWindow.vala:766
 msgid "Speech"
 msgstr ""
 
@@ -715,36 +743,36 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
-#: src/MainWindow.vala:152 src/MainWindow.vala:154
+#: src/MainWindow.vala:167 src/MainWindow.vala:169
 msgid "Start"
 msgstr ""
 
-#: src/Main.vala:861
+#: src/Main.vala:868
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
 
-#: src/MainWindow.vala:285
+#: src/MainWindow.vala:300
 msgid "Status"
 msgstr ""
 
-#: src/Main.vala:1237
+#: src/Main.vala:1244
 msgid "Stopped!"
 msgstr ""
 
-#: src/ConfigWindow.vala:824
+#: src/ConfigWindow.vala:823
 msgid "Subs"
 msgstr ""
 
-#: src/ConfigWindow.vala:841
+#: src/ConfigWindow.vala:840
 msgid "Subtitle Mode"
 msgstr ""
 
-#: src/ConfigWindow.vala:857
+#: src/ConfigWindow.vala:856
 msgid "Subtitles"
 msgstr ""
 
-#: src/Main.vala:977
+#: src/Main.vala:984
 msgid "Subtitles:"
 msgstr ""
 
@@ -752,16 +780,16 @@ msgstr ""
 msgid "SuperFast"
 msgstr ""
 
-#: src/ConfigWindow.vala:1919 src/ConfigWindow.vala:1922
-#: src/ConfigWindow.vala:1925 src/ConfigWindow.vala:1928
+#: src/ConfigWindow.vala:1918 src/ConfigWindow.vala:1921
+#: src/ConfigWindow.vala:1924 src/ConfigWindow.vala:1927
 msgid "Supported Formats:"
 msgstr ""
 
-#: src/MainWindow.vala:1530
+#: src/MainWindow.vala:1623
 msgid "System shutdown"
 msgstr ""
 
-#: src/MainWindow.vala:1537
+#: src/MainWindow.vala:1630
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -770,7 +798,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: src/Main.vala:930 src/MainWindow.vala:1527
+#: src/Main.vala:937 src/MainWindow.vala:1620
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -787,11 +815,11 @@ msgstr ""
 msgid "UltraFast"
 msgstr ""
 
-#: src/Main.vala:833
+#: src/Main.vala:840
 msgid "Unknown format:"
 msgstr ""
 
-#: src/MainWindow.vala:912
+#: src/MainWindow.vala:991
 #, c-format
 msgid "Unknown format: '%s'"
 msgstr ""
@@ -804,17 +832,17 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: src/ConfigWindow.vala:1224 src/ConfigWindow.vala:1249
-#: src/ConfigWindow.vala:1280 src/ConfigWindow.vala:1297
-#: src/ConfigWindow.vala:1640 src/ConfigWindow.vala:1663
+#: src/ConfigWindow.vala:1223 src/ConfigWindow.vala:1248
+#: src/ConfigWindow.vala:1279 src/ConfigWindow.vala:1296
+#: src/ConfigWindow.vala:1639 src/ConfigWindow.vala:1662
 msgid "Variable Bitrate"
 msgstr ""
 
-#: src/ConfigWindow.vala:1665
+#: src/ConfigWindow.vala:1664
 msgid "Variable Bitrate (2pass)"
 msgstr ""
 
-#: src/ConfigWindow.vala:1617
+#: src/ConfigWindow.vala:1616
 msgid "Variable Bitrate / CRF"
 msgstr ""
 
@@ -856,19 +884,19 @@ msgstr ""
 msgid "Width x Height"
 msgstr ""
 
-#: src/MainWindow.vala:890
+#: src/MainWindow.vala:969
 msgid ""
 "[Batch completed] Right-click for options or click 'Finish' to continue."
 msgstr ""
 
-#: src/MainWindow.vala:894
+#: src/MainWindow.vala:973
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
-#: src/MainWindow.vala:523
+#: src/MainWindow.vala:568
 msgid "presets"
 msgstr ""
 
-#: src/MainWindow.vala:519
+#: src/MainWindow.vala:564
 msgid "scripts"
 msgstr ""
