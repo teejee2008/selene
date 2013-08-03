@@ -600,14 +600,6 @@ public class MainWindow : Gtk.Window
 		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 		
-		switch(cmbScriptFolder.active){
-			case 0:
-			case 1:
-				break;
-			case 2:
-				return;
-		}
-		
 		string path = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 		
 		try
