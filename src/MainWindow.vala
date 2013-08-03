@@ -26,25 +26,28 @@ using Gee;
 
 public class MainWindow : Gtk.Window
 {
-	private ToolButton btnStart;
-    private ToolButton btnStop;
-    private ToolButton btnFinish;
-    
-    private ToolButton btnPause;
-    private ToggleToolButton btnShutdown;
-    private ToggleToolButton btnBackground;
-    
+	//main toolbar
+	private Gtk.Toolbar toolbar;
     private ToolButton btnAddFiles;
 	private ToolButton btnRemoveFiles;
     private ToolButton btnClearFiles;
     private ToolButton btnAppSettings;
     private ToolButton btnAbout;
     private ToolButton btnOpenOutputFolder;
+    private ToolButton btnStart;
+    private ToolButton btnStop;
+    private ToolButton btnFinish;
+    private ToolButton btnPause;
+    private ToggleToolButton btnShutdown;
+    private ToggleToolButton btnBackground;
     
-    private Button btnOpenScriptFolder;
-	private Button btnPresetNew;
-	private Button btnPresetEdit;
-	
+    //preset toolbar
+    private Gtk.Toolbar toolbar2;
+    private ToolButton btnAddPreset;
+	private ToolButton btnRemovePreset;
+	private ToolButton btnEditPreset;
+	private ToolButton btnBrowsePresetFolder;
+
 	private Box vboxMain;
 	private Box vboxMain2;
 	private ComboBox cmbScriptFile;
@@ -100,7 +103,15 @@ public class MainWindow : Gtk.Window
         this.window_position = WindowPosition.CENTER;
         this.destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
-         
+        
+        //set app icon
+		try{
+			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	    
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		this.drag_data_received.connect(this.on_drag_data_received);
 		
@@ -119,13 +130,14 @@ public class MainWindow : Gtk.Window
         vboxMain2.margin_right = 6;
         
 		//toolbar
-		Gtk.Toolbar toolbar = new Gtk.Toolbar ();
+		toolbar = new Gtk.Toolbar ();
 		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.pack_start (toolbar, false, false, 0);
 
 		//btnAddFiles
 		btnAddFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+		btnAddFiles.label = _("Add Files");
 		btnAddFiles.is_important = true;
 		btnAddFiles.clicked.connect (btnAddFiles_clicked);
 		btnAddFiles.set_tooltip_text (_("Add file(s)"));
@@ -310,11 +322,50 @@ public class MainWindow : Gtk.Window
 
 		Gtk.drag_dest_set (tvFiles,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
         tvFiles.drag_data_received.connect(this.on_drag_data_received);
-		
-		vboxMain.add (vboxMain2);
 
+		// Preset tool bar --------------------------------------
+
+        //toolbar
+		toolbar2 = new Gtk.Toolbar ();
+		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
+		//toolbar2.margin_top = 6;
+		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+		vboxMain.add (toolbar2);
+
+		//btnAddPreset
+		btnAddPreset = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+		btnAddPreset.is_important = true;
+		btnAddPreset.label = _("Add Preset");
+		btnAddPreset.clicked.connect (btnAddPreset_clicked);
+		btnAddPreset.set_tooltip_text (_("Add New Preset"));
+		toolbar2.add (btnAddPreset);
+
+		//btnRemovePreset
+		btnRemovePreset = new Gtk.ToolButton.from_stock (Gtk.Stock.DELETE);
+		btnRemovePreset.is_important = true;
+		btnRemovePreset.clicked.connect (btnRemovePreset_clicked);
+		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
+		toolbar2.add (btnRemovePreset);
+		
+		//btnEditPreset
+		btnEditPreset = new Gtk.ToolButton.from_stock (Gtk.Stock.EDIT);
+		btnEditPreset.is_important = true;
+		btnEditPreset.clicked.connect (btnEditPreset_clicked);
+		btnEditPreset.set_tooltip_text (_("Edit Preset"));
+		toolbar2.add (btnEditPreset);
+		
+		//btnBrowsePresetFolder
+		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
+		btnBrowsePresetFolder.is_important = true;
+		btnBrowsePresetFolder.label = _("Browse");
+		btnBrowsePresetFolder.clicked.connect (btnBrowsePresetFolder_clicked);
+		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
+		toolbar2.add (btnBrowsePresetFolder);
+		
         //Config ---------------------------------------------------
         
+        vboxMain.add (vboxMain2);
+
         //gridConfig
         gridConfig = new Grid ();
         gridConfig.set_column_spacing (6);
@@ -323,7 +374,7 @@ public class MainWindow : Gtk.Window
         gridConfig.margin_top = 6;
         gridConfig.margin_bottom = 6;
         vboxMain2.add (gridConfig);
-		
+
 		//lblScriptFolder
 		lblScriptFolder = new Gtk.Label(_("Folder"));
 		lblScriptFolder.xalign = (float) 0.0;
@@ -353,31 +404,7 @@ public class MainWindow : Gtk.Window
         cmbScriptFile.set_tooltip_text (_("Encoding Script or Preset File"));
         cmbScriptFile.changed.connect(cmbScriptFile_changed);
         gridConfig.attach(cmbScriptFile,1,1,1,1);
-        
-        //btnPresetEdit
-		btnPresetEdit = new Button();
-		btnPresetEdit.set_image (new Image.from_stock (Stock.EDIT, IconSize.BUTTON));
-		//btnPresetEdit.label = "Edit";
-		btnPresetEdit.image_position = PositionType.TOP;
-        btnPresetEdit.clicked.connect (btnPresetEdit_clicked);
-        btnPresetEdit.set_tooltip_text (_("Edit Preset"));
-        btnPresetEdit.set_size_request(50,-1);
-        gridConfig.attach(btnPresetEdit,2,0,1,2);
-        
-		//btnPresetNew
-		btnPresetNew = new Button();
-		btnPresetNew.set_image (new Image.from_stock (Stock.ADD, IconSize.MENU));
-        btnPresetNew.clicked.connect (btnPresetNew_clicked);
-        btnPresetNew.set_tooltip_text (_("New Preset"));
-        gridConfig.attach(btnPresetNew,3,0,1,1);
 
-        //btnOpenScriptFolder
-		btnOpenScriptFolder = new Button();
-		btnOpenScriptFolder.set_image (new Image.from_stock (Stock.DIRECTORY, IconSize.MENU));
-        btnOpenScriptFolder.clicked.connect (btnOpenScriptFolder_clicked);
-        btnOpenScriptFolder.set_tooltip_text (_("Open Folder"));
-        gridConfig.attach(btnOpenScriptFolder,3,1,1,1);
-        
 		//lblStatus
 		lblStatus = new Label("");
 		lblStatus.ellipsize = Pango.EllipsizeMode.END;
@@ -723,7 +750,7 @@ public class MainWindow : Gtk.Window
 		(cell as Gtk.CellRendererText).text = name;
 	}
 	
-	private void btnOpenScriptFolder_clicked()
+	private void btnBrowsePresetFolder_clicked()
 	{
 		string path;
 		TreeModel model = (TreeModel) cmbScriptFolder.model;
@@ -808,7 +835,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
-	private void btnPresetNew_clicked ()
+	private void btnAddPreset_clicked ()
     {
 		switch (cmbScriptFolder.active){
 			case 0:
@@ -820,7 +847,22 @@ public class MainWindow : Gtk.Window
 		}
 	}
 
-	private void btnPresetEdit_clicked ()
+	private void btnRemovePreset_clicked ()
+    {
+		if ((cmbScriptFile.model != null)&&(cmbScriptFile.active > -1)) {
+			ScriptFile sh;
+			TreeIter iter;
+			cmbScriptFile.get_active_iter(out iter);
+			cmbScriptFile.model.get (iter, 0, out sh, -1);
+			
+			Utility.file_delete(sh.Path);
+			cmbScriptFolder_changed();
+			
+			statusbar_show_message (_("Preset deleted") + ": " + sh.Name + "", true, true);
+		}
+	}
+	
+	private void btnEditPreset_clicked ()
     {
 		if ((cmbScriptFile.model == null)||(cmbScriptFile.active < 0)) {
 			switch (cmbScriptFolder.active){
@@ -928,13 +970,17 @@ public class MainWindow : Gtk.Window
 		TreeSelection selection = tvFiles.get_selection ();
 		int index = -1;
 		
+		if (selection.count_selected_rows () == 0){
+			return true;
+		}
+		
 		if (selection.count_selected_rows () == 1){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
 			index = int.parse (path.to_string ());
 		}
-		
+
 		switch(App.Status)
 		{
 			case AppStatus.NOTSTARTED:
@@ -1024,16 +1070,19 @@ public class MainWindow : Gtk.Window
 				miFileRemove.visible = false;
 				miFileSeparator1.visible = false;
 				miFileSeparator2.visible = true;
-
-				string outpath = App.InputFiles[index].OutputFilePath;
-				if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
-					miFileInfoOutput.sensitive = true;
-					miFilePlayOutput.sensitive = true;
+				
+				if (selection.count_selected_rows () == 1){
+					string outpath = App.InputFiles[index].OutputFilePath;
+					if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
+						miFileInfoOutput.sensitive = true;
+						miFilePlayOutput.sensitive = true;
+					}
 				}
 				else{
 					miFileInfoOutput.sensitive = false;
 					miFilePlayOutput.sensitive = false;
 				}
+
 				break;
 		}
 		
@@ -1459,6 +1508,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	
 	public void convert_prepare ()
 	{
+		toolbar2.visible = false;
 		gridConfig.visible = false;
 		btnShutdown.active = App.Shutdown;
 		
@@ -1489,6 +1539,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	
 	public void convert_finish ()
 	{
+		toolbar2.visible = true;
 		gridConfig.visible = true;
 
 		colCrop.visible = true;
