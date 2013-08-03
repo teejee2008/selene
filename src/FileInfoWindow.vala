@@ -39,6 +39,14 @@ public class FileInfoWindow : Dialog {
 		this.modal = true;
 		set_default_size (700, 500);	
 		
+		//set app icon
+		try{
+			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	    
 		// get content area
 		vboxMain = get_content_area ();
 		vboxMain.margin = 6;

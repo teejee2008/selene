@@ -154,8 +154,17 @@ public class ConfigWindow : Dialog {
 	{
 		this.deletable = false; // remove window close button
 		this.modal = true;
+		this.title = "Preset";
 		set_default_size (400, 500);	
 		
+		//set app icon
+		try{
+			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	    
 		int row = 0;
         Gtk.ListStore model;
         Gtk.CellRendererText textCell;

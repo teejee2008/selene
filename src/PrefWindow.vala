@@ -39,8 +39,17 @@ public class PrefWindow : Dialog {
 	{
 		this.deletable = false; // remove window close button
 		this.modal = true;
+		this.title = "Application Settings";
 		set_default_size (500, 400);	
-
+		
+		//set app icon
+		try{
+			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	    
 		// get content area
 		vboxMain = get_content_area ();
 		vboxMain.margin = 6;

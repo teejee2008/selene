@@ -329,7 +329,7 @@ public class MainWindow : Gtk.Window
         //toolbar
 		toolbar2 = new Gtk.Toolbar ();
 		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
-		//toolbar2.margin_top = 6;
+		//toolbar2.margin_bottom = 6;
 		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.add (toolbar2);
 
