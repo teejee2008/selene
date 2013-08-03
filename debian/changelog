@@ -1,7 +1,11 @@
-selene (2.0.2) quantal; urgency=low
+selene (2.1) quantal; urgency=low
 
-  * Rev:93, 2013-06-16
+  * Rev:100, 2013-08-02
+  
+  * New toolbar for presets
+  
+  * New application icon
   
   * Bug fixes
   
- -- Tony George <tony.george.kol@gmail.com>  Sun, 16 Jun 2013 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Fri, 02 Aug 2013 10:00:00 +0530

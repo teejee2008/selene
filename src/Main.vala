@@ -652,7 +652,7 @@ Notes:
 		this.BackupDirectory = "";
 		
 		SharedDataDirectory = "/usr/share/selene";
-		UserDataDirectory = homeDir + "/.config/selene";
+		UserDataDirectory = homeDir + "/selene";
 		//string appPath = (File.new_for_path (arg0)).get_parent ().get_path ();
 
 		ScriptsFolder_Official = SharedDataDirectory + "/scripts";
