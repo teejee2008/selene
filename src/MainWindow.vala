@@ -47,6 +47,7 @@ public class MainWindow : Gtk.Window
 	private ToolButton btnRemovePreset;
 	private ToolButton btnEditPreset;
 	private ToolButton btnBrowsePresetFolder;
+	private ToolButton btnPresetInfo;
 
 	private Box vboxMain;
 	private Box vboxMain2;
@@ -362,6 +363,21 @@ public class MainWindow : Gtk.Window
 		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
 		toolbar2.add (btnBrowsePresetFolder);
 		
+		//separator
+		var separator1 = new Gtk.SeparatorToolItem();
+		separator1.set_draw (false);
+		separator1.set_expand (true);
+		toolbar2.add (separator1);
+		
+		//btnPresetInfo
+		btnPresetInfo = new Gtk.ToolButton.from_stock (Gtk.Stock.INFO);
+		btnPresetInfo.is_important = true;
+		btnPresetInfo.margin_right = 6;
+		btnPresetInfo.label = _("Info");
+		btnPresetInfo.clicked.connect (btnPresetInfo_clicked);
+		btnPresetInfo.set_tooltip_text (_("Info"));
+		toolbar2.add (btnPresetInfo);
+
         //Config ---------------------------------------------------
         
         vboxMain.add (vboxMain2);
@@ -564,10 +580,9 @@ public class MainWindow : Gtk.Window
 			while ((file = enumerator.next_file()) != null) {
 				if (file.get_file_type() == FileType.DIRECTORY){
 					string dirPath = dir.resolve_relative_path(file.get_name()).get_path();
-					//string dirName = file.get_name();
 					string dirName = dirPath.replace(App.UserDataDirectory + "/","");
 					
-					model.append(out iter1, iter0);
+					model.append(out iter1, null);
 					model.set(iter1, 0, dirPath, 1, dirName);
 					iter_append_children(model, iter1, dir.resolve_relative_path(file.get_name()).get_path());
 				}
@@ -884,6 +899,34 @@ public class MainWindow : Gtk.Window
 					break;
 			}
 		}	
+	}
+
+	private void btnPresetInfo_clicked()
+	{
+		string msg = """Selene supports 2 types of presets:
+
+1) JSON Presets
+
+Ø These are files with a ".json" extension.
+
+Ø These files are present in $HOME/.config/selene/presets.
+
+Ø Clicking the "Edit" button on the toolbar will display a GUI for
+configuring the preset file.
+
+2) Bash Scripts
+
+Ø These are bash scripts with a ".sh" extension.
+
+Ø These files are present in $HOME/.config/selene/scripts.
+
+Ø Bash scripts can be used for converting files using any command line
+utility (even those tools which are not directly supported by Selene)
+
+Ø These files have to be edited manually. Clicking the "Edit" button
+on the toolbar will open the file in a text editor.
+""";
+		Utility.messagebox_show("Info",msg);
 	}
 
 	// statusbar -------------------
