@@ -621,15 +621,20 @@ namespace Utility
 	public int exo_open_textfile (string txt)
 	{
 		string path;
+
+		path = get_cmd_path ("gedit");
+		if ((path != null)&&(path != "")){
+			return execute_command_sync ("gedit " + double_quote (txt));
+		}
 		
 		path = get_cmd_path ("exo-open");
 		if ((path != null)&&(path != "")){
 			return execute_command_sync ("exo-open " + double_quote (txt));
 		}
 
-		path = get_cmd_path ("gedit");
+		path = get_cmd_path ("mousepad");
 		if ((path != null)&&(path != "")){
-			return execute_command_sync ("gedit --new-document " + double_quote (txt));
+			return execute_command_sync ("mousepad " + double_quote (txt));
 		}
 
 		return -1;

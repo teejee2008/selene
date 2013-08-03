@@ -836,7 +836,7 @@ public class MainWindow : Gtk.Window
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
-		
+
 		if (sh.Extension == ".sh") {
 			Utility.exo_open_textfile(sh.Path); 
 		}
@@ -844,13 +844,16 @@ public class MainWindow : Gtk.Window
 	
 	private void btnAddPreset_clicked ()
     {
-		switch (cmbScriptFolder.active){
-			case 0:
-				script_create();
-				break;
-			case 1:
-				preset_create();
-				break;
+		TreeIter iter;
+		string folderName;
+		cmbScriptFolder.get_active_iter(out iter);
+		cmbScriptFolder.model.get (iter, 1, out folderName, -1);
+
+		if (folderName.has_prefix("scripts")){
+			script_create();
+		}
+		else if (folderName.has_prefix("presets")){
+			preset_create();
 		}
 	}
 
@@ -871,22 +874,31 @@ public class MainWindow : Gtk.Window
 	
 	private void btnEditPreset_clicked ()
     {
-		if ((cmbScriptFile.model == null)||(cmbScriptFile.active < 0)) {
-			switch (cmbScriptFolder.active){
-				case 0:
-					script_create();
-					break;
-				case 1:
-					preset_create();
-					break;
+		if ((cmbScriptFile.model == null)||(cmbScriptFile.active == -1)) {
+			TreeIter iter;
+			string folderName;
+			cmbScriptFolder.get_active_iter(out iter);
+			cmbScriptFolder.model.get (iter, 1, out folderName, -1);
+			
+			if (folderName.has_prefix("scripts")){
+				script_create();
+			}
+			else if (folderName.has_prefix("presets")){
+				preset_create();
 			}
 		}
 		else {
-			switch (cmbScriptFolder.active){
-				case 0:
+			
+			ScriptFile sh;
+			TreeIter iter;
+			cmbScriptFile.get_active_iter(out iter);
+			cmbScriptFile.model.get (iter, 0, out sh, -1);
+
+			switch (sh.Extension){
+				case ".sh":
 					script_edit();
 					break;
-				case 1:
+				case ".json":
 					preset_edit();
 					break;
 			}
