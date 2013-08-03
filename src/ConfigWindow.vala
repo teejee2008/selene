@@ -154,7 +154,7 @@ public class ConfigWindow : Dialog {
 	{
 		this.deletable = false; // remove window close button
 		this.modal = true;
-		set_default_size (350, 500);	
+		set_default_size (400, 500);	
 		
 		int row = 0;
         Gtk.ListStore model;

@@ -21,28 +21,41 @@ install:
 	mkdir -p $(DESTDIR)$(man1dir)
 	mkdir -p $(DESTDIR)$(launcherdir)
 	mkdir -p $(DESTDIR)$(sharedir)/glib-2.0/schemas/
-	mkdir -p $(DESTDIR)$(sharedir)/selene/scripts
-	mkdir -p $(DESTDIR)$(sharedir)/selene/presets
-	mkdir -p $(DESTDIR)$(sharedir)/selene/images
-
+	mkdir -p $(DESTDIR)$(sharedir)/selene
+	mkdir -p $(DESTDIR)$(sharedir)/pixmaps
+	
+	#binary
 	install -m 0755 selene $(DESTDIR)$(bindir)
-	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene/scripts scripts/*
-	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene/presets presets/*
-	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene/images  images/*
+	
+	#shared files
+	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene share/*
 	chmod --recursive 0755 $(DESTDIR)$(sharedir)/selene/*
 	
+	#launcher
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
+	
+	#app icon
+	install -m 0755 ./share/images/selene.png $(DESTDIR)$(sharedir)/pixmaps
+	
+	#gsettings schema
 	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 
 uninstall:
+	#binary
 	rm -f $(DESTDIR)$(bindir)/selene
-	rm -f $(DESTDIR)$(bindir)/selene-admin
-	rm -rf $(DESTDIR)$(sharedir)/selene/scripts
-	rm -rf $(DESTDIR)$(sharedir)/selene/presets
-	rm -rf $(DESTDIR)$(sharedir)/selene/images
+	#rm -f $(DESTDIR)$(bindir)/selene-admin
+	
+	#shared files
 	rm -rf $(DESTDIR)$(sharedir)/selene
+	
+	#launcher
 	rm -f $(DESTDIR)$(launcherdir)/Selene.desktop
+	
+	#app icon
+	rm -f $(DESTDIR)$(sharedir)/pixmaps/selene.png
+	
+	#gsettings schema
 	rm -f $(DESTDIR)$(sharedir)/glib-2.0/schemas/apps.selene.gschema.xml
 	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	
