@@ -1451,6 +1451,13 @@ on the toolbar will open the file in a text editor.
 		dialog.comments = _("An audio-video encoder for Linux");
 		dialog.copyright = "Copyright © 2013 Tony George (teejee2008@gmail.com)";
 		dialog.version = AppVersion;
+		
+		try{
+			dialog.logo = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+		}
+        catch(Error e){
+	        log_error (e.message);
+	    }
 
 		dialog.license = 
 """
