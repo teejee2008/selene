@@ -97,7 +97,7 @@ public class MainWindow : Gtk.Window
 	private const Gtk.TargetEntry[] targets = {
 		{ "text/uri-list", 0, 0}
 	};
-		
+	
 	public MainWindow () 
 	{
 		this.title = AppName + " v" + AppVersion;
@@ -913,7 +913,7 @@ public class MainWindow : Gtk.Window
 
 Ø These are files with a ".json" extension.
 
-Ø These files are present in $HOME/.config/selene/presets.
+Ø Files are present in $HOME/selene/presets.
 
 Ø Clicking the "Edit" button on the toolbar will display a GUI for
 configuring the preset file.
@@ -922,7 +922,7 @@ configuring the preset file.
 
 Ø These are bash scripts with a ".sh" extension.
 
-Ø These files are present in $HOME/.config/selene/scripts.
+Ø Files are present in $HOME/selene/scripts.
 
 Ø Bash scripts can be used for converting files using any command line
 utility (even those tools which are not directly supported by Selene)
