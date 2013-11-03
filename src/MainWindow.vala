@@ -24,8 +24,7 @@
 using Gtk;
 using Gee;
 
-public class MainWindow : Gtk.Window
-{
+public class MainWindow : Gtk.Window{
 	//main toolbar
 	private Gtk.Toolbar toolbar;
     private ToolButton btnAddFiles;
@@ -98,9 +97,8 @@ public class MainWindow : Gtk.Window
 		{ "text/uri-list", 0, 0}
 	};
 	
-	public MainWindow () 
-	{
-		this.title = AppName + " v" + AppVersion;
+	public MainWindow() {
+		this.title = AppName + " v" + AppVersion + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
         this.window_position = WindowPosition.CENTER;
         this.destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
@@ -116,8 +114,8 @@ public class MainWindow : Gtk.Window
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		this.drag_data_received.connect(this.on_drag_data_received);
 		
-		Gdk.RGBA gray = Gdk.RGBA ();
-		//Gdk.RGBA white = Gdk.RGBA ();
+		Gdk.RGBA gray = Gdk.RGBA();
+		//Gdk.RGBA white = Gdk.RGBA();
 		gray.parse ("rgba(200,200,200,1)");
 		//white.parse ("rgba(0,0,0,1)");
 
@@ -131,7 +129,7 @@ public class MainWindow : Gtk.Window
         vboxMain2.margin_right = 6;
         
 		//toolbar
-		toolbar = new Gtk.Toolbar ();
+		toolbar = new Gtk.Toolbar();
 		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.pack_start (toolbar, false, false, 0);
@@ -191,7 +189,7 @@ public class MainWindow : Gtk.Window
 		btnFinish = new Gtk.ToolButton.from_stock (Gtk.Stock.OK);
 		btnFinish.is_important = true;
 		btnFinish.label = _("Finish");
-		btnFinish.clicked.connect (() => {  convert_finish (); });
+		btnFinish.clicked.connect (() => {  convert_finish(); });
 		btnFinish.set_tooltip_text (_("Finish"));
 		btnFinish.visible = false;
 		btnFinish.no_show_all = true;
@@ -251,7 +249,7 @@ public class MainWindow : Gtk.Window
 		tvFiles.set_tooltip_text (_("File(s) to convert"));
 		tvFiles.set_rules_hint (true);
 
-		swFiles = new ScrolledWindow(tvFiles.get_hadjustment (), tvFiles.get_vadjustment ());
+		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
 		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
 		swFiles.add (tvFiles);
 		swFiles.set_size_request (-1, 250);
@@ -262,7 +260,7 @@ public class MainWindow : Gtk.Window
 		colName = new TreeViewColumn();
 		colName.title = _("File");
 		colName.expand = true;
-		CellRendererText cellName = new CellRendererText ();
+		CellRendererText cellName = new CellRendererText();
 		cellName.ellipsize = Pango.EllipsizeMode.END;
 		colName.pack_start (cellName, false);
 		colName.set_attributes(cellName, "text", InputField.FILE_NAME);
@@ -271,7 +269,7 @@ public class MainWindow : Gtk.Window
 		//colSize
 		colSize = new TreeViewColumn();
 		colSize.title = _("Size");
-		CellRendererText cellSize = new CellRendererText ();
+		CellRendererText cellSize = new CellRendererText();
 		colSize.pack_start (cellSize, false);
 		colSize.set_attributes(cellSize, "text", InputField.FILE_SIZE);
 		tvFiles.append_column(colSize);
@@ -279,7 +277,7 @@ public class MainWindow : Gtk.Window
 		//colDuration
 		colDuration = new TreeViewColumn();
 		colDuration.title = _("Duration");
-		CellRendererText cellDuration = new CellRendererText ();
+		CellRendererText cellDuration = new CellRendererText();
 		colDuration.pack_start (cellDuration, false);
 		colDuration.set_attributes(cellDuration, "text", InputField.FILE_DURATION);
 		tvFiles.append_column(colDuration);
@@ -288,7 +286,7 @@ public class MainWindow : Gtk.Window
 		colCrop = new TreeViewColumn();
 		colCrop.title = _("CropVideo (L:T:R:B)");
 		colCrop.fixed_width = 100;
-		CellRendererText cellCrop = new CellRendererText ();
+		CellRendererText cellCrop = new CellRendererText();
 		cellCrop.editable = true;
 		cellCrop.edited.connect (tvFiles_crop_cell_edited);
 		colCrop.pack_start (cellCrop, false);
@@ -314,7 +312,7 @@ public class MainWindow : Gtk.Window
 		colSpacer.pack_start (cellSpacer, false);
 		tvFiles.append_column(colSpacer);
 
-		startupTimer = Timeout.add (100, () => 
+		startupTimer = Timeout.add (100,() => 
 		{	
 			colProgress.visible = false; 
 			Source.remove (startupTimer); 
@@ -327,7 +325,7 @@ public class MainWindow : Gtk.Window
 		// Preset tool bar --------------------------------------
 
         //toolbar
-		toolbar2 = new Gtk.Toolbar ();
+		toolbar2 = new Gtk.Toolbar();
 		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		//toolbar2.margin_bottom = 6;
 		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
@@ -383,7 +381,7 @@ public class MainWindow : Gtk.Window
         vboxMain.add (vboxMain2);
 
         //gridConfig
-        gridConfig = new Grid ();
+        gridConfig = new Grid();
         gridConfig.set_column_spacing (6);
         gridConfig.set_row_spacing (6);
         gridConfig.visible = false;
@@ -436,7 +434,7 @@ public class MainWindow : Gtk.Window
 		// miFileSkip
 		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
 		miFileSkip.label = _("Skip File");
-		miFileSkip.activate.connect (() => { App.stop_file (); });
+		miFileSkip.activate.connect (() => { App.stop_file(); });
 		menuFile.append(miFileSkip);
 		
 		// miFileCropAuto
@@ -545,8 +543,7 @@ public class MainWindow : Gtk.Window
 	
 	// script dropdown handlers -----------------------
 	
-	private void populate_script_folders ()
-	{
+	private void populate_script_folders(){
 		TreeStore model = new TreeStore(2, typeof(string), typeof(string));
 		cmbScriptFolder.set_model(model);
 		TreeIter iter0;
@@ -569,8 +566,7 @@ public class MainWindow : Gtk.Window
 	    iter_append_children (model, iter0, App.PresetsFolder_Custom);
 	}
 	
-	private void iter_append_children (TreeStore model, TreeIter iter0, string path)
-	{
+	private void iter_append_children (TreeStore model, TreeIter iter0, string path){
 		try{
 			var dir = File.parse_name (path);
 			var enumerator = dir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
@@ -594,8 +590,7 @@ public class MainWindow : Gtk.Window
 		
 	}
 	
-	private void cmbScriptFolder_changed()
-	{
+	private void cmbScriptFolder_changed(){
 		//create empty model
 		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
@@ -609,7 +604,7 @@ public class MainWindow : Gtk.Window
 			Gee.ArrayList<string> files = new Gee.ArrayList<string>();
 			
 	        FileInfo file;
-	        while ((file = enumerator.next_file ()) != null) {
+	        while ((file = enumerator.next_file()) != null) {
 				files.add(dir.resolve_relative_path(file.get_name()).get_path());
 	        } 
 	        files.sort_with_data((a,b) => { return strcmp((string)a, (string)b); });
@@ -640,8 +635,7 @@ public class MainWindow : Gtk.Window
 	    }
 	}
 	
-	private void cmbScriptFile_changed()
-	{
+	private void cmbScriptFile_changed(){
 		if ((cmbScriptFile == null)||(cmbScriptFile.model == null)||(cmbScriptFile.active < 0)){ return; }
 		
 		ScriptFile sh;
@@ -655,8 +649,7 @@ public class MainWindow : Gtk.Window
 		settings.set_string ("last-script", sh.Path);
 	}
 	
-	private bool select_script ()
-	{
+	private bool select_script(){
 		if ((App.SelectedScript == null)||(Utility.file_exists(App.SelectedScript.Path) == false)){
 			cmbScriptFolder.set_active(-1);
 			cmbScriptFile.set_active(0);
@@ -716,8 +709,7 @@ public class MainWindow : Gtk.Window
 		return retVal;
 	}
 	
-	private bool select_script_recurse_children (string filePath, TreeIter iter0)
-	{
+	private bool select_script_recurse_children (string filePath, TreeIter iter0){
 		TreeStore model = (TreeStore) cmbScriptFolder.model;
 		string dirPath = GLib.Path.get_dirname(filePath);
 		bool retVal = false;
@@ -743,22 +735,19 @@ public class MainWindow : Gtk.Window
 		return retVal;
 	}
 	
-	private void cellScriptFile_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
+	private void cellScriptFile_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter){
 		ScriptFile sh;
 		model.get (iter, 0, out sh, -1);
 		(cell as Gtk.CellRendererText).text = sh.Title;
 	}
 	
-	private void cellScriptFolder_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter)
-	{
+	private void cellScriptFolder_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter){
 		string name;
 		model.get (iter, 1, out name, -1);
 		(cell as Gtk.CellRendererText).text = name;
 	}
 	
-	private void btnBrowsePresetFolder_clicked()
-	{
+	private void btnBrowsePresetFolder_clicked(){
 		string path;
 		TreeModel model = (TreeModel) cmbScriptFolder.model;
 		TreeIter iter;
@@ -767,23 +756,21 @@ public class MainWindow : Gtk.Window
 		Utility.exo_open_folder (path); 
 	}
 	
-	private void miFileOpenLogFile_clicked()
-	{
-		TreeSelection selection = tvFiles.get_selection ();
+	private void miFileOpenLogFile_clicked(){
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			
 			MediaFile mf = App.InputFiles[index];
 			Utility.exo_open_textfile (mf.LogFile); 
 		}	
 	}
 
-	private void preset_create ()
-	{
+	private void preset_create(){
 		var window = new ConfigWindow();
 	    window.Folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 	    window.Name = "New Preset";
@@ -795,8 +782,7 @@ public class MainWindow : Gtk.Window
 	    cmbScriptFolder_changed();
 	}
 	
-	private void preset_edit ()
-	{
+	private void preset_edit(){
 		ScriptFile sh;
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
@@ -813,8 +799,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
-	private void script_create ()
-	{
+	private void script_create(){
 		string folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
 		
 		int k = 0;
@@ -830,8 +815,7 @@ public class MainWindow : Gtk.Window
 		cmbScriptFolder_changed();
 	}
 	
-	private void script_edit ()
-	{
+	private void script_edit(){
 		ScriptFile sh;
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
@@ -842,8 +826,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
-	private void btnAddPreset_clicked ()
-    {
+	private void btnAddPreset_clicked(){
 		TreeIter iter;
 		string folderName;
 		cmbScriptFolder.get_active_iter(out iter);
@@ -857,8 +840,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 
-	private void btnRemovePreset_clicked ()
-    {
+	private void btnRemovePreset_clicked(){
 		if ((cmbScriptFile.model != null)&&(cmbScriptFile.active > -1)) {
 			ScriptFile sh;
 			TreeIter iter;
@@ -872,8 +854,7 @@ public class MainWindow : Gtk.Window
 		}
 	}
 	
-	private void btnEditPreset_clicked ()
-    {
+	private void btnEditPreset_clicked(){
 		if ((cmbScriptFile.model == null)||(cmbScriptFile.active == -1)) {
 			TreeIter iter;
 			string folderName;
@@ -905,8 +886,7 @@ public class MainWindow : Gtk.Window
 		}	
 	}
 
-	private void btnPresetInfo_clicked()
-	{
+	private void btnPresetInfo_clicked(){
 		string msg = """Selene supports 2 types of presets:
 
 1) JSON Presets
@@ -935,10 +915,9 @@ on the toolbar will open the file in a text editor.
 
 	// statusbar -------------------
 	
-    private void statusbar_show_message (string message, bool is_error = false, bool timeout = true)
-    {
-		Gdk.RGBA red = Gdk.RGBA ();
-		Gdk.RGBA white = Gdk.RGBA ();
+    private void statusbar_show_message (string message, bool is_error = false, bool timeout = true){
+		Gdk.RGBA red = Gdk.RGBA();
+		Gdk.RGBA white = Gdk.RGBA();
 		red.parse ("rgba(255,0,0,1)");
 		white.parse ("rgba(0,0,0,1)");
 		
@@ -950,25 +929,22 @@ on the toolbar will open the file in a text editor.
 		lblStatus.label = message;
 		
 		if (timeout)
-			statusbar_set_timeout ();
+			statusbar_set_timeout();
 	}
 	
-    private void statusbar_set_timeout ()
-    {
+    private void statusbar_set_timeout(){
 		//Source.remove (statusTimer);
 		statusTimer = Timeout.add (3000, statusbar_clear);
 	}
     
-    private bool statusbar_clear ()
-    {
+    private bool statusbar_clear(){
 		//Source.remove (statusTimer);
 		lblStatus.label = "";
-		statusbar_default_message ();
+		statusbar_default_message();
 		return true;
 	}
 	
-	private void statusbar_default_message ()
-	{
+	private void statusbar_default_message(){
 		switch (App.Status){
 			case AppStatus.NOTSTARTED:
 				if (App.InputFiles.size > 0)
@@ -993,9 +969,8 @@ on the toolbar will open the file in a text editor.
 	
 	// file list and context menu -------------------------
 	
-	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
-	{
-        foreach(string uri in data.get_uris ()){
+	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) {
+        foreach(string uri in data.get_uris()){
 			string file = uri.replace("file://","").replace("file:/","");
 			file = Uri.unescape_string (file);
 			bool valid = App.add_file (file);
@@ -1012,20 +987,19 @@ on the toolbar will open the file in a text editor.
         Gtk.drag_finish (drag_context, true, false, time);
     }
 
-    private bool menuFile_popup (Gtk.Menu popup, Gdk.EventButton? event) 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private bool menuFile_popup (Gtk.Menu popup, Gdk.EventButton? event) {
+		TreeSelection selection = tvFiles.get_selection();
 		int index = -1;
 		
-		if (selection.count_selected_rows () == 0){
+		if (selection.count_selected_rows() == 0){
 			return true;
 		}
 		
-		if (selection.count_selected_rows () == 1){
+		if (selection.count_selected_rows() == 1){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			index = int.parse (path.to_string ());
+			index = int.parse (path.to_string());
 		}
 
 		switch(App.Status)
@@ -1118,7 +1092,7 @@ on the toolbar will open the file in a text editor.
 				miFileSeparator1.visible = false;
 				miFileSeparator2.visible = true;
 				
-				if (selection.count_selected_rows () == 1){
+				if (selection.count_selected_rows() == 1){
 					string outpath = App.InputFiles[index].OutputFilePath;
 					if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
 						miFileInfoOutput.sensitive = true;
@@ -1136,52 +1110,49 @@ on the toolbar will open the file in a text editor.
 		if (event != null) {
 			menuFile.popup (null, null, null, event.button, event.time);
 		} else {
-			menuFile.popup (null, null, null, 0, Gtk.get_current_event_time ());
+			menuFile.popup (null, null, null, 0, Gtk.get_current_event_time());
 		}
 		return true;
 	}
 
-    private void miFileInfo_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private void miFileInfo_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			
 			var window = new FileInfoWindow(App.InputFiles[index]);
-			window.show_all ();
-			window.run ();
+			window.show_all();
+			window.run();
 		}
     }
     
-    private void miFileInfoOutput_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private void miFileInfoOutput_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			
 			MediaFile mf = App.InputFiles[index];
 
 			if (Utility.file_exists(mf.OutputFilePath)){
 				MediaFile mfOutput = new MediaFile(mf.OutputFilePath);
 				var window = new FileInfoWindow(mfOutput);
-				window.show_all ();
-				window.run ();
+				window.show_all();
+				window.run();
 			}
 		}	
 	}
 	
-    private void miFileCropAuto_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
-		if (selection.count_selected_rows () == 0){ return; }
+    private void miFileCropAuto_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() == 0){ return; }
 			
 		set_busy (true,this);
 		
@@ -1192,31 +1163,29 @@ on the toolbar will open the file in a text editor.
 			TreePath path = lst.nth_data (k);
 			TreeIter iter;
 			model.get_iter (out iter, path);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile file = App.InputFiles[index];
 			
-			if (file.crop_detect ()){
-				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info ());
+			if (file.crop_detect()){
+				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
 			}
 			else{
 				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
 			}	
 			
-			do_events ();
+			do_events();
 		}
 
 		set_busy (false,this);
     }
     
-    private void miFileRemove_clicked () 
-    {
-		btnRemoveFiles_clicked ();
+    private void miFileRemove_clicked() {
+		btnRemoveFiles_clicked();
     }
     
-    private void miFileOpenTemp_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
-		if (selection.count_selected_rows () == 0){ return; }
+    private void miFileOpenTemp_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() == 0){ return; }
 		
 		TreeModel model;
 		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
@@ -1225,16 +1194,15 @@ on the toolbar will open the file in a text editor.
 			TreePath path = lst.nth_data (k);
 			TreeIter iter;
 			model.get_iter (out iter, path);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 			Utility.exo_open_folder (mf.TempDirectory);
 		}
     }
     
-    private void miFileOpenOutput_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
-		if (selection.count_selected_rows () == 0){ return; }
+    private void miFileOpenOutput_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() == 0){ return; }
 		
 		TreeModel model;
 		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
@@ -1243,7 +1211,7 @@ on the toolbar will open the file in a text editor.
 			TreePath path = lst.nth_data (k);
 			TreeIter iter;
 			model.get_iter (out iter, path);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 			
 			if (App.OutputDirectory.length == 0){
@@ -1254,15 +1222,13 @@ on the toolbar will open the file in a text editor.
 		}
     }
     
-    private void btnOpenOutputFolder_click()
-    {
+    private void btnOpenOutputFolder_click(){
 		if (App.OutputDirectory.length > 0 && Utility.dir_exists(App.OutputDirectory)){
 			Utility.exo_open_folder (App.OutputDirectory);
 		}
 	}
 	
-	private void set_busy (bool busy, Gtk.Window win) 
-	{
+	private void set_busy (bool busy, Gtk.Window win) {
 		Gdk.Cursor? cursor = null;
 
 		if (busy){
@@ -1272,68 +1238,63 @@ on the toolbar will open the file in a text editor.
 			cursor = new Gdk.Cursor(Gdk.CursorType.ARROW);
 		}
 		
-		var window = win.get_window ();
+		var window = win.get_window();
 		
 		if (window != null) {
 			window.set_cursor (cursor);
 		}
 		
-		do_events ();
+		do_events();
 	}
     
-    private void do_events ()
-    {
-		while(Gtk.events_pending ())
-			Gtk.main_iteration ();
+    private void do_events(){
+		while(Gtk.events_pending())
+			Gtk.main_iteration();
 	}
 	
-    private void miFilePreview_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private void miFilePreview_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 			
 			mf.preview_output();
 		}
 	}
 	
-    private void miFilePlayOutput_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private void miFilePlayOutput_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 			
 			mf.play_output();
 		}
     }
     
-    private void miFilePlaySource_clicked () 
-    {
-		TreeSelection selection = tvFiles.get_selection ();
+    private void miFilePlaySource_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
 		
-		if (selection.count_selected_rows () > 0){
+		if (selection.count_selected_rows() > 0){
 			TreeModel model;
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string ());
+			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 			
 			mf.play_source();
 		}
     }
 
-	private void refresh_file_list (bool refresh_model)
-	{
+	private void refresh_file_list (bool refresh_model){
 		ListStore inputStore = new ListStore (9, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
 		
 		TreeIter iter;
@@ -1345,23 +1306,22 @@ on the toolbar will open the file in a text editor.
 	    	inputStore.set (iter, InputField.FILE_SIZE, Utility.format_file_size(mFile.Size));
 	    	inputStore.set (iter, InputField.FILE_DURATION, Utility.format_duration(mFile.Duration));
 	    	inputStore.set (iter, InputField.FILE_STATUS, Stock.MEDIA_PAUSE);
-	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info ());
+	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info());
 	    	inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
 	    	inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
 		}
 			
 		tvFiles.set_model (inputStore);
 		
-		tvFiles.columns_autosize ();
+		tvFiles.columns_autosize();
 	}
 	
-	public void tvFiles_crop_cell_edited (string path, string new_text) 
-	{
-		int index = int.parse (path.to_string ());
+	public void tvFiles_crop_cell_edited (string path, string new_text) {
+		int index = int.parse (path.to_string());
 		MediaFile mf = App.InputFiles[index];
 		
 		if (new_text == null || new_text.length == 0){
-			mf.crop_reset ();
+			mf.crop_reset();
 		}
 		else{
 			string[ ] arr = new_text.replace ("  "," ").split (":");
@@ -1378,13 +1338,12 @@ on the toolbar will open the file in a text editor.
 		ListStore model = (ListStore) tvFiles.model;
 		TreeIter iter;
 		model.get_iter (out iter, new TreePath.from_string (path));
-		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info ());
+		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info());
 	}
 	
 	// toolbar --------------------------------
 	
-	private void btnAddFiles_clicked ()
-	{
+	private void btnAddFiles_clicked(){
 		var dlgAddFiles = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
 							Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
 							Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
@@ -1406,13 +1365,12 @@ on the toolbar will open the file in a text editor.
 
 	 	refresh_file_list(true);
 	 	
-	 	dlgAddFiles.destroy (); //resets cursor
+	 	dlgAddFiles.destroy(); //resets cursor
 	}
 	
-	private void btnRemoveFiles_clicked ()
-	{
+	private void btnRemoveFiles_clicked(){
 		Gee.ArrayList<MediaFile> list = new Gee.ArrayList<MediaFile>();
-		TreeSelection sel = tvFiles.get_selection ();
+		TreeSelection sel = tvFiles.get_selection();
 		
 		TreeIter iter;
 		bool iterExists = tvFiles.model.get_iter_first (out iter);
@@ -1429,14 +1387,12 @@ on the toolbar will open the file in a text editor.
 		refresh_file_list(true);
 	}
 	
-	private void btnClearFiles_clicked ()
-	{
-		App.remove_all ();
+	private void btnClearFiles_clicked(){
+		App.remove_all();
 		refresh_file_list(true);
 	}
 	
-	private void btnAbout_clicked ()
-	{
+	private void btnAbout_clicked(){
 		var dialog = new Gtk.AboutDialog();
 		dialog.set_destroy_with_parent (true);
 		dialog.set_transient_for (this);
@@ -1470,22 +1426,20 @@ This program is free for personal and commercial use and comes with absolutely n
 
 		dialog.response.connect ((response_id) => {
 			if (response_id == Gtk.ResponseType.CANCEL || response_id == Gtk.ResponseType.DELETE_EVENT) {
-				dialog.hide_on_delete ();
+				dialog.hide_on_delete();
 			}
 		});
 
-		dialog.present ();
+		dialog.present();
 	}
 
-	private void btnAppSettings_clicked ()
-    {
-	    var window = new PrefWindow ();
-	    window.show_all ();
-	    window.run ();
+	private void btnAppSettings_clicked(){
+	    var window = new PrefWindow();
+	    window.show_all();
+	    window.run();
 	}
 	
-	private void btnShutdown_clicked ()
-    {
+	private void btnShutdown_clicked(){
 		App.Shutdown = btnShutdown.active;
 		
 		if (App.Shutdown){
@@ -1496,20 +1450,18 @@ This program is free for personal and commercial use and comes with absolutely n
 		}
 	}
 	
-	private void btnBackground_clicked ()
-    {
+	private void btnBackground_clicked(){
 		App.BackgroundMode = btnBackground.active;
-		App.set_priority ();
+		App.set_priority();
 	}
 	
-	private void btnPause_clicked ()
-    {
+	private void btnPause_clicked(){
 		// pause or resume based on value of field 'pause'
 	    if (App.Status == AppStatus.RUNNING){
-			App.pause (); 
+			App.pause(); 
 		}
 		else if (App.Status == AppStatus.PAUSED){
-			App.resume ();   
+			App.resume();   
 		}
 		
 		// set button statepause or resume based on value of field 'pause'
@@ -1518,36 +1470,34 @@ This program is free for personal and commercial use and comes with absolutely n
 				btnPause.label = _("Resume");
 				btnPause.stock_id = "gtk-media-play";
 				btnPause.set_tooltip_text (_("Resume"));
-				statusbar_default_message ();
+				statusbar_default_message();
 				break; 
 			case AppStatus.RUNNING:
 				btnPause.label = _("Pause");
 				btnPause.stock_id = "gtk-media-pause";
 				btnPause.set_tooltip_text (_("Pause"));
-				statusbar_default_message ();
+				statusbar_default_message();
 				break; 
 		}
 		
 		update_status_all();
 	}
 	
-	private void btnStop_clicked ()
-	{
+	private void btnStop_clicked(){
 		App.stop_batch();
 		update_status_all(); 
 	}
 	
 	// encoding ----------------------------------
 	
-	public void start ()
-	{
+	public void start(){
 		if (App.InputFiles.size == 0){
 			string msg = _("Input queue is empty!\nPlease add some files.\n");
 			Utility.messagebox_show (_("Queue is Empty"), msg);
 			return;
 		}	
 
-		convert_prepare ();
+		convert_prepare();
 		
 		ScriptFile sh;
 		TreeIter iter;
@@ -1555,13 +1505,12 @@ This program is free for personal and commercial use and comes with absolutely n
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 	    App.SelectedScript = sh;
 	    
-	    App.convert_begin ();
+	    App.convert_begin();
 	    
 	    timerID = Timeout.add (500, update_status);
 	}
 	
-	public void convert_prepare ()
-	{
+	public void convert_prepare(){
 		toolbar2.visible = false;
 		gridConfig.visible = false;
 		btnShutdown.active = App.Shutdown;
@@ -1591,8 +1540,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		colProgress.visible = true;
 	} 
 	
-	public void convert_finish ()
-	{
+	public void convert_finish(){
 		toolbar2.visible = true;
 		gridConfig.visible = true;
 
@@ -1615,11 +1563,10 @@ This program is free for personal and commercial use and comes with absolutely n
 		
 		App.convert_finish();
 		
-		statusbar_default_message ();
+		statusbar_default_message();
 	} 
 
-	public bool update_status ()
-	{
+	public bool update_status(){
 		TreeIter iter;
 		ListStore model = (ListStore)tvFiles.model;
 
@@ -1663,7 +1610,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				btnFinish.visible = true;
 				
 				// update statusbar message
-				statusbar_default_message ();
+				statusbar_default_message();
 				
 				break;
 
@@ -1682,7 +1629,7 @@ This program is free for personal and commercial use and comes with absolutely n
 					lastFile = App.CurrentFile;
 				}
 				
-				if (model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string ())){
+				if (model.get_iter_from_string (out iter, App.InputFiles.index_of(App.CurrentFile).to_string())){
 					model.set (iter, InputField.FILE_PROGRESS, App.CurrentFile.ProgressPercent);
 					model.set (iter, InputField.FILE_PROGRESS_TEXT, null);
 				}
@@ -1694,8 +1641,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		return true;
 	}
 	
-	public void update_status_all ()
-	{
+	public void update_status_all(){
 		ListStore model = (ListStore)tvFiles.model;
 		MediaFile mf;
 		int index = -1;
@@ -1714,15 +1660,13 @@ This program is free for personal and commercial use and comes with absolutely n
 		}
 	}
 	
-	public bool shutdown ()
-	{
-		Utility.shutdown ();
+	public bool shutdown(){
+		Utility.shutdown();
 		return true;
 	}
 }
 
-public enum InputField
-{
+public enum InputField{
 	FILE_REF,
 	FILE_PATH,
 	FILE_NAME,

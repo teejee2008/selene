@@ -28,15 +28,16 @@ using Soup;
 
 public Main App;
 public const string AppName = "Selene Media Encoder";
-public const string AppVersion = "2.3";
+public const string AppVersion = "2.2";
+public const string AppAuthor = "Tony George";
+public const string AppAuthorEmail = "teejee2008@gmail.com";
 public const bool LogTimestamp = true;
 public bool UseConsoleColors = false;
 
 const string GETTEXT_PACKAGE = "selene";
 const string LOCALE_DIR = "/usr/share/locale";
 
-public enum FileStatus
-{
+public enum FileStatus{
 	PENDING,
 	RUNNING,
 	PAUSED,
@@ -46,8 +47,7 @@ public enum FileStatus
 	ERROR
 }
 
-public enum AppStatus
-{
+public enum AppStatus{
 	NOTSTARTED, //initial state
 	RUNNING,	
 	PAUSED,	   
@@ -55,8 +55,7 @@ public enum AppStatus
 	WAITFILE    //waiting for files
 }
 
-public class MediaFile : GLib.Object
-{
+public class MediaFile : GLib.Object{
 	public string Path;
 	public string Name;
 	public string Title;
@@ -105,20 +104,20 @@ public class MediaFile : GLib.Object
 		// set file properties ------------
 		
 		File f = File.new_for_path (filePath);
-		File fp = f.get_parent ();
+		File fp = f.get_parent();
 		
 		this.Path = filePath;
-		this.Name = f.get_basename ();
+		this.Name = f.get_basename();
 		this.Title = Name[0: Name.last_index_of(".",0)];
 		this.Extension = Name[Name.last_index_of(".",0):Name.length];
-		this.Location = fp.get_path ();
+		this.Location = fp.get_path();
 		//stderr.printf(@"file=$filePath, name=$Name, title=$Title, ext=$Extension, dir=$Location\n");
 		
 		FileInfo fi = null;
 		
 		try{
 			fi = f.query_info ("*", FileQueryInfoFlags.NONE, null);
-			this.Size = fi.get_size ();
+			this.Size = fi.get_size();
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -126,26 +125,26 @@ public class MediaFile : GLib.Object
 
 		// get media information ----------
 		
-		query_mediainfo ();
+		query_mediainfo();
 		if (Duration == 0) { return; }
 		
 		// search for subtitle files ---------------
 		
 		try{
 	        var enumerator = fp.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-			var fileInfo = enumerator.next_file ();
+			var fileInfo = enumerator.next_file();
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
 		            string fname = fileInfo.get_name().down();
 		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
 		            {
-			            SubName = fileInfo.get_name ();
+			            SubName = fileInfo.get_name();
 			            SubFile = Location + "/" + SubName;
 	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
 	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
 	                }
 	            }
-	            fileInfo = enumerator.next_file ();
+	            fileInfo = enumerator.next_file();
 	        }
         }
         catch(Error e){
@@ -155,7 +154,7 @@ public class MediaFile : GLib.Object
 		this.IsValid = true;
 	}
 	
-	public void query_mediainfo ()
+	public void query_mediainfo()
 	{
 		this.InfoText = Utility.get_mediainfo (Path);
 		
@@ -186,11 +185,11 @@ public class MediaFile : GLib.Object
 				string[] arr = line.split (": ");
 				if (arr.length != 2) { continue; }
 				
-				string key = arr[0].strip ();
-				string val = arr[1].strip ();
+				string key = arr[0].strip();
+				string val = arr[1].strip();
 				
 				if (sectionType	== "general"){
-					switch (key.down ()) {
+					switch (key.down()) {
 						case "duration":
 							Duration = 0;
 							foreach(string p in val.split(" ")){
@@ -208,23 +207,23 @@ public class MediaFile : GLib.Object
 					}
 				}
 				else if (sectionType == "video"){
-					switch (key.down ()) {
+					switch (key.down()) {
 						case "width":
-							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip ());
+							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip());
 							break;
 						case "height":
-							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip ());
+							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip());
 							break;
 						case "frame rate":
 						case "original frame rate":
-							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip ());
+							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip());
 							break;
 					}
 				}
 				else if (sectionType == "audio"){
-					switch (key.down ()) {
+					switch (key.down()) {
 						case "channel(s)":
-							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip ());
+							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip());
 							break;
 					}
 				}
@@ -249,7 +248,7 @@ public class MediaFile : GLib.Object
 		}
 	}
 	
-	public bool crop_detect ()
+	public bool crop_detect()
 	{
 		if (HasVideo == false) { 
 			AutoCropError = true;
@@ -277,7 +276,7 @@ public class MediaFile : GLib.Object
 			return true;
 	}
 	
-	public bool crop_enabled ()
+	public bool crop_enabled()
 	{
 		if ((CropW == 0)&&(CropH == 0)&&(CropL == 0)&&(CropT == 0))
 			return false;
@@ -285,7 +284,7 @@ public class MediaFile : GLib.Object
 			return true;
 	}
 	
-	public void crop_reset ()
+	public void crop_reset()
 	{
 		CropW = 0;
 		CropH = 0;
@@ -295,7 +294,7 @@ public class MediaFile : GLib.Object
 		CropB = 0;
 	}
 
-	public string crop_values_info ()
+	public string crop_values_info()
 	{
 		if (crop_enabled())
 			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
@@ -305,7 +304,7 @@ public class MediaFile : GLib.Object
 			return "";
 	}
 	
-	public string crop_values_libav ()
+	public string crop_values_libav()
 	{
 		if (crop_enabled())
 			return "%i:%i:%i:%i".printf(CropW,CropH,CropL,CropT);
@@ -313,7 +312,7 @@ public class MediaFile : GLib.Object
 			return "iw:ih:0:0";
 	}	
 	
-	public string crop_values_x264 ()
+	public string crop_values_x264()
 	{
 		if (crop_enabled())
 			return "%i,%i,%i,%i".printf(CropL,CropT,CropR,CropB);
@@ -321,20 +320,20 @@ public class MediaFile : GLib.Object
 			return "0,0,0,0";
 	}
 	
-	public void preview_output ()
+	public void preview_output()
 	{
 		string output = "";
 		string error = "";
 		
 		try {
-			Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path) + " -vf crop=" + crop_values_libav (), out output, out error);
+			Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path) + " -vf crop=" + crop_values_libav(), out output, out error);
 		}
 		catch(Error e){
 	        log_error (e.message);
 	    }
 	}
 
-	public void play_source ()
+	public void play_source()
 	{
 		if(Utility.file_exists(Path)){
 			string output = "";
@@ -349,7 +348,7 @@ public class MediaFile : GLib.Object
 		}
 	}
 	
-	public void play_output ()
+	public void play_output()
 	{
 		if(Utility.file_exists(OutputFilePath)){
 			string output = "";
@@ -365,8 +364,7 @@ public class MediaFile : GLib.Object
 	}
 }
 
-public class ScriptFile : GLib.Object
-{
+public class ScriptFile : GLib.Object{
 	public string Path;
 	public string Name;
 	public string Title;
@@ -391,8 +389,7 @@ public class ScriptFile : GLib.Object
 	}
 }
 
-public class Main : GLib.Object
-{
+public class Main : GLib.Object{
 	public Gee.ArrayList<MediaFile> InputFiles;
 
 	public string ScriptsFolder_Official = "";
@@ -452,8 +449,7 @@ public class Main : GLib.Object
 	
 	private string blankLine = "";
 	
-	public static int main (string[] args) 
-	{
+	public static int main (string[] args) {
 		// set locale
 		
 		Intl.setlocale(GLib.LocaleCategory.MESSAGES, "");
@@ -467,7 +463,7 @@ public class Main : GLib.Object
 			switch (args[1].down()) {
 				case "--help":
 				case "-h":
-					stdout.printf (Main.help_message ());
+					stdout.printf (Main.help_message());
 					return 0;
 			}
 		}
@@ -480,7 +476,7 @@ public class Main : GLib.Object
 
 	    // check if terminal supports colors
 		
-		string term = Environment.get_variable ("TERM").down ();
+		string term = Environment.get_variable ("TERM").down();
 		UseConsoleColors = (term == "xterm");
 		
 		// check dependencies
@@ -495,7 +491,7 @@ public class Main : GLib.Object
 		
 		for (int k = 1; k < args.length; k++) // Oth arg is app path 
 		{
-			switch (args[k].down ()){
+			switch (args[k].down()){
 				case "--script":
 					k++;
 					if (k < args.length){
@@ -547,7 +543,7 @@ public class Main : GLib.Object
 				
 				case "--background":
 					App.BackgroundMode = true;
-					App.set_priority ();
+					App.set_priority();
 					break;
 
 				default:
@@ -568,24 +564,23 @@ public class Main : GLib.Object
 				log_error (_("Input queue is empty! Please select files to convert."));
 				return 1;
 			}
-			App.start_input_thread ();
-			App.convert_begin ();
+			App.start_input_thread();
+			App.convert_begin();
 		}
 		else{
-			var window = new MainWindow ();
+			var window = new MainWindow();
 			window.destroy.connect (App.exit_app);
-			window.show_all ();
+			window.show_all();
 		}
 
-	    Gtk.main ();
+	    Gtk.main();
 	    
 	    return 0;
 	}
 	
-	public static string help_message ()
-	{
+	public static string help_message(){
 		string msg = "\n" + AppName + " v" + AppVersion + " by Tony George (teejee2008@gmail.com)" + "\n";
-		msg += Environment.get_prgname () + " [options] <input-file-list>";
+		msg += Environment.get_prgname() + " [options] <input-file-list>";
 		msg += 
 """
 Options:
@@ -628,13 +623,12 @@ Notes:
 		return msg;
 	}
 	
-	public Main(string arg0)
-	{
+	public Main(string arg0){
 		InputFiles = new Gee.ArrayList<MediaFile>();
 
 		// check for admin priviledges
 		
-		AdminMode = Utility.user_is_admin ();
+		AdminMode = Utility.user_is_admin();
 		
 		// check for notify-send
 		
@@ -645,15 +639,15 @@ Notes:
 
 		// set default directory paths
 		
-		string homeDir = Environment.get_home_dir ();
-		this.TempDirectory = Environment.get_tmp_dir () + "/" + Environment.get_prgname ();	
+		string homeDir = Environment.get_home_dir();
+		this.TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
 		Utility.create_dir (this.TempDirectory);	
 		this.OutputDirectory = "";
 		this.BackupDirectory = "";
 		
 		SharedDataDirectory = "/usr/share/selene";
 		UserDataDirectory = homeDir + "/selene";
-		//string appPath = (File.new_for_path (arg0)).get_parent ().get_path ();
+		//string appPath = (File.new_for_path (arg0)).get_parent().get_path();
 
 		ScriptsFolder_Official = SharedDataDirectory + "/scripts";
 		ScriptsFolder_Custom = UserDataDirectory + "/scripts";
@@ -680,7 +674,7 @@ Notes:
 
 		// init config
 		
-		load_config ();
+		load_config();
 		
 		// init regular expressions
 		
@@ -721,8 +715,7 @@ Notes:
 			blankLine += " ";
 	}
 	
-	public void start_input_thread ()
-	{
+	public void start_input_thread(){
 		// start thread for reading user input
 			
 		try {
@@ -732,16 +725,14 @@ Notes:
 		}
 	}
 	
-	private void wait_for_user_input_thread ()
-	{
+	private void wait_for_user_input_thread(){
 		while (true){  // loop runs for entire application lifetime
-			wait_for_user_input ();
+			wait_for_user_input();
 		}
 	}
 	
-	private void wait_for_user_input ()
-	{
-		int ch = stdin.getc ();
+	private void wait_for_user_input(){
+		int ch = stdin.getc();
 
 		if (WaitingForShutdown){
 			Source.remove (shutdownTimerID);
@@ -750,23 +741,22 @@ Notes:
 		}
 		else if ((ch == 'q')||(ch == 'Q')){
 			if (this.Status == AppStatus.RUNNING){
-				stop_batch ();
+				stop_batch();
 			}
 		}
 		else if ((ch == 'p')||(ch == 'P')){
 			if (this.Status == AppStatus.RUNNING){
-				pause ();
+				pause();
 			}
 		}
 		else if ((ch == 'r')||(ch == 'R')){
 			if (this.Status == AppStatus.PAUSED){
-				resume ();
+				resume();
 			}
 		}
 	}
 
-	public MediaFile? find_input_file (string filePath)
-	{
+	public MediaFile? find_input_file (string filePath){
 		foreach(MediaFile mf in this.InputFiles){
 			if (mf.Path == filePath){
 				return mf;
@@ -776,8 +766,7 @@ Notes:
 		return null;
 	}
 	
-	public void save_config ()
-	{
+	public void save_config(){
 		var settings = new GLib.Settings ("apps.selene");
 		settings.set_string ("backup-dir", BackupDirectory);
 		settings.set_string ("output-dir", OutputDirectory);
@@ -789,8 +778,7 @@ Notes:
 		}
 	}
 	
-	public void load_config ()
-	{
+	public void load_config(){
 		var settings = new GLib.Settings ("apps.selene");
 		string val;
 
@@ -812,17 +800,15 @@ Notes:
 		}
 	}
 	
-	public void exit_app ()
-	{
+	public void exit_app(){
 		//GSettings does not get enough time to commit changes
 		//Settings will be saved at multiple points, instead of through save_config()
-		//save_config (); 
+		//save_config(); 
 		
-		Gtk.main_quit ();
+		Gtk.main_quit();
 	}
 	
-	public bool add_file (string filePath)
-	{
+	public bool add_file (string filePath){
 		MediaFile mFile = new MediaFile (filePath);
 		
 		if (mFile.IsValid 
@@ -857,22 +843,19 @@ Notes:
 		return false;
 	}
 	
-	public void remove_files (Gee.ArrayList<MediaFile> file_list)
-	{
+	public void remove_files (Gee.ArrayList<MediaFile> file_list){
 		foreach(MediaFile mf in file_list){
 			this.InputFiles.remove (mf);
 			log_msg (_("File removed:") + " '%s'".printf (mf.Path));
 		}
 	}
 	
-	public void remove_all ()
-	{
+	public void remove_all(){
 		this.InputFiles.clear();
 		log_msg (_("All files removed"));
 	}
 
-	public void convert_begin ()
-	{
+	public void convert_begin(){
 		//check for empty list
 		if (InputFiles.size == 0){
 			log_error (_("Input queue is empty! Please add some files."));
@@ -909,25 +892,23 @@ Notes:
 			mf.ProgressPercent = 0;
 		}
 		
-		//if (ConsoleMode)
-			//progressTimerID = Timeout.add (500, update_progress);
+		//if(ConsoleMode)
+			//progressTimerID = Timeout.add(500, update_progress);
 			
 		//save config and begin
-		save_config ();
-		convert_next ();
+		save_config();
+		convert_next();
 	}
 	
-	private void convert_next ()
-	{
+	private void convert_next(){
 		try {
-			Thread.create<void> (convert_next_thread, true);
-		} catch (ThreadError e) {
-			log_error (e.message);
+			Thread.create<void>(convert_next_thread, true);
+		} catch(ThreadError e) {
+			log_error(e.message);
 		}
 	}
 
-	private void convert_next_thread ()
-	{
+	private void convert_next_thread(){
 		MediaFile nextFile = null;
 		
 		//find next pending file
@@ -954,15 +935,14 @@ Notes:
 					WaitingForShutdown = true;
 				}
 				//exit app for console mode
-				exit_app ();
+				exit_app();
 			}
 			
 			//shutdown will be handled by GUI window for GUI-mode
 		}
 	}
 	
-	public void convert_finish ()
-	{	
+	public void convert_finish(){	
 		//reset file status
 		foreach(MediaFile mf in this.InputFiles) {
 			mf.Status = FileStatus.PENDING;
@@ -980,8 +960,7 @@ Notes:
 		Status = AppStatus.NOTSTARTED;
 	}
 	
-	private bool convert_file (MediaFile mf)
-	{
+	private bool convert_file (MediaFile mf){
 		bool retVal = false;
 		
 		if (Utility.file_exists (mf.Path) == false) { return false; }
@@ -1018,9 +997,8 @@ Notes:
 		return retVal;
 	}
 	
-	private string build_script (MediaFile mf)
-	{
-		var script = new StringBuilder ();
+	private string build_script (MediaFile mf){
+		var script = new StringBuilder();
 		script.append ("#!/bin/bash\n");
 		script.append ("\n");
 		
@@ -1065,7 +1043,7 @@ Notes:
 
 			try {
 				var fileScript = File.parse_name (SelectedScript.Path);
-				var dis = new DataInputStream (fileScript.read ());
+				var dis = new DataInputStream (fileScript.read());
 
 				MatchInfo match;
 				Regex rxCrop_libav = new Regex ("""avconv.*-vf.*(crop=[^, ]+)""");
@@ -1080,12 +1058,12 @@ Notes:
 				while (line != null) {
 					line = line.replace ("${audiodec}", """avconv -i "${inFile}" -f wav -acodec pcm_s16le -vn -y -""");
 					
-					if (mf.crop_enabled ()){
+					if (mf.crop_enabled()){
 						if (rxCrop_libav.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "crop=" + mf.crop_values_libav ());
+							line = line.replace (match.fetch(1), "crop=" + mf.crop_values_libav());
 						}
 						else if (rxCrop_x264.match (line, 0, out match)){
-							line = line.replace (match.fetch(2), "crop:" + mf.crop_values_x264 ());
+							line = line.replace (match.fetch(2), "crop:" + mf.crop_values_x264());
 						}
 						else if (rxCrop_f2t.match (line, 0, out match)){
 							if (rxCrop_f2t_left.match (line, 0, out match)){
@@ -1131,13 +1109,11 @@ Notes:
 		return script.str;
 	}
 	
-	private string escape (string txt)
-	{
+	private string escape (string txt){
 		return txt.replace ("'","'\\''");
 	}
 	
-	private string save_script (MediaFile mf, string scriptText)
-	{
+	private string save_script (MediaFile mf, string scriptText){
 		try{
 			// create new script file
 	        var file = File.new_for_path (mf.ScriptFile);
@@ -1157,8 +1133,7 @@ Notes:
 	    return mf.ScriptFile;
 	}
 
-	private bool run_script (MediaFile mf, string scriptFile)
-	{
+	private bool run_script (MediaFile mf, string scriptFile){
 		bool retVal = false;
 		
 		if (ConsoleMode)
@@ -1191,7 +1166,7 @@ Notes:
 			    
 			procID = child_pid;
 			
-			set_priority ();
+			set_priority();
 			
 			//create stream readers
 			UnixInputStream uisOut = new UnixInputStream(output_fd, false);
@@ -1270,8 +1245,7 @@ Notes:
 		return retVal;
 	}
 
-	private void read_std_err ()
-	{
+	private void read_std_err(){
 		try{
 			errLine = disErr.read_line (null);
 		    while (errLine != null) {
@@ -1284,8 +1258,7 @@ Notes:
 		}	
 	}
 	
-	public bool update_progress (string line)
-	{		
+	public bool update_progress (string line){		
 		tempLine = line;
 		
 		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
@@ -1372,17 +1345,16 @@ Notes:
 				else
 					stdout.printf ("\r[%3.0f%%] %-72s", (Progress*100), StatusLine);
 			}
-			stdout.flush ();
+			stdout.flush();
 		}
 		
 		return true;
 	}
 	
-	public void stop_batch ()
-	{
+	public void stop_batch(){
 		// we need to un-freeze the processes before we kill it
 		if (this.Status == AppStatus.PAUSED){
-			resume ();	
+			resume();	
 		}
 		
 		this.Aborted = true;
@@ -1395,11 +1367,10 @@ Notes:
 	    Utility.process_kill (procID);
 	}
 	
-	public void stop_file ()
-	{
+	public void stop_file(){
 		// we need to un-freeze the processes before we kill them
 		if (this.Status == AppStatus.PAUSED){
-			resume ();	
+			resume();	
 		}
 		
 		// this.Aborted = true; //Do not set Abort flag
@@ -1409,8 +1380,7 @@ Notes:
 	    Utility.process_kill (procID);
 	}
 	
-	public void pause ()
-	{
+	public void pause(){
 		Pid childPid;
 	    foreach (long pid in Utility.get_process_children (procID)){
 		    childPid = (Pid) pid;
@@ -1426,8 +1396,7 @@ Notes:
 			log_msg (_("Paused"));
 	}
 	
-	public void resume ()
-	{
+	public void resume(){
 		Pid childPid;
 	    foreach (long pid in Utility.get_process_children (procID)){
 		    childPid = (Pid) pid;
@@ -1443,12 +1412,11 @@ Notes:
 			log_msg (_("Converting..."));
 	}
 	
-	public void set_priority ()
-	{
+	public void set_priority(){
 		int prio = 0;
 		if (BackgroundMode) { prio = 5; }
 		
-		Pid appPid = Posix.getpid ();
+		Pid appPid = Posix.getpid();
 		Utility.process_set_priority (appPid, prio);
 		
 		if (Status == AppStatus.RUNNING){
@@ -1466,14 +1434,12 @@ Notes:
 		}
 	}
 
-	private bool shutdown ()
-	{
-		Utility.shutdown ();
+	private bool shutdown(){
+		Utility.shutdown();
 		return true;
 	}
 	
-	private string get_preset_commandline (MediaFile mf, Json.Object settings)
-	{
+	private string get_preset_commandline (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1593,8 +1559,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_video_x264 (MediaFile mf, Json.Object settings)
-	{
+	private string encode_video_x264 (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1706,8 +1671,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_video_ffmpeg2theora (MediaFile mf, Json.Object settings)
-	{
+	private string encode_video_ffmpeg2theora (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1885,8 +1849,7 @@ Notes:
 	}
 */
 
-	private string encode_video_vpxenc (MediaFile mf, Json.Object settings)
-	{
+	private string encode_video_vpxenc (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1969,8 +1932,7 @@ Notes:
 		return s;
 	}
 	
-	private bool calculate_video_resolution (MediaFile mf, Json.Object settings, out int OutputWidth, out int OutputHeight)
-	{
+	private bool calculate_video_resolution (MediaFile mf, Json.Object settings, out int OutputWidth, out int OutputHeight){
 		bool rescale = false;
 		
 		OutputWidth = mf.SourceWidth;
@@ -2074,8 +2036,7 @@ Notes:
 		}
 	}
 	
-	private string encode_audio_mp3lame (MediaFile mf, Json.Object settings)
-	{
+	private string encode_audio_mp3lame (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2112,8 +2073,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_audio_neroaac (MediaFile mf, Json.Object settings)
-	{
+	private string encode_audio_neroaac (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2147,8 +2107,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_audio_opus (MediaFile mf, Json.Object settings)
-	{
+	private string encode_audio_opus (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2200,8 +2159,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_audio_avconv (MediaFile mf, Json.Object settings)
-	{
+	private string encode_audio_avconv (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2245,8 +2203,7 @@ Notes:
 		return s;
 	}
 	
-	private string encode_audio_oggenc (MediaFile mf, Json.Object settings)
-	{
+	private string encode_audio_oggenc (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2292,8 +2249,7 @@ Notes:
 		return s;
 	}
 
-	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent)
-	{
+	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2347,8 +2303,7 @@ Notes:
 		return s;
 	}
 	
-	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent)
-	{
+	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent){
 		string s = "";
 		
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
@@ -2390,8 +2345,7 @@ Notes:
 		return s;
 	}
 	
-	private string mux_mkvmerge (MediaFile mf, Json.Object settings)
-	{
+	private string mux_mkvmerge (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2436,8 +2390,7 @@ Notes:
 		return s;
 	}
 	
-	private string mux_mp4box (MediaFile mf, Json.Object settings)
-	{
+	private string mux_mp4box (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");

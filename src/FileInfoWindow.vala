@@ -31,8 +31,7 @@ public class FileInfoWindow : Dialog {
 	private TreeView tvInfo;
 	private ScrolledWindow swInfo;
 	
-	public FileInfoWindow (MediaFile _file) 
-	{
+	public FileInfoWindow (MediaFile _file) {
 		this.title = _("Properties");
 		this.file = _file;
 		this.deletable = false; // remove window close button
@@ -48,16 +47,16 @@ public class FileInfoWindow : Dialog {
 	    }
 	    
 		// get content area
-		vboxMain = get_content_area ();
+		vboxMain = get_content_area();
 		vboxMain.margin = 6;
 				
 		//tvInfo
 		tvInfo = new TreeView();
 		tvInfo.get_selection().mode = SelectionMode.MULTIPLE;
 		tvInfo.headers_visible = false;
-		tvInfo.insert_column_with_attributes (-1, _("Key"), new CellRendererText (), "text", 0);
-		tvInfo.insert_column_with_attributes (-1, _("Value"), new CellRendererText (), "text", 1);
-		swInfo = new ScrolledWindow(tvInfo.get_hadjustment (), tvInfo.get_vadjustment ());
+		tvInfo.insert_column_with_attributes (-1, _("Key"), new CellRendererText(), "text", 0);
+		tvInfo.insert_column_with_attributes (-1, _("Value"), new CellRendererText(), "text", 1);
+		swInfo = new ScrolledWindow(tvInfo.get_hadjustment(), tvInfo.get_vadjustment());
 		swInfo.set_shadow_type (ShadowType.ETCHED_IN);
 		swInfo.add (tvInfo);
 		swInfo.set_size_request (-1, 200);
@@ -72,25 +71,25 @@ public class FileInfoWindow : Dialog {
 		//infoStore.remove (ref iter0);
 		
 		foreach (string line in file.InfoText.split ("\n")){
-			if (line.strip () == "") { continue; }
+			if (line.strip() == "") { continue; }
 			
 			index = line.index_of (":");
 
 			if (index == -1){
 				infoStore.append (out iter0, null);
-				infoStore.set (iter0, 0, line.strip ());
+				infoStore.set (iter0, 0, line.strip());
 			}
 			else{
 				infoStore.append (out iter1, iter0);
-				infoStore.set (iter1, 0, line[0:index-1].strip ());
-				infoStore.set (iter1, 1, line[index+1:line.length].strip ());
+				infoStore.set (iter1, 0, line[0:index-1].strip());
+				infoStore.set (iter1, 1, line[index+1:line.length].strip());
 			}
 		}
 		tvInfo.set_model (infoStore);
-		tvInfo.expand_all ();
+		tvInfo.expand_all();
 		
         // btnOk
         btnOk = (Button) add_button (Stock.OK, Gtk.ResponseType.ACCEPT);
-        btnOk.clicked.connect (() => {  this.destroy ();  });
+        btnOk.clicked.connect (() => {  this.destroy();  });
 	}
 }

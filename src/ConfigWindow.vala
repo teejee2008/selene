@@ -150,8 +150,7 @@ public class ConfigWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	
-	public ConfigWindow () 
-	{
+	public ConfigWindow() {
 		this.deletable = false; // remove window close button
 		this.modal = true;
 		this.title = "Preset";
@@ -172,11 +171,11 @@ public class ConfigWindow : Dialog {
         string tt;
         
 		//get content area
-		vboxMain = get_content_area ();
+		vboxMain = get_content_area();
 		vboxMain.margin = 6;
 		
 		//tabMain
-		tabMain = new Notebook ();
+		tabMain = new Notebook();
 		vboxMain.pack_start (tabMain, true, true, 0);
 		
 		//General tab ---------------------------------------------
@@ -185,7 +184,7 @@ public class ConfigWindow : Dialog {
 		lblGeneral = new Label (_("General"));
 
         //gridGeneral
-        gridGeneral = new Grid ();
+        gridGeneral = new Grid();
         gridGeneral.set_column_spacing (6);
         gridGeneral.set_row_spacing (6);
         gridGeneral.margin = 12;
@@ -317,7 +316,7 @@ public class ConfigWindow : Dialog {
 		lblVideo = new Label(_("Video"));
 
         //gridVideo
-        gridVideo = new Grid ();
+        gridVideo = new Grid();
         gridVideo.set_column_spacing (6);
         gridVideo.set_row_spacing (6);
         gridVideo.visible = false;
@@ -484,7 +483,7 @@ public class ConfigWindow : Dialog {
 		gridVideo.attach(lblVCodecOptions,0,++row,1,1);
 		
 		//txtVCodecOptions
-		txtVCodecOptions = new Gtk.TextView ();
+		txtVCodecOptions = new Gtk.TextView();
 		TextBuffer buff = new TextBuffer(null);
 		txtVCodecOptions.buffer = buff;
 		txtVCodecOptions.editable = true;
@@ -512,7 +511,7 @@ public class ConfigWindow : Dialog {
 		lblVideoFilters = new Label (_("Filters"));
 
         //gridVideoFilters
-        gridVideoFilters = new Grid ();
+        gridVideoFilters = new Grid();
         gridVideoFilters.set_column_spacing (6);
         gridVideoFilters.set_row_spacing (6);
         gridVideoFilters.margin = 12;
@@ -695,7 +694,7 @@ public class ConfigWindow : Dialog {
 		lblAudio = new Label (_("Audio"));
 
         //gridAudio
-        gridAudio = new Grid ();
+        gridAudio = new Grid();
         gridAudio.set_column_spacing (6);
         gridAudio.set_row_spacing (6);
         gridAudio.margin = 12;
@@ -790,7 +789,7 @@ public class ConfigWindow : Dialog {
 		lblAudioFilters = new Label (_("Filters"));
 
         //gridAudioFilters
-        gridAudioFilters = new Grid ();
+        gridAudioFilters = new Grid();
         gridAudioFilters.set_column_spacing (6);
         gridAudioFilters.set_row_spacing (6);
         gridAudioFilters.margin = 12;
@@ -832,7 +831,7 @@ public class ConfigWindow : Dialog {
 		lblSubtitle = new Label (_("Subs"));
 
         //gridSubtitle
-        gridSubtitle = new Grid ();
+        gridSubtitle = new Grid();
         gridSubtitle.set_column_spacing (6);
         gridSubtitle.set_row_spacing (6);
         gridSubtitle.margin = 12;
@@ -893,11 +892,10 @@ public class ConfigWindow : Dialog {
         
         //btnCancel
         btnCancel = (Button) add_button (Stock.CANCEL, Gtk.ResponseType.CANCEL);
-        btnCancel.clicked.connect (() => { this.destroy (); });
+        btnCancel.clicked.connect (() => { this.destroy(); });
 	}
 
-	private void cmbFileFormat_changed ()
-	{
+	private void cmbFileFormat_changed(){
 		ListStore model;
 		TreeIter iter;
 		
@@ -1155,8 +1153,7 @@ public class ConfigWindow : Dialog {
 		}
 	}
 	
-	private void cmbACodec_changed ()
-	{
+	private void cmbACodec_changed(){
 		ListStore model;
 		TreeIter iter;
 
@@ -1556,8 +1553,7 @@ public class ConfigWindow : Dialog {
 		}
 	}
 	
-	private void cmbAudioMode_changed()
-	{
+	private void cmbAudioMode_changed(){
 		switch (audio_mode) {
 			case "vbr":
 				if (acodec == "opus") {
@@ -1578,8 +1574,7 @@ public class ConfigWindow : Dialog {
 		}
 	}
 
-	private void cmbVCodec_changed ()
-	{
+	private void cmbVCodec_changed(){
 		ListStore model;
 		TreeIter iter;
 		
@@ -1754,8 +1749,7 @@ public class ConfigWindow : Dialog {
 		}
 	}
 	
-	private void cmbFrameSize_changed()
-	{
+	private void cmbFrameSize_changed(){
 		if (Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable") == "custom") {
 			spinFrameWidth.sensitive = true;
 			spinFrameHeight.sensitive = true;
@@ -1820,8 +1814,7 @@ public class ConfigWindow : Dialog {
 		}*/
 	}
 
-	private void cmbFPS_changed()
-	{
+	private void cmbFPS_changed(){
 		if (Utility.Combo_GetSelectedValue(cmbFPS,1,"disable") == "custom") {
 			spinFPSNum.sensitive = true;
 			spinFPSDenom.sensitive = true;
@@ -1874,8 +1867,7 @@ public class ConfigWindow : Dialog {
 		}*/
 	}
 	
-	private void cmbVideoMode_changed()
-	{
+	private void cmbVideoMode_changed(){
 		switch(vcodec){
 			case "vp8":
 				switch (video_mode) {
@@ -1916,8 +1908,7 @@ public class ConfigWindow : Dialog {
 		
 	}
 	
-	private void cmbSubtitleMode_changed()
-	{
+	private void cmbSubtitleMode_changed(){
 		string msg = _("\n\nSubtitle files should be present in the same folder\nand should start with same name.");
 
 		switch(subtitle_mode){
@@ -1947,8 +1938,7 @@ public class ConfigWindow : Dialog {
 		}
 	}
 
-	private void btnSave_clicked ()
-	{
+	private void btnSave_clicked(){
 		if (txtPresetName.text.length < 1) {
 			tabMain.page = 0;
 			Utility.messagebox_show(_("Empty Preset Name"),_("Please enter a name for this preset"),true);
@@ -1956,11 +1946,10 @@ public class ConfigWindow : Dialog {
 		}
 		
 		save_script();
-		this.destroy ();
+		this.destroy();
 	}
 
-	private void save_script()
-	{
+	private void save_script(){
 		var config = new Json.Object();
 		var general = new Json.Object();
 		var video = new Json.Object();
@@ -2034,8 +2023,7 @@ public class ConfigWindow : Dialog {
 	    App.SelectedScript = new ScriptFile(filePath);
 	}
 	
-	public void load_script()
-	{
+	public void load_script(){
 		var filePath = Folder + "/" + Name + ".json";
 		if(Utility.file_exists(filePath) == false){ return; }
 		
@@ -2115,8 +2103,7 @@ public class ConfigWindow : Dialog {
 		subtitle_mode = subs.get_string_member("mode");
 	}
 
-	public string format
-	{
+	public string format{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbFileFormat,1,"mkv");
 		}
@@ -2125,8 +2112,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 
-	public string extension
-	{
+	public string extension{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbFileExtension,1,".mkv");
 		}
@@ -2135,8 +2121,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string author_name
-	{
+    public string author_name{
         owned get { 
 			return txtAuthorName.text;
 		}
@@ -2145,8 +2130,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string author_email
-	{
+    public string author_email{
         owned get { 
 			return txtAuthorEmail.text;
 		}
@@ -2155,8 +2139,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string preset_name
-	{
+    public string preset_name{
         owned get { 
 			return txtPresetName.text;
 		}
@@ -2165,8 +2148,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string preset_version
-	{
+    public string preset_version{
         owned get { 
 			return txtPresetVersion.text;
 		}
@@ -2175,8 +2157,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-	public string vcodec
-	{
+	public string vcodec{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbVCodec,1,"x264");
 		}
@@ -2185,8 +2166,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string video_mode
-	{
+    public string video_mode{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbVideoMode,1,"vbr");
 		}
@@ -2195,8 +2175,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 
-    public string video_bitrate
-	{
+    public string video_bitrate{
         owned get { 
 			return spinVideoBitrate.get_value().to_string(); 
 		}
@@ -2205,8 +2184,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string video_quality
-	{
+    public string video_quality{
         owned get { 
 			return "%.1f".printf(spinVideoQuality.get_value()); 
 		}
@@ -2215,8 +2193,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-	public string x264_preset 
-	{
+	public string x264_preset {
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbX264Preset,1,"medium");
 		}
@@ -2225,8 +2202,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string x264_profile
-	{
+    public string x264_profile{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbX264Profile,1,"high");
 		}
@@ -2235,8 +2211,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 
-    public string x264_options
-	{
+    public string x264_options{
         owned get { 
 			return txtVCodecOptions.buffer.text;
 		}
@@ -2245,8 +2220,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 
-    public string video_speed
-	{
+    public string video_speed{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbVP8Speed,1,"good");
 		}
@@ -2256,8 +2230,7 @@ public class ConfigWindow : Dialog {
     }
     
     
-    public string frame_size
-	{
+    public string frame_size{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable");
 		}
@@ -2266,8 +2239,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string resizing_method
-	{
+    public string resizing_method{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbResizingMethod,1,"cubic");
 		}
@@ -2276,8 +2248,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string frame_width
-	{
+    public string frame_width{
         owned get { 
 			return spinFrameWidth.get_value().to_string(); 
 		}
@@ -2286,8 +2257,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string frame_height
-	{
+    public string frame_height{
         owned get { 
 			return spinFrameHeight.get_value().to_string(); 
 		}
@@ -2296,8 +2266,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 	
-	public bool fit_to_box
-	{
+	public bool fit_to_box{
         get { 
 			return chkFitToBox.active; 
 		}
@@ -2306,8 +2275,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public bool no_upscaling
-	{
+    public bool no_upscaling{
         get { 
 			return chkNoUpScale.active; 
 		}
@@ -2316,8 +2284,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string frame_rate
-	{
+    public string frame_rate{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbFPS,1,"disable");
 		}
@@ -2326,8 +2293,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string frame_rate_num
-	{
+    public string frame_rate_num{
         owned get { 
 			return spinFPSNum.get_value().to_string(); 
 		}
@@ -2336,8 +2302,7 @@ public class ConfigWindow : Dialog {
 		}
     }
 
-    public string frame_rate_denom
-	{
+    public string frame_rate_denom{
         owned get { 
 			return spinFPSDenom.get_value().to_string(); 
 		}
@@ -2346,8 +2311,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string acodec
-	{
+    public string acodec{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbACodec,1,"mp3lame");
 		}
@@ -2356,8 +2320,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_mode
-	{
+    public string audio_mode{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbAudioMode,1,"vbr");
 		}
@@ -2366,8 +2329,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_opus_optimize
-	{
+    public string audio_opus_optimize{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbOpusOptimize,1,"none");
 		}
@@ -2376,8 +2338,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_bitrate
-	{
+    public string audio_bitrate{
         owned get { 
 			return spinAudioBitrate.get_value().to_string(); 
 		}
@@ -2386,8 +2347,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_quality
-	{
+    public string audio_quality{
         owned get { 
 			return "%.1f".printf(spinAudioQuality.get_value()); 
 		}
@@ -2396,8 +2356,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_channels
-	{
+    public string audio_channels{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbAudioChannels,1,"disable");
 		}
@@ -2406,8 +2365,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string audio_sampling
-	{
+    public string audio_sampling{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbAudioSampleRate,1,"disable");
 		}
@@ -2416,8 +2374,7 @@ public class ConfigWindow : Dialog {
 		}
     }
     
-    public string subtitle_mode
-	{
+    public string subtitle_mode{
         owned get { 
 			return Utility.Combo_GetSelectedValue(cmbSubtitleMode,1,"disable");
 		}

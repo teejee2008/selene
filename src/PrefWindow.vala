@@ -35,8 +35,7 @@ public class PrefWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	
-	public PrefWindow () 
-	{
+	public PrefWindow() {
 		this.deletable = false; // remove window close button
 		this.modal = true;
 		this.title = "Application Settings";
@@ -51,7 +50,7 @@ public class PrefWindow : Dialog {
 	    }
 	    
 		// get content area
-		vboxMain = get_content_area ();
+		vboxMain = get_content_area();
 		vboxMain.margin = 6;
 		
 		// lblOutput
@@ -109,24 +108,21 @@ public class PrefWindow : Dialog {
         btnCancel.clicked.connect (btnCancel_clicked);
 	}
 	
-	private void chkOutput_clicked ()
-	{
+	private void chkOutput_clicked(){
 		fcbOutput.set_sensitive(!chkOutput.active);
 	}
 	
-	private void chkBackup_clicked ()
-	{
+	private void chkBackup_clicked(){
 		fcbBackup.set_sensitive(!chkBackup.active);
 	}
 	
-	private void btnSave_clicked ()
-	{
+	private void btnSave_clicked(){
 		if (chkOutput.active){
 			App.OutputDirectory = "";
 		}
 		else {
-			if (Utility.dir_exists (fcbOutput.get_filename ())){
-				App.OutputDirectory = fcbOutput.get_filename ();
+			if (Utility.dir_exists (fcbOutput.get_filename())){
+				App.OutputDirectory = fcbOutput.get_filename();
 			}
 		}
 		
@@ -134,8 +130,8 @@ public class PrefWindow : Dialog {
 			App.BackupDirectory = "";
 		}
 		else {
-			if (Utility.dir_exists (fcbBackup.get_filename ())){
-				App.BackupDirectory = fcbBackup.get_filename ();
+			if (Utility.dir_exists (fcbBackup.get_filename())){
+				App.BackupDirectory = fcbBackup.get_filename();
 			}
 		}
 		
@@ -144,11 +140,10 @@ public class PrefWindow : Dialog {
 		settings.set_string ("backup-dir", App.BackupDirectory);
 		settings.set_string ("output-dir", App.OutputDirectory);
 		
-		this.destroy ();
+		this.destroy();
 	}
 	
-	private void btnCancel_clicked ()
-	{
-		this.destroy ();
+	private void btnCancel_clicked(){
+		this.destroy();
 	}
 }
