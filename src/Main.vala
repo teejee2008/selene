@@ -26,8 +26,18 @@ using Gtk;
 using Gee;
 using Soup;
 
+using TeeJee.Logging;
+using TeeJee.FileSystem;
+using TeeJee.DiskPartition;
+using TeeJee.JSON;
+using TeeJee.ProcessManagement;
+using TeeJee.GtkHelper;
+using TeeJee.Multimedia;
+using TeeJee.System;
+using TeeJee.Misc;
+
 public Main App;
-public const string AppName = "Selene Media Encoder";
+public const string AppName = "Selene";
 public const string AppVersion = "2.2";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejee2008@gmail.com";
@@ -99,7 +109,7 @@ public class MediaFile : GLib.Object{
 	public MediaFile(string filePath)
 	{
 		this.IsValid = false;
-		if (Utility.file_exists (filePath) == false) { return; }
+		if (file_exists (filePath) == false) { return; }
 		
 		// set file properties ------------
 		
@@ -156,7 +166,7 @@ public class MediaFile : GLib.Object{
 	
 	public void query_mediainfo()
 	{
-		this.InfoText = Utility.get_mediainfo (Path);
+		this.InfoText = get_mediainfo (Path);
 		
 		if (InfoText == null || InfoText == ""){
 			return;
@@ -233,11 +243,11 @@ public class MediaFile : GLib.Object{
 	
 	public void prepare (string baseTempDir)
 	{
-		this.TempDirectory = baseTempDir + "/" + Utility.timestamp2() + " - " + this.Name;
+		this.TempDirectory = baseTempDir + "/" + timestamp2() + " - " + this.Name;
 		this.LogFile = this.TempDirectory + "/" + "log.txt";
 		this.ScriptFile = this.TempDirectory + "/convert.sh";
 		this.OutputFilePath = "";
-		Utility.create_dir (this.TempDirectory);
+		create_dir (this.TempDirectory);
 
 		//initialize output frame count
 		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
@@ -255,7 +265,7 @@ public class MediaFile : GLib.Object{
 			return false; 
 		}
 		
-		string params = Utility.get_file_crop_params (Path);
+		string params = get_file_crop_params (Path);
 		string[] arr = params.split (":");
 
 		if (arr.length == 4){
@@ -326,7 +336,7 @@ public class MediaFile : GLib.Object{
 		string error = "";
 		
 		try {
-			Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path) + " -vf crop=" + crop_values_libav(), out output, out error);
+			Process.spawn_command_line_sync("avplay -i \"%s\" -vf crop=%s".printf(Path, crop_values_libav()), out output, out error);
 		}
 		catch(Error e){
 	        log_error (e.message);
@@ -335,12 +345,12 @@ public class MediaFile : GLib.Object{
 
 	public void play_source()
 	{
-		if(Utility.file_exists(Path)){
+		if(file_exists(Path)){
 			string output = "";
 			string error = "";
 			
 			try {
-				Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (Path), out output, out error);
+				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(Path), out output, out error);
 			}
 			catch(Error e){
 				log_error (e.message);
@@ -350,12 +360,12 @@ public class MediaFile : GLib.Object{
 	
 	public void play_output()
 	{
-		if(Utility.file_exists(OutputFilePath)){
+		if(file_exists(OutputFilePath)){
 			string output = "";
 			string error = "";
 			
 			try {
-				Process.spawn_command_line_sync("avplay -i " + Utility.double_quote (OutputFilePath), out output, out error);
+				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(OutputFilePath), out output, out error);
 			}
 			catch(Error e){
 				log_error (e.message);
@@ -481,9 +491,9 @@ public class Main : GLib.Object{
 		
 		// check dependencies
 		
-		string str = Utility.get_cmd_path ("mediainfo");
+		string str = get_cmd_path ("mediainfo");
 		if ((str == null)||(str == "")){
-			Utility.messagebox_show(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"), true);
+			gtk_messagebox_show(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"), true);
 			return 1;
 		}
 		
@@ -505,7 +515,7 @@ public class Main : GLib.Object{
 						if (args[k]=="none"){
 							App.OutputDirectory = "";
 						}
-						else if (Utility.dir_exists (args[k])){
+						else if (dir_exists (args[k])){
 							App.OutputDirectory = args[k];
 						}
 					}
@@ -517,7 +527,7 @@ public class Main : GLib.Object{
 						if (args[k]=="none"){
 							App.BackupDirectory = "";
 						}
-						else if (Utility.dir_exists (args[k])){
+						else if (dir_exists (args[k])){
 							App.BackupDirectory = args[k];
 						}
 					}
@@ -547,7 +557,7 @@ public class Main : GLib.Object{
 					break;
 
 				default:
-					App.add_file (Utility.resolve_relative_path(args[k]));
+					App.add_file (resolve_relative_path(args[k]));
 					break;
 			}
 		}
@@ -628,11 +638,11 @@ Notes:
 
 		// check for admin priviledges
 		
-		AdminMode = Utility.user_is_admin();
+		AdminMode = user_is_admin();
 		
 		// check for notify-send
 		
-		string path = Utility.get_cmd_path ("notify-send");
+		string path = get_cmd_path ("notify-send");
 		if ((path != null)&&(path != "")){
 			ShowNotificationPopups = true;
 		}
@@ -641,7 +651,7 @@ Notes:
 		
 		string homeDir = Environment.get_home_dir();
 		this.TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
-		Utility.create_dir (this.TempDirectory);	
+		create_dir (this.TempDirectory);	
 		this.OutputDirectory = "";
 		this.BackupDirectory = "";
 		
@@ -655,15 +665,15 @@ Notes:
 		PresetsFolder_Custom = UserDataDirectory + "/presets";
 		SharedImagesFolder = SharedDataDirectory + "/images";
 		
-		Utility.create_dir (this.UserDataDirectory);
-		Utility.create_dir (this.ScriptsFolder_Custom);
-		Utility.create_dir (this.PresetsFolder_Custom);
+		create_dir (this.UserDataDirectory);
+		create_dir (this.ScriptsFolder_Custom);
+		create_dir (this.PresetsFolder_Custom);
 
 		// create a copy of official scripts & presets on first run
 		
-		if (Utility.dir_exists (ScriptsFolder_Official)){
-			Utility.rsync(ScriptsFolder_Official, ScriptsFolder_Custom, false, false);
-			Utility.rsync(PresetsFolder_Official, PresetsFolder_Custom, false, false);
+		if (dir_exists (ScriptsFolder_Official)){
+			rsync(ScriptsFolder_Official, ScriptsFolder_Custom, false, false);
+			rsync(PresetsFolder_Official, PresetsFolder_Custom, false, false);
 		}
 
 		// additional info
@@ -783,13 +793,13 @@ Notes:
 		string val;
 
 		val = settings.get_string ("backup-dir");
-		if (Utility.dir_exists(val))
+		if (dir_exists(val))
 			BackupDirectory = val;
 		else
 			BackupDirectory = "";
 
 		val = settings.get_string ("output-dir");
-		if (Utility.dir_exists(val))
+		if (dir_exists(val))
 			OutputDirectory = val;
 		else 
 			OutputDirectory = "";
@@ -866,7 +876,7 @@ Notes:
 		
 		//check and create output dir
 		if (this.OutputDirectory.length > 0) { 
-			Utility.create_dir (this.OutputDirectory); 
+			create_dir (this.OutputDirectory); 
 			log_msg (_("Files will be saved in '%s'").printf(this.OutputDirectory));
 		}
 		else{
@@ -875,7 +885,7 @@ Notes:
 
 		//check and create backup dir
 		if (this.BackupDirectory.length > 0) { 
-			Utility.create_dir (this.BackupDirectory); 
+			create_dir (this.BackupDirectory); 
 			log_msg (_("Source files will be moved to '%s'").printf(this.BackupDirectory));
 		}	
 		
@@ -963,7 +973,7 @@ Notes:
 	private bool convert_file (MediaFile mf){
 		bool retVal = false;
 		
-		if (Utility.file_exists (mf.Path) == false) { return false; }
+		if (file_exists (mf.Path) == false) { return false; }
 		
 		//prepare file
 		CurrentFile = mf;
@@ -987,10 +997,10 @@ Notes:
 		retVal = run_script (CurrentFile, scriptPath);
 		
 		//move files to backup location
-		if ((BackupDirectory.length > 0) && (Utility.dir_exists (BackupDirectory))){
-			Utility.move_file (CurrentFile.Path, BackupDirectory + "/" + CurrentFile.Name);
+		if ((BackupDirectory.length > 0) && (dir_exists (BackupDirectory))){
+			move_file (CurrentFile.Path, BackupDirectory + "/" + CurrentFile.Name);
 			if (CurrentFile.SubFile != null){
-				Utility.move_file (CurrentFile.SubFile, BackupDirectory + "/" + CurrentFile.SubName);
+				move_file (CurrentFile.SubFile, BackupDirectory + "/" + CurrentFile.SubName);
 			}
 		}
 		
@@ -1101,7 +1111,7 @@ Notes:
 			script.append (get_preset_commandline (mf, config));
 			
 			//copy preset to temp folder for debugging
-			Utility.copy_file(SelectedScript.Path, mf.TempDirectory + "/preset.json");
+			copy_file(SelectedScript.Path, mf.TempDirectory + "/preset.json");
 		}
 		
 		script.append ("exitCode=$?\n");
@@ -1123,7 +1133,7 @@ Notes:
 	        data_stream.close();
 
 	        // set execute permission
-	        Utility.chmod (mf.ScriptFile, "u+x");
+	        chmod (mf.ScriptFile, "u+x");
        	} 
 	    catch (Error e) {
 	        log_error (e.message);
@@ -1208,14 +1218,14 @@ Notes:
 	    	stdout.printf ("\r%s\r", blankLine);
 	    }
 	    
-	    if (Utility.file_exists (mf.TempDirectory + "/0")) {
+	    if (file_exists (mf.TempDirectory + "/0")) {
 			mf.Status = FileStatus.SUCCESS;
 			mf.ProgressText = _("Done");
 			mf.ProgressPercent = 100;
 			retVal = true;
 
 			if (ShowNotificationPopups){
-				Utility.notify_send (_("File Complete"), mf.Name, 2000, "low");
+				notify_send (_("File Complete"), mf.Name, 2000, "low");
 			}
 		}
 		else{
@@ -1225,7 +1235,7 @@ Notes:
 			retVal = false;
 			
 			if (ShowNotificationPopups){
-				Utility.notify_send (_("File Failed"), mf.Name, 2000, "low");
+				notify_send (_("File Failed"), mf.Name, 2000, "low");
 			}
 		}
 
@@ -1281,7 +1291,7 @@ Notes:
 			}
 		}
 		else if (regex_ffmpeg2theora.match (tempLine, 0, out match)){
-			dblVal = Utility.parse_time (match.fetch(1));
+			dblVal = parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
@@ -1292,12 +1302,12 @@ Notes:
 			}
 		}
 		else if (regex_ffmpeg2theora3.match (tempLine, 0, out match)){
-			dblVal = Utility.parse_time (match.fetch(1));
+			dblVal = parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			StatusLine = "(ffmpeg2theora) Scanning first pass, eta %s".printf(match.fetch(2));
 		}
 		else if (regex_opus.match (tempLine, 0, out match)){
-			dblVal = Utility.parse_time (match.fetch(1));
+			dblVal = parse_time (match.fetch(1));
 			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
 			StatusLine = "(opusenc) %sx, %s kbps".printf(match.fetch(2), match.fetch(3));
 		}
@@ -1364,7 +1374,7 @@ Notes:
 			mf.ProgressText = _("Cancelled");
 		}
 		
-	    Utility.process_kill (procID);
+	    process_kill (procID);
 	}
 	
 	public void stop_file(){
@@ -1377,14 +1387,14 @@ Notes:
 		CurrentFile.Status = FileStatus.SKIPPED;
 		CurrentFile.ProgressText = _("Cancelled");
 
-	    Utility.process_kill (procID);
+	    process_kill (procID);
 	}
 	
 	public void pause(){
 		Pid childPid;
-	    foreach (long pid in Utility.get_process_children (procID)){
+	    foreach (long pid in get_process_children (procID)){
 		    childPid = (Pid) pid;
-		    Utility.process_pause (childPid);
+		    process_pause (childPid);
 	    }
 		
 		Status = AppStatus.PAUSED;
@@ -1398,9 +1408,9 @@ Notes:
 	
 	public void resume(){
 		Pid childPid;
-	    foreach (long pid in Utility.get_process_children (procID)){
+	    foreach (long pid in get_process_children (procID)){
 		    childPid = (Pid) pid;
-		    Utility.process_resume (childPid);
+		    process_resume (childPid);
 	    }
 	    
 		Status = AppStatus.RUNNING;
@@ -1417,25 +1427,25 @@ Notes:
 		if (BackgroundMode) { prio = 5; }
 		
 		Pid appPid = Posix.getpid();
-		Utility.process_set_priority (appPid, prio);
+		process_set_priority (appPid, prio);
 		
 		if (Status == AppStatus.RUNNING){
-			Utility.process_set_priority (procID, prio);
+			process_set_priority (procID, prio);
 			
 			Pid childPid;
-		    foreach (long pid in Utility.get_process_children (procID)){
+		    foreach (long pid in get_process_children (procID)){
 			    childPid = (Pid) pid;
 			    
 			    if (BackgroundMode)
-		    		Utility.process_set_priority (childPid, prio);
+		    		process_set_priority (childPid, prio);
 		    	else
-		    		Utility.process_set_priority (childPid, prio);
+		    		process_set_priority (childPid, prio);
 		    }
 		}
 	}
 
 	private bool shutdown(){
-		Utility.shutdown();
+		shutdown();
 		return true;
 	}
 	

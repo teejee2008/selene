@@ -23,6 +23,16 @@
  
 using Gtk;
 
+using TeeJee.Logging;
+using TeeJee.FileSystem;
+using TeeJee.DiskPartition;
+using TeeJee.JSON;
+using TeeJee.ProcessManagement;
+using TeeJee.GtkHelper;
+using TeeJee.Multimedia;
+using TeeJee.System;
+using TeeJee.Misc;
+
 public class PrefWindow : Dialog {
 
 	private Box vboxMain;
@@ -65,7 +75,7 @@ public class PrefWindow : Dialog {
 		fcbOutput = new FileChooserButton (_("Output Location"), FileChooserAction.SELECT_FOLDER);
 		fcbOutput.set_sensitive(App.OutputDirectory.length > 0);
 		fcbOutput.margin_bottom = 6;
-		if ((App.OutputDirectory != null) && Utility.dir_exists (App.OutputDirectory)){
+		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
 			fcbOutput.set_filename (App.OutputDirectory);
 		}
 		vboxMain.add (fcbOutput);
@@ -88,7 +98,7 @@ public class PrefWindow : Dialog {
 		fcbBackup = new FileChooserButton (_("Backup Location"), FileChooserAction.SELECT_FOLDER);
 		fcbBackup.set_sensitive(App.BackupDirectory.length > 0);
 		fcbBackup.margin_bottom = 6;
-		if ((App.BackupDirectory.length > 0) && Utility.dir_exists (App.BackupDirectory)){
+		if ((App.BackupDirectory.length > 0) && dir_exists (App.BackupDirectory)){
 			fcbBackup.set_filename (App.BackupDirectory);
 		}
 		vboxMain.add (fcbBackup);
@@ -121,7 +131,7 @@ public class PrefWindow : Dialog {
 			App.OutputDirectory = "";
 		}
 		else {
-			if (Utility.dir_exists (fcbOutput.get_filename())){
+			if (dir_exists (fcbOutput.get_filename())){
 				App.OutputDirectory = fcbOutput.get_filename();
 			}
 		}
@@ -130,7 +140,7 @@ public class PrefWindow : Dialog {
 			App.BackupDirectory = "";
 		}
 		else {
-			if (Utility.dir_exists (fcbBackup.get_filename())){
+			if (dir_exists (fcbBackup.get_filename())){
 				App.BackupDirectory = fcbBackup.get_filename();
 			}
 		}

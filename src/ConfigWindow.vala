@@ -25,6 +25,16 @@ using Gtk;
 using Soup;
 using Json;
 
+using TeeJee.Logging;
+using TeeJee.FileSystem;
+using TeeJee.DiskPartition;
+using TeeJee.JSON;
+using TeeJee.ProcessManagement;
+using TeeJee.GtkHelper;
+using TeeJee.Multimedia;
+using TeeJee.System;
+using TeeJee.Misc;
+
 public class ConfigWindow : Dialog {
 	
 	public string Folder;
@@ -1750,7 +1760,7 @@ public class ConfigWindow : Dialog {
 	}
 	
 	private void cmbFrameSize_changed(){
-		if (Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable") == "custom") {
+		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "custom") {
 			spinFrameWidth.sensitive = true;
 			spinFrameHeight.sensitive = true;
 		}
@@ -1759,7 +1769,7 @@ public class ConfigWindow : Dialog {
 			spinFrameHeight.sensitive = false;
 		}
 		
-		if (Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable") == "disable") {
+		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "disable") {
 			cmbResizingMethod.sensitive = false;
 			chkFitToBox.sensitive = false;
 			chkNoUpScale.sensitive = false;
@@ -1770,7 +1780,7 @@ public class ConfigWindow : Dialog {
 			chkNoUpScale.sensitive = true;
 		}
 		
-		switch (Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable")) {
+		switch (gtk_combobox_get_value(cmbFrameSize,1,"disable")) {
 			case "disable":
 				spinFrameWidth.value = 0;
 				spinFrameHeight.value = 0;
@@ -1802,7 +1812,7 @@ public class ConfigWindow : Dialog {
 		spinFrameHeight.visible = true;
 			
 		/*
-		if (Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable") == "disable"){
+		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "disable"){
 			lblFrameSizeCustom.visible = false;
 			spinFrameWidth.visible = false;
 			spinFrameHeight.visible = false;
@@ -1815,7 +1825,7 @@ public class ConfigWindow : Dialog {
 	}
 
 	private void cmbFPS_changed(){
-		if (Utility.Combo_GetSelectedValue(cmbFPS,1,"disable") == "custom") {
+		if (gtk_combobox_get_value(cmbFPS,1,"disable") == "custom") {
 			spinFPSNum.sensitive = true;
 			spinFPSDenom.sensitive = true;
 		}
@@ -1824,7 +1834,7 @@ public class ConfigWindow : Dialog {
 			spinFPSDenom.sensitive = false;
 		}
 		
-		switch (Utility.Combo_GetSelectedValue(cmbFPS,1,"disable")) {
+		switch (gtk_combobox_get_value(cmbFPS,1,"disable")) {
 			case "disable":
 				spinFPSNum.value = 0;
 				spinFPSDenom.value = 0;
@@ -1855,7 +1865,7 @@ public class ConfigWindow : Dialog {
 		spinFPSNum.visible = true;
 		spinFPSDenom.visible = true;
 		/*
-		if (Utility.Combo_GetSelectedValue(cmbFPS,1,"disable") == "disable"){
+		if (gtk_combobox_get_value(cmbFPS,1,"disable") == "disable"){
 			lblFPSCustom.visible = false;
 			spinFPSNum.visible = false;
 			spinFPSDenom.visible = false;
@@ -1941,7 +1951,15 @@ public class ConfigWindow : Dialog {
 	private void btnSave_clicked(){
 		if (txtPresetName.text.length < 1) {
 			tabMain.page = 0;
-			Utility.messagebox_show(_("Empty Preset Name"),_("Please enter a name for this preset"),true);
+
+			string msg = _("Please enter a name for this preset");
+			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
+			dlg.set_title(_("Empty Preset Name"));
+			dlg.set_modal(true);
+			dlg.set_transient_for(this);
+			dlg.run();
+			dlg.destroy();
+		
 			return;
 		}
 		
@@ -2025,7 +2043,7 @@ public class ConfigWindow : Dialog {
 	
 	public void load_script(){
 		var filePath = Folder + "/" + Name + ".json";
-		if(Utility.file_exists(filePath) == false){ return; }
+		if(file_exists(filePath) == false){ return; }
 		
 		txtPresetName.text = Name;
 		
@@ -2105,19 +2123,19 @@ public class ConfigWindow : Dialog {
 
 	public string format{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbFileFormat,1,"mkv");
+			return gtk_combobox_get_value(cmbFileFormat,1,"mkv");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbFileFormat,1,value);
+			gtk_combobox_set_value(cmbFileFormat,1,value);
 		}
     }
 
 	public string extension{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbFileExtension,1,".mkv");
+			return gtk_combobox_get_value(cmbFileExtension,1,".mkv");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbFileExtension,1,value);
+			gtk_combobox_set_value(cmbFileExtension,1,value);
 		}
     }
     
@@ -2159,19 +2177,19 @@ public class ConfigWindow : Dialog {
     
 	public string vcodec{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbVCodec,1,"x264");
+			return gtk_combobox_get_value(cmbVCodec,1,"x264");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbVCodec,1,value);
+			gtk_combobox_set_value(cmbVCodec,1,value);
 		}
     }
     
     public string video_mode{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbVideoMode,1,"vbr");
+			return gtk_combobox_get_value(cmbVideoMode,1,"vbr");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbVideoMode,1,value);
+			gtk_combobox_set_value(cmbVideoMode,1,value);
 		}
     }
 
@@ -2195,19 +2213,19 @@ public class ConfigWindow : Dialog {
     
 	public string x264_preset {
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbX264Preset,1,"medium");
+			return gtk_combobox_get_value(cmbX264Preset,1,"medium");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbX264Preset,1,value);
+			gtk_combobox_set_value(cmbX264Preset,1,value);
 		}
     }
     
     public string x264_profile{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbX264Profile,1,"high");
+			return gtk_combobox_get_value(cmbX264Profile,1,"high");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbX264Profile, 1, value);
+			gtk_combobox_set_value(cmbX264Profile, 1, value);
 		}
     }
 
@@ -2222,29 +2240,29 @@ public class ConfigWindow : Dialog {
 
     public string video_speed{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbVP8Speed,1,"good");
+			return gtk_combobox_get_value(cmbVP8Speed,1,"good");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbVP8Speed, 1, value);
+			gtk_combobox_set_value(cmbVP8Speed, 1, value);
 		}
     }
     
     
     public string frame_size{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbFrameSize,1,"disable");
+			return gtk_combobox_get_value(cmbFrameSize,1,"disable");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbFrameSize, 1, value);
+			gtk_combobox_set_value(cmbFrameSize, 1, value);
 		}
     }
     
     public string resizing_method{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbResizingMethod,1,"cubic");
+			return gtk_combobox_get_value(cmbResizingMethod,1,"cubic");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbResizingMethod, 1, value);
+			gtk_combobox_set_value(cmbResizingMethod, 1, value);
 		}
     }
     
@@ -2286,10 +2304,10 @@ public class ConfigWindow : Dialog {
     
     public string frame_rate{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbFPS,1,"disable");
+			return gtk_combobox_get_value(cmbFPS,1,"disable");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbFPS, 1, value);
+			gtk_combobox_set_value(cmbFPS, 1, value);
 		}
     }
     
@@ -2313,28 +2331,28 @@ public class ConfigWindow : Dialog {
     
     public string acodec{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbACodec,1,"mp3lame");
+			return gtk_combobox_get_value(cmbACodec,1,"mp3lame");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbACodec,1,value);
+			gtk_combobox_set_value(cmbACodec,1,value);
 		}
     }
     
     public string audio_mode{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbAudioMode,1,"vbr");
+			return gtk_combobox_get_value(cmbAudioMode,1,"vbr");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbAudioMode, 1, value);
+			gtk_combobox_set_value(cmbAudioMode, 1, value);
 		}
     }
     
     public string audio_opus_optimize{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbOpusOptimize,1,"none");
+			return gtk_combobox_get_value(cmbOpusOptimize,1,"none");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbOpusOptimize, 1, value);
+			gtk_combobox_set_value(cmbOpusOptimize, 1, value);
 		}
     }
     
@@ -2358,28 +2376,28 @@ public class ConfigWindow : Dialog {
     
     public string audio_channels{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbAudioChannels,1,"disable");
+			return gtk_combobox_get_value(cmbAudioChannels,1,"disable");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbAudioChannels, 1, value);
+			gtk_combobox_set_value(cmbAudioChannels, 1, value);
 		}
     }
     
     public string audio_sampling{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbAudioSampleRate,1,"disable");
+			return gtk_combobox_get_value(cmbAudioSampleRate,1,"disable");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbAudioSampleRate, 1, value);
+			gtk_combobox_set_value(cmbAudioSampleRate, 1, value);
 		}
     }
     
     public string subtitle_mode{
         owned get { 
-			return Utility.Combo_GetSelectedValue(cmbSubtitleMode,1,"disable");
+			return gtk_combobox_get_value(cmbSubtitleMode,1,"disable");
 		}
         set { 
-			Utility.Combo_SelectValue(cmbSubtitleMode, 1, value);
+			gtk_combobox_set_value(cmbSubtitleMode, 1, value);
 		}
     }
 }

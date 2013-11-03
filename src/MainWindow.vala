@@ -24,6 +24,16 @@
 using Gtk;
 using Gee;
 
+using TeeJee.Logging;
+using TeeJee.FileSystem;
+using TeeJee.DiskPartition;
+using TeeJee.JSON;
+using TeeJee.ProcessManagement;
+using TeeJee.GtkHelper;
+using TeeJee.Multimedia;
+using TeeJee.System;
+using TeeJee.Misc;
+
 public class MainWindow : Gtk.Window{
 	//main toolbar
 	private Gtk.Toolbar toolbar;
@@ -595,7 +605,7 @@ public class MainWindow : Gtk.Window{
 		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 		
-		string path = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+		string path = gtk_combobox_get_value(cmbScriptFolder,0,"");
 		
 		try
 		{
@@ -612,7 +622,7 @@ public class MainWindow : Gtk.Window{
 	        foreach(string filePath in files){
 		        string fileName = File.new_for_path(filePath).get_basename();
 		        
-		        if (Utility.file_exists(filePath)){
+		        if (file_exists(filePath)){
 					ScriptFile sh = new ScriptFile(filePath);
 					if (sh.Extension == ".sh" || sh.Extension == ".json") {
 						TreeIter iter;
@@ -650,7 +660,7 @@ public class MainWindow : Gtk.Window{
 	}
 	
 	private bool select_script(){
-		if ((App.SelectedScript == null)||(Utility.file_exists(App.SelectedScript.Path) == false)){
+		if ((App.SelectedScript == null)||(file_exists(App.SelectedScript.Path) == false)){
 			cmbScriptFolder.set_active(-1);
 			cmbScriptFile.set_active(0);
 			return false;
@@ -753,7 +763,7 @@ public class MainWindow : Gtk.Window{
 		TreeIter iter;
 		cmbScriptFolder.get_active_iter(out iter);
 		model.get (iter, 0, out path, -1);
-		Utility.exo_open_folder (path); 
+		exo_open_folder (path); 
 	}
 	
 	private void miFileOpenLogFile_clicked(){
@@ -766,13 +776,13 @@ public class MainWindow : Gtk.Window{
 			int index = int.parse (path.to_string());
 			
 			MediaFile mf = App.InputFiles[index];
-			Utility.exo_open_textfile (mf.LogFile); 
+			exo_open_textfile (mf.LogFile); 
 		}	
 	}
 
 	private void preset_create(){
 		var window = new ConfigWindow();
-	    window.Folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+	    window.Folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
 	    window.Name = "New Preset";
 	    //window.CreateNew = true;
 	    window.show_all();
@@ -800,16 +810,16 @@ public class MainWindow : Gtk.Window{
 	}
 	
 	private void script_create(){
-		string folder = Utility.Combo_GetSelectedValue(cmbScriptFolder,0,"");
+		string folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
 		
 		int k = 0;
 		string new_script = "%s/new_script.sh".printf(folder);
-		while (Utility.file_exists(new_script)){
+		while (file_exists(new_script)){
 			new_script = "%s/new_script_%d.sh".printf(folder,++k);
 		}
 		
-		Utility.write_file(new_script,"");
-		Utility.exo_open_textfile(new_script); 
+		write_file(new_script,"");
+		exo_open_textfile(new_script); 
 		
 		App.SelectedScript = new ScriptFile(new_script);
 		cmbScriptFolder_changed();
@@ -822,7 +832,7 @@ public class MainWindow : Gtk.Window{
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 
 		if (sh.Extension == ".sh") {
-			Utility.exo_open_textfile(sh.Path); 
+			exo_open_textfile(sh.Path); 
 		}
 	}
 	
@@ -847,7 +857,7 @@ public class MainWindow : Gtk.Window{
 			cmbScriptFile.get_active_iter(out iter);
 			cmbScriptFile.model.get (iter, 0, out sh, -1);
 			
-			Utility.file_delete(sh.Path);
+			file_delete(sh.Path);
 			cmbScriptFolder_changed();
 			
 			statusbar_show_message (_("Preset deleted") + ": " + sh.Name + "", true, true);
@@ -910,7 +920,13 @@ utility (even those tools which are not directly supported by Selene)
 Ø These files have to be edited manually. Clicking the "Edit" button
 on the toolbar will open the file in a text editor.
 """;
-		Utility.messagebox_show("Info",msg);
+
+		var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg);
+		dlg.set_title(_("Info"));
+		dlg.set_modal(true);
+		dlg.set_transient_for(this);
+		dlg.run();
+		dlg.destroy();
 	}
 
 	// statusbar -------------------
@@ -1043,7 +1059,7 @@ on the toolbar will open the file in a text editor.
 					else{
 						miFileSkip.sensitive = false;
 					}
-					if (Utility.dir_exists(App.InputFiles[index].TempDirectory)){
+					if (dir_exists(App.InputFiles[index].TempDirectory)){
 						miFileOpenTemp.sensitive = true;
 					}
 					else{
@@ -1094,7 +1110,7 @@ on the toolbar will open the file in a text editor.
 				
 				if (selection.count_selected_rows() == 1){
 					string outpath = App.InputFiles[index].OutputFilePath;
-					if (outpath != null && outpath.length > 0 && Utility.file_exists(outpath)){
+					if (outpath != null && outpath.length > 0 && file_exists(outpath)){
 						miFileInfoOutput.sensitive = true;
 						miFilePlayOutput.sensitive = true;
 					}
@@ -1141,7 +1157,7 @@ on the toolbar will open the file in a text editor.
 			
 			MediaFile mf = App.InputFiles[index];
 
-			if (Utility.file_exists(mf.OutputFilePath)){
+			if (file_exists(mf.OutputFilePath)){
 				MediaFile mfOutput = new MediaFile(mf.OutputFilePath);
 				var window = new FileInfoWindow(mfOutput);
 				window.show_all();
@@ -1196,7 +1212,7 @@ on the toolbar will open the file in a text editor.
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
-			Utility.exo_open_folder (mf.TempDirectory);
+			exo_open_folder (mf.TempDirectory);
 		}
     }
     
@@ -1215,16 +1231,16 @@ on the toolbar will open the file in a text editor.
 			MediaFile mf = App.InputFiles[index];
 			
 			if (App.OutputDirectory.length == 0){
-				Utility.exo_open_folder (mf.Location);
+				exo_open_folder (mf.Location);
 			} else{
-				Utility.exo_open_folder (App.OutputDirectory);
+				exo_open_folder (App.OutputDirectory);
 			}
 		}
     }
     
     private void btnOpenOutputFolder_click(){
-		if (App.OutputDirectory.length > 0 && Utility.dir_exists(App.OutputDirectory)){
-			Utility.exo_open_folder (App.OutputDirectory);
+		if (App.OutputDirectory.length > 0 && dir_exists(App.OutputDirectory)){
+			exo_open_folder (App.OutputDirectory);
 		}
 	}
 	
@@ -1303,8 +1319,8 @@ on the toolbar will open the file in a text editor.
 			inputStore.set (iter, InputField.FILE_REF, mFile);
 			inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
 	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
-	    	inputStore.set (iter, InputField.FILE_SIZE, Utility.format_file_size(mFile.Size));
-	    	inputStore.set (iter, InputField.FILE_DURATION, Utility.format_duration(mFile.Duration));
+	    	inputStore.set (iter, InputField.FILE_SIZE, format_file_size(mFile.Size));
+	    	inputStore.set (iter, InputField.FILE_DURATION, format_duration(mFile.Duration));
 	    	inputStore.set (iter, InputField.FILE_STATUS, Stock.MEDIA_PAUSE);
 	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info());
 	    	inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
@@ -1493,7 +1509,13 @@ This program is free for personal and commercial use and comes with absolutely n
 	public void start(){
 		if (App.InputFiles.size == 0){
 			string msg = _("Input queue is empty!\nPlease add some files.\n");
-			Utility.messagebox_show (_("Queue is Empty"), msg);
+			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
+			dlg.set_title(_("Queue is Empty"));
+			dlg.set_modal(true);
+			dlg.set_transient_for(this);
+			dlg.run();
+			dlg.destroy();
+			
 			return;
 		}	
 
@@ -1518,7 +1540,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnShutdown.visible = App.AdminMode;
 		btnBackground.visible = App.AdminMode;
         btnBackground.active = App.BackgroundMode;
-        btnOpenOutputFolder.visible = Utility.dir_exists(App.OutputDirectory);
+        btnOpenOutputFolder.visible = dir_exists(App.OutputDirectory);
 		
 		btnStart.visible = false;
 		btnRemoveFiles.visible = false;
@@ -1661,7 +1683,7 @@ This program is free for personal and commercial use and comes with absolutely n
 	}
 	
 	public bool shutdown(){
-		Utility.shutdown();
+		shutdown();
 		return true;
 	}
 }

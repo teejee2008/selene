@@ -23,6 +23,16 @@
  
 using Gtk;
 
+using TeeJee.Logging;
+using TeeJee.FileSystem;
+using TeeJee.DiskPartition;
+using TeeJee.JSON;
+using TeeJee.ProcessManagement;
+using TeeJee.GtkHelper;
+using TeeJee.Multimedia;
+using TeeJee.System;
+using TeeJee.Misc;
+
 public class FileInfoWindow : Dialog {
 
 	private Box vboxMain;
