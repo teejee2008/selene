@@ -1,5 +1,0 @@
-sudo apt-get -y purge selene
-./build-binary
-sudo gdebi --non-interactive ../builds/selene*.deb
-echo "Finished"
-read dummy
