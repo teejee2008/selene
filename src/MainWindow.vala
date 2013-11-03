@@ -661,7 +661,7 @@ public class MainWindow : Gtk.Window{
 	
 	private bool select_script(){
 		if ((App.SelectedScript == null)||(file_exists(App.SelectedScript.Path) == false)){
-			cmbScriptFolder.set_active(-1);
+			cmbScriptFolder.set_active(2);
 			cmbScriptFile.set_active(0);
 			return false;
 		}

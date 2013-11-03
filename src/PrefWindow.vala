@@ -146,9 +146,7 @@ public class PrefWindow : Dialog {
 		}
 		
 		// Save settings
-		var settings = new GLib.Settings ("apps.selene");
-		settings.set_string ("backup-dir", App.BackupDirectory);
-		settings.set_string ("output-dir", App.OutputDirectory);
+		App.save_config();
 		
 		this.destroy();
 	}

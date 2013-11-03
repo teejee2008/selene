@@ -33,7 +33,9 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
+/*
 extern void exit(int exit_code);
+*/
 
 namespace TeeJee.Logging{
 	

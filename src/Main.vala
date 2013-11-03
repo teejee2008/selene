@@ -25,6 +25,7 @@ using GLib;
 using Gtk;
 using Gee;
 using Soup;
+using Json;
 
 using TeeJee.Logging;
 using TeeJee.FileSystem;
@@ -409,6 +410,7 @@ public class Main : GLib.Object{
 	public string SharedImagesFolder = "";
 	public string UserDataDirectory;
 	public string SharedDataDirectory;
+	public string AppConfPath = "";
 	
 	public string TempDirectory;
 	public string OutputDirectory = "";
@@ -650,10 +652,10 @@ Notes:
 		// set default directory paths
 		
 		string homeDir = Environment.get_home_dir();
-		this.TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
+		TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
 		create_dir (this.TempDirectory);	
-		this.OutputDirectory = "";
-		this.BackupDirectory = "";
+		OutputDirectory = "";
+		BackupDirectory = "";
 		
 		SharedDataDirectory = "/usr/share/selene";
 		UserDataDirectory = homeDir + "/selene";
@@ -665,9 +667,11 @@ Notes:
 		PresetsFolder_Custom = UserDataDirectory + "/presets";
 		SharedImagesFolder = SharedDataDirectory + "/images";
 		
-		create_dir (this.UserDataDirectory);
-		create_dir (this.ScriptsFolder_Custom);
-		create_dir (this.PresetsFolder_Custom);
+		AppConfPath = UserDataDirectory + "/selene.json";
+
+		create_dir (UserDataDirectory);
+		create_dir (ScriptsFolder_Custom);
+		create_dir (PresetsFolder_Custom);
 
 		// create a copy of official scripts & presets on first run
 		
@@ -678,8 +682,8 @@ Notes:
 
 		// additional info
 		
-		log_msg (_("Loading scripts from:") + " '%s'".printf(this.ScriptsFolder_Custom));
-		log_msg (_("Loading presets from:") + " '%s'".printf(this.PresetsFolder_Custom));
+		log_msg (_("Loading scripts from:") + " '%s'".printf(ScriptsFolder_Custom));
+		log_msg (_("Loading presets from:") + " '%s'".printf(PresetsFolder_Custom));
 		log_msg (_("Using temp folder:") + " '%s'".printf(TempDirectory));
 
 		// init config
@@ -777,36 +781,59 @@ Notes:
 	}
 	
 	public void save_config(){
-		var settings = new GLib.Settings ("apps.selene");
-		settings.set_string ("backup-dir", BackupDirectory);
-		settings.set_string ("output-dir", OutputDirectory);
-
+		var config = new Json.Object();
+		config.set_string_member("backup-dir", BackupDirectory);
+		config.set_string_member("output-dir", OutputDirectory);
+		config.set_string_member("last-script", SelectedScript.Path);
+		
 		if (SelectedScript != null) {
-			settings.set_string ("last-script", SelectedScript.Path);
+			config.set_string_member("last-script", SelectedScript.Path);
 		} else {
-			settings.set_string ("last-script", "");
+			config.set_string_member("last-script", "");
 		}
+		
+		var json = new Json.Generator();
+		json.pretty = true;
+		json.indent = 2;
+		var node = new Json.Node(NodeType.OBJECT);
+		node.set_object(config);
+		json.set_root(node);
+		
+		try{
+			json.to_file(AppConfPath);
+		} catch (Error e) {
+	        log_error (e.message);
+	    }
 	}
 	
 	public void load_config(){
-		var settings = new GLib.Settings ("apps.selene");
-		string val;
-
-		val = settings.get_string ("backup-dir");
+		var f = File.new_for_path(AppConfPath);
+		if (!f.query_exists()) { return; }
+		
+		var parser = new Json.Parser();
+        try{
+			parser.load_from_file(AppConfPath);
+		} catch (Error e) {
+	        log_error (e.message);
+	    }
+        var node = parser.get_root();
+        var config = node.get_object();
+        
+		string val = json_get_string(config,"backup-dir", BackupDirectory);
 		if (dir_exists(val))
 			BackupDirectory = val;
 		else
 			BackupDirectory = "";
 
-		val = settings.get_string ("output-dir");
+		val = json_get_string(config,"output-dir", OutputDirectory);
 		if (dir_exists(val))
 			OutputDirectory = val;
 		else 
 			OutputDirectory = "";
 
-		string sh = settings.get_string ("last-script");
-		if (sh != null && sh.length > 0) {
-			SelectedScript = new ScriptFile(sh);
+		val = json_get_string(config,"last-script", "");
+		if (val != null && val.length > 0) {
+			SelectedScript = new ScriptFile(val);
 		}
 	}
 	

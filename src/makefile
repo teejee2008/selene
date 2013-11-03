@@ -37,10 +37,6 @@ install:
 	#app icon
 	install -m 0755 ./share/images/selene.png $(DESTDIR)$(sharedir)/pixmaps
 	
-	#gsettings schema
-	install -m 0644 apps.selene.gschema.xml $(DESTDIR)$(sharedir)/glib-2.0/schemas
-	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
-
 uninstall:
 	#binary
 	rm -f $(DESTDIR)$(bindir)/selene
@@ -54,8 +50,4 @@ uninstall:
 	
 	#app icon
 	rm -f $(DESTDIR)$(sharedir)/pixmaps/selene.png
-	
-	#gsettings schema
-	rm -f $(DESTDIR)$(sharedir)/glib-2.0/schemas/apps.selene.gschema.xml
-	glib-compile-schemas $(DESTDIR)$(sharedir)/glib-2.0/schemas/
 	
