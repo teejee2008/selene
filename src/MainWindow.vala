@@ -654,9 +654,6 @@ public class MainWindow : Gtk.Window{
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 		
 		App.SelectedScript = sh;
-		
-		var settings = new GLib.Settings ("apps.selene");
-		settings.set_string ("last-script", sh.Path);
 	}
 	
 	private bool select_script(){
