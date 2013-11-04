@@ -109,7 +109,7 @@ public class MediaFile : GLib.Object{
 	
 	public MediaFile(string filePath)
 	{
-		this.IsValid = false;
+		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
 		
 		// set file properties ------------
@@ -117,18 +117,18 @@ public class MediaFile : GLib.Object{
 		File f = File.new_for_path (filePath);
 		File fp = f.get_parent();
 		
-		this.Path = filePath;
-		this.Name = f.get_basename();
-		this.Title = Name[0: Name.last_index_of(".",0)];
-		this.Extension = Name[Name.last_index_of(".",0):Name.length];
-		this.Location = fp.get_path();
+		Path = filePath;
+		Name = f.get_basename();
+		Title = Name[0: Name.last_index_of(".",0)];
+		Extension = Name[Name.last_index_of(".",0):Name.length];
+		Location = fp.get_path();
 		//stderr.printf(@"file=$filePath, name=$Name, title=$Title, ext=$Extension, dir=$Location\n");
 		
 		FileInfo fi = null;
 		
 		try{
 			fi = f.query_info ("*", FileQueryInfoFlags.NONE, null);
-			this.Size = fi.get_size();
+			Size = fi.get_size();
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -162,12 +162,12 @@ public class MediaFile : GLib.Object{
 	        log_error (e.message);
 	    }
 	    
-		this.IsValid = true;
+		IsValid = true;
 	}
 	
 	public void query_mediainfo()
 	{
-		this.InfoText = get_mediainfo (Path);
+		InfoText = get_mediainfo (Path);
 		
 		if (InfoText == null || InfoText == ""){
 			return;
@@ -244,11 +244,11 @@ public class MediaFile : GLib.Object{
 	
 	public void prepare (string baseTempDir)
 	{
-		this.TempDirectory = baseTempDir + "/" + timestamp2() + " - " + this.Name;
-		this.LogFile = this.TempDirectory + "/" + "log.txt";
-		this.ScriptFile = this.TempDirectory + "/convert.sh";
-		this.OutputFilePath = "";
-		create_dir (this.TempDirectory);
+		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Name;
+		LogFile = TempDirectory + "/" + "log.txt";
+		ScriptFile = TempDirectory + "/convert.sh";
+		OutputFilePath = "";
+		create_dir (TempDirectory);
 
 		//initialize output frame count
 		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
@@ -653,7 +653,7 @@ Notes:
 		
 		string homeDir = Environment.get_home_dir();
 		TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
-		create_dir (this.TempDirectory);	
+		create_dir (TempDirectory);	
 		OutputDirectory = "";
 		BackupDirectory = "";
 		
@@ -754,24 +754,24 @@ Notes:
 			return;
 		}
 		else if ((ch == 'q')||(ch == 'Q')){
-			if (this.Status == AppStatus.RUNNING){
+			if (Status == AppStatus.RUNNING){
 				stop_batch();
 			}
 		}
 		else if ((ch == 'p')||(ch == 'P')){
-			if (this.Status == AppStatus.RUNNING){
+			if (Status == AppStatus.RUNNING){
 				pause();
 			}
 		}
 		else if ((ch == 'r')||(ch == 'R')){
-			if (this.Status == AppStatus.PAUSED){
+			if (Status == AppStatus.PAUSED){
 				resume();
 			}
 		}
 	}
 
 	public MediaFile? find_input_file (string filePath){
-		foreach(MediaFile mf in this.InputFiles){
+		foreach(MediaFile mf in InputFiles){
 			if (mf.Path == filePath){
 				return mf;
 			}
@@ -882,13 +882,13 @@ Notes:
 	
 	public void remove_files (Gee.ArrayList<MediaFile> file_list){
 		foreach(MediaFile mf in file_list){
-			this.InputFiles.remove (mf);
+			InputFiles.remove (mf);
 			log_msg (_("File removed:") + " '%s'".printf (mf.Path));
 		}
 	}
 	
 	public void remove_all(){
-		this.InputFiles.clear();
+		InputFiles.clear();
 		log_msg (_("All files removed"));
 	}
 
@@ -902,18 +902,18 @@ Notes:
 		log_msg (_("Starting batch of %d file(s):").printf(InputFiles.size), true);
 		
 		//check and create output dir
-		if (this.OutputDirectory.length > 0) { 
-			create_dir (this.OutputDirectory); 
-			log_msg (_("Files will be saved in '%s'").printf(this.OutputDirectory));
+		if (OutputDirectory.length > 0) { 
+			create_dir (OutputDirectory); 
+			log_msg (_("Files will be saved in '%s'").printf(OutputDirectory));
 		}
 		else{
 			log_msg (_("Files will be saved in source directory"));
 		}
 
 		//check and create backup dir
-		if (this.BackupDirectory.length > 0) { 
-			create_dir (this.BackupDirectory); 
-			log_msg (_("Source files will be moved to '%s'").printf(this.BackupDirectory));
+		if (BackupDirectory.length > 0) { 
+			create_dir (BackupDirectory); 
+			log_msg (_("Source files will be moved to '%s'").printf(BackupDirectory));
 		}	
 		
 		//initialize batch control variables
@@ -981,7 +981,7 @@ Notes:
 	
 	public void convert_finish(){	
 		//reset file status
-		foreach(MediaFile mf in this.InputFiles) {
+		foreach(MediaFile mf in InputFiles) {
 			mf.Status = FileStatus.PENDING;
 			mf.ProgressText = _("Queued");
 			mf.ProgressPercent = 0;
@@ -1004,7 +1004,7 @@ Notes:
 		
 		//prepare file
 		CurrentFile = mf;
-		CurrentFile.prepare (this.TempDirectory);		
+		CurrentFile.prepare (TempDirectory);		
 		CurrentFile.Status = FileStatus.RUNNING;
 		CurrentFile.ProgressText = null; // (not set) show value as percent
 		CurrentFile.ProgressPercent = 0;
@@ -1390,11 +1390,11 @@ Notes:
 	
 	public void stop_batch(){
 		// we need to un-freeze the processes before we kill it
-		if (this.Status == AppStatus.PAUSED){
+		if (Status == AppStatus.PAUSED){
 			resume();	
 		}
 		
-		this.Aborted = true;
+		Aborted = true;
 		for(int k = InputFiles.index_of(CurrentFile); k < InputFiles.size; k++)
 		{
 			MediaFile mf  = InputFiles[k];
@@ -1406,11 +1406,11 @@ Notes:
 	
 	public void stop_file(){
 		// we need to un-freeze the processes before we kill them
-		if (this.Status == AppStatus.PAUSED){
+		if (Status == AppStatus.PAUSED){
 			resume();	
 		}
 		
-		// this.Aborted = true; //Do not set Abort flag
+		// Aborted = true; //Do not set Abort flag
 		CurrentFile.Status = FileStatus.SKIPPED;
 		CurrentFile.ProgressText = _("Cancelled");
 

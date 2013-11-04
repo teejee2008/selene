@@ -42,15 +42,15 @@ public class FileInfoWindow : Dialog {
 	private ScrolledWindow swInfo;
 	
 	public FileInfoWindow (MediaFile _file) {
-		this.title = _("Properties");
-		this.file = _file;
-		this.deletable = false; // remove window close button
-		this.modal = true;
+		title = _("Properties");
+		file = _file;
+		deletable = false; // remove window close button
+		modal = true;
 		set_default_size (700, 500);	
 		
 		//set app icon
 		try{
-			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
 		}
         catch(Error e){
 	        log_error (e.message);
@@ -100,6 +100,6 @@ public class FileInfoWindow : Dialog {
 		
         // btnOk
         btnOk = (Button) add_button (Stock.OK, Gtk.ResponseType.ACCEPT);
-        btnOk.clicked.connect (() => {  this.destroy();  });
+        btnOk.clicked.connect (() => {  destroy();  });
 	}
 }

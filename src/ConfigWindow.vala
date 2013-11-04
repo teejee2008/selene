@@ -161,14 +161,14 @@ public class ConfigWindow : Dialog {
 	private Button btnCancel;
 	
 	public ConfigWindow() {
-		this.deletable = false; // remove window close button
-		this.modal = true;
-		this.title = "Preset";
+		deletable = false; // remove window close button
+		modal = true;
+		title = "Preset";
 		set_default_size (400, 500);	
 		
 		//set app icon
 		try{
-			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
 		}
         catch(Error e){
 	        log_error (e.message);
@@ -902,7 +902,7 @@ public class ConfigWindow : Dialog {
         
         //btnCancel
         btnCancel = (Button) add_button (Stock.CANCEL, Gtk.ResponseType.CANCEL);
-        btnCancel.clicked.connect (() => { this.destroy(); });
+        btnCancel.clicked.connect (() => { destroy(); });
 	}
 
 	private void cmbFileFormat_changed(){
@@ -1964,7 +1964,7 @@ public class ConfigWindow : Dialog {
 		}
 		
 		save_script();
-		this.destroy();
+		destroy();
 	}
 
 	private void save_script(){

@@ -46,14 +46,14 @@ public class PrefWindow : Dialog {
 	private Button btnCancel;
 	
 	public PrefWindow() {
-		this.deletable = false; // remove window close button
-		this.modal = true;
-		this.title = "Application Settings";
+		deletable = false; // remove window close button
+		modal = true;
+		title = "Application Settings";
 		set_default_size (500, 400);	
 		
 		//set app icon
 		try{
-			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
 		}
         catch(Error e){
 	        log_error (e.message);
@@ -148,10 +148,10 @@ public class PrefWindow : Dialog {
 		// Save settings
 		App.save_config();
 		
-		this.destroy();
+		destroy();
 	}
 	
 	private void btnCancel_clicked(){
-		this.destroy();
+		destroy();
 	}
 }

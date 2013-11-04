@@ -108,21 +108,21 @@ public class MainWindow : Gtk.Window{
 	};
 	
 	public MainWindow() {
-		this.title = AppName + " v" + AppVersion + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
-        this.window_position = WindowPosition.CENTER;
-        this.destroy.connect (Gtk.main_quit);
+		title = AppName + " v" + AppVersion + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
+        window_position = WindowPosition.CENTER;
+        destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
         
         //set app icon
 		try{
-			this.icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
+			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
 		}
         catch(Error e){
 	        log_error (e.message);
 	    }
 	    
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
-		this.drag_data_received.connect(this.on_drag_data_received);
+		drag_data_received.connect(on_drag_data_received);
 		
 		Gdk.RGBA gray = Gdk.RGBA();
 		//Gdk.RGBA white = Gdk.RGBA();
@@ -330,7 +330,7 @@ public class MainWindow : Gtk.Window{
 		});
 
 		Gtk.drag_dest_set (tvFiles,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
-        tvFiles.drag_data_received.connect(this.on_drag_data_received);
+        tvFiles.drag_data_received.connect(on_drag_data_received);
 
 		// Preset tool bar --------------------------------------
 

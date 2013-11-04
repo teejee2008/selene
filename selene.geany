@@ -17,16 +17,17 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=21638;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_1=3393;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_2=59765;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
-FILE_NAME_3=2854;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_4=4455;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
-FILE_NAME_5=1009;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
+current_page=9
+FILE_NAME_0=21189;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_1=23113;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_2=71250;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+FILE_NAME_3=1051;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
+FILE_NAME_4=4308;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
+FILE_NAME_5=48841;Vala;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
 FILE_NAME_6=284;Conf;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FSelene.desktop;0;4
-FILE_NAME_7=754;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_8=11;None;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fchangelog;0;4
+FILE_NAME_7=1463;Make;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_8=48;None;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fchangelog;0;4
+FILE_NAME_9=977;Conf;0;16;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fcontrol;0;4
 
 [VTE]
 last_dir=/home/teejee
