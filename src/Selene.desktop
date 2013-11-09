@@ -9,5 +9,4 @@ Icon=/usr/share/pixmaps/selene.png
 Caption=Audio-Video Converter
 X-KDE-StartupNotify=false
 Categories=AudioVideo;
-InitialPreference=9
 Name[en_US]=Selene

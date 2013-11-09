@@ -142,7 +142,7 @@ public class MediaFile : GLib.Object{
 		// search for subtitle files ---------------
 		
 		try{
-	        var enumerator = fp.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+	        var enumerator = fp.enumerate_children (GLib.FileAttribute.STANDARD_NAME, 0);
 			var fileInfo = enumerator.next_file();
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
