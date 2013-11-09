@@ -959,6 +959,7 @@ Notes:
 		//encode the file
 		if (!Aborted && nextFile != null){
 			convert_file(nextFile);
+			convert_next(); //check next
 		}
 		else{
 			Status = AppStatus.IDLE;
@@ -998,9 +999,14 @@ Notes:
 	}
 	
 	private bool convert_file (MediaFile mf){
-		bool retVal = false;
+		bool is_success = false;
 		
-		if (file_exists (mf.Path) == false) { return false; }
+		if (file_exists (mf.Path) == false) { 
+			mf.Status = FileStatus.ERROR;
+			mf.ProgressText = _("Error: File missing");
+			mf.ProgressPercent = 0;
+			return false;
+		}
 		
 		//prepare file
 		CurrentFile = mf;
@@ -1021,17 +1027,18 @@ Notes:
 		//convert file
 		string scriptText = build_script (CurrentFile);
 		string scriptPath = save_script (CurrentFile, scriptText);
-		retVal = run_script (CurrentFile, scriptPath);
-		
-		//move files to backup location
-		if ((BackupDirectory.length > 0) && (dir_exists (BackupDirectory))){
+		run_script (CurrentFile, scriptPath);
+		is_success = check_status(CurrentFile);
+
+		//move files to backup location on success
+		if ((is_success == true) && (BackupDirectory.length > 0) && (dir_exists (BackupDirectory))){
 			move_file (CurrentFile.Path, BackupDirectory + "/" + CurrentFile.Name);
 			if (CurrentFile.SubFile != null){
 				move_file (CurrentFile.SubFile, BackupDirectory + "/" + CurrentFile.SubName);
 			}
 		}
-		
-		return retVal;
+
+		return is_success;
 	}
 	
 	private string build_script (MediaFile mf){
@@ -1171,7 +1178,7 @@ Notes:
 	}
 
 	private bool run_script (MediaFile mf, string scriptFile){
-		bool retVal = false;
+		bool retVal = true;
 		
 		if (ConsoleMode)
 			log_msg (_("Converting: Enter (q) to quit or (p) to pause..."));
@@ -1235,17 +1242,25 @@ Notes:
         	
         	Thread.usleep ((ulong) 0.1 * 1000000);
         	dsLog.close();
+        	
 		}
 		catch (Error e) {
 			log_error (e.message);
+			retVal = false;
 		}	
         
         if (ConsoleMode){
 	    	//remove the last status line
 	    	stdout.printf ("\r%s\r", blankLine);
 	    }
-	    
-	    if (file_exists (mf.TempDirectory + "/0")) {
+
+		return retVal;
+	}
+	
+	private bool check_status (MediaFile mf){
+		bool retVal = false;
+		
+		if (file_exists (mf.TempDirectory + "/0")) {
 			mf.Status = FileStatus.SUCCESS;
 			mf.ProgressText = _("Done");
 			mf.ProgressPercent = 100;
@@ -1275,13 +1290,10 @@ Notes:
 		else if (mf.Status == FileStatus.ERROR) {
 			log_msg (_("Failed"));
 		}
-
-		// convert next file
-		convert_next();
 		
 		return retVal;
 	}
-
+	
 	private void read_std_err(){
 		try{
 			errLine = disErr.read_line (null);
