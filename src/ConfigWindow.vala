@@ -1004,6 +1004,8 @@ public class ConfigWindow : Dialog {
 				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
+				model.append (out iter);
+				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
 				break;
 			
