@@ -1316,6 +1316,17 @@ namespace TeeJee.ProcessManagement{
 		return -1;
 	}
 	
+	public int execute_bash_script_sync (string script_file){
+			
+		/* Executes a bash script synchronously in the default terminal window */
+		
+		string path = get_cmd_path ("x-terminal-emulator");
+		if ((path != null)&&(path != "")){
+			return execute_command_sync ("x-terminal-emulator -e \"%s\"".printf(script_file));
+		}
+		
+		return -1;
+	}
 	
 	public string get_cmd_path (string cmd){
 				
@@ -1493,6 +1504,29 @@ namespace TeeJee.ProcessManagement{
 		}
 	}
 
+	public string get_user_login(){
+		/* 
+		Returns Login ID of current user.
+		If running as 'sudo' it will return Login ID of the actual user.
+		*/
+
+		string cmd = "echo ${SUDO_USER:-$(whoami)}";
+		string std_out;
+		string std_err;
+		int ret_val;
+		ret_val = execute_command_script_sync(cmd, out std_out, out std_err);
+		
+		string user_name;
+		if ((std_out == null) || (std_out.length == 0)){
+			user_name = "root";
+		}
+		else{
+			user_name = std_out.strip();
+		}
+		
+		return user_name;
+	}
+	
 	public string get_app_path (){
 				
 		/* Get path of current process */
@@ -1555,20 +1589,27 @@ namespace TeeJee.GtkHelper{
 		gtk_do_events ();
 	}
 	
-	public void gtk_messagebox_show(string title, string message, bool is_error = false){
+	public void gtk_messagebox(string title, string message, Gtk.Window? parent_win, bool is_error = false){
 				
-		/* Conveniance function to show message box */
-		
+		/* Shows a simple message box */
+
 		Gtk.MessageType type = Gtk.MessageType.INFO;
-		
-		if (is_error)
+		if (is_error){
 			type = Gtk.MessageType.ERROR;
-			
-		var dialog = new Gtk.MessageDialog.with_markup(null,Gtk.DialogFlags.MODAL, type, Gtk.ButtonsType.OK, message);
-		dialog.set_title(title);
-		dialog.set_modal(true);
-		dialog.run();
-		dialog.destroy();
+		}
+		else{
+			type = Gtk.MessageType.INFO;
+		}
+		
+		var dlg = new Gtk.MessageDialog.with_markup(null, Gtk.DialogFlags.MODAL, type, Gtk.ButtonsType.OK, message);
+		dlg.title = title;
+		dlg.set_default_size (200, -1);
+		if (parent_win != null){
+			dlg.set_transient_for(parent_win);
+			dlg.set_modal(true);
+		}
+		dlg.run();
+		dlg.destroy();
 	}
 	
 	public bool gtk_combobox_set_value (ComboBox combo, int index, string val){
@@ -1867,7 +1908,7 @@ namespace TeeJee.System{
 				
 		/* Displays notification bubble on the desktop */
 		
-		string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, Gtk.Stock.INFO, title, message);
+		string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, "gtk-dialog-info", title, message);
 		return execute_command_sync (s);
 	}
 }

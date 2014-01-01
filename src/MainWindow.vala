@@ -145,7 +145,7 @@ public class MainWindow : Gtk.Window{
 		vboxMain.pack_start (toolbar, false, false, 0);
 
 		//btnAddFiles
-		btnAddFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+		btnAddFiles = new Gtk.ToolButton.from_stock ("gtk-add");
 		btnAddFiles.label = _("Add Files");
 		btnAddFiles.is_important = true;
 		btnAddFiles.clicked.connect (btnAddFiles_clicked);
@@ -153,14 +153,14 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnAddFiles);
 
 		//btnRemoveFiles
-		btnRemoveFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.REMOVE);
+		btnRemoveFiles = new Gtk.ToolButton.from_stock ("gtk-remove");
 		btnRemoveFiles.is_important = true;
 		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
 		btnRemoveFiles.set_tooltip_text (_("Remove selected file(s)"));
 		toolbar.add (btnRemoveFiles);
 		
 		//btnClearFiles
-		btnClearFiles = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
+		btnClearFiles = new Gtk.ToolButton.from_stock ("gtk-clear");
 		btnClearFiles.is_important = true;
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
 		btnClearFiles.set_tooltip_text (_("Remove all file(s)"));
@@ -170,7 +170,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (new Gtk.SeparatorToolItem());
 		
 		//btnStart
-		btnStart = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PLAY);
+		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
 		btnStart.is_important = true;
 		btnStart.label = _("Start");
 		btnStart.clicked.connect (start);
@@ -178,7 +178,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnStart);
 		
 		//btnPause
-		btnPause = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_PAUSE);
+		btnPause = new Gtk.ToolButton.from_stock ("gtk-media-pause");
 		btnPause.is_important = true;
 		btnPause.clicked.connect (btnPause_clicked);
 		btnPause.set_tooltip_text (_("Pause"));
@@ -187,7 +187,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnPause);
 		
 		//btnStop
-		btnStop = new Gtk.ToolButton.from_stock (Gtk.Stock.MEDIA_STOP);
+		btnStop = new Gtk.ToolButton.from_stock ("gtk-media-stop");
 		btnStop.is_important = true;
 		btnStop.clicked.connect (btnStop_clicked);
 		btnStop.set_tooltip_text (_("Abort"));
@@ -196,7 +196,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnStop);
 		
 		//btnFinish
-		btnFinish = new Gtk.ToolButton.from_stock (Gtk.Stock.OK);
+		btnFinish = new Gtk.ToolButton.from_stock ("gtk-ok");
 		btnFinish.is_important = true;
 		btnFinish.label = _("Finish");
 		btnFinish.clicked.connect (() => {  convert_finish(); });
@@ -212,19 +212,19 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (separator);
 		
 		//btnAppSettings
-		btnAppSettings = new Gtk.ToolButton.from_stock (Gtk.Stock.PREFERENCES);
+		btnAppSettings = new Gtk.ToolButton.from_stock ("gtk-preferences");
 		btnAppSettings.clicked.connect (btnAppSettings_clicked);
 		btnAppSettings.set_tooltip_text (_("Application Settings"));
 		toolbar.add (btnAppSettings);
 		
 		//btnAbout
-		btnAbout = new Gtk.ToolButton.from_stock (Gtk.Stock.ABOUT);
+		btnAbout = new Gtk.ToolButton.from_stock ("gtk-about");
 		btnAbout.clicked.connect (btnAbout_clicked);
 		btnAbout.set_tooltip_text (_("About"));
 		toolbar.add (btnAbout);
 		
 		//btnShutdown
-		btnShutdown = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.QUIT);
+		btnShutdown = new Gtk.ToggleToolButton.from_stock ("gtk-quit");
 		btnShutdown.label = _("Shutdown");
 		btnShutdown.visible = false;
 		btnShutdown.no_show_all = true;
@@ -234,7 +234,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnShutdown);
 		
 		//btnBackground
-        btnBackground = new Gtk.ToggleToolButton.from_stock (Gtk.Stock.SORT_ASCENDING);
+        btnBackground = new Gtk.ToggleToolButton.from_stock ("gtk-sort-ascending");
         btnBackground.label = _("Background");
         btnBackground.visible = false;
         btnBackground.no_show_all = true;
@@ -244,7 +244,7 @@ public class MainWindow : Gtk.Window{
         toolbar.add (btnBackground);
         
         //btnOpenOutputFolder
-		btnOpenOutputFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
+		btnOpenOutputFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
 		//btnOpenOutputFolder.is_important = true;
 		btnOpenOutputFolder.label = _("Output");
 		btnOpenOutputFolder.clicked.connect (btnOpenOutputFolder_click);
@@ -343,7 +343,7 @@ public class MainWindow : Gtk.Window{
 		vboxMain.add (toolbar2);
 
 		//btnAddPreset
-		btnAddPreset = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+		btnAddPreset = new Gtk.ToolButton.from_stock ("gtk-add");
 		btnAddPreset.is_important = true;
 		btnAddPreset.label = _("Add Preset");
 		btnAddPreset.clicked.connect (btnAddPreset_clicked);
@@ -351,21 +351,21 @@ public class MainWindow : Gtk.Window{
 		toolbar2.add (btnAddPreset);
 
 		//btnRemovePreset
-		btnRemovePreset = new Gtk.ToolButton.from_stock (Gtk.Stock.DELETE);
+		btnRemovePreset = new Gtk.ToolButton.from_stock ("gtk-delete");
 		btnRemovePreset.is_important = true;
 		btnRemovePreset.clicked.connect (btnRemovePreset_clicked);
 		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
 		toolbar2.add (btnRemovePreset);
 		
 		//btnEditPreset
-		btnEditPreset = new Gtk.ToolButton.from_stock (Gtk.Stock.EDIT);
+		btnEditPreset = new Gtk.ToolButton.from_stock ("gtk-edit");
 		btnEditPreset.is_important = true;
 		btnEditPreset.clicked.connect (btnEditPreset_clicked);
 		btnEditPreset.set_tooltip_text (_("Edit Preset"));
 		toolbar2.add (btnEditPreset);
 		
 		//btnBrowsePresetFolder
-		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock (Gtk.Stock.DIRECTORY);
+		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
 		btnBrowsePresetFolder.is_important = true;
 		btnBrowsePresetFolder.label = _("Browse");
 		btnBrowsePresetFolder.clicked.connect (btnBrowsePresetFolder_clicked);
@@ -379,7 +379,7 @@ public class MainWindow : Gtk.Window{
 		toolbar2.add (separator1);
 		
 		//btnPresetInfo
-		btnPresetInfo = new Gtk.ToolButton.from_stock (Gtk.Stock.INFO);
+		btnPresetInfo = new Gtk.ToolButton.from_stock ("gtk-info");
 		btnPresetInfo.is_important = true;
 		btnPresetInfo.margin_right = 6;
 		btnPresetInfo.label = _("Info");
@@ -443,7 +443,7 @@ public class MainWindow : Gtk.Window{
 		menuFile = new Gtk.Menu();
 
 		// miFileSkip
-		miFileSkip = new ImageMenuItem.from_stock (Stock.STOP, null);
+		miFileSkip = new ImageMenuItem.from_stock ("gtk-stop", null);
 		miFileSkip.label = _("Skip File");
 		miFileSkip.activate.connect (() => { App.stop_file(); });
 		menuFile.append(miFileSkip);
@@ -459,7 +459,7 @@ public class MainWindow : Gtk.Window{
 		menuFile.append(miFilePreview);		
 		
 		// miFileRemove
-		miFileRemove = new ImageMenuItem.from_stock(Stock.REMOVE, null);
+		miFileRemove = new ImageMenuItem.from_stock("gtk-remove", null);
 		miFileRemove.activate.connect(miFileRemove_clicked);
 		menuFile.append(miFileRemove);	
 		
@@ -469,19 +469,19 @@ public class MainWindow : Gtk.Window{
 		menuFile.append(miFileSeparator1);
 		
 		// miFileOpenTemp
-		miFileOpenTemp = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
+		miFileOpenTemp = new ImageMenuItem.from_stock("gtk-directory", null);
 		miFileOpenTemp.label = _("Open Temp Folder");
 		miFileOpenTemp.activate.connect(miFileOpenTemp_clicked);
 		menuFile.append(miFileOpenTemp);
 		
 		// miFileOpenOutput
-		miFileOpenOutput = new ImageMenuItem.from_stock(Stock.DIRECTORY, null);
+		miFileOpenOutput = new ImageMenuItem.from_stock("gtk-directory", null);
 		miFileOpenOutput.label = _("Open Output Folder");
 		miFileOpenOutput.activate.connect(miFileOpenOutput_clicked);
 		menuFile.append(miFileOpenOutput);
 		
 		// miFileOpenLogFile
-		miFileOpenLogFile = new ImageMenuItem.from_stock(Stock.INFO, null);
+		miFileOpenLogFile = new ImageMenuItem.from_stock("gtk-info", null);
 		miFileOpenLogFile.label = _("Open Log File");
 		miFileOpenLogFile.activate.connect(miFileOpenLogFile_clicked);
 		menuFile.append(miFileOpenLogFile);
@@ -492,25 +492,25 @@ public class MainWindow : Gtk.Window{
 		menuFile.append(miFileSeparator2);
 		
 		// miFilePlaySource
-		miFilePlaySource = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
+		miFilePlaySource = new ImageMenuItem.from_stock("gtk-media-play", null);
 		miFilePlaySource.label = _("Play File (Source)");
 		miFilePlaySource.activate.connect(miFilePlaySource_clicked);
 		menuFile.append(miFilePlaySource);
 		
 		// miFilePlayOutput
-		miFilePlayOutput = new ImageMenuItem.from_stock(Stock.MEDIA_PLAY, null);
+		miFilePlayOutput = new ImageMenuItem.from_stock("gtk-media-play", null);
 		miFilePlayOutput.label = _("Play File (Output)");
 		miFilePlayOutput.activate.connect(miFilePlayOutput_clicked);
 		menuFile.append(miFilePlayOutput);
 		
 		// miFileInfo
-		miFileInfo = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
+		miFileInfo = new ImageMenuItem.from_stock("gtk-properties", null);
 		miFileInfo.label = _("File Info (Source)");
 		miFileInfo.activate.connect(miFileInfo_clicked);
 		menuFile.append(miFileInfo);
 		
 		// miFileInfoOutput
-		miFileInfoOutput = new ImageMenuItem.from_stock(Stock.PROPERTIES, null);
+		miFileInfoOutput = new ImageMenuItem.from_stock("gtk-properties", null);
 		miFileInfoOutput.label = _("File Info (Output)");
 		miFileInfoOutput.activate.connect(miFileInfoOutput_clicked);
 		menuFile.append(miFileInfoOutput);
@@ -1319,7 +1319,7 @@ on the toolbar will open the file in a text editor.
 	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
 	    	inputStore.set (iter, InputField.FILE_SIZE, format_file_size(mFile.Size));
 	    	inputStore.set (iter, InputField.FILE_DURATION, format_duration(mFile.Duration));
-	    	inputStore.set (iter, InputField.FILE_STATUS, Stock.MEDIA_PAUSE);
+	    	inputStore.set (iter, InputField.FILE_STATUS, "gtk-media-pause");
 	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info());
 	    	inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
 	    	inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
@@ -1359,8 +1359,8 @@ on the toolbar will open the file in a text editor.
 	
 	private void btnAddFiles_clicked(){
 		var dlgAddFiles = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
-							Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
-							Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
+							"gtk-cancel", Gtk.ResponseType.CANCEL,
+							"gtk-open", Gtk.ResponseType.ACCEPT);
 		dlgAddFiles.local_only = true;
  		dlgAddFiles.set_modal (true);
  		dlgAddFiles.set_select_multiple (true);

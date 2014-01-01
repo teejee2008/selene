@@ -99,7 +99,7 @@ public class FileInfoWindow : Dialog {
 		tvInfo.expand_all();
 		
         // btnOk
-        btnOk = (Button) add_button (Stock.OK, Gtk.ResponseType.ACCEPT);
+        btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btnOk.clicked.connect (() => {  destroy();  });
 	}
 }

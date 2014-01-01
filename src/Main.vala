@@ -495,7 +495,7 @@ public class Main : GLib.Object{
 		
 		string str = get_cmd_path ("mediainfo");
 		if ((str == null)||(str == "")){
-			gtk_messagebox_show(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"), true);
+			gtk_messagebox(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"),null, true);
 			return 1;
 		}
 		

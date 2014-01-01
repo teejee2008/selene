@@ -897,11 +897,11 @@ public class ConfigWindow : Dialog {
 		// Actions ----------------------------------------------
 		
         //btnSave
-        btnSave = (Button) add_button (Stock.SAVE, Gtk.ResponseType.ACCEPT);
+        btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
         btnSave.clicked.connect (btnSave_clicked);
         
         //btnCancel
-        btnCancel = (Button) add_button (Stock.CANCEL, Gtk.ResponseType.CANCEL);
+        btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (() => { destroy(); });
 	}
 

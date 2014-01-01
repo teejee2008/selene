@@ -79,7 +79,7 @@ public class PrefWindow : Dialog {
 			fcbOutput.set_filename (App.OutputDirectory);
 		}
 		vboxMain.add (fcbOutput);
-
+		
 		// chkOutput
 		chkOutput = new CheckButton.with_label (_("Save in input file location"));
 		chkOutput.active = (App.OutputDirectory.length == 0);
@@ -110,11 +110,11 @@ public class PrefWindow : Dialog {
 		vboxMain.pack_start (chkBackup, false, true, 0);
 		
         // btnSave
-        btnSave = (Button) add_button (Stock.SAVE, Gtk.ResponseType.ACCEPT);
+        btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
         btnSave.clicked.connect (btnSave_clicked);
         
         // btnCancel
-        btnCancel = (Button) add_button (Stock.CANCEL, Gtk.ResponseType.CANCEL);
+        btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (btnCancel_clicked);
 	}
 	
