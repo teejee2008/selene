@@ -39,7 +39,7 @@ using TeeJee.Misc;
 
 public Main App;
 public const string AppName = "Selene";
-public const string AppVersion = "2.2.3";
+public const string AppVersion = "2.2.4";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejee2008@gmail.com";
 public const bool LogTimestamp = true;
@@ -142,7 +142,7 @@ public class MediaFile : GLib.Object{
 		// search for subtitle files ---------------
 		
 		try{
-	        var enumerator = fp.enumerate_children (GLib.FileAttribute.STANDARD_NAME, 0);
+	        var enumerator = fp.enumerate_children ("standard::*", 0);
 			var fileInfo = enumerator.next_file();
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {

@@ -18,15 +18,15 @@ long_line_column=80
 
 [files]
 current_page=0
-FILE_NAME_0=63468;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_1=46807;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_2=34129;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
-FILE_NAME_3=3031;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_4=1535;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
-FILE_NAME_5=49292;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_0=1861;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_1=17713;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_2=31068;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+FILE_NAME_3=2842;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
+FILE_NAME_4=3653;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
+FILE_NAME_5=45418;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FUtility.vala;0;4
 FILE_NAME_6=264;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2FSelene.desktop;0;4
 FILE_NAME_7=1060;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_8=135;None;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fchangelog;0;4
+FILE_NAME_8=281;None;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fchangelog;0;4
 FILE_NAME_9=937;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fdebian%2Fcontrol;0;4
 FILE_NAME_10=328;Sh;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Fselene%2Fbuild-installer.sh;0;4
 
