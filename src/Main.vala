@@ -838,10 +838,7 @@ Notes:
 	}
 	
 	public void exit_app(){
-		//GSettings does not get enough time to commit changes
-		//Settings will be saved at multiple points, instead of through save_config()
-		//save_config(); 
-		
+		save_config(); 
 		Gtk.main_quit();
 	}
 	
@@ -1313,7 +1310,7 @@ Notes:
 		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
 		if (tempLine.index_of ("overread, skip") != -1){ return true; }
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
-		if (tempLine.index_of ("Converting: '") != -1){ return true; } //mkvmerge
+		if (tempLine.index_of ("Converting:") != -1){ return true; } //mkvmerge
 		
 		if (regex_libav.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));

@@ -108,7 +108,7 @@ public class MainWindow : Gtk.Window{
 	};
 	
 	public MainWindow() {
-		title = AppName + " v" + AppVersion + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
+		title = AppName + " v" + AppVersion;// + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
         window_position = WindowPosition.CENTER;
         destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
@@ -167,8 +167,9 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnClearFiles);
 		
 		//separator
-		toolbar.add (new Gtk.SeparatorToolItem());
-		
+		var separator = new Gtk.SeparatorToolItem();
+		toolbar.add(separator);
+
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
 		btnStart.is_important = true;
@@ -206,7 +207,7 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnFinish);
 		
 		//separator
-		var separator = new Gtk.SeparatorToolItem();
+		separator = new Gtk.SeparatorToolItem();
 		separator.set_draw (false);
 		separator.set_expand (true);
 		toolbar.add (separator);
@@ -1016,8 +1017,7 @@ on the toolbar will open the file in a text editor.
 			index = int.parse (path.to_string());
 		}
 
-		switch(App.Status)
-		{
+		switch(App.Status){
 			case AppStatus.NOTSTARTED:
 				miFileSkip.visible = false;
 				miFileOpenTemp.visible = false;
@@ -1541,6 +1541,7 @@ This program is free for personal and commercial use and comes with absolutely n
         btnOpenOutputFolder.visible = dir_exists(App.OutputDirectory);
 		
 		btnStart.visible = false;
+		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
 		btnAppSettings.visible = false;
@@ -1568,6 +1569,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		colProgress.visible = false;
 		
 		btnStart.visible = true;
+		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = true;
 		btnClearFiles.visible = true;
 		btnAppSettings.visible = true;
@@ -1627,6 +1629,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				btnStart.visible = false;
 				btnPause.visible = false;
 				btnStop.visible = false;
+				btnAddFiles.visible = false;
 				btnFinish.visible = true;
 				
 				// update statusbar message
