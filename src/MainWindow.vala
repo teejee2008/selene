@@ -49,6 +49,8 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnPause;
     private ToggleToolButton btnShutdown;
     private ToggleToolButton btnBackground;
+    private SeparatorToolItem separator1;
+    private SeparatorToolItem separator2;
     
     //preset toolbar
     private Gtk.Toolbar toolbar2;
@@ -167,8 +169,8 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnClearFiles);
 		
 		//separator
-		var separator = new Gtk.SeparatorToolItem();
-		toolbar.add(separator);
+		separator1 = new Gtk.SeparatorToolItem();
+		toolbar.add(separator1);
 
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
@@ -207,10 +209,10 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnFinish);
 		
 		//separator
-		separator = new Gtk.SeparatorToolItem();
-		separator.set_draw (false);
-		separator.set_expand (true);
-		toolbar.add (separator);
+		separator2 = new Gtk.SeparatorToolItem();
+		separator2.set_draw (false);
+		separator2.set_expand (true);
+		toolbar.add (separator2);
 		
 		//btnAppSettings
 		btnAppSettings = new Gtk.ToolButton.from_stock ("gtk-preferences");
@@ -1582,6 +1584,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnPause.visible = false;
 		btnStop.visible = false;
 		btnFinish.visible = false;
+		separator1.visible = true;
 		
 		App.convert_finish();
 		
@@ -1630,6 +1633,7 @@ This program is free for personal and commercial use and comes with absolutely n
 				btnPause.visible = false;
 				btnStop.visible = false;
 				btnAddFiles.visible = false;
+				separator1.visible = false;
 				btnFinish.visible = true;
 				
 				// update statusbar message

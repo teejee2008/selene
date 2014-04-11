@@ -1026,8 +1026,11 @@ Notes:
 		CurrentFile.ProgressPercent = 0;
 					
 		log_msg (_("Source:") + " '%s'".printf(CurrentFile.Path), true);
-		if (CurrentFile.SubFile != null){
-			log_msg (_("Subtitles:") + " '%s'".printf(CurrentFile.SubName));
+		if ((CurrentFile.SubFile != null) && (CurrentFile.SubFile.length > 0)){
+			log_msg ((mf.HasVideo) ? _("Subtitles:") : _("Lyrics:") + " '%s'".printf(CurrentFile.SubName));
+		}
+		else{
+			log_msg ((mf.HasVideo) ? _("Subtitles:") : _("Lyrics:") + " None");
 		}
 		
 		Progress = 0;
