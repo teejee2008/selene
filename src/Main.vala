@@ -2170,6 +2170,20 @@ Notes:
 		}
 		s += "\n";
 		
+		//add tags
+		string path = get_cmd_path ("neroAacTag");
+		if ((path != null) && (path.length > 0)){
+			s += "neroAacTag";
+			s += " \"${outputFile}\"";
+			s += (mf.TrackName.length > 0) ? " -meta:title='%s'".printf(mf.TrackName) : "";
+			s += (mf.Artist.length > 0) ? " -meta:artist='%s'".printf(mf.Artist) : "";
+			s += (mf.Album.length > 0) ? " -meta:album='%s'".printf(mf.Album) : "";
+			s += (mf.Genre.length > 0) ? " -meta:genre='%s'".printf(mf.Genre) : "";
+			s += (mf.RecordedDate.length > 0) ? " -meta:year='%s'".printf(mf.RecordedDate) : "";
+			s += (mf.Comment.length > 0) ? " -meta:comment='%s'".printf(mf.Comment) : "";
+			s += "\n";
+		}
+
 		return s;
 	}
 	
