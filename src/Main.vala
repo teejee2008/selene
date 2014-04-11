@@ -2118,12 +2118,12 @@ Notes:
 				s += " -b " + audio.get_string_member("bitrate") + " --cbr";
 				break;
 		}
-		s += (mf.TrackName.length > 0) ? " --tt \"%s\"".printf(mf.TrackName) : "";
-		s += (mf.Artist.length > 0) ? " --ta \"%s\"".printf(mf.Artist) : "";
-		s += (mf.Album.length > 0) ? " --tl \"%s\"".printf(mf.Album) : "";
-		s += (mf.Genre.length > 0) ? " --tg \"%s\"".printf(mf.Genre) : "";
-		s += (mf.RecordedDate.length > 0) ? " --ty \"%s\"".printf(mf.RecordedDate) : "";
-		s += (mf.Comment.length > 0) ? " --tc \"%s\"".printf(mf.Comment) : "";
+		s += (mf.TrackName.length > 0) ? " --tt '%s'".printf(mf.TrackName) : "";
+		s += (mf.Artist.length > 0) ? " --ta '%s'".printf(mf.Artist) : "";
+		s += (mf.Album.length > 0) ? " --tl '%s'".printf(mf.Album) : "";
+		s += (mf.Genre.length > 0) ? " --tg '%s'".printf(mf.Genre) : "";
+		s += (mf.RecordedDate.length > 0) ? " --ty '%s'".printf(mf.RecordedDate) : "";
+		s += (mf.Comment.length > 0) ? " --tc '%s'".printf(mf.Comment) : "";
 
 		s += " -";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
@@ -2182,8 +2182,9 @@ Notes:
 		
 		s += decode_audio_avconv(mf, settings, true);
 		s += "opusenc";
-		s += (mf.TrackName.length > 0) ? " --title \"%s\"".printf(mf.TrackName) : "";
-		s += (mf.Artist.length > 0) ? " --artist \"%s\"".printf(mf.Artist) : "";
+		s += (mf.TrackName.length > 0) ? " --title '%s'".printf(mf.TrackName) : "";
+		s += (mf.Artist.length > 0) ? " --artist '%s'".printf(mf.Artist) : "";
+		//s += (mf.Comment.length > 0) ? " --comment '%s'".printf(mf.Comment) : ""; //causes error
 		s += " --bitrate " + audio.get_string_member("bitrate");
 		//options
 		switch (audio.get_string_member("mode")){
