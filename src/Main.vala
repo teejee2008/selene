@@ -84,6 +84,8 @@ public class MediaFile : GLib.Object{
 	public string Album = "";
 	public string Artist = "";
 	public string Genre = "";
+	public string RecordedDate = "";
+	public string Comment = "";
 	
 	public int CropW = 0;
 	public int CropH = 0;
@@ -226,6 +228,15 @@ public class MediaFile : GLib.Object{
 							break;
 						case "performer":
 							Artist = val;
+							break;
+						case "genre":
+							Genre = val;
+							break;
+						case "recorded date":
+							RecordedDate = val;
+							break;
+						case "comment":
+							Comment = val;
 							break;
 					}
 				}
@@ -2107,6 +2118,13 @@ Notes:
 				s += " -b " + audio.get_string_member("bitrate") + " --cbr";
 				break;
 		}
+		s += (mf.TrackName.length > 0) ? " --tt \"%s\"".printf(mf.TrackName) : "";
+		s += (mf.Artist.length > 0) ? " --ta \"%s\"".printf(mf.Artist) : "";
+		s += (mf.Album.length > 0) ? " --tl \"%s\"".printf(mf.Album) : "";
+		s += (mf.Genre.length > 0) ? " --tg \"%s\"".printf(mf.Genre) : "";
+		s += (mf.RecordedDate.length > 0) ? " --ty \"%s\"".printf(mf.RecordedDate) : "";
+		s += (mf.Comment.length > 0) ? " --tc \"%s\"".printf(mf.Comment) : "";
+
 		s += " -";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
