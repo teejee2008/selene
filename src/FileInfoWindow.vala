@@ -43,19 +43,18 @@ public class FileInfoWindow : Dialog {
 	
 	public FileInfoWindow (MediaFile _file) {
 		title = _("Properties");
-		file = _file;
-		deletable = false; // remove window close button
-		modal = true;
-		set_default_size (700, 500);	
+		set_default_size (700, 500);
 		
-		//set app icon
-		try{
-			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
-		}
-        catch(Error e){
-	        log_error (e.message);
-	    }
-	    
+        window_position = WindowPosition.CENTER_ON_PARENT;
+        destroy_with_parent = true;
+        skip_taskbar_hint = true;
+		modal = true;
+		deletable = false;
+		icon = App.get_app_icon(16);
+		
+		//save reference
+		file = _file;
+		
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;

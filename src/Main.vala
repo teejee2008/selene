@@ -39,7 +39,7 @@ using TeeJee.Misc;
 
 public Main App;
 public const string AppName = "Selene";
-public const string AppVersion = "2.2.4";
+public const string AppVersion = "2.3";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejee2008@gmail.com";
 public const bool LogTimestamp = true;

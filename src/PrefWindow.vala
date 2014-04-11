@@ -46,18 +46,15 @@ public class PrefWindow : Dialog {
 	private Button btnCancel;
 	
 	public PrefWindow() {
-		deletable = false; // remove window close button
-		modal = true;
 		title = "Application Settings";
-		set_default_size (500, 400);	
-		
-		//set app icon
-		try{
-			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
-		}
-        catch(Error e){
-	        log_error (e.message);
-	    }
+		set_default_size (500, 400);
+			
+        window_position = WindowPosition.CENTER_ON_PARENT;
+        destroy_with_parent = true;
+        skip_taskbar_hint = true;
+		modal = true;
+		deletable = false;
+		icon = App.get_app_icon(16);
 	    
 		// get content area
 		vboxMain = get_content_area();

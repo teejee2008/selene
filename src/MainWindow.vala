@@ -774,6 +774,7 @@ public class MainWindow : Gtk.Window{
 
 	private void preset_create(){
 		var window = new ConfigWindow();
+		window.set_transient_for(this);
 	    window.Folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
 	    window.Name = "New Preset";
 	    //window.CreateNew = true;
@@ -792,6 +793,7 @@ public class MainWindow : Gtk.Window{
 		
 		if (sh.Extension == ".json") {
 			var window = new ConfigWindow();
+			window.set_transient_for(this);
 			window.Folder = sh.Folder;
 			window.Name = sh.Title;
 			window.show_all();
@@ -1132,6 +1134,7 @@ on the toolbar will open the file in a text editor.
 			int index = int.parse (path.to_string());
 			
 			var window = new FileInfoWindow(App.InputFiles[index]);
+			window.set_transient_for(this);
 			window.show_all();
 			window.run();
 		}
@@ -1151,6 +1154,7 @@ on the toolbar will open the file in a text editor.
 			if (file_exists(mf.OutputFilePath)){
 				MediaFile mfOutput = new MediaFile(mf.OutputFilePath);
 				var window = new FileInfoWindow(mfOutput);
+				window.set_transient_for(this);
 				window.show_all();
 				window.run();
 			}
@@ -1414,14 +1418,8 @@ on the toolbar will open the file in a text editor.
 		dialog.comments = _("An audio-video encoder for Linux");
 		dialog.copyright = "Copyright © 2013 Tony George (teejee2008@gmail.com)";
 		dialog.version = AppVersion;
+		dialog.logo = App.get_app_icon(128);
 		
-		try{
-			dialog.logo = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
-		}
-        catch(Error e){
-	        log_error (e.message);
-	    }
-
 		dialog.license = 
 """
 This program is free for personal and commercial use and comes with absolutely no warranty. You use this program entirely at your own risk. The author will not be liable for any damages arising from the use of this program.
@@ -1442,6 +1440,7 @@ This program is free for personal and commercial use and comes with absolutely n
 
 	private void btnAppSettings_clicked(){
 	    var window = new PrefWindow();
+	    window.set_transient_for(this);
 	    window.show_all();
 	    window.run();
 	}
