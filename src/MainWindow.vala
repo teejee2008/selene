@@ -114,22 +114,13 @@ public class MainWindow : Gtk.Window{
         window_position = WindowPosition.CENTER;
         destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
-        
-        //set app icon
-		try{
-			icon = new Gdk.Pixbuf.from_file ("""/usr/share/pixmaps/selene.png""");
-		}
-        catch(Error e){
-	        log_error (e.message);
-	    }
-	    
+        icon = App.get_app_icon(16);
+
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		drag_data_received.connect(on_drag_data_received);
 		
 		Gdk.RGBA gray = Gdk.RGBA();
-		//Gdk.RGBA white = Gdk.RGBA();
 		gray.parse ("rgba(200,200,200,1)");
-		//white.parse ("rgba(0,0,0,1)");
 
         //vboxMain
         vboxMain = new Box (Orientation.VERTICAL, 0);

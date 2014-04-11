@@ -424,6 +424,7 @@ public class Main : GLib.Object{
 	public string UserDataDirectory;
 	public string SharedDataDirectory;
 	public string AppConfPath = "";
+	public string usr_share_dir;
 	
 	public string TempDirectory;
 	public string OutputDirectory = "";
@@ -670,6 +671,7 @@ Notes:
 		OutputDirectory = "";
 		BackupDirectory = "";
 		
+		usr_share_dir = "/usr/share";
 		SharedDataDirectory = "/usr/share/selene";
 		UserDataDirectory = homeDir + "/.config/selene";
 		//string appPath = (File.new_for_path (arg0)).get_parent().get_path();
@@ -902,6 +904,39 @@ Notes:
 		log_msg (_("All files removed"));
 	}
 
+	public Gdk.Pixbuf? get_app_icon(int icon_size){
+		return get_shared_icon("selene","selene.png",icon_size,"pixmaps");
+	}
+	
+	public Gdk.Pixbuf? get_shared_icon(string icon_name, string fallback_icon_file_name, int icon_size, string icon_directory = "aptik/images"){
+		Gdk.Pixbuf pix_icon = null;
+		
+		try {
+			Gtk.IconTheme icon_theme = Gtk.IconTheme.get_default();
+			pix_icon = icon_theme.load_icon (icon_name, icon_size, 0);
+		} catch (Error e) {
+			//log_error (e.message);
+		}
+		
+		string fallback_icon_file_path = App.usr_share_dir + "/%s/%s".printf(icon_directory, fallback_icon_file_name);
+		
+		if (pix_icon == null){ 
+			try {
+				pix_icon = new Gdk.Pixbuf.from_file_at_size (fallback_icon_file_path, icon_size, icon_size);
+			} catch (Error e) {
+				log_error (e.message);
+			}
+		}
+		
+		if (pix_icon == null){ 
+			log_error (_("Missing Icon") + ": '%s', '%s'".printf(icon_name, fallback_icon_file_path));
+		}
+		
+		return pix_icon; 
+	}
+	
+	//conversion
+	
 	public void convert_begin(){
 		//check for empty list
 		if (InputFiles.size == 0){
@@ -1500,6 +1535,8 @@ Notes:
 		shutdown();
 		return true;
 	}
+	
+	//create command string
 	
 	private string get_preset_commandline (MediaFile mf, Json.Object settings){
 		string s = "";
