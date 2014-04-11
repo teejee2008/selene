@@ -76,9 +76,14 @@ public class MediaFile : GLib.Object{
 	public int64 Size = 0;
 	public long Duration = 0;
 	
-	public string SubFile;
-	public string SubName;
-	public string SubExt;
+	public string SubFile = "";
+	public string SubName = "";
+	public string SubExt = "";
+
+	public string TrackName = "";
+	public string Album = "";
+	public string Artist = "";
+	public string Genre = "";
 	
 	public int CropW = 0;
 	public int CropH = 0;
@@ -101,14 +106,13 @@ public class MediaFile : GLib.Object{
 	public double SourceFrameRate = 0;
 	public int AudioChannels = 0;
 	
-	public string ScriptFile;
-	public string TempDirectory;
-	public string LogFile;
-	public string OutputFilePath;
+	public string TempScriptFile;
+	public string TempDirectory = "";
+	public string LogFile = "";
+	public string OutputFilePath = "";
 	public long OutputFrameCount = 0;
 	
-	public MediaFile(string filePath)
-	{
+	public MediaFile(string filePath){
 		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
 		
@@ -165,8 +169,7 @@ public class MediaFile : GLib.Object{
 		IsValid = true;
 	}
 	
-	public void query_mediainfo()
-	{
+	public void query_mediainfo(){
 		InfoText = get_mediainfo (Path);
 		
 		if (InfoText == null || InfoText == ""){
@@ -215,6 +218,15 @@ public class MediaFile : GLib.Object{
 									Duration += long.parse(part.replace ("s","")) * 1000;
 							}
 							break;
+						case "track name":
+							TrackName = val;
+							break;
+						case "album":
+							Album = val;
+							break;
+						case "performer":
+							Artist = val;
+							break;
 					}
 				}
 				else if (sectionType == "video"){
@@ -242,11 +254,10 @@ public class MediaFile : GLib.Object{
 		}
 	}
 	
-	public void prepare (string baseTempDir)
-	{
+	public void prepare (string baseTempDir){
 		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Name;
 		LogFile = TempDirectory + "/" + "log.txt";
-		ScriptFile = TempDirectory + "/convert.sh";
+		TempScriptFile = TempDirectory + "/convert.sh";
 		OutputFilePath = "";
 		create_dir (TempDirectory);
 
@@ -259,8 +270,7 @@ public class MediaFile : GLib.Object{
 		}
 	}
 	
-	public bool crop_detect()
-	{
+	public bool crop_detect(){
 		if (HasVideo == false) { 
 			AutoCropError = true;
 			return false; 
@@ -287,16 +297,14 @@ public class MediaFile : GLib.Object{
 			return true;
 	}
 	
-	public bool crop_enabled()
-	{
+	public bool crop_enabled(){
 		if ((CropW == 0)&&(CropH == 0)&&(CropL == 0)&&(CropT == 0))
 			return false;
 		else
 			return true;
 	}
 	
-	public void crop_reset()
-	{
+	public void crop_reset(){
 		CropW = 0;
 		CropH = 0;
 		CropL = 0;
@@ -305,8 +313,7 @@ public class MediaFile : GLib.Object{
 		CropB = 0;
 	}
 
-	public string crop_values_info()
-	{
+	public string crop_values_info(){
 		if (crop_enabled())
 			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
 		else if (AutoCropError)
@@ -315,24 +322,21 @@ public class MediaFile : GLib.Object{
 			return "";
 	}
 	
-	public string crop_values_libav()
-	{
+	public string crop_values_libav(){
 		if (crop_enabled())
 			return "%i:%i:%i:%i".printf(CropW,CropH,CropL,CropT);
 		else
 			return "iw:ih:0:0";
 	}	
 	
-	public string crop_values_x264()
-	{
+	public string crop_values_x264(){
 		if (crop_enabled())
 			return "%i,%i,%i,%i".printf(CropL,CropT,CropR,CropB);
 		else
 			return "0,0,0,0";
 	}
 	
-	public void preview_output()
-	{
+	public void preview_output(){
 		string output = "";
 		string error = "";
 		
@@ -344,8 +348,7 @@ public class MediaFile : GLib.Object{
 	    }
 	}
 
-	public void play_source()
-	{
+	public void play_source(){
 		if(file_exists(Path)){
 			string output = "";
 			string error = "";
@@ -359,8 +362,7 @@ public class MediaFile : GLib.Object{
 		}
 	}
 	
-	public void play_output()
-	{
+	public void play_output(){
 		if(file_exists(OutputFilePath)){
 			string output = "";
 			string error = "";
@@ -1157,21 +1159,21 @@ Notes:
 	private string save_script (MediaFile mf, string scriptText){
 		try{
 			// create new script file
-	        var file = File.new_for_path (mf.ScriptFile);
+	        var file = File.new_for_path (mf.TempScriptFile);
 	        var file_stream = file.create (FileCreateFlags.REPLACE_DESTINATION);
 			var data_stream = new DataOutputStream (file_stream);
 	        data_stream.put_string (scriptText);
 	        data_stream.close();
 
 	        // set execute permission
-	        chmod (mf.ScriptFile, "u+x");
+	        chmod (mf.TempScriptFile, "u+x");
        	} 
 	    catch (Error e) {
 	        log_error (e.message);
 	        return "";
 	    }
 	    
-	    return mf.ScriptFile;
+	    return mf.TempScriptFile;
 	}
 
 	private bool run_script (MediaFile mf, string scriptFile){
@@ -2162,6 +2164,8 @@ Notes:
 		
 		s += decode_audio_avconv(mf, settings, true);
 		s += "opusenc";
+		s += (mf.TrackName.length > 0) ? " --title \"%s\"".printf(mf.TrackName) : "";
+		s += (mf.Artist.length > 0) ? " --artist \"%s\"".printf(mf.Artist) : "";
 		s += " --bitrate " + audio.get_string_member("bitrate");
 		//options
 		switch (audio.get_string_member("mode")){
