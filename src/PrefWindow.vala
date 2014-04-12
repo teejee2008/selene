@@ -47,7 +47,7 @@ public class PrefWindow : Dialog {
 	
 	public PrefWindow() {
 		title = "Application Settings";
-		set_default_size (500, 400);
+		set_default_size (350, 400);
 			
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
@@ -64,13 +64,14 @@ public class PrefWindow : Dialog {
 		lblOutput = new Label (_("<b>Output Folder</b>"));
 		lblOutput.set_use_markup(true);
 		lblOutput.halign = Align.START;
-		lblOutput.margin_bottom = 6;
-		lblOutput.margin_top = 6;
+		lblOutput.margin_bottom = 12;
+		lblOutput.margin_top = 12;
 		vboxMain.pack_start (lblOutput, false, true, 0);
 		
 		// fcbOutput
 		fcbOutput = new FileChooserButton (_("Output Location"), FileChooserAction.SELECT_FOLDER);
 		fcbOutput.set_sensitive(App.OutputDirectory.length > 0);
+		fcbOutput.margin_left = 6;
 		fcbOutput.margin_bottom = 6;
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
 			fcbOutput.set_filename (App.OutputDirectory);
@@ -80,6 +81,7 @@ public class PrefWindow : Dialog {
 		// chkOutput
 		chkOutput = new CheckButton.with_label (_("Save in input file location"));
 		chkOutput.active = (App.OutputDirectory.length == 0);
+		chkOutput.margin_left = 6;
 		chkOutput.clicked.connect (chkOutput_clicked);
 		vboxMain.pack_start (chkOutput, false, true, 0);
 				
@@ -87,13 +89,14 @@ public class PrefWindow : Dialog {
 		lblBackup = new Label (_("<b>Backup Folder</b>"));
 		lblBackup.set_use_markup(true);
 		lblBackup.halign = Align.START;
-		lblBackup.margin_bottom = 6;
-		lblBackup.margin_top = 6;
+		lblBackup.margin_bottom = 12;
+		lblBackup.margin_top = 12;
 		vboxMain.pack_start (lblBackup, false, true, 0);
 	
 		// fcbBackup
 		fcbBackup = new FileChooserButton (_("Backup Location"), FileChooserAction.SELECT_FOLDER);
 		fcbBackup.set_sensitive(App.BackupDirectory.length > 0);
+		fcbBackup.margin_left = 6;
 		fcbBackup.margin_bottom = 6;
 		if ((App.BackupDirectory.length > 0) && dir_exists (App.BackupDirectory)){
 			fcbBackup.set_filename (App.BackupDirectory);
@@ -103,6 +106,7 @@ public class PrefWindow : Dialog {
 		// chkBackup
 		chkBackup = new CheckButton.with_label (_("Do not move input files"));
 		chkBackup.active = (App.BackupDirectory.length == 0);
+		chkBackup.margin_left = 6;
 		chkBackup.clicked.connect (chkBackup_clicked);
 		vboxMain.pack_start (chkBackup, false, true, 0);
 		
