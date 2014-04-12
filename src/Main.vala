@@ -2296,10 +2296,18 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		string format = general.get_string_member("format");
+		bool sox_enabled = audio.get_boolean_member("soxEnabled");
 		
-		s += "avconv";
-		s += " -i \"${inFile}\"";
-		
+		if (sox_enabled){
+			s += decode_audio_avconv(mf, settings, true);
+			s += "avconv";
+			s += " -i -";
+		}
+		else{
+			s += "avconv";
+			s += " -i \"${inFile}\"";
+		}
+
 		switch (format){
 			case "ac3":
 				s += " -f ac3 -acodec ac3";
@@ -2445,7 +2453,8 @@ Notes:
 		
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string acodec = audio.get_string_member("codec");
-
+		bool sox_enabled = audio.get_boolean_member("soxEnabled");
+		
 		s += "avconv";
 		
 		//progress info
@@ -2456,7 +2465,8 @@ Notes:
 		s += " -i \"${inFile}\"";
 		
 		//format
-		s += " -f wav -acodec pcm_s16le";
+		s += " -f " + ((sox_enabled) ? "aiff" : "wav");
+		s += " -acodec pcm_s16le";
 		
 		//channels
 		string channels = audio.get_string_member("channels");
@@ -2478,6 +2488,60 @@ Notes:
 		
 		//output
 		s += " -vn -y - | ";
+		
+		if (sox_enabled){
+			s += process_audio_sox(mf,settings);
+		}
+		
+		return s;
+	}
+
+	private string process_audio_sox(MediaFile mf, Json.Object settings){
+		string s = "";
+		
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+
+		s += "sox";
+		s += " -t aiff - -t aiff -";
+		s += " -q"; //silent
+
+		string sox_bass = audio.get_string_member("soxBass");
+		string sox_treble = audio.get_string_member("soxTreble");
+		string sox_pitch = audio.get_string_member("soxPitch");
+		string sox_tempo = audio.get_string_member("soxTempo");
+		string sox_fade_in = audio.get_string_member("soxFadeIn");
+		string sox_fade_out = audio.get_string_member("soxFadeOut");
+		string sox_fade_type = audio.get_string_member("soxFadeType");
+		bool sox_normalize = audio.get_boolean_member("soxNormalize");
+		bool sox_earwax = audio.get_boolean_member("soxEarwax");
+
+		if (sox_bass != "0"){
+			s += " bass " + sox_bass;
+		}
+		if (sox_treble != "0"){
+			s += " treble " + sox_treble;
+		}
+		if (sox_pitch != "1.0"){
+			s += " pitch " + sox_pitch;
+		}
+		if (sox_tempo != "1.0"){
+			s += " tempo " + sox_tempo;
+		}
+		if ((sox_fade_in != "0") || (sox_fade_out != "0")){
+			s += " fade " + sox_fade_type + " " + sox_fade_in;
+			if (sox_fade_out != "0"){
+				s += " %ld".printf(mf.Duration) + " " + sox_fade_out;
+			}
+		}
+		if (sox_normalize){
+			s += " norm";
+		}
+		if (sox_earwax){
+			s += " earwax";
+		}
+		
+		//pipe
+		s += " | ";
 		
 		return s;
 	}

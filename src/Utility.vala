@@ -1904,6 +1904,30 @@ namespace TeeJee.System{
 		return false;
 	}
 
+	public bool exo_open_url (string url){
+				
+		/* Tries to open the given text file in a text editor */
+		
+		string path;
+		
+		path = get_cmd_path ("exo-open");
+		if ((path != null)&&(path != "")){
+			return execute_command_script_async ("exo-open \"" + url + "\"");
+		}
+
+		path = get_cmd_path ("firefox");
+		if ((path != null)&&(path != "")){
+			return execute_command_script_async ("firefox \"" + url + "\"");
+		}
+
+		path = get_cmd_path ("chromium-browser");
+		if ((path != null)&&(path != "")){
+			return execute_command_script_async ("chromium-browser \"" + url + "\"");
+		}
+		
+		return false;
+	}
+	
 	public int notify_send (string title, string message, int durationMillis, string urgency){
 				
 		/* Displays notification bubble on the desktop */

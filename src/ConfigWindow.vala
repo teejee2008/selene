@@ -151,7 +151,27 @@ public class ConfigWindow : Dialog {
 	
 	private Label lblAudioChannels;
 	private ComboBox cmbAudioChannels;
-	
+
+	private Switch switchSox;
+	private Label lblHeaderSox;
+	private Label lblAudioBass;
+	private Scale scaleBass;
+	private Label lblAudioTreble;
+	private Scale scaleTreble;
+	private Label lblAudioPitch;
+	private Scale scalePitch;
+	private Label lblAudioTempo;
+	private Scale scaleTempo;
+	private Label lblNormalize;
+	private Switch switchNormalize;
+	private Label lblEarWax;
+	private Switch switchEarWax;
+	private Label lblFadeIn;
+	private SpinButton spinFadeIn;
+	private Label lblFadeOut;
+	private SpinButton spinFadeOut;
+	private ComboBox cmbFadeType;
+
 	private Label lblSubtitleMode;
 	private ComboBox cmbSubtitleMode;
 	
@@ -709,6 +729,7 @@ public class ConfigWindow : Dialog {
         tabMain.append_page (gridAudio, lblAudio);
 		
 		row = -1;
+
 		
 		//lblACodec
 		lblACodec = new Gtk.Label(_("Format / Codec"));
@@ -804,34 +825,315 @@ public class ConfigWindow : Dialog {
         tabMain.append_page (gridAudioFilters, lblAudioFilters);
 		
 		row = -1;
+		int col;
+
+		//lblHeaderSampling
+		Label lblHeaderSampling = new Gtk.Label(_("<b>Channels &amp; Sampling:</b>"));
+		lblHeaderSampling.set_use_markup(true);
+		lblHeaderSampling.xalign = (float) 0.0;
+		lblHeaderSampling.hexpand = true;
+		gridAudioFilters.attach(lblHeaderSampling,col=0,++row,1,1);
 		
 		//lblAudioSampleRate
 		lblAudioSampleRate = new Gtk.Label(_("Sampling Rate (Hz)"));
 		lblAudioSampleRate.xalign = (float) 0.0;
-		gridAudioFilters.attach(lblAudioSampleRate,0,++row,1,1);
+		gridAudioFilters.attach(lblAudioSampleRate,col=0,++row,2,1);
 		
 		//cmbAudioSampleRate
 		cmbAudioSampleRate = new ComboBox();
 		textCell = new CellRendererText();
         cmbAudioSampleRate.pack_start(textCell, false);        
         cmbAudioSampleRate.hexpand = true;
-        //cmbAudioSampleRate.entry_text_column = 0;
         cmbAudioSampleRate.set_attributes(textCell, "text", 0);
-        gridAudioFilters.attach(cmbAudioSampleRate,1,row,1,1);
+        gridAudioFilters.attach(cmbAudioSampleRate,col+2,row,1,1);
         
 		//lblAudioChannels
 		lblAudioChannels = new Gtk.Label(_("Channels"));
 		lblAudioChannels.xalign = (float) 0.0;
-		gridAudioFilters.attach(lblAudioChannels,0,++row,1,1);
-		
+		gridAudioFilters.attach(lblAudioChannels,col=0,++row,2,1);
+
 		//cmbAudioChannels
 		cmbAudioChannels = new ComboBox();
 		textCell = new CellRendererText();
         cmbAudioChannels.pack_start(textCell, false);
-        //cmbAudioChannels.entry_text_column = 0;
         cmbAudioChannels.set_attributes(textCell, "text", 0);
-        gridAudioFilters.attach(cmbAudioChannels,1,row,1,1);
-				
+        cmbAudioChannels.hexpand = true;
+        gridAudioFilters.attach(cmbAudioChannels,col+2,row,1,1);
+
+		//SOX tab ---------------------------------------------
+		
+		
+		int scaleWidth = 200;
+		int sliderMarginBottom = 0;
+		int spacing = 5;
+		
+		//lblAudioFilters
+		Label lblAudioSox = new Label (_("SOX"));
+
+        //vboxSox
+        Box vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
+		vboxSoxOuter.margin = 12;
+        tabMain.append_page (vboxSoxOuter, lblAudioSox);
+		
+		//hboxSoxSwitch
+		Box hboxSoxSwitch = new Box(Orientation.HORIZONTAL,0);
+		hboxSoxSwitch.margin_bottom = 6;
+        vboxSoxOuter.add(hboxSoxSwitch);
+        
+		//lblHeaderSox
+		lblHeaderSox = new Gtk.Label(_("<b>SOX Audio Processing:</b>"));
+		lblHeaderSox.set_use_markup(true);
+		lblHeaderSox.xalign = (float) 0.0;
+		lblHeaderSox.hexpand = true;
+		hboxSoxSwitch.add(lblHeaderSox);
+
+		//switchSox
+        switchSox = new Gtk.Switch();
+        switchSox.set_size_request(100,-1);
+        hboxSoxSwitch.add(switchSox);
+
+        //vboxSox
+        Box vboxSox = new Box(Orientation.VERTICAL,spacing);
+        vboxSoxOuter.add(vboxSox);
+        
+        switchSox.notify["active"].connect(()=>{
+			vboxSox.sensitive = switchSox.active;
+		});
+		
+		switchSox.active = false;
+		vboxSox.sensitive = switchSox.active;
+		
+		//lblHeaderAdjustments
+		Label lblHeaderAdjustments = new Gtk.Label(_("<b>Adjustments:</b>"));
+		lblHeaderAdjustments.set_use_markup(true);
+		lblHeaderAdjustments.xalign = (float) 0.0;
+		lblHeaderAdjustments.hexpand = true;
+		//lblHeaderAdjustments.margin_top = 5;
+		lblHeaderAdjustments.margin_bottom = 5;
+		vboxSox.add(lblHeaderAdjustments);
+		
+		//hboxBass
+		Box hboxBass = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxBass);
+
+		tt = _("Boost or cut the bass (lower) frequencies of the audio.");
+
+		lblAudioBass = new Gtk.Label(_("Bass (lower freq)") + ": ");
+		lblAudioBass.xalign = (float) 0.0;
+		lblAudioBass.set_tooltip_text(tt);
+		hboxBass.pack_start(lblAudioBass,false,false,0);
+		
+		scaleBass = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -20, 20, 1);
+		scaleBass.adjustment.value = 0;
+		scaleBass.has_origin = false;
+		scaleBass.value_pos = PositionType.LEFT;
+		scaleBass.set_size_request(scaleWidth,-1);
+		scaleBass.margin_bottom = sliderMarginBottom;
+		hboxBass.pack_start(scaleBass,true,true,0);
+		
+		scaleBass.format_value.connect((val)=>{ return "%.0f ".printf(val); });
+
+		Button btnReset = new Button.with_label("X");
+		btnReset.clicked.connect(()=>{ scaleBass.adjustment.value = 0; });
+		btnReset.set_tooltip_text(_("Reset"));
+        hboxBass.pack_start(btnReset,false,true,0);
+        
+		//hboxTreble
+		Box hboxTreble = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxTreble);
+
+		tt = _("Boost or cut the treble (upper) frequencies of the audio.");
+		
+		lblAudioTreble = new Gtk.Label(_("Treble (upper freq)") + ": ");
+		lblAudioTreble.xalign = (float) 0.0;
+		lblAudioTreble.set_tooltip_text(tt);
+		hboxTreble.pack_start(lblAudioTreble,false,false,0);
+		
+		scaleTreble = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -20, 20, 1);
+		scaleTreble.adjustment.value = 0;
+		scaleTreble.has_origin = false;
+		scaleTreble.value_pos = PositionType.LEFT;
+		scaleTreble.set_size_request(scaleWidth,-1);
+		scaleTreble.margin_bottom = sliderMarginBottom;
+		hboxTreble.pack_start(scaleTreble,true,true,0);
+		
+		scaleTreble.format_value.connect((val)=>{ return "%.0f ".printf(val); });
+
+		btnReset = new Button.with_label("X");
+		btnReset.clicked.connect(()=>{ scaleTreble.adjustment.value = 0; });
+		btnReset.set_tooltip_text(_("Reset"));
+        hboxTreble.pack_start(btnReset,false,true,0);
+        
+		//hboxPitch
+		Box hboxPitch = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxPitch);
+
+		tt = _("Change audio pitch (shrillness) without changing audio tempo (speed).");
+
+		lblAudioPitch = new Gtk.Label(_("Pitch (shrillness)") + ": ");
+		lblAudioPitch.xalign = (float) 0.0;
+		lblAudioPitch.set_tooltip_text(tt);
+		hboxPitch.pack_start(lblAudioPitch,false,false,0);
+		
+		scalePitch = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 500, 1);
+		scalePitch.adjustment.value = 100;
+		//scalePitch.has_origin = false;
+		scalePitch.value_pos = PositionType.LEFT;
+		scalePitch.set_size_request(scaleWidth,-1);
+		scalePitch.margin_bottom = sliderMarginBottom;
+		hboxPitch.pack_start(scalePitch,true,true,0);
+		
+		scalePitch.format_value.connect((val)=>{ return "%.0f%% ".printf(val); });
+
+		btnReset = new Button.with_label("X");
+		btnReset.clicked.connect(()=>{ scalePitch.adjustment.value = 100; });
+		btnReset.set_tooltip_text(_("Reset"));
+        hboxPitch.pack_start(btnReset,false,true,0);
+        
+		//hboxTempo
+		Box hboxTempo = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxTempo);
+        
+		tt = _("Change audio tempo (speed) without changing audio pitch (shrillness).\n\nWARNING: This will change the duration of the audio track");
+
+		lblAudioTempo = new Gtk.Label(_("Tempo (speed)") + ": ");
+		lblAudioTempo.xalign = (float) 0.0;
+		lblAudioTempo.set_tooltip_text(tt);
+		hboxTempo.pack_start(lblAudioTempo,false,false,0);
+		
+		scaleTempo = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 200, 1);
+		scaleTempo.adjustment.value = 100;
+		//scaleTempo.has_origin = false;
+		scaleTempo.value_pos = PositionType.LEFT;
+		scaleTempo.set_size_request(scaleWidth,-1);
+		scaleTempo.margin_bottom = sliderMarginBottom;
+		hboxTempo.pack_start(scaleTempo,true,true,0);
+
+		scaleTempo.format_value.connect((val)=>{ return "%.0f%% ".printf(val); });
+
+		btnReset = new Button.with_label("X");
+		btnReset.clicked.connect(()=>{ scaleTempo.adjustment.value = 100; });
+		btnReset.set_tooltip_text(_("Reset"));
+        hboxTempo.pack_start(btnReset,false,true,0);
+        
+		//lblHeaderFade
+		Label lblHeaderFade = new Gtk.Label(_("<b>Fade:</b>"));
+		lblHeaderFade.set_use_markup(true);
+		lblHeaderFade.xalign = (float) 0.0;
+		lblHeaderFade.hexpand = true;
+		lblHeaderFade.margin_top = 5;
+		lblHeaderFade.margin_bottom = 5;
+		vboxSox.add(lblHeaderFade);
+		
+		//hboxFadeIn
+		Box hboxFadeIn = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxFadeIn);
+        
+		lblFadeIn = new Gtk.Label(_("Fade In (seconds)"));
+		lblFadeIn.xalign = (float) 0.0;
+		lblFadeIn.hexpand = true;
+		hboxFadeIn.pack_start(lblFadeIn,true,true,0);
+
+		Gtk.Adjustment adjFadeIn = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
+		spinFadeIn = new Gtk.SpinButton (adjFadeIn, 1, 0);
+		spinFadeIn.xalign = (float) 0.5;
+		spinFadeIn.set_size_request(130,-1);
+		hboxFadeIn.pack_end(spinFadeIn,false,false,0);
+		
+		//hboxFadeOut
+		Box hboxFadeOut = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxFadeOut);
+        
+		lblFadeOut = new Gtk.Label(_("Fade Out (seconds)"));
+		lblFadeOut.xalign = (float) 0.0;
+		lblFadeOut.hexpand = true;
+		hboxFadeOut.pack_start(lblFadeOut,true,true,0);
+
+		Gtk.Adjustment adjFadeOut = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
+		spinFadeOut = new Gtk.SpinButton (adjFadeOut, 1, 0);
+		spinFadeOut.xalign = (float) 0.5;
+		spinFadeOut.set_size_request(130,-1);
+		hboxFadeOut.pack_end(spinFadeOut,false,false,0);
+		
+		//hboxFadeType
+		Box hboxFadeType = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hboxFadeType);
+
+		Label lblFadeType = new Gtk.Label(_("Fade Type"));
+		lblFadeType.xalign = (float) 0.0;
+		lblFadeType.hexpand = true;
+		hboxFadeType.pack_start(lblFadeType,true,true,0);
+		
+		cmbFadeType = new ComboBox();
+		textCell = new CellRendererText();
+        cmbFadeType.pack_start(textCell, false);
+        cmbFadeType.set_attributes(textCell, "text", 0);
+		cmbFadeType.set_size_request(130,-1);
+		hboxFadeType.pack_end(cmbFadeType,false,false,0);
+        
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter,0,_("Quarter Sine"),1,"q");
+		model.append (out iter);
+		model.set (iter,0,_("Half Sine"),1,"h");
+		model.append (out iter);
+		model.set (iter,0,_("Linear"),1,"t");
+		model.append (out iter);
+		model.set (iter,0,_("Logarithmic"),1,"l");
+		model.append (out iter);
+		model.set (iter,0,_("Inverted Parabola"),1,"p");
+		cmbFadeType.set_model(model);
+
+		//lblHeaderOther
+		Label lblHeaderOther = new Gtk.Label(_("<b>Other Effects:</b>"));
+		lblHeaderOther.set_use_markup(true);
+		lblHeaderOther.xalign = (float) 0.0;
+		lblHeaderOther.hexpand = true;
+		lblHeaderOther.margin_top = 5;
+		lblHeaderOther.margin_bottom = 5;
+		vboxSox.add(lblHeaderOther);
+		
+		//hboxNormalize
+		Box hboxNormalize = new Box(Orientation.HORIZONTAL,0);
+        vboxSox.add(hboxNormalize);
+
+		tt = _("Maximize the volume level (loudness)");
+		
+		lblNormalize = new Gtk.Label(_("Maximize Volume Level (Normalize)"));
+		lblNormalize.xalign = (float) 0.0;
+		lblNormalize.hexpand = true;
+		lblNormalize.set_tooltip_text(tt);
+		hboxNormalize.pack_start(lblNormalize,true,true,0);
+		
+        switchNormalize = new Gtk.Switch();
+        switchNormalize.set_size_request(100,-1);
+        switchNormalize.active = false;
+        hboxNormalize.pack_end(switchNormalize,false,false,0);
+
+		//hboxEarWax
+		Box hboxEarWax = new Box(Orientation.HORIZONTAL,0);
+        vboxSox.add(hboxEarWax);
+
+		tt = _("Makes audio easier to listen to on headphones. Adds ‘cues’ to the audio so that when listened to on headphones the stereo image is moved from inside your head (standard for headphones) to outside and in front of the listener (standard for speakers).");
+		
+		lblEarWax = new Gtk.Label(_("Adjust Stereo for Headphones"));
+		lblEarWax.xalign = (float) 0.0;
+		lblEarWax.hexpand = true;
+		lblEarWax.set_tooltip_text(tt);
+		hboxEarWax.pack_start(lblEarWax,true,true,0);
+
+        switchEarWax = new Gtk.Switch();
+        switchEarWax.set_size_request(100,-1);
+        switchEarWax.active = false;
+        hboxEarWax.pack_end(switchEarWax,false,false,0);
+
+		//lnkSoxHome
+		LinkButton lnkSoxHome = new LinkButton.with_label ("http://sox.sourceforge.net/", "SOund eXchange - http://sox.sourceforge.net/");
+		lnkSoxHome.xalign = (float) 0.0;
+		lnkSoxHome.valign = Align.END;
+		lnkSoxHome.activate_link.connect(()=>{ return exo_open_url(lnkSoxHome.uri); });
+        vboxSoxOuter.pack_end(lnkSoxHome,true,true,0);
+        
 		//Subtitles tab ---------------------------------------------
 		
 		//lblSubtitle
@@ -888,6 +1190,7 @@ public class ConfigWindow : Dialog {
 		cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
 		cmbFrameSize.set_active (0);
+		cmbFadeType.set_active (0);
 		//cmbResizingMethod.set_active (2);
 		//cmbFileExtension.set_active (0);
 		
@@ -2009,6 +2312,7 @@ public class ConfigWindow : Dialog {
 		config.set_object_member("audio",audio);
 		audio.set_string_member("codec",acodec);
 		if (acodec != "disable") {
+			//codec
 			audio.set_string_member("mode",audio_mode);
 			audio.set_string_member("bitrate",audio_bitrate);
 			audio.set_string_member("quality",audio_quality);
@@ -2017,6 +2321,20 @@ public class ConfigWindow : Dialog {
 			}
 			audio.set_string_member("channels",audio_channels);
 			audio.set_string_member("samplingRate",audio_sampling);
+			
+			//sox
+			audio.set_boolean_member("soxEnabled",sox_enabled);
+			if (sox_enabled) {
+				audio.set_string_member("soxBass",sox_bass);
+				audio.set_string_member("soxTreble",sox_treble);
+				audio.set_string_member("soxPitch",sox_pitch);
+				audio.set_string_member("soxTempo",sox_tempo);
+				audio.set_string_member("soxFadeIn",sox_fade_in);
+				audio.set_string_member("soxFadeOut",sox_fade_out);
+				audio.set_string_member("soxFadeType",sox_fade_type);
+				audio.set_boolean_member("soxNormalize",sox_normalize);
+				audio.set_boolean_member("soxEarwax",sox_earwax);
+			}
 		}
 		
 		config.set_object_member("subtitle",subs);
@@ -2105,6 +2423,7 @@ public class ConfigWindow : Dialog {
 		acodec = audio.get_string_member("codec");
 		
 		if (acodec != "disable") {
+			//codec config
 			audio_mode = audio.get_string_member("mode");
 			audio_bitrate = audio.get_string_member("bitrate");
 			audio_quality = audio.get_string_member("quality");
@@ -2113,8 +2432,22 @@ public class ConfigWindow : Dialog {
 			}
 			audio_channels = audio.get_string_member("channels");
 			audio_sampling = audio.get_string_member("samplingRate");
+			
+			//sox config
+			sox_enabled = audio.get_boolean_member("soxEnabled");
+			if (sox_enabled) {
+				sox_bass = audio.get_string_member("soxBass");
+				sox_treble = audio.get_string_member("soxTreble");
+				sox_pitch = audio.get_string_member("soxPitch");
+				sox_tempo = audio.get_string_member("soxTempo");
+				sox_fade_in = audio.get_string_member("soxFadeIn");
+				sox_fade_out = audio.get_string_member("soxFadeOut");
+				sox_fade_type = audio.get_string_member("soxFadeType");
+				sox_normalize = audio.get_boolean_member("soxNormalize");
+				sox_earwax = audio.get_boolean_member("soxEarwax");
+			}
 		}
-		
+
 		//subtitles --------------
 		
 		subtitle_mode = subs.get_string_member("mode");
@@ -2388,6 +2721,96 @@ public class ConfigWindow : Dialog {
 		}
         set { 
 			gtk_combobox_set_value(cmbAudioSampleRate, 1, value);
+		}
+    }
+
+    public bool sox_enabled{
+        get { 
+			return switchSox.active; 
+		}
+        set { 
+			switchSox.set_active((bool)value);
+		}
+    }
+    
+    public string sox_bass{
+        owned get { 
+			return scaleBass.get_value().to_string();
+		}
+        set { 
+			scaleBass.set_value(double.parse(value));
+		}
+    }
+
+    public string sox_treble{
+        owned get { 
+			return scaleTreble.get_value().to_string();
+		}
+        set { 
+			scaleTreble.set_value(double.parse(value));
+		}
+    }
+
+    public string sox_pitch{
+        owned get { 
+			return "%.1f".printf(scalePitch.get_value()/100);
+		}
+        set { 
+			scalePitch.set_value(double.parse(value) * 100);
+		}
+    }
+
+    public string sox_tempo{
+        owned get { 
+			return "%.1f".printf(scaleTempo.get_value()/100);
+		}
+        set { 
+			scaleTempo.set_value(double.parse(value) * 100);
+		}
+    }
+
+    public string sox_fade_in{
+        owned get { 
+			return spinFadeIn.get_value().to_string();
+		}
+        set { 
+			spinFadeIn.set_value(double.parse(value));
+		}
+    }
+
+    public string sox_fade_out{
+        owned get { 
+			return spinFadeOut.get_value().to_string();
+		}
+        set { 
+			spinFadeOut.set_value(double.parse(value));
+		}
+    }
+
+    public string sox_fade_type{
+        owned get { 
+			return gtk_combobox_get_value(cmbFadeType,1,"l");
+		}
+        set { 
+			gtk_combobox_set_value(cmbFadeType, 1, value);
+		}
+    }
+    
+    public bool sox_normalize{
+        get { 
+			return switchNormalize.active; 
+		}
+        set { 
+			switchNormalize.set_active((bool)value);
+		}
+    }
+
+    public bool sox_earwax{
+        get { 
+			return switchEarWax.active; 
+		}
+        set { 
+			switchEarWax.set_active((bool)value);
 		}
     }
     
