@@ -2479,6 +2479,7 @@ Notes:
 		if (silent){
 			s += " -nostats";
 		}
+
 		//input
 		s += " -i \"${inFile}\"";
 		
@@ -2520,7 +2521,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		s += "sox";
-		s += " -t aiff - -t aiff -";
+		s += " -t aiff - -t wav -";
 		s += " -q"; //silent
 
 		string sox_bass = audio.get_string_member("soxBass");
