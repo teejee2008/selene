@@ -1391,7 +1391,7 @@ public class ConfigWindow : Dialog {
 				model.set (iter,0,"PCM 32-bit Unsigned LE / Libav",1,"pcm_u32le");
 				//model.append (out iter);
 				//model.set (iter,0,"PCM 32-bit Unsigned BE / Libav",1,"pcm_u32be");
-				cmbACodec.set_active(2);
+				cmbACodec.set_active(1);
 				break;
 		}
 		

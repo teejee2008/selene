@@ -81,6 +81,7 @@ public class MediaFile : GLib.Object{
 	public string SubExt = "";
 
 	public string TrackName = "";
+	public string TrackNumber = "";
 	public string Album = "";
 	public string Artist = "";
 	public string Genre = "";
@@ -222,6 +223,9 @@ public class MediaFile : GLib.Object{
 							break;
 						case "track name":
 							TrackName = val;
+							break;
+						case "track name/position":
+							TrackNumber = val;
 							break;
 						case "album":
 							Album = val;
@@ -2159,6 +2163,7 @@ Notes:
 				break;
 		}
 		s += (mf.TrackName.length > 0) ? " --tt '%s'".printf(mf.TrackName) : "";
+		s += (mf.TrackNumber.length > 0) ? " --tn '%s'".printf(mf.TrackNumber) : "";
 		s += (mf.Artist.length > 0) ? " --ta '%s'".printf(mf.Artist) : "";
 		s += (mf.Album.length > 0) ? " --tl '%s'".printf(mf.Album) : "";
 		s += (mf.Genre.length > 0) ? " --tg '%s'".printf(mf.Genre) : "";
@@ -2216,6 +2221,7 @@ Notes:
 			s += "neroAacTag";
 			s += " \"${outputFile}\"";
 			s += (mf.TrackName.length > 0) ? " -meta:title='%s'".printf(mf.TrackName) : "";
+			s += (mf.TrackNumber.length > 0) ? " -meta:track='%s'".printf(mf.TrackNumber) : "";
 			s += (mf.Artist.length > 0) ? " -meta:artist='%s'".printf(mf.Artist) : "";
 			s += (mf.Album.length > 0) ? " -meta:album='%s'".printf(mf.Album) : "";
 			s += (mf.Genre.length > 0) ? " -meta:genre='%s'".printf(mf.Genre) : "";
@@ -2239,6 +2245,7 @@ Notes:
 		
 		//tags
 		s += (mf.TrackName.length > 0) ? " --title '%s'".printf(mf.TrackName) : "";
+		s += (mf.TrackNumber.length > 0) ? " --comment='track=%s'".printf(mf.TrackNumber) : "";
 		s += (mf.Artist.length > 0) ? " --artist '%s'".printf(mf.Artist) : "";
 		s += (mf.Album.length > 0) ? " --comment='album=%s'".printf(mf.Album) : "";
 		s += (mf.Genre.length > 0) ? " --comment='genre=%s'".printf(mf.Genre) : "";
@@ -2333,8 +2340,18 @@ Notes:
 		if (sampling != "disable"){
 			s += " -ar " + sampling;
 		}
+
+		//tags
+		s += (mf.TrackName.length > 0) ? " -metadata 'title'='%s'".printf(mf.TrackName) : "";
+		s += (mf.TrackNumber.length > 0) ? " -metadata 'track'='%s'".printf(mf.TrackNumber) : "";
+		s += (mf.Artist.length > 0) ? " -metadata 'artist'='%s'".printf(mf.Artist) : "";
+		s += (mf.Album.length > 0) ? " -metadata 'album'='%s'".printf(mf.Album) : "";
+		s += (mf.Genre.length > 0) ? " -metadata 'genre'='%s'".printf(mf.Genre) : "";
+		s += (mf.RecordedDate.length > 0) ? " -metadata 'year'='%s'".printf(mf.RecordedDate) : "";
+		s += (mf.Comment.length > 0) ? " -metadata 'comment'='%s'".printf(mf.Comment) : ""; 
 		
 		s += " -vn -sn";
+
 		s += " -y \"${outputFile}\"";
 		
 		return s;
@@ -2363,6 +2380,7 @@ Notes:
 		
 		//tags
 		s += (mf.TrackName.length > 0) ? " --title '%s'".printf(mf.TrackName) : "";
+		s += (mf.TrackNumber.length > 0) ? " --comment='track=%s'".printf(mf.TrackNumber) : "";
 		s += (mf.Artist.length > 0) ? " --artist '%s'".printf(mf.Artist) : "";
 		s += (mf.Album.length > 0) ? " --album '%s'".printf(mf.Album) : "";
 		s += (mf.Genre.length > 0) ? " --genre '%s'".printf(mf.Genre) : "";
