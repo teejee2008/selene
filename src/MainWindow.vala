@@ -1361,7 +1361,10 @@ on the toolbar will open the file in a text editor.
 		dlgAddFiles.local_only = true;
  		dlgAddFiles.set_modal (true);
  		dlgAddFiles.set_select_multiple (true);
-
+		if (App.InputDirectory.length > 0) {
+			dlgAddFiles.set_current_folder(App.InputDirectory);
+		}
+		
  		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
 			
 			set_busy(true,dlgAddFiles);
@@ -1372,6 +1375,8 @@ on the toolbar will open the file in a text editor.
 					statusbar_show_message (_("Format not supported:") + "'" + file + "'", true, true);
 				}
 			}
+			
+			App.InputDirectory = dlgAddFiles.get_current_folder();
 	 	}
 
 	 	refresh_file_list(true);

@@ -433,7 +433,8 @@ public class Main : GLib.Object{
 	public string TempDirectory;
 	public string OutputDirectory = "";
 	public string BackupDirectory = "";
-
+	public string InputDirectory = "";
+	
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
 	public string CurrentLine;
@@ -805,6 +806,7 @@ Notes:
 	
 	public void save_config(){
 		var config = new Json.Object();
+		config.set_string_member("input-dir", InputDirectory);
 		config.set_string_member("backup-dir", BackupDirectory);
 		config.set_string_member("output-dir", OutputDirectory);
 		config.set_string_member("last-script", SelectedScript.Path);
@@ -841,8 +843,14 @@ Notes:
 	    }
         var node = parser.get_root();
         var config = node.get_object();
+
+		string val = json_get_string(config,"input-dir", InputDirectory);
+		if (dir_exists(val))
+			InputDirectory = val;
+		else
+			InputDirectory = "";
         
-		string val = json_get_string(config,"backup-dir", BackupDirectory);
+		val = json_get_string(config,"backup-dir", BackupDirectory);
 		if (dir_exists(val))
 			BackupDirectory = val;
 		else
