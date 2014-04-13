@@ -74,7 +74,7 @@ public class MediaFile : GLib.Object{
 	public string Location;
 	
 	public int64 Size = 0;
-	public long Duration = 0;
+	public long Duration = 0; //in milliseconds
 	
 	public string SubFile = "";
 	public string SubName = "";
@@ -465,6 +465,7 @@ public class Main : GLib.Object{
 	private Regex regex_ffmpeg2theora3;
 	private Regex regex_opus;
 	private Regex regex_vpxenc;
+	private Regex regex_neroaacenc;
 	
 	private string tempLine;
 	private MatchInfo match;
@@ -738,6 +739,9 @@ Notes:
 			
 			//Pass 1/1 frame    2/1       6755B
 			regex_vpxenc = new Regex ("""(Pass[ ]*[0-9]+/[0-9]+)[ ]*frame[ ]*([0-9]+)/[0-9]+[ ]*([0-9]+)B""");
+			
+			//Processed 100 seconds...
+			regex_neroaacenc = new Regex("""Processed[ ]*([0-9.]+)[ ]*seconds""");
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -1361,7 +1365,7 @@ Notes:
 	
 	public bool update_progress (string line){		
 		tempLine = line;
-		
+
 		if ((tempLine == null)||(tempLine.length == 0)){ return true; }
 		if (tempLine.index_of ("overread, skip") != -1){ return true; }
 		if (tempLine.index_of ("Last message repeated") != -1){ return true; }
@@ -1406,6 +1410,11 @@ Notes:
 			dblVal = double.parse(match.fetch(2));
 			Progress = dblVal / App.CurrentFile.OutputFrameCount;
 			StatusLine = "(vpxenc) %s, %s frames, %.0f kb".printf(match.fetch(1), match.fetch(2), double.parse(match.fetch(3))/1000);
+		}
+		else if (regex_neroaacenc.match (tempLine, 0, out match)){
+			dblVal = double.parse(match.fetch(1));
+			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			StatusLine = tempLine;
 		}
 		else if (regex_generic.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
@@ -2365,7 +2374,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
-		s += decode_audio_avconv(mf, settings, true);
+		s += decode_audio_avconv(mf, settings, false);
 		s += "oggenc --quiet";
 		
 		//mode
@@ -2479,7 +2488,10 @@ Notes:
 		if (silent){
 			s += " -nostats";
 		}
-
+		else{
+			s += " -stats";
+		}
+		
 		//input
 		s += " -i \"${inFile}\"";
 		
