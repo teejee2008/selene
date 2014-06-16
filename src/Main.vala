@@ -1239,14 +1239,12 @@ Notes:
 		string acodec = audio.get_string_member("codec");
 		string vcodec = video.get_string_member("codec");
 		
-		switch (format)
-		{
+		switch (format){
 			case "mkv":
 			case "mp4v":
 			case "webm":
 				//encode video
-				switch (vcodec)
-				{
+				switch (vcodec){
 					case "x264":
 						s += encode_video_x264(mf,settings);
 						encoderList.add("x264");
@@ -1263,14 +1261,23 @@ Notes:
 						case "mp3lame":
 							s += encode_audio_mp3lame(mf,settings);
 							encoderList.add("mp3lame");
+							if (audio.get_boolean_member("soxEnabled")){
+								encoderList.add("sox");
+							};
 							break;
 						case "neroaac":
 							s += encode_audio_neroaac(mf,settings);
 							encoderList.add("neroaacenc");
+							if (audio.get_boolean_member("soxEnabled")){
+								encoderList.add("sox");
+							};
 							break;
 						case "vorbis":
 							s += encode_audio_oggenc(mf,settings);
 							encoderList.add("oggenc");
+							if (audio.get_boolean_member("soxEnabled")){
+								encoderList.add("sox");
+							};
 							break;
 					}
 				}
@@ -1298,21 +1305,33 @@ Notes:
 			case "mp3":
 				s += encode_audio_mp3lame(mf,settings);
 				encoderList.add("mp3lame");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
 				break;
 				
 			case "mp4a":
 				s += encode_audio_neroaac(mf,settings);
 				encoderList.add("neroaacenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
 				break;
 				
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				encoderList.add("opusenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
 				break;
 				
 			case "ogg":
 				s += encode_audio_oggenc(mf,settings);
 				encoderList.add("oggenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
 				break;
 
 			case "ac3":
@@ -1320,6 +1339,9 @@ Notes:
 			case "wav":
 				s += encode_audio_avconv(mf,settings);
 				encoderList.add("avconv");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
 				break;
 		}
 		

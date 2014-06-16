@@ -898,11 +898,19 @@ public class ConfigWindow : Dialog {
         
         switchSox.notify["active"].connect(()=>{
 			vboxSox.sensitive = switchSox.active;
+			
+			App.Encoders["sox"].CheckAvailability();
+			if (!App.Encoders["sox"].IsAvailable){
+				if (switchSox.active){
+					gtk_messagebox(_("Sox Not Installed"), _("The Sox utility was not found on your system") + "\n" + _("Please install the 'sox' package on your system to use this feature"), this, true);
+					switchSox.active = false;
+				}
+			}
 		});
 		
 		switchSox.active = false;
 		vboxSox.sensitive = switchSox.active;
-		
+
 		//lblHeaderAdjustments
 		Label lblHeaderAdjustments = new Gtk.Label(_("<b>Adjustments:</b>"));
 		lblHeaderAdjustments.set_use_markup(true);
@@ -2434,7 +2442,20 @@ public class ConfigWindow : Dialog {
 			audio_sampling = audio.get_string_member("samplingRate");
 			
 			//sox config
-			sox_enabled = audio.get_boolean_member("soxEnabled");
+			
+			if (audio.get_boolean_member("soxEnabled")){
+				App.Encoders["sox"].CheckAvailability();
+				if (!App.Encoders["sox"].IsAvailable){
+					sox_enabled = false;
+				}
+				else{
+					sox_enabled = true;
+				}
+			}
+			else{
+				sox_enabled = false;
+			}
+
 			if (sox_enabled) {
 				sox_bass = audio.get_string_member("soxBass");
 				sox_treble = audio.get_string_member("soxTreble");
