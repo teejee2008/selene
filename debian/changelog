@@ -1,4 +1,4 @@
-selene (2.4) saucy; urgency=low
+selene (2.4.1) saucy; urgency=low
 
   * Audio tags will be copied from input to output file for all encoders
   

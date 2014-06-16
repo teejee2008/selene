@@ -40,7 +40,7 @@ using TeeJee.Misc;
 public Main App;
 public const string AppName = "Selene Media Encoder";
 public const string AppShortName = "selene";
-public const string AppVersion = "2.4";
+public const string AppVersion = "2.4.1";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejeetech@gmail.com";
 
