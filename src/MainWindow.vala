@@ -42,6 +42,7 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnClearFiles;
     private ToolButton btnAppSettings;
     private ToolButton btnAbout;
+    private ToolButton btnDonate;
     private ToolButton btnOpenOutputFolder;
     private ToolButton btnStart;
     private ToolButton btnStop;
@@ -114,7 +115,7 @@ public class MainWindow : Gtk.Window{
         window_position = WindowPosition.CENTER;
         destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
-        icon = App.get_app_icon(16);
+        icon = get_app_icon(16);
 
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		drag_data_received.connect(on_drag_data_received);
@@ -210,7 +211,17 @@ public class MainWindow : Gtk.Window{
 		btnAppSettings.clicked.connect (btnAppSettings_clicked);
 		btnAppSettings.set_tooltip_text (_("Application Settings"));
 		toolbar.add (btnAppSettings);
-		
+
+        //btn_donate
+		btnDonate = new Gtk.ToolButton.from_stock ("gtk-dialog-info");
+		btnDonate.is_important = false;
+		btnDonate.icon_widget = get_shared_icon("donate","donate.svg",32);
+		btnDonate.label = _("Donate");
+		btnDonate.set_tooltip_text (_("Donate"));
+        toolbar.add(btnDonate);
+
+        btnDonate.clicked.connect(btnDonation_clicked);
+        
 		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock ("gtk-about");
 		btnAbout.clicked.connect (btnAbout_clicked);
@@ -1409,40 +1420,37 @@ on the toolbar will open the file in a text editor.
 	}
 	
 	private void btnAbout_clicked(){
-		var dialog = new Gtk.AboutDialog();
-		dialog.set_destroy_with_parent (true);
+		var dialog = new AboutWindow();
 		dialog.set_transient_for (this);
-		dialog.set_modal (true);
-		
-		//dialog.artists = {"", ""};
-		dialog.authors = {"Tony George"};
+
+		dialog.authors = { "Tony George:teejeetech@gmail.com" };
+		dialog.translators = null; 
 		dialog.documenters = null; 
-		dialog.translator_credits = null; 
+		dialog.artists = null;
+		dialog.donations = null;
 
-		dialog.program_name = "Selene Media Encoder";
+		dialog.program_name = AppName;
 		dialog.comments = _("An audio-video encoder for Linux");
-		dialog.copyright = "Copyright © 2013 Tony George (teejee2008@gmail.com)";
+		dialog.copyright = "Copyright © 2014 Tony George (%s)".printf(AppAuthorEmail);
 		dialog.version = AppVersion;
-		dialog.logo = App.get_app_icon(128);
-		
-		dialog.license = 
-"""
-This program is free for personal and commercial use and comes with absolutely no warranty. You use this program entirely at your own risk. The author will not be liable for any damages arising from the use of this program.
-""";
-		dialog.wrap_license = true;
+		dialog.logo = get_app_icon(128);
 
-		dialog.website = "http://teejeetech.blogspot.in";
-		dialog.website_label = "TeeJee Tech";
+		dialog.license = "This program is free for personal and commercial use and comes with absolutely no warranty. You use this program entirely at your own risk. The author will not be liable for any damages arising from the use of this program.";
+		dialog.website = "http://teejeetech.in";
+		dialog.website_label = "http://teejeetech.blogspot.in";
 
-		dialog.response.connect ((response_id) => {
-			if (response_id == Gtk.ResponseType.CANCEL || response_id == Gtk.ResponseType.DELETE_EVENT) {
-				dialog.hide_on_delete();
-			}
-		});
-
-		dialog.present();
+		dialog.initialize();
+		dialog.show_all();
 	}
-
+	
+	public void btnDonation_clicked(){
+		var dialog = new DonationWindow();
+		dialog.set_transient_for(this);
+		dialog.show_all();
+		dialog.run();
+		dialog.destroy();
+	}
+	
 	private void btnAppSettings_clicked(){
 	    var window = new PrefWindow();
 	    window.set_transient_for(this);
@@ -1542,6 +1550,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
 		btnAppSettings.visible = false;
+		btnDonate.visible = false;
 		btnAbout.visible = false;
 		
 		btnShutdown.visible = App.AdminMode;
@@ -1570,6 +1579,7 @@ This program is free for personal and commercial use and comes with absolutely n
 		btnRemoveFiles.visible = true;
 		btnClearFiles.visible = true;
 		btnAppSettings.visible = true;
+		btnDonate.visible = true;
 		btnAbout.visible = true;
 		
 		btnShutdown.visible = false;

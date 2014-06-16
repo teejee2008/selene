@@ -189,7 +189,7 @@ public class ConfigWindow : Dialog {
         skip_taskbar_hint = true;
 		modal = true;
 		deletable = false;
-		icon = App.get_app_icon(16);
+		icon = get_app_icon(16);
 		
 		int row = 0;
         Gtk.ListStore model;

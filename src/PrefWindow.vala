@@ -54,7 +54,7 @@ public class PrefWindow : Dialog {
         skip_taskbar_hint = true;
 		modal = true;
 		deletable = false;
-		icon = App.get_app_icon(16);
+		icon = get_app_icon(16);
 	    
 		// get content area
 		vboxMain = get_content_area();

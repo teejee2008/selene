@@ -8,7 +8,7 @@ man1dir = $(mandir)/man1
 CFLAGS = --std=c99
 
 all:
-	valac -X -D'GETTEXT_PACKAGE="selene"' --Xcc="-lm" "Main.vala" "Utility.vala" "MainWindow.vala" "PrefWindow.vala" "ConfigWindow.vala" "FileInfoWindow.vala" -o selene --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-1.0 --pkg libsoup-2.4 --pkg json-glib-1.0 
+	valac -X -D'GETTEXT_PACKAGE="selene"' --Xcc="-lm" "Main.vala" "Utility.vala" "MainWindow.vala" "PrefWindow.vala" "ConfigWindow.vala" "FileInfoWindow.vala" "AboutWindow.vala" "DonationWindow.vala" -o selene --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-1.0 --pkg libsoup-2.4 --pkg json-glib-1.0 
 
 clean:
 	rm -rf *.o selene
@@ -28,14 +28,18 @@ install:
 	install -m 0755 selene $(DESTDIR)$(bindir)
 	
 	#shared files
-	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene share/*
+	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene ./share/selene/*
 	chmod --recursive 0755 $(DESTDIR)$(sharedir)/selene/*
 	
 	#launcher
 	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
 	
 	#app icon
-	install -m 0755 ./share/images/selene.png $(DESTDIR)$(sharedir)/pixmaps
+	install -m 0755 ./share/pixmaps/selene.png $(DESTDIR)$(sharedir)/pixmaps
+	
+	#translations
+	#mkdir -p "$(DESTDIR)$(localedir)/cs_CZ/LC_MESSAGES"
+	#msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/cs_CZ/LC_MESSAGES/selene.mo" ../po/selene-cs.po
 	
 uninstall:
 	#binary
@@ -51,3 +55,5 @@ uninstall:
 	#app icon
 	rm -f $(DESTDIR)$(sharedir)/pixmaps/selene.png
 	
+    #translations
+	#rm -f "$(DESTDIR)$(localedir)/*/LC_MESSAGES/selene.mo"

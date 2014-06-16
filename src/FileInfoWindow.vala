@@ -50,7 +50,7 @@ public class FileInfoWindow : Dialog {
         skip_taskbar_hint = true;
 		modal = true;
 		deletable = false;
-		icon = App.get_app_icon(16);
+		icon = get_app_icon(16);
 		
 		//save reference
 		file = _file;

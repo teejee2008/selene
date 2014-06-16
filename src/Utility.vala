@@ -35,6 +35,15 @@ using TeeJee.Misc;
 
 /*
 extern void exit(int exit_code);
+
+public Main App;
+public const string AppName = "Selene Media Encoder";
+public const string AppShortName = "selene";
+public const string AppVersion = "2.3";
+public const string AppAuthor = "Tony George";
+public const string AppAuthorEmail = "teejee2008@gmail.com";
+public const bool LogTimestamp = true;
+public bool UseConsoleColors = false;
 */
 
 namespace TeeJee.Logging{
@@ -167,6 +176,20 @@ namespace TeeJee.FileSystem{
 		
 		return ( FileUtils.test(filePath, GLib.FileTest.EXISTS) && FileUtils.test(filePath, GLib.FileTest.IS_REGULAR));
 	}
+
+	public void file_copy (string src_file, string dest_file){
+		try{
+			var file_src = File.new_for_path (src_file);
+			if (file_src.query_exists()) { 
+				var file_dest = File.new_for_path (dest_file);
+				file_src.copy(file_dest,FileCopyFlags.OVERWRITE,null,null);
+			}
+		}
+		catch(Error e){
+	        log_error (e.message);
+		}
+	}
+	
 	
 	public bool dir_exists (string filePath){
 		
@@ -1128,10 +1151,25 @@ namespace TeeJee.JSON{
 }
 
 namespace TeeJee.ProcessManagement{
-	
 	using TeeJee.Logging;
 	using TeeJee.FileSystem;
 	using TeeJee.Misc;
+	
+	public string TEMP_DIR;
+
+    public static void init_tmp(){
+		string std_out, std_err;
+		
+		TEMP_DIR = Environment.get_tmp_dir() + "/" + AppShortName;
+		create_dir(TEMP_DIR);
+		
+		execute_command_script_sync("echo 'ok'",out std_out,out std_err);
+		if ((std_out == null)||(std_out.strip() != "ok")){
+			TEMP_DIR = Environment.get_home_dir() + "/.temp/" + AppShortName;
+			execute_command_sync("rm -rf '%s'".printf(TEMP_DIR));
+			create_dir(TEMP_DIR);
+		}
+	}
 	
 	/* Convenience functions for executing commands and managing processes */
 
@@ -1220,7 +1258,7 @@ namespace TeeJee.ProcessManagement{
 				
 		/* Generates temporary file path */
 		
-		return Environment.get_tmp_dir () + "/" + timestamp2() + (new Rand()).next_int().to_string();
+		return TEMP_DIR + "/" + timestamp2() + (new Rand()).next_int().to_string();
 	}
 	
 	public int execute_command_script_sync (string script, out string std_out, out string std_err){
@@ -1239,7 +1277,7 @@ namespace TeeJee.ProcessManagement{
 			int exit_code;
 			
 			Process.spawn_sync (
-			    Environment.get_tmp_dir (), //working dir
+			    TEMP_DIR, //working dir
 			    argv, //argv
 			    null, //environment
 			    SpawnFlags.SEARCH_PATH,
@@ -1270,7 +1308,7 @@ namespace TeeJee.ProcessManagement{
 			argv[2] = script;
 		
 			Process.spawn_sync (
-			    Environment.get_tmp_dir (), //working dir
+			    TEMP_DIR, //working dir
 			    argv, //argv
 			    null, //environment
 			    SpawnFlags.SEARCH_PATH,
@@ -1448,7 +1486,24 @@ namespace TeeJee.ProcessManagement{
 		return execute_command_sync ("kill -CONT %d".printf(procID));
 	}
 
+	public void command_kill(string cmd_name, string cmd){
+				
+		/* Kills a specific command */
+
+		string txt = execute_command_sync_get_output ("ps w -C %s".printf(cmd_name));
+		//use 'ps ew -C conky' for all users
 		
+		string pid = "";
+		foreach(string line in txt.split("\n")){
+			if (line.index_of(cmd) != -1){
+				pid = line.strip().split(" ")[0];
+				Posix.kill ((Pid) int.parse(pid), 15);
+				log_debug(_("Stopped") + ": [PID=" + pid + "] ");
+			}
+		}
+	}
+	
+	
 	public void process_set_priority (Pid procID, int prio){
 				
 		/* Set process priority */
@@ -1526,6 +1581,22 @@ namespace TeeJee.ProcessManagement{
 		
 		return user_name;
 	}
+
+	public int get_user_id(string user_login){
+		/* 
+		Returns UID of specified user.
+		*/
+		
+		int uid = -1;
+		string cmd = "id %s -u".printf(user_login);
+		string txt = execute_command_sync_get_output(cmd);
+		if ((txt != null) && (txt.length > 0)){
+			uid = int.parse(txt);
+		}
+		
+		return uid;
+	}
+	
 	
 	public string get_app_path (){
 				
@@ -1666,6 +1737,48 @@ namespace TeeJee.GtkHelper{
 			base.render(cr, widget, background_area, new_area, flags);
 		}
 	} 
+	
+	public Gdk.Pixbuf? get_app_icon(int icon_size){
+		var img_icon = get_shared_icon(AppShortName, AppShortName + ".png",icon_size,"pixmaps");
+		if (img_icon != null){
+			return img_icon.pixbuf;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	public Gtk.Image? get_shared_icon(string icon_name, string fallback_icon_file_name, int icon_size, string icon_directory = AppShortName + "/images"){
+		Gdk.Pixbuf pix_icon = null;
+		Gtk.Image img_icon = null;
+		
+		try {
+			Gtk.IconTheme icon_theme = Gtk.IconTheme.get_default();
+			pix_icon = icon_theme.load_icon (icon_name, icon_size, 0);
+		} catch (Error e) {
+			//log_error (e.message);
+		}
+		
+		string fallback_icon_file_path = "/usr/share/%s/%s".printf(icon_directory, fallback_icon_file_name);
+		
+		if (pix_icon == null){ 
+			try {
+				pix_icon = new Gdk.Pixbuf.from_file_at_size (fallback_icon_file_path, icon_size, icon_size);
+			} catch (Error e) {
+				log_error (e.message);
+			}
+		}
+		
+		if (pix_icon == null){ 
+			log_error (_("Missing Icon") + ": '%s', '%s'".printf(icon_name, fallback_icon_file_path));
+		}
+		else{
+			img_icon = new Gtk.Image.from_pixbuf(pix_icon);
+		}
+
+		return img_icon; 
+	}
+
 }
 
 namespace TeeJee.Multimedia{
@@ -1800,27 +1913,60 @@ namespace TeeJee.System{
 				
 		/* Return the names of the current Desktop environment */
 		
-		string s = execute_command_sync_get_output("ps -C xfdesktop");
-		if (s.split("\n").length > 2) {
-			return "Xfce";
-		}
+		int pid = -1;
 		
-		s = execute_command_sync_get_output("ps -C wingpanel");
-		if (s.split("\n").length > 2) {
-			return "Elementary";
-		}
-		
-		s = execute_command_sync_get_output("ps -C cinnamon");
-		if (s.split("\n").length > 2) {
+		pid = get_pid_by_name("cinnamon");
+		if (pid > 0){
 			return "Cinnamon";
 		}
 		
-		s = execute_command_sync_get_output("ps -C unity-panel-service");
-		if (s.split("\n").length > 2) {
+		pid = get_pid_by_name("xfdesktop");
+		if (pid > 0){
+			return "Xfce";
+		}
+
+		pid = get_pid_by_name("lxsession");
+		if (pid > 0){
+			return "LXDE";
+		}
+
+		pid = get_pid_by_name("gnome-shell");
+		if (pid > 0){
+			return "Gnome";
+		}
+		
+		pid = get_pid_by_name("wingpanel");
+		if (pid > 0){
+			return "Elementary";
+		}
+		
+		pid = get_pid_by_name("unity-panel-service");
+		if (pid > 0){
 			return "Unity";
+		}
+
+		pid = get_pid_by_name("plasma-desktop");
+		if (pid > 0){
+			return "KDE";
 		}
 		
 		return "Unknown";
+	}
+
+	public bool check_internet_connectivity(){
+		int exit_code = -1;
+		string std_err;
+		string std_out;
+
+		try {
+			string cmd = "ping -c 1 google.com";
+			Process.spawn_command_line_sync(cmd, out std_out, out std_err, out exit_code);
+		}
+		catch (Error e){
+	        log_error (e.message);
+	    }
+		
+	    return (exit_code == 0);
 	}
 	
 	public bool shutdown (){
@@ -1838,8 +1984,17 @@ namespace TeeJee.System{
 			return false;
 		}
 	}
+
+	public bool xdg_open (string file){
+		string path;
+		path = get_cmd_path ("xdg-open");
+		if ((path != null)&&(path != "")){
+			return execute_command_script_async ("xdg-open \"" + file + "\"");
+		}
+		return false;
+	}
 	
-	public bool exo_open_folder (string dir_path){
+	public bool exo_open_folder (string dir_path, bool xdg_open_try_first = true){
 				
 		/* Tries to open the given directory in a file manager */
 
@@ -1852,11 +2007,14 @@ namespace TeeJee.System{
 		
 		string path;
 		
-		path = get_cmd_path ("xdg-open");
-		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("xdg-open \"" + dir_path + "\"");
+		if (xdg_open_try_first){
+			//try using xdg-open
+			path = get_cmd_path ("xdg-open");
+			if ((path != null)&&(path != "")){
+				return execute_command_script_async ("xdg-open \"" + dir_path + "\"");
+			}
 		}
-
+		
 		path = get_cmd_path ("nemo");
 		if ((path != null)&&(path != "")){
 			return execute_command_script_async ("nemo \"" + dir_path + "\"");
@@ -1880,6 +2038,14 @@ namespace TeeJee.System{
 		path = get_cmd_path ("marlin");
 		if ((path != null)&&(path != "")){
 			return execute_command_script_async ("marlin \"" + dir_path + "\"");
+		}
+
+		if (xdg_open_try_first == false){
+			//try using xdg-open
+			path = get_cmd_path ("xdg-open");
+			if ((path != null)&&(path != "")){
+				return execute_command_script_async ("xdg-open \"" + dir_path + "\"");
+			}
 		}
 		
 		return false;
@@ -2131,6 +2297,14 @@ namespace TeeJee.Misc {
 		Time t = Time.local (time_t ());
 		return t.format ("%H:%M:%S");
 	}
+
+	public string timestamp3 (){	
+			
+		/* Returns a formatted timestamp string */
+		
+		Time t = Time.local (time_t ());
+		return t.format ("%Y-%d-%m_%H-%M-%S");
+	}
 	
 	public string format_file_size (int64 size){
 				
@@ -2166,6 +2340,26 @@ namespace TeeJee.Misc {
 			millis += double.parse(arr[2]);
 		}
 		return millis;
+	}
+	
+	public string escape_html(string html){
+		return html
+		.replace("&","&amp;")
+		.replace("\"","&quot;")
+		//.replace(" ","&nbsp;") //pango markup throws an error with &nbsp;
+		.replace("<","&lt;")
+		.replace(">","&gt;")
+		;
+	}
+	
+	public string unescape_html(string html){
+		return html
+		.replace("&amp;","&")
+		.replace("&quot;","\"")
+		//.replace("&nbsp;"," ") //pango markup throws an error with &nbsp;
+		.replace("&lt;","<")
+		.replace("&gt;",">")
+		;
 	}
 }
 

@@ -38,12 +38,11 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public Main App;
-public const string AppName = "Selene";
+public const string AppName = "Selene Media Encoder";
+public const string AppShortName = "selene";
 public const string AppVersion = "2.3";
 public const string AppAuthor = "Tony George";
-public const string AppAuthorEmail = "teejee2008@gmail.com";
-public const bool LogTimestamp = true;
-public bool UseConsoleColors = false;
+public const string AppAuthorEmail = "teejeetech@gmail.com";
 
 const string GETTEXT_PACKAGE = "selene";
 const string LOCALE_DIR = "/usr/share/locale";
@@ -64,357 +63,6 @@ public enum AppStatus{
 	PAUSED,	   
 	IDLE,		//batch completed
 	WAITFILE    //waiting for files
-}
-
-public class MediaFile : GLib.Object{
-	public string Path;
-	public string Name;
-	public string Title;
-	public string Extension;
-	public string Location;
-	
-	public int64 Size = 0;
-	public long Duration = 0; //in milliseconds
-	
-	public string SubFile = "";
-	public string SubName = "";
-	public string SubExt = "";
-
-	public string TrackName = "";
-	public string TrackNumber = "";
-	public string Album = "";
-	public string Artist = "";
-	public string Genre = "";
-	public string RecordedDate = "";
-	public string Comment = "";
-	
-	public int CropW = 0;
-	public int CropH = 0;
-	public int CropL = 0;
-	public int CropR = 0;
-	public int CropT = 0;
-	public int CropB = 0;
-	public bool AutoCropError = false;
-	
-	public FileStatus Status = FileStatus.PENDING;
-	public bool IsValid;
-	public string ProgressText = _("Queued");
-	public int ProgressPercent = 0;
-	
-	public string InfoText;
-	public bool HasAudio = false;
-	public bool HasVideo = false;
-	public int SourceWidth = 0;
-	public int SourceHeight = 0;
-	public double SourceFrameRate = 0;
-	public int AudioChannels = 0;
-	
-	public string TempScriptFile;
-	public string TempDirectory = "";
-	public string LogFile = "";
-	public string OutputFilePath = "";
-	public long OutputFrameCount = 0;
-	
-	public MediaFile(string filePath){
-		IsValid = false;
-		if (file_exists (filePath) == false) { return; }
-		
-		// set file properties ------------
-		
-		File f = File.new_for_path (filePath);
-		File fp = f.get_parent();
-		
-		Path = filePath;
-		Name = f.get_basename();
-		Title = Name[0: Name.last_index_of(".",0)];
-		Extension = Name[Name.last_index_of(".",0):Name.length];
-		Location = fp.get_path();
-		//stderr.printf(@"file=$filePath, name=$Name, title=$Title, ext=$Extension, dir=$Location\n");
-		
-		FileInfo fi = null;
-		
-		try{
-			fi = f.query_info ("*", FileQueryInfoFlags.NONE, null);
-			Size = fi.get_size();
-		}
-		catch (Error e) {
-			log_error (e.message);
-		}
-
-		// get media information ----------
-		
-		query_mediainfo();
-		if (Duration == 0) { return; }
-		
-		// search for subtitle files ---------------
-		
-		try{
-	        var enumerator = fp.enumerate_children ("standard::*", 0);
-			var fileInfo = enumerator.next_file();
-	        while (fileInfo != null) {
-	            if (fileInfo.get_file_type() == FileType.REGULAR) {
-		            string fname = fileInfo.get_name().down();
-		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
-		            {
-			            SubName = fileInfo.get_name();
-			            SubFile = Location + "/" + SubName;
-	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
-	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
-	                }
-	            }
-	            fileInfo = enumerator.next_file();
-	        }
-        }
-        catch(Error e){
-	        log_error (e.message);
-	    }
-	    
-		IsValid = true;
-	}
-	
-	public void query_mediainfo(){
-		InfoText = get_mediainfo (Path);
-		
-		if (InfoText == null || InfoText == ""){
-			return;
-		}
-		
-		string sectionType = "";
-		
-		foreach (string line in InfoText.split ("\n")){
-			if (line == null || line.length == 0) { continue; }
-			
-			if (line.contains (":") == false)
-			{
-				if (line.contains ("Audio")){
-					sectionType = "audio";
-					HasAudio = true;
-				}
-				else if (line.contains ("Video")){
-					sectionType = "video";
-					HasVideo = true;
-				}
-				else if (line.contains ("General")){
-					sectionType = "general";
-				}
-			}
-			else{
-				string[] arr = line.split (": ");
-				if (arr.length != 2) { continue; }
-				
-				string key = arr[0].strip();
-				string val = arr[1].strip();
-				
-				if (sectionType	== "general"){
-					switch (key.down()) {
-						case "duration":
-							Duration = 0;
-							foreach(string p in val.split(" ")){
-								string part = p.strip().down();
-								if (part.contains ("h") || part.contains ("hr"))
-									Duration += long.parse(part.replace ("hr","").replace ("h","")) * 60 * 60 * 1000;
-								else if (part.contains ("mn") || part.contains ("min"))
-									Duration += long.parse(part.replace ("min","").replace ("mn","")) * 60 * 1000;
-								else if (part.contains ("ms"))
-									Duration += long.parse(part.replace ("ms",""));
-								else if (part.contains ("s"))
-									Duration += long.parse(part.replace ("s","")) * 1000;
-							}
-							break;
-						case "track name":
-							TrackName = val;
-							break;
-						case "track name/position":
-							TrackNumber = val;
-							break;
-						case "album":
-							Album = val;
-							break;
-						case "performer":
-							Artist = val;
-							break;
-						case "genre":
-							Genre = val;
-							break;
-						case "recorded date":
-							RecordedDate = val;
-							break;
-						case "comment":
-							Comment = val;
-							break;
-					}
-				}
-				else if (sectionType == "video"){
-					switch (key.down()) {
-						case "width":
-							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip());
-							break;
-						case "height":
-							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip());
-							break;
-						case "frame rate":
-						case "original frame rate":
-							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip());
-							break;
-					}
-				}
-				else if (sectionType == "audio"){
-					switch (key.down()) {
-						case "channel(s)":
-							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip());
-							break;
-					}
-				}
-			}
-		}
-	}
-	
-	public void prepare (string baseTempDir){
-		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Name;
-		LogFile = TempDirectory + "/" + "log.txt";
-		TempScriptFile = TempDirectory + "/convert.sh";
-		OutputFilePath = "";
-		create_dir (TempDirectory);
-
-		//initialize output frame count
-		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
-			OutputFrameCount = (long) ((Duration / 1000.0) * (SourceFrameRate));
-		}
-		else{
-			OutputFrameCount = 0;
-		}
-	}
-	
-	public bool crop_detect(){
-		if (HasVideo == false) { 
-			AutoCropError = true;
-			return false; 
-		}
-		
-		string params = get_file_crop_params (Path);
-		string[] arr = params.split (":");
-
-		if (arr.length == 4){
-			CropW = int.parse (arr[0]);
-			CropH = int.parse (arr[1]);
-			CropL = int.parse (arr[2]);
-			CropT = int.parse (arr[3]);
-		}
-		
-		CropR = SourceWidth - CropW - CropL;
-		CropB = SourceHeight - CropH - CropT;
-		
-		if ((CropW == 0) && (CropH == 0)){
-			AutoCropError = true;
-			return false;
-		}
-		else
-			return true;
-	}
-	
-	public bool crop_enabled(){
-		if ((CropW == 0)&&(CropH == 0)&&(CropL == 0)&&(CropT == 0))
-			return false;
-		else
-			return true;
-	}
-	
-	public void crop_reset(){
-		CropW = 0;
-		CropH = 0;
-		CropL = 0;
-		CropT = 0;
-		CropR = 0;
-		CropB = 0;
-	}
-
-	public string crop_values_info(){
-		if (crop_enabled())
-			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
-		else if (AutoCropError)
-			return _("N/A");
-		else
-			return "";
-	}
-	
-	public string crop_values_libav(){
-		if (crop_enabled())
-			return "%i:%i:%i:%i".printf(CropW,CropH,CropL,CropT);
-		else
-			return "iw:ih:0:0";
-	}	
-	
-	public string crop_values_x264(){
-		if (crop_enabled())
-			return "%i,%i,%i,%i".printf(CropL,CropT,CropR,CropB);
-		else
-			return "0,0,0,0";
-	}
-	
-	public void preview_output(){
-		string output = "";
-		string error = "";
-		
-		try {
-			Process.spawn_command_line_sync("avplay -i \"%s\" -vf crop=%s".printf(Path, crop_values_libav()), out output, out error);
-		}
-		catch(Error e){
-	        log_error (e.message);
-	    }
-	}
-
-	public void play_source(){
-		if(file_exists(Path)){
-			string output = "";
-			string error = "";
-			
-			try {
-				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(Path), out output, out error);
-			}
-			catch(Error e){
-				log_error (e.message);
-			}
-		}
-	}
-	
-	public void play_output(){
-		if(file_exists(OutputFilePath)){
-			string output = "";
-			string error = "";
-			
-			try {
-				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(OutputFilePath), out output, out error);
-			}
-			catch(Error e){
-				log_error (e.message);
-			}
-		}
-	}
-}
-
-public class ScriptFile : GLib.Object{
-	public string Path;
-	public string Name;
-	public string Title;
-	public string Extension;
-	public string Folder;
-	
-	public ScriptFile(string filePath)
-	{
-		Path = filePath;
-	    Name = GLib.Path.get_basename (filePath);
-	    Folder = GLib.Path.get_dirname (filePath);
-	    
-	    int index = Name.index_of(".");
-	    if (index != -1){
-			Title = Name[0:Name.last_index_of(".")];
-			Extension = Name[Name.last_index_of("."):Name.length];
-		}
-		else{
-			Title = Name;
-			Extension = "";
-		}
-	}
 }
 
 public class Main : GLib.Object{
@@ -482,15 +130,13 @@ public class Main : GLib.Object{
 	private string blankLine = "";
 	
 	public static int main (string[] args) {
-		// set locale
-		
+		//set locale
 		Intl.setlocale(GLib.LocaleCategory.MESSAGES, "");
 		Intl.textdomain(GETTEXT_PACKAGE);
 		Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "utf-8");
 		Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
 
-		// show help
-		
+		//show help
 		if (args.length > 1) {
 			switch (args[1].down()) {
 				case "--help":
@@ -500,27 +146,27 @@ public class Main : GLib.Object{
 			}
 		}
 
-		// init app
-
+		//init GTK
 		Gtk.init (ref args);
-
+		
+		//init TMP
+		init_tmp();
+		
+		//init app
 		App = new Main(args[0]);
 
-	    // check if terminal supports colors
-		
+	    //check if terminal supports colors
 		string term = Environment.get_variable ("TERM").down();
-		UseConsoleColors = (term == "xterm");
+		LOG_COLORS = (term == "xterm");
 		
-		// check dependencies
-		
+		//check dependencies
 		string str = get_cmd_path ("mediainfo");
 		if ((str == null)||(str == "")){
 			gtk_messagebox(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"),null, true);
 			return 1;
 		}
 		
-		// get command line arguments
-		
+		//get command line arguments
 		for (int k = 1; k < args.length; k++) // Oth arg is app path 
 		{
 			switch (args[k].down()){
@@ -584,13 +230,11 @@ public class Main : GLib.Object{
 			}
 		}
 		
-		// check UI mode
-		
+		//check UI mode
 		if ((App.SelectedScript == null)||(App.InputFiles.size == 0))
 			App.ConsoleMode = false;
 		
-		// show window
-
+		//show window
 		if (App.ConsoleMode){
 			if (App.InputFiles.size == 0){
 				log_error (_("Input queue is empty! Please select files to convert."));
@@ -920,37 +564,6 @@ Notes:
 		log_msg (_("All files removed"));
 	}
 
-	public Gdk.Pixbuf? get_app_icon(int icon_size){
-		return get_shared_icon("selene","selene.png",icon_size,"pixmaps");
-	}
-	
-	public Gdk.Pixbuf? get_shared_icon(string icon_name, string fallback_icon_file_name, int icon_size, string icon_directory = "aptik/images"){
-		Gdk.Pixbuf pix_icon = null;
-		
-		try {
-			Gtk.IconTheme icon_theme = Gtk.IconTheme.get_default();
-			pix_icon = icon_theme.load_icon (icon_name, icon_size, 0);
-		} catch (Error e) {
-			//log_error (e.message);
-		}
-		
-		string fallback_icon_file_path = App.usr_share_dir + "/%s/%s".printf(icon_directory, fallback_icon_file_name);
-		
-		if (pix_icon == null){ 
-			try {
-				pix_icon = new Gdk.Pixbuf.from_file_at_size (fallback_icon_file_path, icon_size, icon_size);
-			} catch (Error e) {
-				log_error (e.message);
-			}
-		}
-		
-		if (pix_icon == null){ 
-			log_error (_("Missing Icon") + ": '%s', '%s'".printf(icon_name, fallback_icon_file_path));
-		}
-		
-		return pix_icon; 
-	}
-	
 	//conversion
 	
 	public void convert_begin(){
@@ -2687,4 +2300,354 @@ Notes:
 	*/
 }
 
+public class MediaFile : GLib.Object{
+	public string Path;
+	public string Name;
+	public string Title;
+	public string Extension;
+	public string Location;
+	
+	public int64 Size = 0;
+	public long Duration = 0; //in milliseconds
+	
+	public string SubFile = "";
+	public string SubName = "";
+	public string SubExt = "";
+
+	public string TrackName = "";
+	public string TrackNumber = "";
+	public string Album = "";
+	public string Artist = "";
+	public string Genre = "";
+	public string RecordedDate = "";
+	public string Comment = "";
+	
+	public int CropW = 0;
+	public int CropH = 0;
+	public int CropL = 0;
+	public int CropR = 0;
+	public int CropT = 0;
+	public int CropB = 0;
+	public bool AutoCropError = false;
+	
+	public FileStatus Status = FileStatus.PENDING;
+	public bool IsValid;
+	public string ProgressText = _("Queued");
+	public int ProgressPercent = 0;
+	
+	public string InfoText;
+	public bool HasAudio = false;
+	public bool HasVideo = false;
+	public int SourceWidth = 0;
+	public int SourceHeight = 0;
+	public double SourceFrameRate = 0;
+	public int AudioChannels = 0;
+	
+	public string TempScriptFile;
+	public string TempDirectory = "";
+	public string LogFile = "";
+	public string OutputFilePath = "";
+	public long OutputFrameCount = 0;
+	
+	public MediaFile(string filePath){
+		IsValid = false;
+		if (file_exists (filePath) == false) { return; }
+		
+		// set file properties ------------
+		
+		File f = File.new_for_path (filePath);
+		File fp = f.get_parent();
+		
+		Path = filePath;
+		Name = f.get_basename();
+		Title = Name[0: Name.last_index_of(".",0)];
+		Extension = Name[Name.last_index_of(".",0):Name.length];
+		Location = fp.get_path();
+		//stderr.printf(@"file=$filePath, name=$Name, title=$Title, ext=$Extension, dir=$Location\n");
+		
+		FileInfo fi = null;
+		
+		try{
+			fi = f.query_info ("*", FileQueryInfoFlags.NONE, null);
+			Size = fi.get_size();
+		}
+		catch (Error e) {
+			log_error (e.message);
+		}
+
+		// get media information ----------
+		
+		query_mediainfo();
+		if (Duration == 0) { return; }
+		
+		// search for subtitle files ---------------
+		
+		try{
+	        var enumerator = fp.enumerate_children ("standard::*", 0);
+			var fileInfo = enumerator.next_file();
+	        while (fileInfo != null) {
+	            if (fileInfo.get_file_type() == FileType.REGULAR) {
+		            string fname = fileInfo.get_name().down();
+		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
+		            {
+			            SubName = fileInfo.get_name();
+			            SubFile = Location + "/" + SubName;
+	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
+	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
+	                }
+	            }
+	            fileInfo = enumerator.next_file();
+	        }
+        }
+        catch(Error e){
+	        log_error (e.message);
+	    }
+	    
+		IsValid = true;
+	}
+	
+	public void query_mediainfo(){
+		InfoText = get_mediainfo (Path);
+		
+		if (InfoText == null || InfoText == ""){
+			return;
+		}
+		
+		string sectionType = "";
+		
+		foreach (string line in InfoText.split ("\n")){
+			if (line == null || line.length == 0) { continue; }
+			
+			if (line.contains (":") == false)
+			{
+				if (line.contains ("Audio")){
+					sectionType = "audio";
+					HasAudio = true;
+				}
+				else if (line.contains ("Video")){
+					sectionType = "video";
+					HasVideo = true;
+				}
+				else if (line.contains ("General")){
+					sectionType = "general";
+				}
+			}
+			else{
+				string[] arr = line.split (": ");
+				if (arr.length != 2) { continue; }
+				
+				string key = arr[0].strip();
+				string val = arr[1].strip();
+				
+				if (sectionType	== "general"){
+					switch (key.down()) {
+						case "duration":
+							Duration = 0;
+							foreach(string p in val.split(" ")){
+								string part = p.strip().down();
+								if (part.contains ("h") || part.contains ("hr"))
+									Duration += long.parse(part.replace ("hr","").replace ("h","")) * 60 * 60 * 1000;
+								else if (part.contains ("mn") || part.contains ("min"))
+									Duration += long.parse(part.replace ("min","").replace ("mn","")) * 60 * 1000;
+								else if (part.contains ("ms"))
+									Duration += long.parse(part.replace ("ms",""));
+								else if (part.contains ("s"))
+									Duration += long.parse(part.replace ("s","")) * 1000;
+							}
+							break;
+						case "track name":
+							TrackName = val;
+							break;
+						case "track name/position":
+							TrackNumber = val;
+							break;
+						case "album":
+							Album = val;
+							break;
+						case "performer":
+							Artist = val;
+							break;
+						case "genre":
+							Genre = val;
+							break;
+						case "recorded date":
+							RecordedDate = val;
+							break;
+						case "comment":
+							Comment = val;
+							break;
+					}
+				}
+				else if (sectionType == "video"){
+					switch (key.down()) {
+						case "width":
+							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip());
+							break;
+						case "height":
+							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip());
+							break;
+						case "frame rate":
+						case "original frame rate":
+							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip());
+							break;
+					}
+				}
+				else if (sectionType == "audio"){
+					switch (key.down()) {
+						case "channel(s)":
+							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip());
+							break;
+					}
+				}
+			}
+		}
+	}
+	
+	public void prepare (string baseTempDir){
+		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Name;
+		LogFile = TempDirectory + "/" + "log.txt";
+		TempScriptFile = TempDirectory + "/convert.sh";
+		OutputFilePath = "";
+		create_dir (TempDirectory);
+
+		//initialize output frame count
+		if (HasVideo && Duration > 0 && SourceFrameRate > 1) {
+			OutputFrameCount = (long) ((Duration / 1000.0) * (SourceFrameRate));
+		}
+		else{
+			OutputFrameCount = 0;
+		}
+	}
+	
+	public bool crop_detect(){
+		if (HasVideo == false) { 
+			AutoCropError = true;
+			return false; 
+		}
+		
+		string params = get_file_crop_params (Path);
+		string[] arr = params.split (":");
+
+		if (arr.length == 4){
+			CropW = int.parse (arr[0]);
+			CropH = int.parse (arr[1]);
+			CropL = int.parse (arr[2]);
+			CropT = int.parse (arr[3]);
+		}
+		
+		CropR = SourceWidth - CropW - CropL;
+		CropB = SourceHeight - CropH - CropT;
+		
+		if ((CropW == 0) && (CropH == 0)){
+			AutoCropError = true;
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	public bool crop_enabled(){
+		if ((CropW == 0)&&(CropH == 0)&&(CropL == 0)&&(CropT == 0))
+			return false;
+		else
+			return true;
+	}
+	
+	public void crop_reset(){
+		CropW = 0;
+		CropH = 0;
+		CropL = 0;
+		CropT = 0;
+		CropR = 0;
+		CropB = 0;
+	}
+
+	public string crop_values_info(){
+		if (crop_enabled())
+			return "%i:%i:%i:%i".printf(CropL,CropT,CropR,CropB);
+		else if (AutoCropError)
+			return _("N/A");
+		else
+			return "";
+	}
+	
+	public string crop_values_libav(){
+		if (crop_enabled())
+			return "%i:%i:%i:%i".printf(CropW,CropH,CropL,CropT);
+		else
+			return "iw:ih:0:0";
+	}	
+	
+	public string crop_values_x264(){
+		if (crop_enabled())
+			return "%i,%i,%i,%i".printf(CropL,CropT,CropR,CropB);
+		else
+			return "0,0,0,0";
+	}
+	
+	public void preview_output(){
+		string output = "";
+		string error = "";
+		
+		try {
+			Process.spawn_command_line_sync("avplay -i \"%s\" -vf crop=%s".printf(Path, crop_values_libav()), out output, out error);
+		}
+		catch(Error e){
+	        log_error (e.message);
+	    }
+	}
+
+	public void play_source(){
+		if(file_exists(Path)){
+			string output = "";
+			string error = "";
+			
+			try {
+				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(Path), out output, out error);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+		}
+	}
+	
+	public void play_output(){
+		if(file_exists(OutputFilePath)){
+			string output = "";
+			string error = "";
+			
+			try {
+				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(OutputFilePath), out output, out error);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+		}
+	}
+}
+
+public class ScriptFile : GLib.Object{
+	public string Path;
+	public string Name;
+	public string Title;
+	public string Extension;
+	public string Folder;
+	
+	public ScriptFile(string filePath)
+	{
+		Path = filePath;
+	    Name = GLib.Path.get_basename (filePath);
+	    Folder = GLib.Path.get_dirname (filePath);
+	    
+	    int index = Name.index_of(".");
+	    if (index != -1){
+			Title = Name[0:Name.last_index_of(".")];
+			Extension = Name[Name.last_index_of("."):Name.length];
+		}
+		else{
+			Title = Name;
+			Extension = "";
+		}
+	}
+}
 
