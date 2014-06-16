@@ -44,6 +44,8 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
+cp -p --no-preserve=ownership ./${arch}/selene*.deb ./selene-latest-${arch}.deb 
+
 done
 
 cd "$backup"

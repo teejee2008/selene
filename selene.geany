@@ -8,7 +8,7 @@ indent_mode=2
 
 [project]
 name=selene
-base_path=/home/teejee/projects/linux/selene/src
+base_path=/home/teejee/projects/linux/selene
 description=
 file_patterns=
 
@@ -17,16 +17,16 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=1
-FILE_NAME_0=1436;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
-FILE_NAME_1=1465;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_2=44210;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_3=0;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
-FILE_NAME_4=0;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
-FILE_NAME_5=0;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
-FILE_NAME_6=566;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_7=2644;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FDonationWindow.vala;0;4
-FILE_NAME_8=26372;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fconky-manager%2Fsrc%2FMainWindow.vala;0;4
+current_page=8
+FILE_NAME_0=42334;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_1=9668;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_2=48723;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_3=4700;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
+FILE_NAME_4=1492;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
+FILE_NAME_5=1643;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
+FILE_NAME_6=1426;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_7=3313;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FDonationWindow.vala;0;4
+FILE_NAME_8=937;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fcontrol;0;4
 
 [VTE]
 last_dir=/home/teejee

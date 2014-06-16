@@ -26,6 +26,7 @@ cd installer
 for arch in i386 amd64
 do
   cp -p --no-preserve=ownership -t /home/teejee/Dropbox/Public/linux ./selene-latest-${arch}.run
+  cp -p --no-preserve=ownership -t /home/teejee/Dropbox/Public/linux ./selene-latest-${arch}.deb
 done
 
 cd "$backup"
