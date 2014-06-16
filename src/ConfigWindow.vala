@@ -1114,7 +1114,7 @@ public class ConfigWindow : Dialog {
 		Box hboxEarWax = new Box(Orientation.HORIZONTAL,0);
         vboxSox.add(hboxEarWax);
 
-		tt = _("Makes audio easier to listen to on headphones. Adds ‘cues’ to the audio so that when listened to on headphones the stereo image is moved from inside your head (standard for headphones) to outside and in front of the listener (standard for speakers).");
+		tt = _("Makes audio easier to listen to on headphones. Adds 'cues' to the audio so that when listened to on headphones the stereo image is moved from inside your head (standard for headphones) to outside and in front of the listener (standard for speakers).");
 		
 		lblEarWax = new Gtk.Label(_("Adjust Stereo for Headphones"));
 		lblEarWax.xalign = (float) 0.0;
