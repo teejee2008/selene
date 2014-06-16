@@ -10,7 +10,7 @@ Homepage: http://teejeetech.blogspot.in/p/selene-media-encoder.html
 
 Package: selene
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, vorbis-tools, opus-tools, vpx-tools, x264, lame, mkvtoolnix, ffmpeg2theora, gpac, rsync
+Depends: ${shlibs:Depends}, ${misc:Depends}, realpath, mediainfo, libav-tools, vorbis-tools, opus-tools, vpx-tools, x264, lame, mkvtoolnix, ffmpeg2theora, gpac, rsync, sox
 #Recommends: 
 Description: Audio-video converter for Linux.
  Utility for converting audio and video files to OGG,OGV,

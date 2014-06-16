@@ -47,6 +47,8 @@ public const string AppAuthorEmail = "teejeetech@gmail.com";
 const string GETTEXT_PACKAGE = "selene";
 const string LOCALE_DIR = "/usr/share/locale";
 
+extern void exit(int exit_code);
+
 public enum FileStatus{
 	PENDING,
 	RUNNING,
@@ -67,7 +69,8 @@ public enum AppStatus{
 
 public class Main : GLib.Object{
 	public Gee.ArrayList<MediaFile> InputFiles;
-
+	public Gee.HashMap<string,Encoder> Encoders;
+	
 	public string ScriptsFolder_Official = "";
 	public string ScriptsFolder_Custom = "";
 	public string PresetsFolder_Official = "";
@@ -158,14 +161,7 @@ public class Main : GLib.Object{
 	    //check if terminal supports colors
 		string term = Environment.get_variable ("TERM").down();
 		LOG_COLORS = (term == "xterm");
-		
-		//check dependencies
-		string str = get_cmd_path ("mediainfo");
-		if ((str == null)||(str == "")){
-			gtk_messagebox(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"),null, true);
-			return 1;
-		}
-		
+
 		//get command line arguments
 		for (int k = 1; k < args.length; k++) // Oth arg is app path 
 		{
@@ -301,20 +297,27 @@ Notes:
 	
 	public Main(string arg0){
 		InputFiles = new Gee.ArrayList<MediaFile>();
-
-		// check for admin priviledges
+		Encoders = new Gee.HashMap<string,Encoder>();
 		
+		//check encoders
+		init_encoder_list();
+		check_all_encoders();
+		
+		if (!Encoders["mediainfo"].IsAvailable){
+			gtk_messagebox(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"),null, true);
+			exit(1);
+		}
+		
+		// check for admin priviledges
 		AdminMode = user_is_admin();
 		
 		// check for notify-send
-		
 		string path = get_cmd_path ("notify-send");
 		if ((path != null)&&(path != "")){
 			ShowNotificationPopups = true;
 		}
 
 		// set default directory paths
-		
 		string homeDir = Environment.get_home_dir();
 		TempDirectory = Environment.get_tmp_dir() + "/" + Environment.get_prgname();	
 		create_dir (TempDirectory);	
@@ -395,6 +398,27 @@ Notes:
 		blankLine = "";
 		for (int i=0; i<80; i++)
 			blankLine += " ";
+	}
+	
+	public void init_encoder_list(){
+		Encoders["avconv"] = new Encoder("avconv","Libav Encoder","Audio-Video Decoding");
+		Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
+		Encoders["lame"] = new Encoder("lame","LAME MP3 Encoder", "MP3 Output");
+		Encoders["mediainfo"] = new Encoder("mediainfo","Media Information Utility","Reading Audio Video Properties");
+		Encoders["mkvmerge"] = new Encoder("mkvmerge","Matroska Muxer","MKV Output");
+		Encoders["MP4Box"] = new Encoder("MP4Box","MP4 Muxer","MP4 Output");
+		Encoders["neroAacEnc"] = new Encoder("neroAacEnc","Nero AAC Audio Encoder","AAC/MP4 Output");
+		Encoders["oggenc"] = new Encoder("oggenc","OGG Audio Encoder","OGG Output");
+		Encoders["opusenc"] = new Encoder("opusenc","Opus Audio Encoder","Opus Output");
+		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
+		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
+		Encoders["x264enc"] = new Encoder("x264","H.264/AVC Video Encoder","H264 Output");
+	}
+	
+	public void check_all_encoders(){
+		foreach(Encoder enc in Encoders.values){
+			enc.CheckAvailability();
+		}
 	}
 	
 	public void start_input_thread(){
@@ -2651,3 +2675,25 @@ public class ScriptFile : GLib.Object{
 	}
 }
 
+public class Encoder : GLib.Object{
+	public string Command = "";
+	public string Name = "";
+	public string Description = "";
+	public bool IsAvailable = false;
+	
+	public Encoder(string cmd, string name, string desc){
+		Command = cmd;
+		Name = name;
+		Description = desc;
+	}
+	
+	public bool CheckAvailability(){
+		bool available = false;
+		string str = get_cmd_path (Command);
+		if ((str != null)&&(str.length > 0)){
+			available = true;
+		}
+		IsAvailable = available;
+		return IsAvailable;
+	}
+}

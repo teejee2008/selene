@@ -40,6 +40,7 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnAddFiles;
 	private ToolButton btnRemoveFiles;
     private ToolButton btnClearFiles;
+    private ToolButton btnEncoders;
     private ToolButton btnAppSettings;
     private ToolButton btnAbout;
     private ToolButton btnDonate;
@@ -212,6 +213,12 @@ public class MainWindow : Gtk.Window{
 		btnAppSettings.set_tooltip_text (_("Application Settings"));
 		toolbar.add (btnAppSettings);
 
+		//btnEncoders
+		btnEncoders = new Gtk.ToolButton.from_stock ("gtk-info");
+		btnEncoders.clicked.connect (btnEncoders_clicked);
+		btnEncoders.set_tooltip_text (_("Encoders"));
+		toolbar.add (btnEncoders);
+		
         //btn_donate
 		btnDonate = new Gtk.ToolButton.from_stock ("gtk-dialog-info");
 		btnDonate.is_important = false;
@@ -1449,6 +1456,14 @@ on the toolbar will open the file in a text editor.
 		dialog.show_all();
 		dialog.run();
 		dialog.destroy();
+	}
+	
+	private void btnEncoders_clicked(){
+	    var dialog = new EncodersWindow();
+	    dialog.set_transient_for(this);
+	    dialog.show_all();
+	    dialog.run();
+	    dialog.destroy();
 	}
 	
 	private void btnAppSettings_clicked(){
