@@ -303,11 +303,15 @@ Notes:
 		init_encoder_list();
 		check_all_encoders();
 		
-		if (!Encoders["mediainfo"].IsAvailable){
-			gtk_messagebox(_("Missing Dependency"), _("Following packages were not found:") + "\n\nmediainfo\n\n"+ _("Not possible to continue!"),null, true);
-			exit(1);
+		//check critical encoders
+		foreach(string enc in new string[]{"mediainfo","avconv"}){
+			Encoders[enc].CheckAvailability();
+			if (!Encoders[enc].IsAvailable){
+				gtk_messagebox(_("Missing Encoders"), _("Following encoders are not installed on your system:") + "\n\n%s\n\n".printf(Encoders[enc].Command) + _("Not possible to continue!"), null, true);
+				exit(1);
+			}
 		}
-		
+
 		// check for admin priviledges
 		AdminMode = user_is_admin();
 		
@@ -406,13 +410,13 @@ Notes:
 		Encoders["lame"] = new Encoder("lame","LAME MP3 Encoder", "MP3 Output");
 		Encoders["mediainfo"] = new Encoder("mediainfo","Media Information Utility","Reading Audio Video Properties");
 		Encoders["mkvmerge"] = new Encoder("mkvmerge","Matroska Muxer","MKV Output");
-		Encoders["MP4Box"] = new Encoder("MP4Box","MP4 Muxer","MP4 Output");
-		Encoders["neroAacEnc"] = new Encoder("neroAacEnc","Nero AAC Audio Encoder","AAC/MP4 Output");
+		Encoders["mp4box"] = new Encoder("MP4Box","MP4 Muxer","MP4 Output");
+		Encoders["neroaacenc"] = new Encoder("neroAacEnc","Nero AAC Audio Encoder","AAC/MP4 Output");
 		Encoders["oggenc"] = new Encoder("oggenc","OGG Audio Encoder","OGG Output");
 		Encoders["opusenc"] = new Encoder("opusenc","Opus Audio Encoder","Opus Output");
 		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
 		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
-		Encoders["x264enc"] = new Encoder("x264","H.264/AVC Video Encoder","H264 Output");
+		Encoders["x264"] = new Encoder("x264","H.264/AVC Video Encoder","H264 Output");
 	}
 	
 	public void check_all_encoders(){
@@ -420,7 +424,7 @@ Notes:
 			enc.CheckAvailability();
 		}
 	}
-	
+
 	public void start_input_thread(){
 		// start thread for reading user input
 			
@@ -442,7 +446,7 @@ Notes:
 
 		if (WaitingForShutdown){
 			Source.remove (shutdownTimerID);
-			App.WaitingForShutdown = false;
+			WaitingForShutdown = false;
 			return;
 		}
 		else if ((ch == 'q')||(ch == 'Q')){
@@ -1018,7 +1022,7 @@ Notes:
 		
 		if (regex_libav.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
-			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			Progress = (dblVal * 1000) / CurrentFile.Duration;
 
 			if (regex_libav_video.match (tempLine, 0, out match)){
 				StatusLine = "(avconv) %s fps, %s kbps, %s kb".printf(match.fetch(1), match.fetch(3), match.fetch(2));
@@ -1032,7 +1036,7 @@ Notes:
 		}
 		else if (regex_ffmpeg2theora.match (tempLine, 0, out match)){
 			dblVal = parse_time (match.fetch(1));
-			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			Progress = (dblVal * 1000) / CurrentFile.Duration;
 			
 			if (regex_ffmpeg2theora2.match (tempLine, 0, out match)){
 				StatusLine = "(ffmpeg2theora) %s+%s kbps, %s mb, eta %s".printf(match.fetch(2), match.fetch(3), match.fetch(5), match.fetch(4));
@@ -1043,22 +1047,22 @@ Notes:
 		}
 		else if (regex_ffmpeg2theora3.match (tempLine, 0, out match)){
 			dblVal = parse_time (match.fetch(1));
-			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			Progress = (dblVal * 1000) / CurrentFile.Duration;
 			StatusLine = "(ffmpeg2theora) Scanning first pass, eta %s".printf(match.fetch(2));
 		}
 		else if (regex_opus.match (tempLine, 0, out match)){
 			dblVal = parse_time (match.fetch(1));
-			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			Progress = (dblVal * 1000) / CurrentFile.Duration;
 			StatusLine = "(opusenc) %sx, %s kbps".printf(match.fetch(2), match.fetch(3));
 		}
 		else if (regex_vpxenc.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(2));
-			Progress = dblVal / App.CurrentFile.OutputFrameCount;
+			Progress = dblVal / CurrentFile.OutputFrameCount;
 			StatusLine = "(vpxenc) %s, %s frames, %.0f kb".printf(match.fetch(1), match.fetch(2), double.parse(match.fetch(3))/1000);
 		}
 		else if (regex_neroaacenc.match (tempLine, 0, out match)){
 			dblVal = double.parse(match.fetch(1));
-			Progress = (dblVal * 1000) / App.CurrentFile.Duration;
+			Progress = (dblVal * 1000) / CurrentFile.Duration;
 			StatusLine = tempLine;
 		}
 		else if (regex_generic.match (tempLine, 0, out match)){
@@ -1194,10 +1198,14 @@ Notes:
 		return true;
 	}
 	
+
 	//create command string
 	
-	private string get_preset_commandline (MediaFile mf, Json.Object settings){
+	private string get_preset_commandline (MediaFile mf, Json.Object settings, out Gee.ArrayList<string>? encoderList = null){
 		string s = "";
+		
+		//this list is used for returning the list of encoders that is used by the preset
+		encoderList = new Gee.ArrayList<string>();
 		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
@@ -1241,9 +1249,11 @@ Notes:
 				{
 					case "x264":
 						s += encode_video_x264(mf,settings);
+						encoderList.add("x264");
 						break;
 					case "vp8":
 						s += encode_video_vpxenc(mf,settings);
+						encoderList.add("vpxenc");
 						break;
 				}
 				
@@ -1252,12 +1262,15 @@ Notes:
 					switch (acodec) {
 						case "mp3lame":
 							s += encode_audio_mp3lame(mf,settings);
+							encoderList.add("mp3lame");
 							break;
 						case "neroaac":
 							s += encode_audio_neroaac(mf,settings);
+							encoderList.add("neroaacenc");
 							break;
 						case "vorbis":
 							s += encode_audio_oggenc(mf,settings);
+							encoderList.add("oggenc");
 							break;
 					}
 				}
@@ -1267,9 +1280,11 @@ Notes:
 					case "mkv":
 					case "webm":
 						s += mux_mkvmerge(mf,settings);
+						encoderList.add("mkvmerge");
 						break;
 					case "mp4v":
 						s += mux_mp4box(mf,settings);
+						encoderList.add("mp4box");
 						break;
 				}
 					
@@ -1277,28 +1292,34 @@ Notes:
 			
 			case "ogv":
 				s += encode_video_ffmpeg2theora(mf,settings);
+				encoderList.add("ffmpeg2theora");
 				break;
 				
 			case "mp3":
 				s += encode_audio_mp3lame(mf,settings);
+				encoderList.add("mp3lame");
 				break;
 				
 			case "mp4a":
 				s += encode_audio_neroaac(mf,settings);
+				encoderList.add("neroaacenc");
 				break;
 				
 			case "opus":
 				s += encode_audio_opus(mf,settings);
+				encoderList.add("opusenc");
 				break;
 				
 			case "ogg":
 				s += encode_audio_oggenc(mf,settings);
+				encoderList.add("oggenc");
 				break;
 
 			case "ac3":
 			case "flac":
 			case "wav":
 				s += encode_audio_avconv(mf,settings);
+				encoderList.add("avconv");
 				break;
 		}
 		
@@ -1314,6 +1335,25 @@ Notes:
 		mf.OutputFilePath = outpath + "/" + mf.Title + general.get_string_member("extension") ;
 		
 		return s;
+	}
+
+	public Gee.ArrayList<string> get_encoder_list(){
+		var encoderList = new Gee.ArrayList<string>();
+		
+		if (SelectedScript.Extension == ".json") {
+			var parser = new Json.Parser();
+			try{
+				parser.load_from_file(SelectedScript.Path);
+			} catch (Error e) {
+				log_error (e.message);
+			}
+			var node = parser.get_root();
+			var config = node.get_object();
+			
+			get_preset_commandline(InputFiles[0], config, out encoderList);
+		}
+
+		return encoderList;
 	}
 	
 	private string encode_video_x264 (MediaFile mf, Json.Object settings){

@@ -1537,7 +1537,6 @@ on the toolbar will open the file in a text editor.
 			return;
 		}	
 
-		convert_prepare();
 		
 		ScriptFile sh;
 		TreeIter iter;
@@ -1545,6 +1544,16 @@ on the toolbar will open the file in a text editor.
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 	    App.SelectedScript = sh;
 	    
+	    //check if encoders used by preset are available
+		foreach(string enc in App.get_encoder_list()){
+			App.Encoders[enc].CheckAvailability();
+			if (!App.Encoders[enc].IsAvailable){
+				gtk_messagebox(_("Missing Encoders"), _("Following encoders were not found on your system:") + "\n\n%s\n\n".printf(App.Encoders[enc].Command)+ _("Please install required packages or select another preset"),this, true);
+				return;
+			}
+		}
+
+		convert_prepare();
 	    App.convert_begin();
 	    
 	    timerID = Timeout.add (500, update_status);
