@@ -190,7 +190,6 @@ namespace TeeJee.FileSystem{
 		}
 	}
 	
-	
 	public bool dir_exists (string filePath){
 		
 		/* Check if directory exists */
@@ -1157,6 +1156,8 @@ namespace TeeJee.ProcessManagement{
 	
 	public string TEMP_DIR;
 
+	/* Convenience functions for executing commands and managing processes */
+	
     public static void init_tmp(){
 		string std_out, std_err;
 		
@@ -1170,8 +1171,6 @@ namespace TeeJee.ProcessManagement{
 			create_dir(TEMP_DIR);
 		}
 	}
-	
-	/* Convenience functions for executing commands and managing processes */
 
 	public int execute_command_sync (string cmd){
 		
