@@ -1260,7 +1260,7 @@ Notes:
 					switch (acodec) {
 						case "mp3lame":
 							s += encode_audio_mp3lame(mf,settings);
-							encoderList.add("mp3lame");
+							encoderList.add("lame");
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
 							};
@@ -1304,7 +1304,7 @@ Notes:
 				
 			case "mp3":
 				s += encode_audio_mp3lame(mf,settings);
-				encoderList.add("mp3lame");
+				encoderList.add("lame");
 				if (audio.get_boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
