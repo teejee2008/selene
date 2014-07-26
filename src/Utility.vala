@@ -2093,11 +2093,22 @@ namespace TeeJee.System{
 		return false;
 	}
 	
-	public int notify_send (string title, string message, int durationMillis, string urgency){
+	public int notify_send (string title, string message, int durationMillis, string urgency, string dialog_type = "info"){
 				
 		/* Displays notification bubble on the desktop */
 		
-		string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, "gtk-dialog-info", title, message);
+		switch (dialog_type){
+			case "error":
+			case "info":
+			case "warning":
+				//ok
+				break;
+			default:
+				dialog_type = "info";
+				break;
+		}
+
+		string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, "gtk-dialog-" + dialog_type, title, message);
 		return execute_command_sync (s);
 	}
 }

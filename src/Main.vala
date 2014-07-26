@@ -38,7 +38,7 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public Main App;
-public const string AppName = "Selene Media Encoder";
+public const string AppName = "Selene";
 public const string AppShortName = "selene";
 public const string AppVersion = "2.4.3";
 public const string AppAuthor = "Tony George";
@@ -972,7 +972,7 @@ Notes:
 			retVal = true;
 
 			if (ShowNotificationPopups){
-				notify_send (_("File Complete"), mf.Name, 2000, "low");
+				notify_send (_("Completed"), mf.Name, 2000, "low");
 			}
 		}
 		else{
@@ -982,7 +982,7 @@ Notes:
 			retVal = false;
 			
 			if (ShowNotificationPopups){
-				notify_send (_("File Failed"), mf.Name, 2000, "low");
+				notify_send (_("Completed"), mf.Name, 2000, "low", "warning");
 			}
 		}
 
