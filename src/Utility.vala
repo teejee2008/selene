@@ -1783,7 +1783,7 @@ namespace TeeJee.GtkHelper{
 namespace TeeJee.Multimedia{
 	
 	using TeeJee.Logging;
-	
+
 	/* Functions for working with audio/video files */
 	
 	public long get_file_duration(string filePath){
@@ -1885,6 +1885,7 @@ namespace TeeJee.System{
 	
 	using TeeJee.ProcessManagement;
 	using TeeJee.Logging;
+	
 
 	public double get_system_uptime_seconds(){
 				
@@ -2093,9 +2094,14 @@ namespace TeeJee.System{
 		return false;
 	}
 	
+	private DateTime dt_last_notification = null;
+	private const int NOTIFICATION_INTERVAL = 3;
+	
 	public int notify_send (string title, string message, int durationMillis, string urgency, string dialog_type = "info"){
 				
 		/* Displays notification bubble on the desktop */
+
+		int retVal = 0;
 		
 		switch (dialog_type){
 			case "error":
@@ -2107,9 +2113,21 @@ namespace TeeJee.System{
 				dialog_type = "info";
 				break;
 		}
+		
+		long seconds = 9999;
+		if (dt_last_notification != null){
+			DateTime dt_end = new DateTime.now_local();
+			TimeSpan elapsed = dt_end.difference(dt_last_notification);
+			seconds = (long)(elapsed * 1.0 / TimeSpan.SECOND);
+		}
+	
+		if (seconds > NOTIFICATION_INTERVAL){
+			string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, "gtk-dialog-" + dialog_type, title, message);
+			retVal = execute_command_sync (s);
+			dt_last_notification = new DateTime.now_local();
+		}
 
-		string s = "notify-send -t %d -u %s -i %s \"%s\" \"%s\"".printf(durationMillis, urgency, "gtk-dialog-" + dialog_type, title, message);
-		return execute_command_sync (s);
+		return retVal;
 	}
 }
 

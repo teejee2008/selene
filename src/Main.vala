@@ -131,6 +131,7 @@ public class Main : GLib.Object{
 	private DataOutputStream dsLog;	
 	
 	private string blankLine = "";
+	private DateTime lastNotificationTime;
 	
 	public static int main (string[] args) {
 		//set locale
