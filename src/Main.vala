@@ -1228,20 +1228,24 @@ Notes:
 		
 		s += "\n";
 		s += "outputFile=\"${outDir}/${title}" + general.get_string_member("extension") + "\"\n";
-		s += "tempVideo=\"${tempDir}/video" + general.get_string_member("extension") + "\"\n";
-		switch (audio.get_string_member("codec")) {
-			case "mp3lame":
-				s += "tempAudio=\"${tempDir}/audio.mp3\"\n";
-				break;
-			case "neroaac":
-				s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
-				break;
-			case "vorbis":
-				s += "tempAudio=\"${tempDir}/audio.ogg\"\n";
-				break;
-			case "opus":
-				s += "tempAudio=\"${tempDir}/audio.opus\"\n";
-				break;
+		if (mf.HasVideo && video.get_string_member("codec") != "disable"){
+			s += "tempVideo=\"${tempDir}/video" + general.get_string_member("extension") + "\"\n";
+		}
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable"){
+			switch (audio.get_string_member("codec")) {
+				case "mp3lame":
+					s += "tempAudio=\"${tempDir}/audio.mp3\"\n";
+					break;
+				case "neroaac":
+					s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
+					break;
+				case "vorbis":
+					s += "tempAudio=\"${tempDir}/audio.ogg\"\n";
+					break;
+				case "opus":
+					s += "tempAudio=\"${tempDir}/audio.opus\"\n";
+					break;
+			}
 		}
 		s += "\n";
 		
