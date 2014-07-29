@@ -1430,8 +1430,14 @@ on the toolbar will open the file in a text editor.
 		var dialog = new AboutWindow();
 		dialog.set_transient_for (this);
 
-		dialog.authors = { "Tony George:teejeetech@gmail.com" };
-		dialog.translators = null; 
+		dialog.authors = { 
+			"Tony George:teejeetech@gmail.com" 
+		};
+		
+		dialog.translators = {
+			"abuyop (Malay):launchpad.net/~abuyop"
+		}; 
+		
 		dialog.documenters = null; 
 		dialog.artists = null;
 		dialog.donations = null;

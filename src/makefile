@@ -38,8 +38,8 @@ install:
 	install -m 0755 ./share/pixmaps/selene.png $(DESTDIR)$(sharedir)/pixmaps
 	
 	#translations
-	#mkdir -p "$(DESTDIR)$(localedir)/cs_CZ/LC_MESSAGES"
-	#msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/cs_CZ/LC_MESSAGES/selene.mo" ../po/selene-cs.po
+	mkdir -p "$(DESTDIR)$(localedir)/ms_MY/LC_MESSAGES"
+	msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/ms_MY/LC_MESSAGES/selene.mo" ../po/selene-ms.po
 	
 uninstall:
 	#binary
@@ -56,4 +56,4 @@ uninstall:
 	rm -f $(DESTDIR)$(sharedir)/pixmaps/selene.png
 	
     #translations
-	#rm -f "$(DESTDIR)$(localedir)/*/LC_MESSAGES/selene.mo"
+	rm -f "$(DESTDIR)$(localedir)/*/LC_MESSAGES/selene.mo"

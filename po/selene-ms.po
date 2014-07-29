@@ -1,0 +1,1248 @@
+# Malay translation for selene
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the selene package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: selene\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-06-17 08:08+0530\n"
+"PO-Revision-Date: 2014-07-11 03:55+0000\n"
+"Last-Translator: abuyop <Unknown>\n"
+"Language-Team: Malay <ms@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-07-29 07:16+0000\n"
+"X-Generator: Launchpad (build 17131)\n"
+
+#: src/ConfigWindow.vala:2232
+msgid ""
+"\n"
+"\n"
+"Subtitle files should be present in the same folder\n"
+"and should start with same name."
+msgstr ""
+"\n"
+"\n"
+"Fail sari kata seharusnya hadir dalam folder yang  sama\n"
+"dan seharusnya mula dengan nama yang sama."
+
+#: src/ConfigWindow.vala:503
+msgid ""
+"<b>Additional Options</b>\n"
+"These options will be passed to the encoder\n"
+"on the command line. Please do not specify\n"
+"any options that are already provided by the GUI."
+msgstr ""
+"<b>Pilihan Tambahan</b>\n"
+"Pilihan ini akan dilepasi kepada pengekod\n"
+"pada baris perintah. Sila jangan nyatakan\n"
+"mana-mana pilihan yang sudah disedia oleh GUI."
+
+#: src/ConfigWindow.vala:915
+msgid "<b>Adjustments:</b>"
+msgstr "<b>Pelarasan</b>"
+
+#: src/PrefWindow.vala:89
+msgid "<b>Backup Folder</b>"
+msgstr "<b>Folder Sandar</b>"
+
+#: src/ConfigWindow.vala:831
+msgid "<b>Channels &amp; Sampling:</b>"
+msgstr "<b>Saluran &amp; Persampelan:</b>"
+
+#: src/ConfigWindow.vala:439
+msgid ""
+"<b>Compression Vs Device Compatibility</b>\n"
+"'High' profile gives the best compression.\n"
+"Change this to 'Baseline' or 'Main' only if you are encoding\n"
+"for a particular device (mobiles,PMPs,etc) which does not\n"
+"support the 'High' profile"
+msgstr ""
+"<b>Pemampatan Vs Keserasian Peranti</b>\n"
+"Profil 'Tinggi' berikan pemampatan terbaik.\n"
+"Ubah ke 'Baseline' atau 'Main' sahaja jika anda mengekod\n"
+"peranti tertentu (bimbit,PMPs,dll) yang tidak\n"
+"menyokong profil 'Tinggi'"
+
+#: src/ConfigWindow.vala:407
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Slower presets give better compression and smaller files\n"
+"but take more time to encode."
+msgstr ""
+"<b>Pemampatan Vs Kelajuan Pengekodan</b>\n"
+"Praset lebih perlahan memberikan pemampatan lebih baik dan fail lebih kecil\n"
+"tetapi mengambil masa untuk dienkodkan."
+
+#: src/ConfigWindow.vala:469
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Use a slower setting for better quality.\n"
+"The slowest setting is around 8 times slower than the fastest."
+msgstr ""
+"<b>Pemampatan Vs Kelajuan Pengekosan</b>\n"
+"Guna tetapan lebih perlahan untuk kualiti lebih baik.\n"
+"Tetapan lebih perlahan kira-kira 8 kali ganda lebih perlahan berbanding yang "
+"terpantas."
+
+#: src/ConfigWindow.vala:393
+msgid ""
+"<b>Compression Vs Quality</b>\n"
+"Smaller values give better quality video and larger files"
+msgstr ""
+"<b>Pemampatan Vs Kualiti</b>\n"
+"Nilai lebih kecil memberikan video berkualiti baik dan fail lebih besar"
+
+#: src/ConfigWindow.vala:1160
+msgid ""
+"<b>Embed</b> - Subtitle files will be combined with the output file.\n"
+"These subtitles can be switched off since they are added as a separate track"
+msgstr ""
+"<b>Terbenam</b> - Fail sarikata akan digabung dengan fail output.\n"
+"Sarikata ini boleh ditutup kerana ia ditambah sebagai trek yang berasingan"
+
+#: src/ConfigWindow.vala:1028
+msgid "<b>Fade:</b>"
+msgstr "<b>Resap:</b>"
+
+#: src/ConfigWindow.vala:224
+msgid "<b>File Format:</b>"
+msgstr "<b>Format Fail:</b>"
+
+#: src/ConfigWindow.vala:1096
+msgid "<b>Other Effects:</b>"
+msgstr "<b>Kesan Lain:</b>"
+
+#: src/PrefWindow.vala:64
+msgid "<b>Output Folder</b>"
+msgstr "<b>Folder Output</b>"
+
+#: src/ConfigWindow.vala:281
+msgid "<b>Preset:</b>"
+msgstr "<b>Praset:</b>"
+
+#: src/ConfigWindow.vala:1162
+msgid ""
+"<b>Render</b> - Subtitles are rendered/burned on the video.\n"
+"These subtitles cannot be switched off since they become a part of the video"
+msgstr ""
+"<b>Terap</b> - Sarikat diterap dalam video.\n"
+"Sarikata ini tidak dimatikan kerana ia menjadi sebahagian dari video"
+
+#: src/ConfigWindow.vala:652
+msgid "<b>Resample:</b>"
+msgstr "<b>Sampel Semula:</b>"
+
+#: src/ConfigWindow.vala:551
+msgid "<b>Resize:</b>"
+msgstr "<b>Saiz Semula:</b>"
+
+#: src/ConfigWindow.vala:884
+msgid "<b>SOX Audio Processing:</b>"
+msgstr "<b>Pemprosesan Audio SOX:</b>"
+
+#: src/ConfigWindow.vala:248
+msgid "AC3 Audio (*.ac3)"
+msgstr "Audio AC3 (*.ac3)"
+
+#: src/MainWindow.vala:189
+msgid "Abort"
+msgstr "Henti paksa"
+
+#: src/MainWindow.vala:235
+msgid "About"
+msgstr "Perihal"
+
+#: src/MainWindow.vala:1376
+msgid "Add File(s)"
+msgstr "Tambah Fail"
+
+#: src/MainWindow.vala:144
+msgid "Add Files"
+msgstr "Tambah Fail"
+
+#: src/MainWindow.vala:362
+msgid "Add New Preset"
+msgstr "Tambah Praset Baharu"
+
+#: src/MainWindow.vala:360
+msgid "Add Preset"
+msgstr "Tambah Praset"
+
+#: src/MainWindow.vala:147
+msgid "Add file(s)"
+msgstr "Tambah fail"
+
+#: src/ConfigWindow.vala:1127
+msgid "Adjust Stereo for Headphones"
+msgstr "Laras Stereo untuk Fon Kepala"
+
+#: src/Main.vala:592
+msgid "All files removed"
+msgstr "Semua fail dibuang"
+
+#: src/MainWindow.vala:1440
+msgid "An audio-video encoder for Linux"
+msgstr "Merupakan pengekod audio-video untuk Linux"
+
+#: src/MainWindow.vala:213
+msgid "Application Settings"
+msgstr "Tetapan Aplikasi"
+
+#: src/AboutWindow.vala:312
+#, c-format
+msgid "Artists"
+msgstr "Artis"
+
+#: src/ConfigWindow.vala:721
+msgid "Audio"
+msgstr "Audio"
+
+#: src/ConfigWindow.vala:312
+msgid "Author"
+msgstr "Pengarang"
+
+#: src/AboutWindow.vala:304
+#, c-format
+msgid "Authors"
+msgstr "Pengarang"
+
+#: src/MainWindow.vala:464
+msgid "AutoCrop Video"
+msgstr "Kerat-Auto Video"
+
+#: src/ConfigWindow.vala:1551 src/ConfigWindow.vala:1576
+#: src/ConfigWindow.vala:1607 src/ConfigWindow.vala:1624
+#: src/ConfigWindow.vala:1942 src/ConfigWindow.vala:1965
+msgid "Average Bitrate"
+msgstr "Kadar Bit Purata"
+
+#: src/ConfigWindow.vala:1944 src/ConfigWindow.vala:1967
+msgid "Average Bitrate (2-pass)"
+msgstr "Kadar Bit Purata (2-laluan)"
+
+#: src/AboutWindow.vala:275
+msgid "Back"
+msgstr "Undur"
+
+#: src/MainWindow.vala:250
+msgid "Background"
+msgstr "Latar Belakang"
+
+#: src/PrefWindow.vala:97
+msgid "Backup Location"
+msgstr "Lokasi Sandar"
+
+#: src/ConfigWindow.vala:929
+msgid "Bass (lower freq)"
+msgstr "Bass (freq lebih rendah)"
+
+#: src/ConfigWindow.vala:383 src/ConfigWindow.vala:762
+msgid "Bitrate (kbps)"
+msgstr "Kadar bit (kbps)"
+
+#: src/ConfigWindow.vala:927
+msgid "Boost or cut the bass (lower) frequencies of the audio."
+msgstr "Galak atau potong frekuensi bass audio (lebih rendah)."
+
+#: src/ConfigWindow.vala:953
+msgid "Boost or cut the treble (upper) frequencies of the audio."
+msgstr "Galak atau potong frekuensi trebel audio (lebih rendah)."
+
+#: src/MainWindow.vala:382
+msgid "Browse"
+msgstr "Layar"
+
+#: src/Main.vala:1123 src/Main.vala:1137
+msgid "Cancelled"
+msgstr "Dibatalkan"
+
+#: src/ConfigWindow.vala:979
+msgid "Change audio pitch (shrillness) without changing audio tempo (speed)."
+msgstr "Ubah pic audio (kelantangan) tanpa mengubah tempo audio (kelajuan)."
+
+#: src/ConfigWindow.vala:1005
+msgid ""
+"Change audio tempo (speed) without changing audio pitch (shrillness).\n"
+"\n"
+"WARNING: This will change the duration of the audio track"
+msgstr ""
+"Ubah tempo audio (kelajuan) tanpa mengubah pic audio (kelantangan).\n"
+"\n"
+"AMARAN: Ini akan mengubah jangkamasa trek audio"
+
+#: src/ConfigWindow.vala:851
+msgid "Channels"
+msgstr "Saluran"
+
+#: src/AboutWindow.vala:285
+msgid "Close"
+msgstr "Tutup"
+
+#: src/Main.vala:993
+msgid "Completed"
+msgstr "Selesai"
+
+#: src/ConfigWindow.vala:1553 src/ConfigWindow.vala:1578
+#: src/ConfigWindow.vala:1609 src/ConfigWindow.vala:1990
+msgid "Constant Bitrate"
+msgstr "Kadar Bit Malar"
+
+#: src/ConfigWindow.vala:1555
+msgid "Constant Bitrate (Strict)"
+msgstr "Kadar Bit Malar (Ketat)"
+
+#: src/Main.vala:891 src/Main.vala:1171
+msgid "Converting..."
+msgstr "Menukarkan..."
+
+#: src/MainWindow.vala:993
+#, c-format
+msgid "Converting: '%s'"
+msgstr "Menukar: '%s'"
+
+#: src/Main.vala:889 src/Main.vala:1169
+msgid "Converting: Enter (q) to quit or (p) to pause..."
+msgstr "Menukar: Masukkan (q) untuk keluar atau (p) untuk jeda..."
+
+#: src/AboutWindow.vala:262 src/AboutWindow.vala:279
+msgid "Credits"
+msgstr "Penghargaan"
+
+#: src/MainWindow.vala:309
+msgid "CropVideo (L:T:R:B)"
+msgstr "KeratVideo (L:T:R:B)"
+
+#: src/ConfigWindow.vala:567 src/ConfigWindow.vala:670
+msgid "Custom"
+msgstr "Suai"
+
+#: src/MainWindow.vala:369
+msgid "Delete Preset"
+msgstr "Padam Praset"
+
+#: src/ConfigWindow.vala:715
+msgid "Denominator"
+msgstr "Pembawah"
+
+#: src/EncodersWindow.vala:92
+msgid "Description"
+msgstr "Keterangan"
+
+#: src/Utility.vala:1034 src/Utility.vala:1044
+msgid "Device unmounted"
+msgstr "Peranti dinyahlekap"
+
+#: src/DonationWindow.vala:53
+msgid ""
+"Did you find this software useful?\n"
+"\n"
+"You can buy me a coffee or make a donation via PayPal to show your support. "
+"Or just drop me an email and say Hi.\n"
+"\n"
+"This application is completely free and will continue to remain that way. "
+"Your contributions will help in developing it further and making it more "
+"awesome!\n"
+"\n"
+"Feel free to drop me a mail if you find any issues or if you have "
+"suggestions for improvement.\n"
+"\n"
+"Regards,\n"
+"Tony George\n"
+"teejeetech@gmail.com"
+msgstr ""
+"Adakah anda mendapati perisian ini berguna?\n"
+"\n"
+"Anda boleh membelanja saya secawan kopi atau memberi sedikit sumbangan "
+"melalui PayPal untuk memberi sokongan anda kepada saya. Atau hanya menegur "
+"saya melalui emel.\n"
+"\n"
+"Aplikasi ini sepenuhnya bebas (percuma) dan akan terus sedemikian. Sumbangan "
+"anda akan membantu saya terus membangunnya dan menjadikannya lebih hebat!\n"
+"\n"
+"Emel dari anda sangat dialu-alukan jika anda menemui sebarang masalah atau "
+"anda mempunyai cadangan untuk penambahbaikan.\n"
+"\n"
+"Harap Maklum,\n"
+"Tony George\n"
+"teejeetech@gmail.com"
+
+#: src/ConfigWindow.vala:1312 src/ConfigWindow.vala:1322
+#: src/ConfigWindow.vala:1331
+msgid "Disable Audio"
+msgstr "Lumpuhkan Audio"
+
+#: src/ConfigWindow.vala:1285
+msgid "Disable Video"
+msgstr "Lumpuhkan Video"
+
+#: src/PrefWindow.vala:107
+msgid "Do not move input files"
+msgstr "Jangan alih fail input"
+
+#: src/ConfigWindow.vala:638
+msgid "Do not stretch or squeeze the video (Fit-To-Box)"
+msgstr "Jangan regang atau penyek video (Muat-Suai)"
+
+#: src/AboutWindow.vala:328
+#, c-format
+msgid "Documenters"
+msgstr "Juru dokumentasi"
+
+#: src/DonationWindow.vala:36 src/MainWindow.vala:226 src/MainWindow.vala:227
+msgid "Donate"
+msgstr "Derma"
+
+#: src/DonationWindow.vala:67
+msgid "Donate via PayPal"
+msgstr "Derma melalui PayPal"
+
+#: src/AboutWindow.vala:336
+#, c-format
+msgid "Donations"
+msgstr "Derma"
+
+#: src/Main.vala:970
+msgid "Done"
+msgstr "Selesai"
+
+#: src/MainWindow.vala:981
+msgid "Drag files on this window or click the 'Add' button"
+msgstr "Seret fail dalam tetingkap ini atau klik butang 'Tambah'"
+
+#: src/MainWindow.vala:301
+msgid "Duration"
+msgstr "Tempoh"
+
+#: src/MainWindow.vala:376
+msgid "Edit Preset"
+msgstr "Sunting Praset"
+
+#: src/ConfigWindow.vala:323
+msgid "Email"
+msgstr "Emel"
+
+#: src/ConfigWindow.vala:1421
+msgid "Embed / Soft Subs"
+msgstr "Sarikata Luar / Terbenam"
+
+#: src/ConfigWindow.vala:2267
+msgid "Empty Preset Name"
+msgstr "Nama Praset Kosong"
+
+#: src/EncodersWindow.vala:46 src/MainWindow.vala:219
+msgid "Encoders"
+msgstr "Pengekod"
+
+#: src/ConfigWindow.vala:370 src/ConfigWindow.vala:749
+msgid "Encoding Mode"
+msgstr "Mod Pengekodan"
+
+#: src/MainWindow.vala:441
+msgid "Encoding Script or Preset File"
+msgstr "Skrip Pengekodan atau Fail Praset"
+
+#: src/EncodersWindow.vala:84
+msgid "Encoding Tool"
+msgstr "Alat Pengekodan"
+
+#: src/Main.vala:673
+msgid "Enter any key to Cancel..."
+msgstr "Masukkan mana-mana kekunci untuk Batal..."
+
+#: src/Main.vala:980 src/Utility.vala:109
+msgid "Error"
+msgstr "Ralat"
+
+#: src/Main.vala:708
+msgid "Error: File missing"
+msgstr "Ralat: Fail hilang"
+
+#: src/ConfigWindow.vala:691
+msgid "Examples:"
+msgstr "Contoh:"
+
+#: src/ConfigWindow.vala:270
+msgid "Extension"
+msgstr "Sambungan"
+
+#: src/ConfigWindow.vala:506
+msgid "Extra Options"
+msgstr "Pilihan Tambahan"
+
+#: src/ConfigWindow.vala:250
+msgid "FLAC Audio (*.flac)"
+msgstr "Audio FLAC (*.flac)"
+
+#: src/ConfigWindow.vala:688
+msgid "FPS Ratio"
+msgstr "Nisbah FPS"
+
+#: src/ConfigWindow.vala:1040
+msgid "Fade In (seconds)"
+msgstr "Resap Masuk (saat)"
+
+#: src/ConfigWindow.vala:1055
+msgid "Fade Out (seconds)"
+msgstr "Resap Lenyap (saat)"
+
+#: src/ConfigWindow.vala:1070
+msgid "Fade Type"
+msgstr "Jenis Resap"
+
+#: src/Main.vala:996
+msgid "Failed"
+msgstr "Gagal"
+
+#: src/Utility.vala:1018
+msgid "Failed to kill process"
+msgstr "Gagal matikan proses"
+
+#: src/Utility.vala:1001 src/Utility.vala:1029
+msgid "Failed to unmount device"
+msgstr "Gagal menyahlekap peranti"
+
+#: src/ConfigWindow.vala:422
+msgid "Fast"
+msgstr "Pantas"
+
+#: src/ConfigWindow.vala:498
+msgid "Fast (--cpu-used=4)"
+msgstr "Pantas (--cpu-used=4)"
+
+#: src/ConfigWindow.vala:500
+msgid "Fastest (--cpu-used=5)"
+msgstr "Terpantas (--cpu-used=5)"
+
+#: src/MainWindow.vala:283
+msgid "File"
+msgstr "Fail"
+
+#: src/Main.vala:975
+msgid "File Complete"
+msgstr "Fail Selesai"
+
+#: src/Main.vala:985
+msgid "File Failed"
+msgstr "Fail Gagal"
+
+#: src/MainWindow.vala:526
+msgid "File Info (Output)"
+msgstr "Maklumat Fail (Output)"
+
+#: src/MainWindow.vala:520
+msgid "File Info (Source)"
+msgstr "Maklumat Fail (Sumber)"
+
+#: src/Main.vala:572
+msgid "File added:"
+msgstr "Fail ditambah:"
+
+#: src/MainWindow.vala:1009
+#, c-format
+msgid "File added: '%s'"
+msgstr "Fail ditambah: '%s'"
+
+#: src/Main.vala:586
+msgid "File removed:"
+msgstr "Fail dibuang:"
+
+#: src/MainWindow.vala:271
+msgid "File(s) to convert"
+msgstr "Fail ditukar"
+
+#: src/Main.vala:609
+#, c-format
+msgid "Files will be saved in '%s'"
+msgstr "Fail akan disimpan dalam '%s'"
+
+#: src/Main.vala:612
+msgid "Files will be saved in source directory"
+msgstr "Fail akan disimpan dalam direktori sumber"
+
+#: src/ConfigWindow.vala:538 src/ConfigWindow.vala:817
+msgid "Filters"
+msgstr "Penapis"
+
+#: src/MainWindow.vala:197 src/MainWindow.vala:199
+msgid "Finish"
+msgstr "Selesai"
+
+#: src/ConfigWindow.vala:635
+msgid "Fits the video in a box of given width and height."
+msgstr "Padankan video dalam petak dengan lebar dan tinggi yang diberi."
+
+#: src/ConfigWindow.vala:1641
+msgid "Fixed Bitrate"
+msgstr "Kadar Bit Tetap"
+
+#: src/MainWindow.vala:416 src/MainWindow.vala:426
+msgid "Folder"
+msgstr "Folder"
+
+#: src/Main.vala:310
+msgid "Following encoders are not installed on your system:"
+msgstr "Pengekod berikut tidak dipasang dalam sistem anda:"
+
+#: src/MainWindow.vala:1551
+msgid "Following encoders were not found on your system:"
+msgstr "Pengekod berikut tidak ditemui dalam sistem anda:"
+
+#: src/ConfigWindow.vala:232
+msgid "Format"
+msgstr "Format"
+
+#: src/ConfigWindow.vala:356 src/ConfigWindow.vala:735
+msgid "Format / Codec"
+msgstr "Format / Kodeks"
+
+#: src/MainWindow.vala:1393
+msgid "Format not supported:"
+msgstr "Format tidak disokong:"
+
+#: src/EncodersWindow.vala:144
+msgid "Found"
+msgstr "Temui"
+
+#: src/ConfigWindow.vala:660
+msgid "Frame Rate"
+msgstr "Kadar Bingkai"
+
+#: src/ConfigWindow.vala:662
+msgid "Frames/sec"
+msgstr "Bingkai/saat"
+
+#: src/ConfigWindow.vala:211
+msgid "General"
+msgstr "Am"
+
+#: src/ConfigWindow.vala:1086
+msgid "Half Sine"
+msgstr "Separa Sin"
+
+#: src/ConfigWindow.vala:614
+msgid "Height"
+msgstr "Tinggi"
+
+#: src/MainWindow.vala:397 src/MainWindow.vala:399 src/MainWindow.vala:937
+msgid "Info"
+msgstr "Maklumat"
+
+#: src/MainWindow.vala:1529
+msgid ""
+"Input queue is empty!\n"
+"Please add some files.\n"
+msgstr ""
+"Baris gilir input kosong!\n"
+"Sila tambah beberapa fail.\n"
+
+#: src/Main.vala:600
+msgid "Input queue is empty! Please add some files."
+msgstr "Baris gilir input kosong! Sila tambah beberapa fail."
+
+#: src/Main.vala:236
+msgid "Input queue is empty! Please select files to convert."
+msgstr "Baris gilir input kosong! Sila pilih fail untuk ditukarkan."
+
+#: src/ConfigWindow.vala:1092
+msgid "Inverted Parabola"
+msgstr "Parabola Songsang"
+
+#: src/FileInfoWindow.vala:66
+msgid "Key"
+msgstr "Kekunci"
+
+#: src/Utility.vala:1011
+msgid "Killing all processes using the mount-point..."
+msgstr "Matikan semua proses menggunakan titik-lekap..."
+
+#: src/ConfigWindow.vala:1088
+msgid "Linear"
+msgstr "Linear"
+
+#: src/Main.vala:358
+msgid "Loading presets from:"
+msgstr "Memuatkan praset dari:"
+
+#: src/Main.vala:357
+msgid "Loading scripts from:"
+msgstr "Memuatkan skrip dari:"
+
+#: src/ConfigWindow.vala:1090
+msgid "Logarithmic"
+msgstr "Logaritma"
+
+#: src/ConfigWindow.vala:1668
+msgid "Lossless"
+msgstr "Tidak Hilang"
+
+#: src/Main.vala:722 src/Main.vala:725
+msgid "Lyrics:"
+msgstr "Lirik:"
+
+#: src/ConfigWindow.vala:252
+msgid "MP3 Audio (*.mp3)"
+msgstr "Audio MP3 (*.mp3)"
+
+#: src/ConfigWindow.vala:254
+msgid "MP4 Audio (*.mp4)"
+msgstr "Audio MP4 (*.mp4)"
+
+#: src/ConfigWindow.vala:242
+msgid "MPEG4 Video (*.mp4)"
+msgstr "Video MPEG4 (*.mp4)"
+
+#: src/ConfigWindow.vala:1125
+msgid ""
+"Makes audio easier to listen to on headphones. Adds 'cues' to the audio so "
+"that when listened to on headphones the stereo image is moved from inside "
+"your head (standard for headphones) to outside and in front of the listener "
+"(standard for speakers)."
+msgstr ""
+"Menjadikan audio lebih mudah didengar dengan fon kepala. Tambah 'cues' pada "
+"audio supaya bila didengari dengan fon kepala imej stereo bergerak ke dalam "
+"kepala anda (piawai untuk fon kepala) ke arah luar dan di hadapan pendengar "
+"(piawai bagi pembesar suara)."
+
+#: src/ConfigWindow.vala:240
+msgid "Matroska Video (*.mkv)"
+msgstr "Video Matroska (*.mkv)"
+
+#: src/ConfigWindow.vala:1110
+msgid "Maximize Volume Level (Normalize)"
+msgstr "Maksimumkan Aras Volum (Normalkan)"
+
+#: src/ConfigWindow.vala:1108
+msgid "Maximize the volume level (loudness)"
+msgstr "Maksimumkan aras volum (kelantangan)"
+
+#: src/ConfigWindow.vala:424
+msgid "Medium"
+msgstr "Sederhana"
+
+#: src/ConfigWindow.vala:496
+msgid "Medium (--cpu-used=3)"
+msgstr "Sederhana (--cpu-used=3)"
+
+#: src/EncodersWindow.vala:144
+msgid "Missing"
+msgstr "Hilang"
+
+#: src/Main.vala:310 src/MainWindow.vala:1551
+msgid "Missing Encoders"
+msgstr "Pengekod Hilang"
+
+#: src/Utility.vala:1772
+msgid "Missing Icon"
+msgstr "Ikon Hilang"
+
+#: src/ConfigWindow.vala:804
+msgid "Music"
+msgstr "Muzik"
+
+#: src/Main.vala:2655 src/MainWindow.vala:1202
+msgid "N/A"
+msgstr "T/S"
+
+#: src/ConfigWindow.vala:289
+msgid "Name"
+msgstr "Nama"
+
+#: src/ConfigWindow.vala:296
+msgid "New Preset"
+msgstr "Praset Baru"
+
+#: src/ConfigWindow.vala:565 src/ConfigWindow.vala:668
+#: src/ConfigWindow.vala:691 src/ConfigWindow.vala:1688
+#: src/ConfigWindow.vala:1728 src/ConfigWindow.vala:1756
+#: src/ConfigWindow.vala:1770 src/ConfigWindow.vala:1799
+#: src/ConfigWindow.vala:1819
+msgid "No Change"
+msgstr "Tiada Perubahan"
+
+#: src/ConfigWindow.vala:1419
+msgid "No Subtitles"
+msgstr "Tiada Sarikata"
+
+#: src/ConfigWindow.vala:646
+msgid "No Up-Scaling"
+msgstr "Tiada Penskalaan-Naik"
+
+#: src/ConfigWindow.vala:800
+msgid "None"
+msgstr "Tiada"
+
+#: src/Main.vala:310
+msgid "Not possible to continue!"
+msgstr "Mustahil diteruskan!"
+
+#: src/ConfigWindow.vala:706
+msgid "Numerator"
+msgstr "Pengangka"
+
+#: src/ConfigWindow.vala:244
+msgid "OGG Theora Video (*.ogv)"
+msgstr "Video OGG Theora (*.ogv)"
+
+#: src/ConfigWindow.vala:256
+msgid "OGG Vorbis Audio (*.ogg)"
+msgstr "Audio OGG Vorbis (*.ogg)"
+
+#: src/MainWindow.vala:384
+msgid "Open Folder"
+msgstr "Buka Folder"
+
+#: src/MainWindow.vala:497
+msgid "Open Log File"
+msgstr "Buka Fail Log"
+
+#: src/MainWindow.vala:491
+msgid "Open Output Folder"
+msgstr "Buka Folder Output"
+
+#: src/MainWindow.vala:485
+msgid "Open Temp Folder"
+msgstr "Buka Folder Sementara"
+
+#: src/MainWindow.vala:263
+msgid "Open output folder"
+msgstr "Buka folder output"
+
+#: src/ConfigWindow.vala:784
+msgid "Optimization"
+msgstr "Pengoptimuman"
+
+#: src/ConfigWindow.vala:258
+msgid "Opus Audio (*.opus)"
+msgstr "Audio Opus (*.opus)"
+
+#: src/MainWindow.vala:261
+msgid "Output"
+msgstr "Output"
+
+#: src/PrefWindow.vala:72
+msgid "Output Location"
+msgstr "Lokasi Output"
+
+#: src/MainWindow.vala:180 src/MainWindow.vala:1510 src/MainWindow.vala:1512
+msgid "Pause"
+msgstr "Jeda"
+
+#: src/Main.vala:1150 src/Main.vala:1155
+msgid "Paused"
+msgstr "Dijeda"
+
+#: src/Main.vala:1153
+msgid "Paused: Enter (r) to resume..."
+msgstr "Dijeda: Masukkan (r) untuk sambung semula..."
+
+#: src/ConfigWindow.vala:981
+msgid "Pitch (shrillness)"
+msgstr "Pic (kelantangan)"
+
+#: src/MainWindow.vala:514
+msgid "Play File (Output)"
+msgstr "Main Fail (Output)"
+
+#: src/MainWindow.vala:508
+msgid "Play File (Source)"
+msgstr "Main Fail (Sumber)"
+
+#: src/ConfigWindow.vala:2265
+msgid "Please enter a name for this preset"
+msgstr "Sila masukkan nama untuk praset ini"
+
+#: src/MainWindow.vala:1551
+msgid "Please install required packages or select another preset"
+msgstr "Sila pasang pakej diperlukan atau pilih praset lain"
+
+#: src/ConfigWindow.vala:905
+msgid "Please install the 'sox' package on your system to use this feature"
+msgstr "Sila pasang pakej 'sox' pada sistem anda untuk guna fitur ini"
+
+#: src/ConfigWindow.vala:410 src/MainWindow.vala:431
+msgid "Preset"
+msgstr "Praset"
+
+#: src/MainWindow.vala:875
+msgid "Preset deleted"
+msgstr "Praset dipadam"
+
+#: src/MainWindow.vala:1641
+msgid "Press 'Cancel' to abort shutdown"
+msgstr "Tekan 'Batal' untuk henti paksa proses matikan"
+
+#: src/MainWindow.vala:469
+msgid "Preview File"
+msgstr "Pratonton Fail"
+
+#: src/ConfigWindow.vala:442
+msgid "Profile"
+msgstr "Profil"
+
+#: src/FileInfoWindow.vala:45
+msgid "Properties"
+msgstr "Sifat"
+
+#: src/ConfigWindow.vala:396 src/ConfigWindow.vala:773
+msgid "Quality"
+msgstr "Kualiti"
+
+#: src/ConfigWindow.vala:1084
+msgid "Quarter Sine"
+msgstr "Suku Sinus"
+
+#: src/MainWindow.vala:1531
+msgid "Queue is Empty"
+msgstr "Baris Gilir Kosong"
+
+#: src/Main.vala:630 src/Main.vala:689 src/Main.vala:2421
+msgid "Queued"
+msgstr "Dibaris gilir"
+
+#: src/EncodersWindow.vala:110
+msgid "Refresh"
+msgstr "Segar Semula"
+
+#: src/MainWindow.vala:161
+msgid "Remove all file(s)"
+msgstr "Buang semua fail"
+
+#: src/MainWindow.vala:154
+msgid "Remove selected file(s)"
+msgstr "Buang fail terpilih"
+
+#: src/ConfigWindow.vala:946 src/ConfigWindow.vala:972
+#: src/ConfigWindow.vala:998 src/ConfigWindow.vala:1024
+msgid "Reset"
+msgstr "Tetap Semula"
+
+#: src/ConfigWindow.vala:620
+msgid "Resizing Method"
+msgstr "Kaedah Mensaiz Semula"
+
+#: src/ConfigWindow.vala:558
+msgid "Resolution"
+msgstr "Resolusi"
+
+#: src/MainWindow.vala:1504 src/MainWindow.vala:1506
+msgid "Resume"
+msgstr "Sambung semula"
+
+#: src/MainWindow.vala:255
+msgid "Run processes with lower priority"
+msgstr "Jalanan proses dengan keutamaan lebih rendah"
+
+#: src/ConfigWindow.vala:871
+msgid "SOX"
+msgstr "SOX"
+
+#: src/ConfigWindow.vala:838
+msgid "Sampling Rate (Hz)"
+msgstr "Kadar Persampelan (Hz)"
+
+#: src/PrefWindow.vala:82
+msgid "Save in input file location"
+msgstr "Simpan dalam lokasi fail input"
+
+#: src/MainWindow.vala:979
+msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr "Pilih skrip dari tarik-turun dan klik 'Mula' untuk mula"
+
+#: src/DonationWindow.vala:74
+msgid "Send Email"
+msgstr "Hantar Emel"
+
+#: src/ConfigWindow.vala:585
+msgid ""
+"Set either Width or Height and leave the other as 0.\n"
+"It will be calculated automatically.\n"
+"\n"
+"Setting both width and height is not recommended\n"
+"since the video may get stretched or squeezed.\n"
+"\n"
+"Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
+msgstr ""
+"Tetapkan sama ada Lebar atau Tinggi dan biarkan yang lain\n"
+"sebagai 0. Ia akan dikira secara automatik.\n"
+"\n"
+"Tetapkan kedua-dua lebar dan tinggi tidak disarankan\n"
+"kerana video akan diregang atau dipenyek.\n"
+"\n"
+"Benarkan pilihan 'Fit-To-Box' untuk menghindari perubahan\n"
+"pada nisbah bidang."
+
+#: src/MainWindow.vala:240
+msgid "Shutdown"
+msgstr "Tutup"
+
+#: src/MainWindow.vala:1483
+msgid "Shutdown Disabled"
+msgstr "Matikan Dilumpuhkan"
+
+#: src/MainWindow.vala:1480
+msgid "Shutdown Enabled"
+msgstr "Matikan Dibenarkan"
+
+#: src/MainWindow.vala:245
+msgid "Shutdown system after completion"
+msgstr "Matikan sistem selepas selesai"
+
+#: src/MainWindow.vala:293
+msgid "Size"
+msgstr "Saiz"
+
+#: src/MainWindow.vala:459
+msgid "Skip File"
+msgstr "Langkau Fail"
+
+#: src/ConfigWindow.vala:426
+msgid "Slow"
+msgstr "Perlahan"
+
+#: src/ConfigWindow.vala:494
+msgid "Slow (--cpu-used=2)"
+msgstr "Perlahan (--cpu-used=2)"
+
+#: src/ConfigWindow.vala:428
+msgid "Slower"
+msgstr "Lebih Perlahan"
+
+#: src/ConfigWindow.vala:492
+msgid "Slower (--cpu-used=1)"
+msgstr "Lebih Perlahan (--cpu-used=1)"
+
+#: src/ConfigWindow.vala:490
+msgid "Slowest (--cpu-used=0)"
+msgstr "Paling Perlahan (--cpu-used=0)"
+
+#: src/Main.vala:618
+#, c-format
+msgid "Source files will be moved to '%s'"
+msgstr "Fail sumber akan dialih ke '%s'"
+
+#: src/Main.vala:720
+msgid "Source:"
+msgstr "Sumber:"
+
+#: src/ConfigWindow.vala:905
+msgid "Sox Not Installed"
+msgstr "Sox Tidak Dipasang"
+
+#: src/ConfigWindow.vala:802
+msgid "Speech"
+msgstr "Pertuturan"
+
+#: src/ConfigWindow.vala:472
+msgid "Speed"
+msgstr "Kelajuan"
+
+#: src/MainWindow.vala:171 src/MainWindow.vala:173
+msgid "Start"
+msgstr "Mula"
+
+#: src/Main.vala:604
+#, c-format
+msgid "Starting batch of %d file(s):"
+msgstr "Memulakan kelompok %d fail:"
+
+#: src/EncodersWindow.vala:100 src/MainWindow.vala:320
+msgid "Status"
+msgstr "Status"
+
+#: src/Utility.vala:1500
+msgid "Stopped"
+msgstr "Dihentikan"
+
+#: src/Main.vala:990
+msgid "Stopped!"
+msgstr "Henti!"
+
+#: src/ConfigWindow.vala:1148
+msgid "Subs"
+msgstr "Sarikata"
+
+#: src/ConfigWindow.vala:1165
+msgid "Subtitle Mode"
+msgstr "Mod Sarikata"
+
+#: src/ConfigWindow.vala:1181
+msgid "Subtitles"
+msgstr "Sarikata"
+
+#: src/Main.vala:722 src/Main.vala:725
+msgid "Subtitles:"
+msgstr "Sarikata:"
+
+#: src/ConfigWindow.vala:420
+msgid "SuperFast"
+msgstr "SuperPantas"
+
+#: src/ConfigWindow.vala:2238 src/ConfigWindow.vala:2241
+#: src/ConfigWindow.vala:2244 src/ConfigWindow.vala:2247
+msgid "Supported Formats:"
+msgstr "Format Disokong:"
+
+#: src/MainWindow.vala:1643
+msgid "System shutdown"
+msgstr "Sistem dimatikan"
+
+#: src/MainWindow.vala:1650
+#, c-format
+msgid "System shutdown was cancelled by user!"
+msgstr "Matikan sistem telah dibatal oleh pengguna!"
+
+#: src/Main.vala:211
+msgid "System will be shutdown after completion"
+msgstr "Sistem akan dimatikan selepas selesai"
+
+#: src/Main.vala:672 src/MainWindow.vala:1640
+msgid "System will shutdown in one minute!"
+msgstr "Sistem akan dimatikan dalam tempoh seminit!"
+
+#: src/ConfigWindow.vala:1007
+msgid "Tempo (speed)"
+msgstr "Tempo (kelajuan)"
+
+#: src/ConfigWindow.vala:905
+msgid "The Sox utility was not found on your system"
+msgstr "Utiliti Sox tidak ditemui pada sistem anda"
+
+#: src/ConfigWindow.vala:617
+msgid ""
+"The resizing filter affects the sharpness and compressibility of the video.\n"
+"For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
+"makes the video more difficult to compress resulting in slightly bigger "
+"files.\n"
+"The 'Bilinear' filter gives smoother video (less detail) and smaller files."
+msgstr ""
+"Penapis saiz semula mempengaruhi pada kejelasan dan kemampatan video.\n"
+"Contohnya, penapis 'Lanzos' memberikan video lebih jelas tetapi lebih\n"
+"perincian menjadikan video lebih sukar dimampat dan menghasilkan video\n"
+"yang lebih besar. Penapis 'Bilinear' memberikan video lebih lebih kemas\n"
+"(kurang terperinci) dan fail lebih kecil."
+
+#: src/AboutWindow.vala:320
+#, c-format
+msgid "Translators"
+msgstr "Penterjemah"
+
+#: src/ConfigWindow.vala:955
+msgid "Treble (upper freq)"
+msgstr "Trebel (freq lebih tinggi)"
+
+#: src/ConfigWindow.vala:418
+msgid "UltraFast"
+msgstr "UltraPantas"
+
+#: src/Main.vala:577
+msgid "Unknown format:"
+msgstr "Format tidak diketahui:"
+
+#: src/MainWindow.vala:1006
+#, c-format
+msgid "Unknown format: '%s'"
+msgstr "Format tidak diketahui: '%s'"
+
+#: src/Utility.vala:988
+msgid "Unmounting device"
+msgstr "Menyahlekap peranti"
+
+#: src/Main.vala:359
+msgid "Using temp folder:"
+msgstr "Guna folder sementara:"
+
+#: src/FileInfoWindow.vala:67
+msgid "Value"
+msgstr "Nilai"
+
+#: src/ConfigWindow.vala:1549 src/ConfigWindow.vala:1574
+#: src/ConfigWindow.vala:1605 src/ConfigWindow.vala:1622
+#: src/ConfigWindow.vala:1963 src/ConfigWindow.vala:1986
+msgid "Variable Bitrate"
+msgstr "Kadar Bait Pembolehubah"
+
+#: src/ConfigWindow.vala:1988
+msgid "Variable Bitrate (2pass)"
+msgstr "Kadar Bit Pembolehubah (2pass)"
+
+#: src/ConfigWindow.vala:1940
+msgid "Variable Bitrate / CRF"
+msgstr "Kadar Bit Pembolehubah / CRF"
+
+#: src/ConfigWindow.vala:301
+msgid "Version"
+msgstr "Versi"
+
+#: src/ConfigWindow.vala:430
+msgid "VerySlow"
+msgstr "SangatPerlahan"
+
+#: src/ConfigWindow.vala:343
+msgid "Video"
+msgstr "Video"
+
+#: src/ConfigWindow.vala:643
+msgid ""
+"Video will not be resized if it's smaller than the given width and height"
+msgstr ""
+"Video tidak akan disaiz semula jika ia lebih kecil berbanding lebar dan "
+"tinggi yang diberi"
+
+#: src/DonationWindow.vala:81
+msgid "Visit Website"
+msgstr "Lawati Laman Sesawang"
+
+#: src/ConfigWindow.vala:260
+msgid "WAV Audio (*.wav)"
+msgstr "Audio WAV (*.wav)"
+
+#: src/Utility.vala:109
+msgid "Warning"
+msgstr "Amaran"
+
+#: src/Main.vala:214
+msgid ""
+"Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
+msgstr ""
+"Amaran: Pengguna tidak mempunyai kelayakan Pentadbir. '--shutdown' akan "
+"diabaikan."
+
+#: src/ConfigWindow.vala:246
+msgid "WebM Video (*.webm)"
+msgstr "Video WebM (*.webm)"
+
+#: src/ConfigWindow.vala:605
+msgid "Width"
+msgstr "Lebar"
+
+#: src/ConfigWindow.vala:588
+msgid "Width x Height"
+msgstr "Lebar x Tinggi"
+
+#: src/MainWindow.vala:985
+msgid ""
+"[Batch completed] Right-click for options or click 'Finish' to continue."
+msgstr ""
+"[Kelompok selesai] Klik-kanan untuk pilihan atau klik 'Selesai' untuk "
+"teruskan."
+
+#: src/MainWindow.vala:989
+msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
+msgstr ""
+"[Dijeda] Klik 'Sambung Semula' untuk teruskan atau 'Henti' untuk henti paksa."
+
+#: src/Utility.vala:988 src/Utility.vala:1029
+msgid "from"
+msgstr "dari"
+
+#: src/MainWindow.vala:588
+msgid "presets"
+msgstr "praset"
+
+#: src/MainWindow.vala:584
+msgid "scripts"
+msgstr "skrip"
