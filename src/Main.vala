@@ -40,7 +40,7 @@ using TeeJee.Misc;
 public Main App;
 public const string AppName = "Selene";
 public const string AppShortName = "selene";
-public const string AppVersion = "2.4.3";
+public const string AppVersion = "2.4.4";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejeetech@gmail.com";
 
@@ -131,8 +131,7 @@ public class Main : GLib.Object{
 	private DataOutputStream dsLog;	
 	
 	private string blankLine = "";
-	private DateTime lastNotificationTime;
-	
+
 	public static int main (string[] args) {
 		//set locale
 		Intl.setlocale(GLib.LocaleCategory.MESSAGES, "");

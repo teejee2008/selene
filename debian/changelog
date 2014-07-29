@@ -1,13 +1,11 @@
-selene (2.4.3) saucy; urgency=low
+selene (2.4.4) saucy; urgency=low
 
-  * Audio tags will be copied from input to output file for all encoders
+  * Fixed: Encoding fails if there are quotes in audio file tags
   
-  * Added SOX audio filters for adding sound effects to audio
-
-  * Added checks for missing encoders before starting file conversion
+  * Fixed: Multiple notifications are displayed continuously when multiple files fail
   
-  * Input file location will be saved between sessions
+  * Added Malay translation by abuyop
   
   * Minor fixes and improvements
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 16 Jun 2014 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Tue, 29 Jul 2014 10:00:00 +0530
