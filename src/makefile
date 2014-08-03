@@ -1,11 +1,11 @@
-prefix = /usr
-bindir = $(prefix)/bin
-sharedir = $(prefix)/share
-localedir = $(sharedir)/locale
-launcherdir = $(sharedir)/applications
-mandir = $(sharedir)/man
-man1dir = $(mandir)/man1
-CFLAGS = --std=c99
+prefix=/usr
+bindir=$(prefix)/bin
+sharedir=$(prefix)/share
+localedir=$(sharedir)/locale
+launcherdir=$(sharedir)/applications
+mandir=$(sharedir)/man
+man1dir=$(mandir)/man1
+CFLAGS=--std=c99
 
 all:
 	valac -X -D'GETTEXT_PACKAGE="selene"' --Xcc="-lm" "Main.vala" "Utility.vala" "MainWindow.vala" "PrefWindow.vala" "ConfigWindow.vala" "EncodersWindow.vala" "FileInfoWindow.vala" "AboutWindow.vala" "DonationWindow.vala" -o selene --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-1.0 --pkg libsoup-2.4 --pkg json-glib-1.0 
@@ -14,7 +14,6 @@ clean:
 	rm -rf *.o selene
 
 install:
-	mkdir -p $(DESTDIR)
 	mkdir -p $(DESTDIR)$(bindir)
 	mkdir -p $(DESTDIR)$(sharedir)
 	mkdir -p $(DESTDIR)$(mandir)
