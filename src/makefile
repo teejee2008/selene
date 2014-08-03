@@ -14,27 +14,28 @@ clean:
 	rm -rf *.o selene
 
 install:
-	mkdir -p $(DESTDIR)$(bindir)
-	mkdir -p $(DESTDIR)$(sharedir)
-	mkdir -p $(DESTDIR)$(mandir)
-	mkdir -p $(DESTDIR)$(man1dir)
-	mkdir -p $(DESTDIR)$(launcherdir)
-	mkdir -p $(DESTDIR)$(sharedir)/glib-2.0/schemas/
-	mkdir -p $(DESTDIR)$(sharedir)/selene
-	mkdir -p $(DESTDIR)$(sharedir)/pixmaps
+	mkdir -p "$(DESTDIR)$(bindir)"
+	mkdir -p "$(DESTDIR)$(sharedir)"
+	mkdir -p "$(DESTDIR)$(mandir)"
+	mkdir -p "$(DESTDIR)$(man1dir)"
+	mkdir -p "$(DESTDIR)$(launcherdir)"
+	mkdir -p "$(DESTDIR)$(sharedir)/glib-2.0/schemas/"
+	mkdir -p "$(DESTDIR)$(sharedir)/selene"
+	mkdir -p "$(DESTDIR)$(sharedir)/pixmaps"
 	
 	#binary
-	install -m 0755 selene $(DESTDIR)$(bindir)
+	install -m 0755 selene "$(DESTDIR)$(bindir)"
+	install -m 0755 selene-uninstall "$(DESTDIR)$(bindir)"
 	
 	#shared files
-	cp -dpr --no-preserve=ownership -t $(DESTDIR)$(sharedir)/selene ./share/selene/*
+	cp -dpr --no-preserve=ownership -t "$(DESTDIR)$(sharedir)/selene" ./share/selene/*
 	chmod --recursive 0755 $(DESTDIR)$(sharedir)/selene/*
 	
 	#launcher
-	install -m 0755 Selene.desktop $(DESTDIR)$(launcherdir)
+	install -m 0755 selene.desktop "$(DESTDIR)$(launcherdir)"
 	
 	#app icon
-	install -m 0755 ./share/pixmaps/selene.png $(DESTDIR)$(sharedir)/pixmaps
+	install -m 0755 ./share/pixmaps/selene.png "$(DESTDIR)$(sharedir)/pixmaps"
 	
 	#translations
 	mkdir -p "$(DESTDIR)$(localedir)/ms_MY/LC_MESSAGES"
@@ -42,17 +43,17 @@ install:
 	
 uninstall:
 	#binary
-	rm -f $(DESTDIR)$(bindir)/selene
-	#rm -f $(DESTDIR)$(bindir)/selene-admin
+	rm -f "$(DESTDIR)$(bindir)/selene"
+	rm -f "$(DESTDIR)$(bindir)/selene-uninstall"
 	
 	#shared files
-	rm -rf $(DESTDIR)$(sharedir)/selene
+	rm -rf "$(DESTDIR)$(sharedir)/selene"
 	
 	#launcher
-	rm -f $(DESTDIR)$(launcherdir)/Selene.desktop
+	rm -f "$(DESTDIR)$(launcherdir)/selene.desktop"
 	
 	#app icon
-	rm -f $(DESTDIR)$(sharedir)/pixmaps/selene.png
+	rm -f "$(DESTDIR)$(sharedir)/pixmaps/selene.png"
 	
     #translations
-	rm -f "$(DESTDIR)$(localedir)/*/LC_MESSAGES/selene.mo"
+	rm -f $(DESTDIR)$(localedir)/*/LC_MESSAGES/selene.mo
