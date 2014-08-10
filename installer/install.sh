@@ -248,6 +248,9 @@ elif command -v pacman >/dev/null 2>&1; then
 		
 		MSG_INFO "Install additional encoders for VP8, Opus and Theora? (y/n):" "0"
 		read install_extra
+		if [ "$install_extra" == "" ]; then
+			install_extra=y
+		fi
 		
 		if [ "$install_extra" == "y" ]; then
 			MSG_INFO "Installing additional encoders..."
@@ -266,7 +269,7 @@ MSG_INFO "Install completed."
 echo ""
 echo "******************************************************************"
 echo "Start ${app_fullname} using the shortcut in the Applications Menu"
-echo "or by running the command: sudo ${app_name}"	
+echo "or by running the command: ${app_name}"	
 echo "If it fails to start, check and install the following packages:"
 echo "Required: ${generic_depends[@]}"
 echo "Optional: ${generic_recommends[@]}"
