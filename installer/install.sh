@@ -144,6 +144,19 @@ if [ -f /etc/debian_version ]; then
 		  apt-get -y install $i
 		  echo ""
 		done
+		
+		MSG_INFO "Install additional encoders for VP8, Opus and Theora? (y/n):"
+		read install_extra
+		
+		if [ "$install_extra" == "y" ]; then
+			MSG_INFO "Installing additional encoders..."
+			echo ""
+			for i in "${debian_recommends[@]}"; do
+			  MSG_INFO "Installing: $i"
+			  apt-get -y install $i
+			  echo ""
+			done
+		fi
 	fi
 elif [ -f /etc/redhat-release ]; then
 	if command -v yum >/dev/null 2>&1; then
@@ -154,6 +167,19 @@ elif [ -f /etc/redhat-release ]; then
 		  yum -y install $i
 		  echo ""
 		done
+		
+		MSG_INFO "Install additional encoders for VP8, Opus and Theora? (y/n):"
+		read install_extra
+		
+		if [ "$install_extra" == "y" ]; then
+			MSG_INFO "Installing additional encoders..."
+			echo ""
+			for i in "${redhat_recommends[@]}"; do
+			  MSG_INFO "Installing: $i"
+			  yum -y install $i
+			  echo ""
+			done
+		fi
 	fi
 elif [ -f /etc/arch-release ] || [ -f /etc/manjaro-release ]; then
 	if command -v pacman >/dev/null 2>&1; then
@@ -164,6 +190,19 @@ elif [ -f /etc/arch-release ] || [ -f /etc/manjaro-release ]; then
 		  pacman -S --noconfirm $i
 		  echo ""
 		done
+		
+		MSG_INFO "Install additional encoders for VP8, Opus and Theora? (y/n):"
+		read install_extra
+		
+		if [ "$install_extra" == "y" ]; then
+			MSG_INFO "Installing additional encoders..."
+			echo ""
+			for i in "${arch_recommends[@]}"; do
+			  MSG_INFO "Installing: $i"
+		      pacman -S --noconfirm $i
+			  echo ""
+			done
+		fi
 	fi
 fi
 echo ""
