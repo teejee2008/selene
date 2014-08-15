@@ -27,7 +27,6 @@ using Json;
 
 using TeeJee.Logging;
 using TeeJee.FileSystem;
-using TeeJee.DiskPartition;
 using TeeJee.JSON;
 using TeeJee.ProcessManagement;
 using TeeJee.GtkHelper;
