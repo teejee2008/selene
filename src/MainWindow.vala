@@ -221,7 +221,7 @@ public class MainWindow : Gtk.Window{
         //btn_donate
 		btnDonate = new Gtk.ToolButton.from_stock ("gtk-dialog-info");
 		btnDonate.is_important = false;
-		btnDonate.icon_widget = get_shared_icon("donate","donate.svg",32);
+		btnDonate.icon_widget = get_shared_icon("donate","donate.svg",24);
 		btnDonate.label = _("Donate");
 		btnDonate.set_tooltip_text (_("Donate"));
         toolbar.add(btnDonate);
@@ -230,6 +230,8 @@ public class MainWindow : Gtk.Window{
         
 		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock ("gtk-about");
+		btnAbout.is_important = false;
+		btnAbout.icon_widget = get_shared_icon("","help-info.svg",24);
 		btnAbout.clicked.connect (btnAbout_clicked);
 		btnAbout.set_tooltip_text (_("About"));
 		toolbar.add (btnAbout);
