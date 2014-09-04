@@ -181,7 +181,7 @@ public class ConfigWindow : Dialog {
 	
 	public ConfigWindow() {
 		title = "Preset";
-		set_default_size (400, 500);	
+		set_default_size (400, 550);	
 		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
@@ -202,12 +202,13 @@ public class ConfigWindow : Dialog {
 		
 		//tabMain
 		tabMain = new Notebook();
+		tabMain.tab_pos = PositionType.LEFT;
 		vboxMain.pack_start (tabMain, true, true, 0);
 		
 		//General tab ---------------------------------------------
 		
 		//lblGeneral
-		lblGeneral = new Label (_("General"));
+		lblGeneral = new Label (" " + _("General") + " ");
 
         //gridGeneral
         gridGeneral = new Grid();
