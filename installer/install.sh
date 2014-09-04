@@ -6,7 +6,7 @@ app_fullname='Selene'
 generic_depends=(mediainfo libav-tools vorbis-tools x264 lame mkvtoolnix realpath rsync libgee json-glib)
 debian_depends=(realpath mediainfo libav-tools vorbis-tools x264 lame mkvtoolnix rsync libgee2 libjson-glib-1.0-0)
 redhat_depends=(rsync libgee json-glib mediainfo vorbis-tools mkvtoolnix)
-arch_depends=(rsync libgee json-glib mediainfo x264 ffmpeg vorbis-tools lame mkvtoolnix boost icu extra/libstdc++5)
+arch_depends=(rsync libgee06 json-glib mediainfo x264 ffmpeg vorbis-tools lame mkvtoolnix boost icu extra/libstdc++5)
 
 generic_recommends=(opus-tools vpx-tools ffmpeg2theora gpac sox)
 debian_recommends=(opus-tools vpx-tools ffmpeg2theora gpac sox)

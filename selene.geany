@@ -17,15 +17,17 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=6
-FILE_NAME_0=22976;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
-FILE_NAME_1=1525;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
+current_page=0
+FILE_NAME_0=22697;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_1=73587;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
 FILE_NAME_2=7733;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
 FILE_NAME_3=1140;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
 FILE_NAME_4=882;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
 FILE_NAME_5=882;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FEncodersWindow.vala;0;4
 FILE_NAME_6=49713;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FConfigWindow.vala;0;4
 FILE_NAME_7=878;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FPrefWindow.vala;0;4
+FILE_NAME_8=925;Sh;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Finstaller%2Finstall.sh;0;4
+FILE_NAME_9=188;None;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fchangelog;0;4
 
 [VTE]
 last_dir=/home/teejee
