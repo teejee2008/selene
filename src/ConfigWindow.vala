@@ -22,7 +22,6 @@
  */
  
 using Gtk;
-using Soup;
 using Json;
 
 using TeeJee.Logging;
@@ -340,7 +339,7 @@ public class ConfigWindow : Dialog {
 		//Video tab ---------------------------------------------
 		
 		//lblVideo
-		lblVideo = new Label(_("Video"));
+		lblVideo = new Label(" " + _("Video") + " ");
 
         //gridVideo
         gridVideo = new Grid();
@@ -535,7 +534,7 @@ public class ConfigWindow : Dialog {
 		//Video Filters tab ---------------------------------------------
 		
 		//lblVideoFilters
-		lblVideoFilters = new Label (_("Filters"));
+		lblVideoFilters = new Label (" " + _("Filters") + " ");
 
         //gridVideoFilters
         gridVideoFilters = new Grid();
@@ -718,7 +717,7 @@ public class ConfigWindow : Dialog {
 		// Audio tab --------------------------------------------------
 		
 		//lblAudio
-		lblAudio = new Label (_("Audio"));
+		lblAudio = new Label (" " + _("Audio") + " ");
 
         //gridAudio
         gridAudio = new Grid();
@@ -742,7 +741,7 @@ public class ConfigWindow : Dialog {
         cmbACodec.pack_start(textCell, false);
         cmbACodec.set_attributes(textCell, "text", 0);
         cmbACodec.changed.connect(cmbACodec_changed);
-        cmbACodec.hexpand = true;
+        //cmbACodec.hexpand = true;
         gridAudio.attach(cmbACodec,1,row,1,1);
         
 		//lblAudioMode
@@ -792,6 +791,7 @@ public class ConfigWindow : Dialog {
         cmbOpusOptimize.pack_start(textCell, false);
         cmbOpusOptimize.set_attributes(textCell, "text", 0);
         cmbOpusOptimize.no_show_all = true;
+        cmbOpusOptimize.set_size_request(150,-1);
         gridAudio.attach(cmbOpusOptimize,1,row,1,1);
         
         //populate
@@ -809,12 +809,12 @@ public class ConfigWindow : Dialog {
 		imgAudioCodec.margin_top = 6;
 		imgAudioCodec.margin_bottom = 6;
 		imgAudioCodec.expand = true;
-        gridAudio.attach(imgAudioCodec,0,++row,2,1);
+        gridAudio.attach(imgAudioCodec,0,++row,3,1);
         
 		//Audio Filters tab ---------------------------------------------
 		
 		//lblAudioFilters
-		lblAudioFilters = new Label (_("Filters"));
+		lblAudioFilters = new Label (" " + _("Filters") + " ");
 
         //gridAudioFilters
         gridAudioFilters = new Grid();
@@ -831,34 +831,31 @@ public class ConfigWindow : Dialog {
 		Label lblHeaderSampling = new Gtk.Label(_("<b>Channels &amp; Sampling:</b>"));
 		lblHeaderSampling.set_use_markup(true);
 		lblHeaderSampling.xalign = (float) 0.0;
-		lblHeaderSampling.hexpand = true;
-		gridAudioFilters.attach(lblHeaderSampling,col=0,++row,1,1);
+		gridAudioFilters.attach(lblHeaderSampling,col=0,++row,2,1);
 		
 		//lblAudioSampleRate
 		lblAudioSampleRate = new Gtk.Label(_("Sampling Rate (Hz)"));
 		lblAudioSampleRate.xalign = (float) 0.0;
-		gridAudioFilters.attach(lblAudioSampleRate,col=0,++row,2,1);
+		gridAudioFilters.attach(lblAudioSampleRate,col=0,++row,1,1);
 		
 		//cmbAudioSampleRate
 		cmbAudioSampleRate = new ComboBox();
 		textCell = new CellRendererText();
         cmbAudioSampleRate.pack_start(textCell, false);        
-        cmbAudioSampleRate.hexpand = true;
         cmbAudioSampleRate.set_attributes(textCell, "text", 0);
-        gridAudioFilters.attach(cmbAudioSampleRate,col+2,row,1,1);
+        gridAudioFilters.attach(cmbAudioSampleRate,col+1,row,1,1);
         
 		//lblAudioChannels
 		lblAudioChannels = new Gtk.Label(_("Channels"));
 		lblAudioChannels.xalign = (float) 0.0;
-		gridAudioFilters.attach(lblAudioChannels,col=0,++row,2,1);
+		gridAudioFilters.attach(lblAudioChannels,col=0,++row,1,1);
 
 		//cmbAudioChannels
 		cmbAudioChannels = new ComboBox();
 		textCell = new CellRendererText();
         cmbAudioChannels.pack_start(textCell, false);
         cmbAudioChannels.set_attributes(textCell, "text", 0);
-        cmbAudioChannels.hexpand = true;
-        gridAudioFilters.attach(cmbAudioChannels,col+2,row,1,1);
+        gridAudioFilters.attach(cmbAudioChannels,col+1,row,1,1);
 
 		//SOX tab ---------------------------------------------
 		
@@ -868,7 +865,7 @@ public class ConfigWindow : Dialog {
 		int spacing = 5;
 		
 		//lblAudioFilters
-		Label lblAudioSox = new Label (_("SOX"));
+		Label lblAudioSox = new Label (" " + _("SOX") + " ");
 
         //vboxSox
         Box vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
@@ -1039,14 +1036,13 @@ public class ConfigWindow : Dialog {
         
 		lblFadeIn = new Gtk.Label(_("Fade In (seconds)"));
 		lblFadeIn.xalign = (float) 0.0;
-		lblFadeIn.hexpand = true;
-		hboxFadeIn.pack_start(lblFadeIn,true,true,0);
+		lblFadeIn.set_size_request(150,-1);
+		hboxFadeIn.pack_start(lblFadeIn,false,false,0);
 
 		Gtk.Adjustment adjFadeIn = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spinFadeIn = new Gtk.SpinButton (adjFadeIn, 1, 0);
 		spinFadeIn.xalign = (float) 0.5;
-		spinFadeIn.set_size_request(130,-1);
-		hboxFadeIn.pack_end(spinFadeIn,false,false,0);
+		hboxFadeIn.pack_start(spinFadeIn,false,false,0);
 		
 		//hboxFadeOut
 		Box hboxFadeOut = new Box(Orientation.HORIZONTAL,spacing);
@@ -1054,14 +1050,13 @@ public class ConfigWindow : Dialog {
         
 		lblFadeOut = new Gtk.Label(_("Fade Out (seconds)"));
 		lblFadeOut.xalign = (float) 0.0;
-		lblFadeOut.hexpand = true;
-		hboxFadeOut.pack_start(lblFadeOut,true,true,0);
+		lblFadeOut.set_size_request(150,-1);
+		hboxFadeOut.pack_start(lblFadeOut,false,false,0);
 
 		Gtk.Adjustment adjFadeOut = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spinFadeOut = new Gtk.SpinButton (adjFadeOut, 1, 0);
 		spinFadeOut.xalign = (float) 0.5;
-		spinFadeOut.set_size_request(130,-1);
-		hboxFadeOut.pack_end(spinFadeOut,false,false,0);
+		hboxFadeOut.pack_start(spinFadeOut,false,false,0);
 		
 		//hboxFadeType
 		Box hboxFadeType = new Box(Orientation.HORIZONTAL,spacing);
@@ -1069,15 +1064,14 @@ public class ConfigWindow : Dialog {
 
 		Label lblFadeType = new Gtk.Label(_("Fade Type"));
 		lblFadeType.xalign = (float) 0.0;
-		lblFadeType.hexpand = true;
-		hboxFadeType.pack_start(lblFadeType,true,true,0);
+		lblFadeType.set_size_request(150,-1);
+		hboxFadeType.pack_start(lblFadeType,false,false,0);
 		
 		cmbFadeType = new ComboBox();
 		textCell = new CellRendererText();
         cmbFadeType.pack_start(textCell, false);
         cmbFadeType.set_attributes(textCell, "text", 0);
-		cmbFadeType.set_size_request(130,-1);
-		hboxFadeType.pack_end(cmbFadeType,false,false,0);
+		hboxFadeType.pack_start(cmbFadeType,false,false,0);
         
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -1145,7 +1139,7 @@ public class ConfigWindow : Dialog {
 		//Subtitles tab ---------------------------------------------
 		
 		//lblSubtitle
-		lblSubtitle = new Label (_("Subs"));
+		lblSubtitle = new Label (" " + _("Subs") + " ");
 
         //gridSubtitle
         gridSubtitle = new Grid();

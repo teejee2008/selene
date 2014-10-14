@@ -24,7 +24,6 @@
 using GLib;
 using Gtk;
 using Gee;
-using Soup;
 using Json;
 
 using TeeJee.Logging;

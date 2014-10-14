@@ -1,5 +1,11 @@
 #!/bin/bash
 
+app_name='selene'
+app_fullname='Selene'
+tgz="../../pbuilder/"
+dsc="../../builds/${app_name}*.dsc"
+libs="../../libs"
+
 backup=`pwd`
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 cd $DIR
@@ -8,9 +14,6 @@ sh build-source.sh
 cd installer
 
 echo "Building installer..."
-
-tgz="../../pbuilder/"
-dsc="../../builds/selene*.dsc"
 
 chmod u+x ./install.sh
 
@@ -31,11 +34,14 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-dpkg-deb -x ${arch}/selene*.deb ${arch}/extracted
+dpkg-deb -x ${arch}/${app_name}*.deb ${arch}/extracted
 
 cp -p --no-preserve=ownership -t ${arch}/extracted ./install.sh
+cp -p --no-preserve=ownership -t ${arch}/extracted/usr/share/${app_name}/libs ${libs}/${arch}/libgee.so.2
+cp -p --no-preserve=ownership -t ${arch}/extracted/usr/share/${app_name}/libs ${libs}/${arch}/libjson-glib-1.0.so.0
+chmod --recursive 0755 ${arch}/extracted/usr/share/${app_name}
 
-makeself ${arch}/extracted ./selene-latest-${arch}.run "selene (${arch})" ./install.sh 
+makeself ${arch}/extracted ./${app_name}-latest-${arch}.run "${app_fullname} (${arch})" ./install.sh 
 
 #check for errors
 if [ $? -ne 0 ]; then
@@ -44,7 +50,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-cp -p --no-preserve=ownership ./${arch}/selene*.deb ./selene-latest-${arch}.deb 
+cp -p --no-preserve=ownership ./${arch}/${app_name}*.deb ./${app_name}-latest-${arch}.deb 
 
 done
 
