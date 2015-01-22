@@ -32,7 +32,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class PrefWindow : Dialog {
+public class AppConfigWindow : Dialog {
 
 	private Box vboxMain;
 	private Label lblOutput;
@@ -44,7 +44,7 @@ public class PrefWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	
-	public PrefWindow() {
+	public AppConfigWindow() {
 		title = "Application Settings";
 		set_default_size (350, 400);
 			

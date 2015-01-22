@@ -792,7 +792,7 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void preset_create(){
-		var window = new ConfigWindow();
+		var window = new EncoderConfigWindow();
 		window.set_transient_for(this);
 	    window.Folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
 	    window.Name = "New Preset";
@@ -811,7 +811,7 @@ public class MainWindow : Gtk.Window{
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 		
 		if (sh.Extension == ".json") {
-			var window = new ConfigWindow();
+			var window = new EncoderConfigWindow();
 			window.set_transient_for(this);
 			window.Folder = sh.Folder;
 			window.Name = sh.Title;
@@ -1466,7 +1466,7 @@ on the toolbar will open the file in a text editor.
 	}
 	
 	private void btnEncoders_clicked(){
-	    var dialog = new EncodersWindow();
+	    var dialog = new EncoderStatusWindow();
 	    dialog.set_transient_for(this);
 	    dialog.show_all();
 	    dialog.run();
@@ -1474,7 +1474,7 @@ on the toolbar will open the file in a text editor.
 	}
 	
 	private void btnAppSettings_clicked(){
-	    var window = new PrefWindow();
+	    var window = new AppConfigWindow();
 	    window.set_transient_for(this);
 	    window.show_all();
 	    window.run();

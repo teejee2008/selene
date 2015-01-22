@@ -32,7 +32,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class EncodersWindow : Dialog {
+public class EncoderStatusWindow : Dialog {
 
 	private Box vboxMain;
 	private Box vbox_actions;
@@ -41,7 +41,7 @@ public class EncodersWindow : Dialog {
 	private TreeView tv;
 	private ScrolledWindow sw;
 	
-	public EncodersWindow () {
+	public EncoderStatusWindow () {
 		title = _("Encoders");
 		set_default_size (450, 400);
 		

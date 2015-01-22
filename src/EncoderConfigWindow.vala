@@ -33,7 +33,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class ConfigWindow : Dialog {
+public class EncoderConfigWindow : Dialog {
 	
 	public string Folder;
 	public string Name;
@@ -178,7 +178,7 @@ public class ConfigWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	
-	public ConfigWindow() {
+	public EncoderConfigWindow() {
 		title = "Preset";
 		set_default_size (400, 550);	
 		
