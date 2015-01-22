@@ -275,6 +275,7 @@ public class MainWindow : Gtk.Window{
 		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
 		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
 		swFiles.add (tvFiles);
+		swFiles.margin = 6;
 		swFiles.set_size_request (-1, 250);
 
 		vboxMain.pack_start (swFiles, true, true, 0);
@@ -350,7 +351,7 @@ public class MainWindow : Gtk.Window{
         //toolbar
 		toolbar2 = new Gtk.Toolbar();
 		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
-		toolbar2.margin_top = 3;
+		//toolbar2.margin_top = 3;
 		toolbar2.set_icon_size(IconSize.SMALL_TOOLBAR);
 		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.add (toolbar2);

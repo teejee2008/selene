@@ -1290,6 +1290,8 @@ public class EncoderConfigWindow : Dialog {
 			case "webm":
 				model.append (out iter);
 				model.set (iter,0,"VP8",1,"vp8");
+				model.append (out iter);
+				model.set (iter,0,"VP9",1,"vp9");
 				cmbVCodec.set_active(0);
 				break;
 			default:
@@ -1933,6 +1935,7 @@ public class EncoderConfigWindow : Dialog {
 		//show vp8 options
 		switch (vcodec){
 			case "vp8":
+			case "vp9":
 				lblVP8Speed.visible = true;
 				cmbVP8Speed.visible = true;
 				break;
@@ -1994,6 +1997,7 @@ public class EncoderConfigWindow : Dialog {
 				break;
 			
 			case "vp8":
+			case "vp9":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
@@ -2202,6 +2206,7 @@ public class EncoderConfigWindow : Dialog {
 	private void cmbVideoMode_changed(){
 		switch(vcodec){
 			case "vp8":
+			case "vp9":
 				switch (video_mode) {
 					case "cq":
 						spinVideoBitrate.sensitive = false;
@@ -2314,7 +2319,7 @@ public class EncoderConfigWindow : Dialog {
 				video.set_string_member("profile",x264_profile);
 				video.set_string_member("preset",x264_preset);
 			}
-			if (vcodec == "vp8"){
+			if ((vcodec == "vp8")||(vcodec == "vp9")){
 				video.set_string_member("speed",video_speed);
 			}
 			video.set_string_member("options",x264_options);
@@ -2418,6 +2423,7 @@ public class EncoderConfigWindow : Dialog {
 					x264_options = video.get_string_member("options");
 					break;
 				case "vp8":
+				case "vp9":
 					video_speed = video.get_string_member("speed");
 					break;
 			}

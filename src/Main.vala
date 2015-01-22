@@ -1263,6 +1263,7 @@ Notes:
 						encoderList.add("x264");
 						break;
 					case "vp8":
+					case "vp9":
 						s += encode_video_vpxenc(mf,settings);
 						encoderList.add("vpxenc");
 						break;
@@ -1687,12 +1688,17 @@ Notes:
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string vcodec = video.get_string_member("codec");
 		
 		s += decode_video_avconv(mf,settings,true);
 		s += "vpxenc";
-
+		s += " --codec=" + vcodec;
+		
 		if (video.get_string_member("mode") == "2pass"){
 			s += " --passes=2 --pass={passNumber} --fpf=stats"; 
+		}
+		else{
+			s += " --passes=1";
 		}
 		
 		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
