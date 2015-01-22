@@ -17,11 +17,11 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=3
+current_page=2
 FILE_NAME_0=23451;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
 FILE_NAME_1=846;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
 FILE_NAME_2=44632;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_3=216;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_3=1066;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
 FILE_NAME_4=882;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
 FILE_NAME_5=882;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FEncodersWindow.vala;0;4
 FILE_NAME_6=832;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FConfigWindow.vala;0;4

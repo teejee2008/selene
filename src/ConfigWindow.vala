@@ -186,7 +186,7 @@ public class ConfigWindow : Dialog {
         destroy_with_parent = true;
         skip_taskbar_hint = true;
 		modal = true;
-		deletable = false;
+		//deletable = false;
 		icon = get_app_icon(16);
 		
 		int row = 0;
@@ -197,13 +197,30 @@ public class ConfigWindow : Dialog {
         
 		//get content area
 		vboxMain = get_content_area();
-		vboxMain.margin = 6;
-		
+
 		//tabMain
 		tabMain = new Notebook();
 		tabMain.tab_pos = PositionType.LEFT;
+		tabMain.set_show_border(false);
+		tabMain.margin = 6;
 		vboxMain.pack_start (tabMain, true, true, 0);
 		
+		//styles ---------------------------------------------------
+		
+		string css_style = """
+            GtkNotebook tab {
+				padding: 0px;
+			}
+        """;//color: #703910;
+        
+		CssProvider css_provider = new CssProvider();
+        try {
+            css_provider.load_from_data(css_style,-1);
+            Gtk.StyleContext.add_provider_for_screen(this.get_screen(),css_provider,Gtk.STYLE_PROVIDER_PRIORITY_USER);
+        } catch (GLib.Error e) {
+            warning(e.message);
+        }
+
 		//General tab ---------------------------------------------
 		
 		//lblGeneral
@@ -1205,8 +1222,9 @@ public class ConfigWindow : Dialog {
         //btnCancel
         btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (() => { destroy(); });
+        
 	}
-
+	
 	private void cmbFileFormat_changed(){
 		ListStore model;
 		TreeIter iter;

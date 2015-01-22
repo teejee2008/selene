@@ -170,7 +170,7 @@ if command -v apt-get >/dev/null 2>&1; then
 		echo ""
 		for i in "${debian_depends[@]}"; do
 		  MSG_INFO "Installing: $i"
-		  apt-get -y install $i
+		  apt-get install $i
 		  echo ""
 		done
 		
@@ -182,7 +182,7 @@ if command -v apt-get >/dev/null 2>&1; then
 			echo ""
 			for i in "${debian_recommends[@]}"; do
 			  MSG_INFO "Installing: $i"
-			  apt-get -y install $i
+			  apt-get install $i
 			  echo ""
 			done
 		fi
@@ -206,7 +206,7 @@ elif command -v yum >/dev/null 2>&1; then
 		echo ""
 		for i in "${redhat_depends[@]}"; do
 		  MSG_INFO "Installing: $i"
-		  yum -y install $i
+		  yum install $i
 		  echo ""
 		done
 		
@@ -218,7 +218,7 @@ elif command -v yum >/dev/null 2>&1; then
 			echo ""
 			for i in "${redhat_recommends[@]}"; do
 			  MSG_INFO "Installing: $i"
-			  yum -y install $i
+			  yum install $i
 			  echo ""
 			done
 		fi
@@ -242,7 +242,7 @@ elif command -v pacman >/dev/null 2>&1; then
 		echo ""
 		for i in "${arch_depends[@]}"; do
 		  MSG_INFO "Installing: $i"
-		  pacman -S --noconfirm $i
+		  pacman -S $i
 		  echo ""
 		done
 		
@@ -257,7 +257,7 @@ elif command -v pacman >/dev/null 2>&1; then
 			echo ""
 			for i in "${arch_recommends[@]}"; do
 			  MSG_INFO "Installing: $i"
-		      pacman -S --noconfirm $i
+		      pacman -S $i
 			  echo ""
 			done
 		fi
