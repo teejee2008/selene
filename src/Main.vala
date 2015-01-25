@@ -365,16 +365,17 @@ Notes:
 		try{
 			regex_generic = new Regex("""([0-9.]+)%""");
 			regex_mkvmerge = new Regex("""Progress: ([0-9.]+)%""");
+			
 			regex_libav = new Regex("""time=[ ]*([0-9:.]+)""");
 			
 			//frame=   82 fps= 23 q=28.0 size=     133kB time=1.42 bitrate= 766.9kbits/s
-			regex_libav_video = new Regex("""frame=[ ]*[0-9]+ fps=[ ]*([0-9]+)[.]?[0-9]* q=[ ]*[0-9]+[.]?[0-9]* size=[ ]*([0-9]+)kB time=[ ]*[0-9]+[.]?[0-9]* bitrate=[ ]*([0-9]+)[.]?[0-9]*""");
+			regex_libav_video = new Regex("""frame=[ ]*[0-9]+ fps=[ ]*([0-9]+)[.]?[0-9]* q=[ ]*[0-9]+[.]?[0-9]* size=[ ]*([0-9]+)kB time=[ ]*[0-9:.]+ bitrate=[ ]*([0-9.]+)""");
 			
 			//size=    1590kB time=30.62 bitrate= 425.3kbits/s  
-			regex_libav_audio = new Regex("""size=[ ]*([0-9]+)kB time=[ ]*[0-9]+[.]?[0-9]* bitrate=[ ]*([0-9]+)[.]?[0-9]*""");
+			regex_libav_audio = new Regex("""size=[ ]*([0-9]+)kB time=[ ]*[0-9:.]+ bitrate=[ ]*([0-9.]+)""");
 			
-			//[53.4%] 1652/3092 frames, 24.81 fps, 302.88 kb/s, eta 0:00:58
-			regex_x264 = new Regex("""\[[0-9]+[.]?[0-9]*%\] [0-9]+/[0-9]+ frames, ([0-9]+)[.]?[0-9]* fps, ([0-9]+)[.]?[0-9]* kb/s, eta ([0-9:.]+)""");
+			//531 frames: 72.90 fps, 1509.18 kb/s
+			regex_x264 = new Regex("""[ ]*([0-9]+) frames:[ ]*([0-9.]+) fps,[ ]*([0-9.]+) kb/s""");
 			
 			//  0:00:00.66 audio: 57kbps video: 404kbps, time elapsed: 00:00:00 
 			regex_ffmpeg2theora = new Regex ("""([0-9:.]+)[ ]*audio:[ ]*([0-9]+)kbps[ ]*video:[ ]*([0-9]+)kbps""");
@@ -1030,9 +1031,16 @@ Notes:
 		if (tempLine.index_of ("Converting:") != -1){ return true; } //mkvmerge
 		
 		if (regex_libav.match (tempLine, 0, out match)){
-			dblVal = double.parse(match.fetch(1));
+			
+			if (match.fetch(1).contains(":")){
+				dblVal = parse_time(match.fetch(1));
+			}
+			else{
+				dblVal = double.parse(match.fetch(1));
+			}
+			
 			Progress = (dblVal * 1000) / CurrentFile.Duration;
-
+			
 			if (regex_libav_video.match (tempLine, 0, out match)){
 				StatusLine = "(avconv) %s fps, %s kbps, %s kb".printf(match.fetch(1), match.fetch(3), match.fetch(2));
 			}
@@ -1042,6 +1050,12 @@ Notes:
 			else {
 				StatusLine = tempLine;
 			}
+		}
+		else if (regex_x264.match (tempLine, 0, out match)){
+			dblVal = double.parse(match.fetch(1));
+			Progress = dblVal / CurrentFile.OutputFrameCount;
+			
+			StatusLine = "%s fps, %s kbps".printf(match.fetch(2), match.fetch(3));
 		}
 		else if (regex_ffmpeg2theora.match (tempLine, 0, out match)){
 			dblVal = parse_time (match.fetch(1));
@@ -1400,21 +1414,19 @@ Notes:
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		bool usePiping = true;
-		if (video.get_string_member("fpsNum") == "0" && video.get_string_member("fpsDenom") == "0") {
-			usePiping = false;
-		}
+
+		/* Note: If x264 is compiled without lavf or ffms support then
+		 * piping is required. Since this is the most common case,
+		 * we will always use piping to ensure that encoding does not fail.
+		 * */
 		
 		if (usePiping) {
-			s += "avconv -i \"${inFile}\" -copyinkf -an -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
-
-			int fpsNum = int.parse(video.get_string_member("fpsNum"));
-			int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
-			if (fpsNum != 0 && fpsDenom != 0) {
-				s += " -r %d/%d".printf(fpsNum,fpsDenom);
-				mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
-			}
-		
-			s += " -y - | ";
+			s += decode_video_avconv(mf,settings,true,true,false,false);
+			
+			/* Note: 
+			 * Resampling with be done by ffmpeg since x264 does not provide this option.
+			 * Cropping and scaling will be done by x264 since it provides extra options such as resizing method.
+			 * */
 		}
 		
 		s += "x264";
@@ -1457,8 +1469,6 @@ Notes:
 			s += " --vf " + vf[1:vf.length];
 		}
 		
-		//---------------
-		
 		//other options
 		if (video.get_string_member("options").strip() != "") {
 			s += " " +  video.get_string_member("options").strip();
@@ -1467,22 +1477,25 @@ Notes:
 		//add output file path placeholder
 		s += " -o {outputFile}";
 		
-		/*//determine output file path
-		string finalOutput = "";
-		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
-			//encode to tempVideo
-			finalOutput = "\"${tempVideo}\"";
-		}
-		else {
-			//encode to outputFile
-			finalOutput = "\"${outputFile}\"";
-		}*/
+		/* Note: For x264, output is always written to tempVideo and then muxed into outputFile */
 		
 		if (usePiping) {
-			//encode from StdInput
+			//encode from stdin
 			s += " -";
-			s += " --input-res %dx%d".printf(mf.SourceWidth, mf.SourceHeight); //TODO: Resizing should be done by x264
-			s += " --fps %s/%s".printf(video.get_string_member("fpsNum"), video.get_string_member("fpsDenom"));
+			
+			//specify source dimensions
+			s += " --input-res %dx%d".printf(mf.SourceWidth, mf.SourceHeight);
+			
+			//specify source FPS
+			int fpsNum = int.parse(video.get_string_member("fpsNum"));
+			int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
+			if (fpsNum != 0 && fpsDenom != 0) {
+				s += " --fps %d/%d".printf(fpsNum, fpsDenom);
+			}
+			else{
+				s += " --fps %.0lf/1000".printf(mf.SourceFrameRate * 1000);
+			}
+			
 		}
 		else {
 			//encode from input file
@@ -1496,8 +1509,7 @@ Notes:
 			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
 			s = temp;
 		}
-		else
-		{
+		else{
 			s = s.replace("{outputFile}","\"${tempVideo}\"");
 		}
 		
@@ -1780,7 +1792,6 @@ Notes:
 		string vcodec = video.get_string_member("codec");
 		string format = general.get_string_member("format");
 		
-		s += decode_video_avconv(mf,settings,true);
 		s += "avconv";
 		s += " -i \"${inFile}\"";
 		s += " -f " + format;
@@ -1843,7 +1854,7 @@ Notes:
 			s += " " +  video.get_string_member("options").strip();
 		}
 		
-		//crop and resize
+		//resample, crop and resize
 		s += avconv_vf_options(mf,settings);
 		
 		//disable audio and subs
@@ -2244,11 +2255,11 @@ Notes:
 		return s;
 	}
 
-	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent){
+	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent, bool resample = true, bool crop = true, bool scale = true){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
@@ -2262,18 +2273,10 @@ Notes:
 		s += " -i \"${inFile}\"";
 		
 		//format
-		s += " -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
-		
-		//fps
-		int fpsNum = int.parse(video.get_string_member("fpsNum"));
-		int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
-		if (fpsNum != 0 && fpsDenom != 0) {
-			s += " -r %d/%d".printf(fpsNum,fpsDenom);
-			mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
-		}
-		
-		//crop and resize
-		s += avconv_vf_options(mf,settings);
+		s += " -copyinkf -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
+
+		//framerate, crop and resize
+		s += avconv_vf_options(mf,settings, resample, crop, scale);
 		
 		//output
 		s += " -an -sn -y - | ";
@@ -2281,20 +2284,36 @@ Notes:
 		return s;
 	}
 	
-	private string avconv_vf_options (MediaFile mf, Json.Object settings){
+	private string avconv_vf_options (MediaFile mf, Json.Object settings, bool resample = true, bool crop = true, bool scale = true){
 		string s = "";
 		string vf = "";
 		
-		//cropping
-		if (mf.crop_enabled()) {
-			vf += ",crop=%s".printf(mf.crop_values_libav());
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		
+		//resample
+		if (resample){
+			int fpsNum = int.parse(video.get_string_member("fpsNum"));
+			int fpsDenom = int.parse(video.get_string_member("fpsDenom"));
+			if (fpsNum != 0 && fpsDenom != 0) {
+				s += " -r %d/%d".printf(fpsNum,fpsDenom);
+				mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
+			}
 		}
-
-		//resizing
-		int w,h;
-		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
-		if (rescale) {
-			vf += ",scale=%d:%d".printf(w,h);
+		
+		//crop
+		if (crop){
+			if (mf.crop_enabled()) {
+				vf += ",crop=%s".printf(mf.crop_values_libav());
+			}
+		}
+		
+		//scale
+		if (scale){
+			int w,h;
+			bool rescale = calculate_video_resolution(mf, settings, out w, out h);
+			if (rescale) {
+				vf += ",scale=%d:%d".printf(w,h);
+			}
 		}
 
 		if (vf.length > 0){

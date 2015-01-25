@@ -1693,16 +1693,16 @@ namespace TeeJee.Misc {
 	
 	public double parse_time (string time){
 				
-		/* Converts time in format '00:00:00.0' to milliseconds */
+		/* Converts time in format '00:00:00.0' to seconds */
 		
 		string[] arr = time.split (":");
-		double millis = 0;
+		double secs = 0;
 		if (arr.length >= 3){
-			millis += double.parse(arr[0]) * 60 * 60;
-			millis += double.parse(arr[1]) * 60;
-			millis += double.parse(arr[2]);
+			secs += double.parse(arr[0]) * 60 * 60;
+			secs += double.parse(arr[1]) * 60;
+			secs += double.parse(arr[2]);
 		}
-		return millis;
+		return secs;
 	}
 	
 	public string escape_html(string html){

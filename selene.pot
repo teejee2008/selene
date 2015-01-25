@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2015-01-25 12:01+0530\n"
+"POT-Creation-Date: 2015-01-25 17:12+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Adjust Stereo for Headphones"
 msgstr ""
 
-#: Main.vala:590
+#: Main.vala:591
 msgid "All files removed"
 msgstr ""
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1132 Main.vala:1146
+#: Main.vala:1146 Main.vala:1160
 msgid "Cancelled"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: Main.vala:984 Main.vala:994 Main.vala:1002
+#: Main.vala:985 Main.vala:995 Main.vala:1003
 msgid "Completed"
 msgstr ""
 
@@ -274,7 +274,7 @@ msgstr ""
 msgid "Constant Quality"
 msgstr ""
 
-#: Main.vala:900 Main.vala:1180
+#: Main.vala:901 Main.vala:1194
 msgid "Converting..."
 msgstr ""
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Converting: '%s'"
 msgstr ""
 
-#: Main.vala:898 Main.vala:1178
+#: Main.vala:899 Main.vala:1192
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: Main.vala:979
+#: Main.vala:980
 msgid "Done"
 msgstr ""
 
@@ -409,15 +409,15 @@ msgstr ""
 msgid "Encoding Tool"
 msgstr ""
 
-#: Main.vala:671
+#: Main.vala:672
 msgid "Enter any key to Cancel..."
 msgstr ""
 
-#: Main.vala:989 Utility.vala:108
+#: Main.vala:990 Utility.vala:108
 msgid "Error"
 msgstr ""
 
-#: Main.vala:706
+#: Main.vala:707
 msgid "Error: File missing"
 msgstr ""
 
@@ -453,7 +453,7 @@ msgstr ""
 msgid "Fade Type"
 msgstr ""
 
-#: Main.vala:1005
+#: Main.vala:1006
 msgid "Failed"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: Main.vala:570
+#: Main.vala:571
 msgid "File added:"
 msgstr ""
 
@@ -494,7 +494,7 @@ msgstr ""
 msgid "File added: '%s'"
 msgstr ""
 
-#: Main.vala:584
+#: Main.vala:585
 msgid "File removed:"
 msgstr ""
 
@@ -502,12 +502,12 @@ msgstr ""
 msgid "File(s) to convert"
 msgstr ""
 
-#: Main.vala:607
+#: Main.vala:608
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: Main.vala:610
+#: Main.vala:611
 msgid "Files will be saved in source directory"
 msgstr ""
 
@@ -585,7 +585,7 @@ msgid ""
 "Please add some files.\n"
 msgstr ""
 
-#: Main.vala:598
+#: Main.vala:599
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
@@ -621,7 +621,7 @@ msgstr ""
 msgid "Lossless"
 msgstr ""
 
-#: Main.vala:720 Main.vala:723
+#: Main.vala:721 Main.vala:724
 msgid "Lyrics:"
 msgstr ""
 
@@ -681,7 +681,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: Main.vala:2777 MainWindow.vala:1209
+#: Main.vala:2796 MainWindow.vala:1209
 msgid "N/A"
 msgstr ""
 
@@ -769,11 +769,11 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: Main.vala:1159 Main.vala:1164
+#: Main.vala:1173 Main.vala:1178
 msgid "Paused"
 msgstr ""
 
-#: Main.vala:1162
+#: Main.vala:1176
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
@@ -837,7 +837,7 @@ msgstr ""
 msgid "Queue is Empty"
 msgstr ""
 
-#: Main.vala:628 Main.vala:687 Main.vala:2543
+#: Main.vala:629 Main.vala:688 Main.vala:2562
 msgid "Queued"
 msgstr ""
 
@@ -949,12 +949,12 @@ msgstr ""
 msgid "Slowest (--cpu-used=0)"
 msgstr ""
 
-#: Main.vala:616
+#: Main.vala:617
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:718
+#: Main.vala:719
 msgid "Source:"
 msgstr ""
 
@@ -974,7 +974,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: Main.vala:602
+#: Main.vala:603
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
@@ -987,7 +987,7 @@ msgstr ""
 msgid "Stopped"
 msgstr ""
 
-#: Main.vala:999
+#: Main.vala:1000
 msgid "Stopped!"
 msgstr ""
 
@@ -1003,7 +1003,7 @@ msgstr ""
 msgid "Subtitles"
 msgstr ""
 
-#: Main.vala:720 Main.vala:723
+#: Main.vala:721 Main.vala:724
 msgid "Subtitles:"
 msgstr ""
 
@@ -1029,7 +1029,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:670 MainWindow.vala:1660
+#: Main.vala:671 MainWindow.vala:1660
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1068,7 +1068,7 @@ msgstr ""
 msgid "UltraFast"
 msgstr ""
 
-#: Main.vala:575
+#: Main.vala:576
 msgid "Unknown format:"
 msgstr ""
 
