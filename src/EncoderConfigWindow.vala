@@ -87,8 +87,8 @@ public class EncoderConfigWindow : Dialog {
 	private Label lblVideoQuality;
 	private SpinButton spinVideoQuality;
 	
-	private Label lblVP8Speed;
-	private ComboBox cmbVP8Speed;
+	private Label lblVpxSpeed;
+	private Scale scaleVpxSpeed;
 	
 	private Label lblHeaderFileFormat;
 	private Label lblHeaderPreset;
@@ -186,8 +186,9 @@ public class EncoderConfigWindow : Dialog {
         destroy_with_parent = true;
         skip_taskbar_hint = true;
 		modal = true;
-		//deletable = false;
 		icon = get_app_icon(16);
+		
+		this.delete_event.connect(on_delete_event);
 		
 		int row = 0;
         Gtk.ListStore model;
@@ -482,40 +483,22 @@ public class EncoderConfigWindow : Dialog {
         cmbX264Profile.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Profile,1,row,1,1);
 
-		tt = _("<b>Compression Vs Encoding Speed</b>\nUse a slower setting for better quality.\nThe slowest setting is around 8 times slower than the fastest.");
+		tt = _("<b>Quality Vs Encoding Speed</b>\nHigher values speed-up encoding at the expense of quality.\nLower values improve quality at the expense of encoding speed.");
+
+		//lblVpxSpeed
+		lblVpxSpeed = new Gtk.Label(_("Speed"));
+		lblVpxSpeed.xalign = (float) 0.0;
+		lblVpxSpeed.no_show_all = true;
+		lblVpxSpeed.set_tooltip_markup(tt);
+		gridVideo.attach(lblVpxSpeed,0,++row,1,1);
 		
-		//lblVP8Speed
-		lblVP8Speed = new Gtk.Label(_("Speed"));
-		lblVP8Speed.xalign = (float) 0.0;
-		lblVP8Speed.no_show_all = true;
-		lblVP8Speed.set_tooltip_markup(tt);
-		gridVideo.attach(lblVP8Speed,0,++row,1,1);
-		
-		//cmbVP8Speed
-		cmbVP8Speed = new ComboBox();
-		textCell = new CellRendererText();
-		cmbVP8Speed.no_show_all = true;
-        cmbVP8Speed.pack_start( textCell, false );
-        cmbVP8Speed.set_attributes( textCell, "text", 0 );
-        cmbVP8Speed.set_tooltip_markup(tt);
-        gridVideo.attach(cmbVP8Speed,1,row,1,1);
-        
-        //populate
-        model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		model.append (out iter);
-		model.set (iter, 0, _("Slowest (--cpu-used=0)"), 1, "good_0");
-		model.append (out iter);
-		model.set (iter, 0, _("Slower (--cpu-used=1)"), 1, "good_1");
-		model.append (out iter);
-		model.set (iter, 0, _("Slow (--cpu-used=2)"), 1, "good_2");
-		model.append (out iter);
-		model.set (iter, 0, _("Medium (--cpu-used=3)"), 1, "good_3");
-		model.append (out iter);
-		model.set (iter, 0, _("Fast (--cpu-used=4)"), 1, "good_4");
-		model.append (out iter);
-		model.set (iter, 0, _("Fastest (--cpu-used=5)"), 1, "good_5");
-		cmbVP8Speed.set_model(model);
-		
+		//scaleVpxSpeed
+        scaleVpxSpeed = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -16, 16, 1);
+		scaleVpxSpeed.adjustment.value = 1;
+		scaleVpxSpeed.has_origin = false;
+		scaleVpxSpeed.value_pos = PositionType.LEFT;
+        gridVideo.attach(scaleVpxSpeed,1,row,1,1);
+
 		tt = _("<b>Additional Options</b>\nThese options will be passed to the encoder\non the command line. Please do not specify\nany options that are already provided by the GUI.");
 		
 		//lblVCodecOptions
@@ -746,7 +729,6 @@ public class EncoderConfigWindow : Dialog {
 		
 		row = -1;
 
-		
 		//lblACodec
 		lblACodec = new Gtk.Label(_("Format / Codec"));
 		lblACodec.xalign = (float) 0.0;
@@ -875,8 +857,7 @@ public class EncoderConfigWindow : Dialog {
         gridAudioFilters.attach(cmbAudioChannels,col+1,row,1,1);
 
 		//SOX tab ---------------------------------------------
-		
-		
+
 		int scaleWidth = 200;
 		int sliderMarginBottom = 0;
 		int spacing = 5;
@@ -1204,7 +1185,6 @@ public class EncoderConfigWindow : Dialog {
 		//cmbVideoMode.set_active(0);
 		//cmbSubtitleMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
-		cmbVP8Speed.set_active(3);
 		cmbX264Preset.set_active(3);
 		cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
@@ -1222,7 +1202,12 @@ public class EncoderConfigWindow : Dialog {
         //btnCancel
         btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (() => { destroy(); });
-        
+	}
+	
+	private bool on_delete_event(Gdk.EventAny event){
+		this.delete_event.disconnect(on_delete_event); //disconnect this handler
+		btnSave_clicked();
+		return false;
 	}
 	
 	private void cmbFileFormat_changed(){
@@ -1936,12 +1921,13 @@ public class EncoderConfigWindow : Dialog {
 		switch (vcodec){
 			case "vp8":
 			case "vp9":
-				lblVP8Speed.visible = true;
-				cmbVP8Speed.visible = true;
+				lblVpxSpeed.visible = true;
+				scaleVpxSpeed.visible = true;
+				scaleVpxSpeed.adjustment.value = 1;
 				break;
 			default:
-				lblVP8Speed.visible = false;
-				cmbVP8Speed.visible = false;
+				lblVpxSpeed.visible = false;
+				scaleVpxSpeed.visible = false;
 				break;
 		}
 		
@@ -2005,8 +1991,8 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				model.append (out iter);
-				model.set (iter,0,_("Constant Quality"),1,"cq");
-				cmbVideoMode.set_active(0);
+				//model.set (iter,0,_("Constant Quality"),1,"cq");
+				//cmbVideoMode.set_active(0);
 				
 				spinVideoBitrate.adjustment.configure(800, 1, 1000000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
@@ -2320,7 +2306,7 @@ public class EncoderConfigWindow : Dialog {
 				video.set_string_member("preset",x264_preset);
 			}
 			if ((vcodec == "vp8")||(vcodec == "vp9")){
-				video.set_string_member("speed",video_speed);
+				video.set_string_member("vpx_speed",vpx_speed);
 			}
 			video.set_string_member("options",x264_options);
 			video.set_string_member("frameSize",frame_size);
@@ -2424,7 +2410,9 @@ public class EncoderConfigWindow : Dialog {
 					break;
 				case "vp8":
 				case "vp9":
-					video_speed = video.get_string_member("speed");
+					if (video.has_member("vpx_speed")){
+						vpx_speed = video.get_string_member("vpx_speed");
+					}
 					break;
 			}
 			video_mode = video.get_string_member("mode");
@@ -2609,12 +2597,12 @@ public class EncoderConfigWindow : Dialog {
 		}
     }
 
-    public string video_speed{
+    public string vpx_speed{
         owned get { 
-			return gtk_combobox_get_value(cmbVP8Speed,1,"good");
+			return scaleVpxSpeed.adjustment.value.to_string();
 		}
         set { 
-			gtk_combobox_set_value(cmbVP8Speed, 1, value);
+			scaleVpxSpeed.adjustment.value = int.parse(value);
 		}
     }
     

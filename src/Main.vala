@@ -1822,30 +1822,15 @@ Notes:
 				break;
 			case "cq":
 				s += " -crf " + vquality;
+				s += " -qmin " + vquality;
+				s += " -qmax " + vquality;
 				break;
 		}
 		
-		/*s += " --good";
-		switch(video.get_string_member("speed")){
-			case "good_0":
-				s += " --cpu-used=0";
-				break;
-			case "good_1":
-				s += " --cpu-used=1";
-				break;
-			case "good_2":
-				s += " --cpu-used=2";
-				break;
-			case "good_3":
-				s += " --cpu-used=3";
-				break;
-			case "good_4":
-				s += " --cpu-used=4";
-				break;
-			case "good_5":
-				s += " --cpu-used=5";
-				break;
-		}*/
+		s += " -quality good";
+		if (video.has_member("vpx_speed")){
+			s += " -speed " + video.get_string_member("vpx_speed");
+		}
 
 		//---------------
 		
