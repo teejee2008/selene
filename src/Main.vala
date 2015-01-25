@@ -415,7 +415,8 @@ Notes:
 		Encoders["opusenc"] = new Encoder("opusenc","Opus Audio Encoder","Opus Output");
 		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
 		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
-		Encoders["x264"] = new Encoder("x264","H.264/AVC Video Encoder","H264 Output");
+		Encoders["x264"] = new Encoder("x264","H.264 / MPEG-4 AVC Video Encoder","H264 Output");
+		Encoders["x265"] = new Encoder("x264","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
 	}
 	
 	public void check_all_encoders(){
@@ -1273,13 +1274,14 @@ Notes:
 				//encode video
 				switch (vcodec){
 					case "x264":
+					case "x265":
 						s += encode_video_x264(mf,settings);
-						encoderList.add("x264");
+						encoderList.add(vcodec);
 						break;
 					case "vp8":
 					case "vp9":
 						s += encode_video_avconv(mf,settings);
-						encoderList.add("vpxenc");
+						encoderList.add("avconv");
 						break;
 				}
 				
@@ -1313,16 +1315,34 @@ Notes:
 				//mux audio, video and subs
 				switch (format){
 					case "mkv":
+						switch (vcodec){
+							case "x265":
+								s += mux_avconv(mf,settings);
+								encoderList.add("avconv");
+								break;
+							default:
+								s += mux_mkvmerge(mf,settings);
+								encoderList.add("mkvmerge");
+								break;
+						}
+						break;
 					case "webm":
 						s += mux_mkvmerge(mf,settings);
 						encoderList.add("mkvmerge");
 						break;
 					case "mp4v":
-						s += mux_mp4box(mf,settings);
-						encoderList.add("mp4box");
+						switch (vcodec){
+							case "x265":
+								s += mux_avconv(mf,settings);
+								encoderList.add("avconv");
+								break;
+							default:
+								s += mux_mp4box(mf,settings);
+								encoderList.add("mp4box");
+								break;
+						}
 						break;
 				}
-					
 				break;
 			
 			case "ogv":
@@ -1412,7 +1432,8 @@ Notes:
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
-
+		string vcodec = video.get_string_member("codec");
+		
 		bool usePiping = true;
 
 		/* Note: If x264 is compiled without lavf or ffms support then
@@ -1429,14 +1450,25 @@ Notes:
 			 * */
 		}
 		
-		s += "x264";
+		switch(vcodec){
+			case "x264":
+				s += "x264";
+				break;
+			case "x265":
+				s += "x265";
+				break;
+		}
+		
 		
 		if (video.get_string_member("mode") == "2pass"){
 			s += " --pass {passNumber}"; 
 		}
 		
 		s += " --preset " + video.get_string_member("preset");
-		s += " --profile " + video.get_string_member("profile");
+		
+		if (video.get_string_member("profile").length > 0){
+			s += " --profile " + video.get_string_member("profile");
+		}
 		
 		switch(video.get_string_member("mode")){
 			case "vbr":
@@ -2044,18 +2076,22 @@ Notes:
 		s += "\n";
 		
 		//add tags
+		string tags = "";
 		string path = get_cmd_path ("neroAacTag");
 		if ((path != null) && (path.length > 0)){
-			s += "neroAacTag";
-			s += " \"${outputFile}\"";
-			s += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
-			s += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
-			s += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
-			s += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
-			s += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
-			s += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
-			s += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
-			s += "\n";
+			tags += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
+			tags += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
+			tags += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
+			tags += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
+			tags += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
+			tags += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
+			tags += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
+			if (tags.length > 0){
+				s += "neroAacTag";
+				s += " \"${outputFile}\"";
+				s += tags;
+				s += "\n";
+			}
 		}
 
 		return s;
@@ -2483,7 +2519,7 @@ Notes:
 		return s;
 	}
 	
-	/*private string mux_avconv (MediaFile mf, Json.Object settings)
+	private string mux_avconv (MediaFile mf, Json.Object settings)
 	{
 		string s = "";
 		
@@ -2492,7 +2528,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string format = general.get_string_member("format");
 		
-		s += "avconv ";
+		s += "avconv";
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			s += " -i \"${tempAudio}\"";
 		}
@@ -2502,6 +2538,9 @@ Notes:
 			case "mp4v":
 				s += " -f mp4";
 				break;
+			case "mkv":
+				s += " -f matroska";
+				break;
 		}
 		s += " -c:a copy -c:v copy -sn";
 		s += " -y \"${outputFile}\"";
@@ -2509,7 +2548,6 @@ Notes:
 		
 		return s;
 	}
-	*/
 }
 
 public class MediaFile : GLib.Object{

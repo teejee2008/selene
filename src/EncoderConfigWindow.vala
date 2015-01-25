@@ -462,21 +462,7 @@ public class EncoderConfigWindow : Dialog {
 		gridVideo.attach(lblX264Profile,0,++row,1,1);
 	
 		//cmbX264Profile
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		model.append (out iter);
-		model.set (iter, 0, "Baseline", 1, "baseline");
-		model.append (out iter);
-		model.set (iter, 0, "Main", 1, "main");
-		model.append (out iter);
-		model.set (iter, 0, "High", 1, "high");
-		model.append (out iter);
-		model.set (iter, 0, "High10", 1, "high10");
-		model.append (out iter);
-		model.set (iter, 0, "High422", 1, "high422");
-		model.append (out iter);
-		model.set (iter, 0, "High444", 1, "high444");
-		
-		cmbX264Profile = new ComboBox.with_model(model);
+		cmbX264Profile = new ComboBox();
 		textCell = new CellRendererText();
         cmbX264Profile.pack_start( textCell, false );
         cmbX264Profile.set_attributes( textCell, "text", 0 );
@@ -1186,7 +1172,7 @@ public class EncoderConfigWindow : Dialog {
 		//cmbSubtitleMode.set_active(0);
 		cmbOpusOptimize.set_active(0);
 		cmbX264Preset.set_active(3);
-		cmbX264Profile.set_active(2);
+		//cmbX264Profile.set_active(2);
 		cmbFPS.set_active (0);
 		cmbFrameSize.set_active (0);
 		cmbFadeType.set_active (0);
@@ -1262,9 +1248,17 @@ public class EncoderConfigWindow : Dialog {
 		
 		switch (format) {
 			case "mkv":
+				model.append (out iter);
+				model.set (iter,0,"H.264 / MPEG-4 AVC (x264)",1,"x264");
+				//model.append (out iter);
+				//model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265"); //not yet supported
+				cmbVCodec.set_active(0);
+				break;
 			case "mp4v":
 				model.append (out iter);
-				model.set (iter,0,"X264 / H.264 / AVC",1,"x264");
+				model.set (iter,0,"H.264 / MPEG-4 AVC (x264)",1,"x264");
+				model.append (out iter);
+				model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265");
 				cmbVCodec.set_active(0);
 				break;
 			case "ogv":
@@ -1900,20 +1894,49 @@ public class EncoderConfigWindow : Dialog {
 		//show x264 options
 		switch (vcodec){
 			case "x264":
+			case "x265":
 				lblX264Preset.visible = true;
 				cmbX264Preset.visible = true;
 				lblX264Profile.visible = true;
 				cmbX264Profile.visible = true;
-				lblX264Preset.visible = true;
-				cmbX264Preset.visible = true;
 				break;
 			default:
 				lblX264Preset.visible = false;
 				cmbX264Preset.visible = false;
 				lblX264Profile.visible = false;
 				cmbX264Profile.visible = false;
-				lblX264Preset.visible = false;
-				cmbX264Preset.visible = false;
+				break;
+		}
+		
+		switch(vcodec){
+			case "x264":
+				model = new Gtk.ListStore (2, typeof (string), typeof (string));
+				model.append (out iter);
+				model.set (iter, 0, "Baseline", 1, "baseline");
+				model.append (out iter);
+				model.set (iter, 0, "Main", 1, "main");
+				model.append (out iter);
+				model.set (iter, 0, "High", 1, "high");
+				model.append (out iter);
+				model.set (iter, 0, "High10", 1, "high10");
+				model.append (out iter);
+				model.set (iter, 0, "High422", 1, "high422");
+				model.append (out iter);
+				model.set (iter, 0, "High444", 1, "high444");
+				cmbX264Profile.set_model(model);
+				cmbX264Profile.set_active(2);
+				break;
+				
+			case "x265":
+				model = new Gtk.ListStore (2, typeof (string), typeof (string));
+				model.append (out iter);
+				model.set (iter, 0, "None", 1, "");
+				model.append (out iter);
+				model.set (iter, 0, "Main", 1, "main");
+				model.append (out iter);
+				model.set (iter, 0, "Main10", 1, "main10");
+				cmbX264Profile.set_model(model);
+				cmbX264Profile.set_active(0);
 				break;
 		}
 		
@@ -1934,6 +1957,8 @@ public class EncoderConfigWindow : Dialog {
 		//populate encoding modes
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbVideoMode.set_model(model);
+		lblVideoQuality.visible = true;
+		spinVideoQuality.visible = true;
 		
 		switch (vcodec){
 			case "x264":
@@ -1950,6 +1975,29 @@ public class EncoderConfigWindow : Dialog {
 				spinVideoBitrate.digits = 0;
 				
 				spinVideoQuality.adjustment.configure(23.0, 0, 51, 1, 1, 0);
+				spinVideoQuality.set_tooltip_text ("");
+				spinVideoQuality.digits = 1;
+				
+				cmbVideoMode.sensitive = true;
+				spinVideoBitrate.sensitive = true;
+				spinVideoQuality.sensitive = true;
+				cmbVideoMode_changed();
+				break;
+				
+			case "x265":
+				model.append (out iter);
+				model.set (iter,0,_("Variable Bitrate / CRF"),1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
+				model.append (out iter);
+				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
+				cmbVideoMode.set_active(0);
+				
+				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.set_tooltip_text ("");
+				spinVideoBitrate.digits = 0;
+				
+				spinVideoQuality.adjustment.configure(28.0, 0, 51, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
 				
@@ -1990,21 +2038,23 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,_("Variable Bitrate (2pass)"),1,"2pass");
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
-				model.append (out iter);
+				//model.append (out iter);
 				//model.set (iter,0,_("Constant Quality"),1,"cq");
-				//cmbVideoMode.set_active(0);
+				cmbVideoMode.set_active(0);
 				
 				spinVideoBitrate.adjustment.configure(800, 1, 1000000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
 				
-				spinVideoQuality.adjustment.configure(-1, -1, 63, 1, 1, 0);
+				/*spinVideoQuality.adjustment.configure(-1, -1, 63, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
-				spinVideoQuality.digits = 0;
+				spinVideoQuality.digits = 0;*/
 				
 				cmbVideoMode.sensitive = true;
 				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = true;
+				//spinVideoQuality.sensitive = true;
+				lblVideoQuality.visible = false;
+				spinVideoQuality.visible = false;
 				cmbVideoMode_changed();
 				break;
 				
@@ -2021,6 +2071,7 @@ public class EncoderConfigWindow : Dialog {
 		
 		switch (vcodec){
 			case "x264":
+			case "x265":
 				lblResizingMethod.visible = true;
 				cmbResizingMethod.visible = true;
 				model.append (out iter);
@@ -2057,6 +2108,21 @@ public class EncoderConfigWindow : Dialog {
 		switch (vcodec){
 			case "x264":
 				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/x264.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
+			case "x265":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/x265.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
+			case "vp8":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/vp8.png");
+				imgVideoCodec.xalign = (float) 0.5;
+				imgVideoCodec.yalign = (float) 1.0;
+				break;
+			case "vp9":
+				imgVideoCodec.set_from_file(App.SharedImagesFolder + "/vp9.png");
 				imgVideoCodec.xalign = (float) 0.5;
 				imgVideoCodec.yalign = (float) 1.0;
 				break;
@@ -2301,7 +2367,7 @@ public class EncoderConfigWindow : Dialog {
 			video.set_string_member("mode",video_mode);
 			video.set_string_member("bitrate",video_bitrate);
 			video.set_string_member("quality",video_quality);
-			if (vcodec == "x264"){
+			if ((vcodec == "x264")||(vcodec == "x265")){
 				video.set_string_member("profile",x264_profile);
 				video.set_string_member("preset",x264_preset);
 			}
@@ -2404,6 +2470,7 @@ public class EncoderConfigWindow : Dialog {
 		if (vcodec != "disable") {
 			switch(vcodec){
 				case "x264":
+				case "x265":
 					x264_profile = video.get_string_member("profile");
 					x264_preset = video.get_string_member("preset");
 					x264_options = video.get_string_member("options");
