@@ -2004,15 +2004,15 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,_("Variable Bitrate (2pass)"),1,"2pass");
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
-				//model.append (out iter);
-				//model.set (iter,0,"Constrained Quality",1,"cq");
+				model.append (out iter);
+				model.set (iter,0,_("Constant Quality"),1,"cq");
 				cmbVideoMode.set_active(0);
 				
-				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
+				spinVideoBitrate.adjustment.configure(800, 1, 1000000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
 				
-				spinVideoQuality.adjustment.configure(10, 0, 63, 1, 1, 0);
+				spinVideoQuality.adjustment.configure(-1, -1, 63, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 0;
 				

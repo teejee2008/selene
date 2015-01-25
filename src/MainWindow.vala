@@ -100,9 +100,10 @@ public class MainWindow : Gtk.Window{
 	private Regex regexLibAV_audio;
 	private Regex regexX264;
 	private string statusLine;
-	private uint timerID;
-	private uint startupTimer;
-	private uint statusTimer;
+	private uint timerID = 0;
+	private uint startupTimer = 0;
+	private uint statusTimer = 0;
+	private uint cpuUsageTimer = 0;
 	private bool paused = false;
 	private MediaFile lastFile;
 
@@ -111,7 +112,7 @@ public class MainWindow : Gtk.Window{
 	};
 	
 	public MainWindow() {
-		title = AppName + " v" + AppVersion;// + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
+		set_window_title();
         window_position = WindowPosition.CENTER;
         destroy.connect (Gtk.main_quit);
         set_default_size (550, 20);	
@@ -564,6 +565,10 @@ public class MainWindow : Gtk.Window{
         //populate and select script
         populate_script_folders();
 		select_script();
+	}
+	
+	public void set_window_title(){
+		title = AppName + " v" + AppVersion;// + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
 	}
 	
 	// script dropdown handlers -----------------------
@@ -1582,6 +1587,7 @@ on the toolbar will open the file in a text editor.
 		btnRemoveFiles.visible = false;
 		btnClearFiles.visible = false;
 		btnAppSettings.visible = false;
+		btnEncoders.visible = false;
 		btnDonate.visible = false;
 		btnAbout.visible = false;
 		
@@ -1597,6 +1603,8 @@ on the toolbar will open the file in a text editor.
 		
 		colCrop.visible = false;
 		colProgress.visible = true;
+		
+		start_cpu_usage_timer();
 	} 
 	
 	public void convert_finish(){
@@ -1611,6 +1619,7 @@ on the toolbar will open the file in a text editor.
 		btnRemoveFiles.visible = true;
 		btnClearFiles.visible = true;
 		btnAppSettings.visible = true;
+		btnEncoders.visible = true;
 		btnDonate.visible = true;
 		btnAbout.visible = true;
 		
@@ -1622,6 +1631,9 @@ on the toolbar will open the file in a text editor.
 		btnStop.visible = false;
 		btnFinish.visible = false;
 		separator1.visible = true;
+		
+		stop_cpu_usage_timer();
+		set_window_title();
 		
 		App.convert_finish();
 		
@@ -1703,6 +1715,22 @@ on the toolbar will open the file in a text editor.
 		}
 
 		return true;
+	}
+	
+	public void start_cpu_usage_timer(){
+		cpuUsageTimer = Timeout.add (1000, update_cpu_usage);
+	}
+
+	private bool update_cpu_usage(){	
+		this.title = _("CPU: ") + "%.2lf %%".printf(ProcStats.get_cpu_usage());
+		return true;
+	}
+	
+	public void stop_cpu_usage_timer(){
+		if (cpuUsageTimer != 0){
+			Source.remove(cpuUsageTimer);
+			cpuUsageTimer = 0;
+		}
 	}
 	
 	public void update_status_all(){

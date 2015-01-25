@@ -247,7 +247,7 @@ public class Main : GLib.Object{
 	    
 	    return 0;
 	}
-	
+
 	public static string help_message(){
 		string msg = "\n" + AppName + " v" + AppVersion + " by Tony George (teejee2008@gmail.com)" + "\n";
 		msg += Environment.get_prgname() + " [options] <input-file-list>";
@@ -1264,7 +1264,7 @@ Notes:
 						break;
 					case "vp8":
 					case "vp9":
-						s += encode_video_vpxenc(mf,settings);
+						s += encode_video_avconv(mf,settings);
 						encoderList.add("vpxenc");
 						break;
 				}
@@ -1682,7 +1682,8 @@ Notes:
 	}
 */
 
-	private string encode_video_vpxenc (MediaFile mf, Json.Object settings){
+	/*
+	 * private string encode_video_vpxenc (MediaFile mf, Json.Object settings){
 		string s = "";
 		
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1755,6 +1756,102 @@ Notes:
 		//input
 		s += " -";
 
+		s += "\n";
+		
+		if (video.get_string_member("mode") == "2pass"){
+			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
+			s = temp;
+		}
+		else
+		{
+			s = s.replace("{outputFile}","\"${tempVideo}\"");
+		}
+		
+		return s;
+	}*/
+	
+	private string encode_video_avconv (MediaFile mf, Json.Object settings){
+		string s = "";
+		
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string vcodec = video.get_string_member("codec");
+		string format = general.get_string_member("format");
+		
+		s += decode_video_avconv(mf,settings,true);
+		s += "avconv";
+		s += " -i \"${inFile}\"";
+		s += " -f " + format;
+		
+		switch(vcodec){
+			case "vp8":
+			s	 += " -c:v libvpx";
+				break;
+			case "vp9":
+				s += " -c:v libvpx-" + vcodec;
+				break;
+		}
+
+		if (video.get_string_member("mode") == "2pass"){
+			s += " -pass {passNumber}"; 
+		}
+
+		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
+		switch(video.get_string_member("mode")){
+			case "vbr":
+			case "2pass":
+				s += " -b:v " + video.get_string_member("bitrate") + "k";
+				break;
+			case "cbr":
+				s += " -b:v " + video.get_string_member("bitrate") + "k";
+				s += " -minrate " + video.get_string_member("bitrate") + "k";
+				s += " -maxrate " + video.get_string_member("bitrate") + "k";
+				break;
+			case "cq":
+				s += " -crf " + vquality;
+				break;
+		}
+		
+		/*s += " --good";
+		switch(video.get_string_member("speed")){
+			case "good_0":
+				s += " --cpu-used=0";
+				break;
+			case "good_1":
+				s += " --cpu-used=1";
+				break;
+			case "good_2":
+				s += " --cpu-used=2";
+				break;
+			case "good_3":
+				s += " --cpu-used=3";
+				break;
+			case "good_4":
+				s += " --cpu-used=4";
+				break;
+			case "good_5":
+				s += " --cpu-used=5";
+				break;
+		}*/
+
+		//---------------
+		
+		//user options
+		if (video.get_string_member("options").strip() != "") {
+			s += " " +  video.get_string_member("options").strip();
+		}
+		
+		//crop and resize
+		s += avconv_vf_options(mf,settings);
+		
+		//disable audio and subs
+		s += " -an -sn";
+		
+		//output
+		s += " -y {outputFile}"; //no quotes
+		
 		s += "\n";
 		
 		if (video.get_string_member("mode") == "2pass"){
@@ -2175,6 +2272,17 @@ Notes:
 			mf.OutputFrameCount = (long)((mf.Duration / 1000.0) * ((float)fpsNum/fpsDenom));
 		}
 		
+		//crop and resize
+		s += avconv_vf_options(mf,settings);
+		
+		//output
+		s += " -an -sn -y - | ";
+		
+		return s;
+	}
+	
+	private string avconv_vf_options (MediaFile mf, Json.Object settings){
+		string s = "";
 		string vf = "";
 		
 		//cropping
@@ -2192,11 +2300,6 @@ Notes:
 		if (vf.length > 0){
 			s += " -vf " + vf[1:vf.length];
 		}
-		
-		//---------------
-		
-		//output
-		s += " -an -sn -y - | ";
 		
 		return s;
 	}
