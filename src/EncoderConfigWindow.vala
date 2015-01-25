@@ -405,6 +405,7 @@ public class EncoderConfigWindow : Dialog {
 		//spinVideoBitrate
 		Gtk.Adjustment adjVideoBitrate = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
 		spinVideoBitrate = new Gtk.SpinButton (adjVideoBitrate, 0.1, 2);
+		spinVideoBitrate.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoBitrate,1,row,1,1);
 		
 		tt = _("<b>Compression Vs Quality</b>\nSmaller values give better quality video and larger files");
@@ -419,6 +420,7 @@ public class EncoderConfigWindow : Dialog {
 		Gtk.Adjustment adjVideoQuality = new Gtk.Adjustment(22.0, 0.0, 51.0, 0.1, 1.0, 0.0);
 		spinVideoQuality = new Gtk.SpinButton (adjVideoQuality, 0.1, 2);
 		spinVideoQuality.set_tooltip_markup(tt);
+		spinVideoQuality.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoQuality,1,row,1,1);
 		
 		tt = _("<b>Compression Vs Encoding Speed</b>\nSlower presets give better compression and smaller files\nbut take more time to encode.");
@@ -726,7 +728,7 @@ public class EncoderConfigWindow : Dialog {
         cmbACodec.pack_start(textCell, false);
         cmbACodec.set_attributes(textCell, "text", 0);
         cmbACodec.changed.connect(cmbACodec_changed);
-        //cmbACodec.hexpand = true;
+        cmbACodec.hexpand = true;
         gridAudio.attach(cmbACodec,1,row,1,1);
         
 		//lblAudioMode
@@ -828,6 +830,7 @@ public class EncoderConfigWindow : Dialog {
 		textCell = new CellRendererText();
         cmbAudioSampleRate.pack_start(textCell, false);        
         cmbAudioSampleRate.set_attributes(textCell, "text", 0);
+        cmbAudioSampleRate.hexpand = true;
         gridAudioFilters.attach(cmbAudioSampleRate,col+1,row,1,1);
         
 		//lblAudioChannels
