@@ -1641,10 +1641,7 @@ on the toolbar will open the file in a text editor.
 		btnStop.visible = false;
 		btnFinish.visible = false;
 		separator1.visible = true;
-		
-		stop_cpu_usage_timer();
-		set_window_title();
-		
+
 		App.convert_finish();
 		
 		statusbar_default_message();
@@ -1698,6 +1695,10 @@ on the toolbar will open the file in a text editor.
 				// update statusbar message
 				statusbar_default_message();
 				
+				//stop cpu usage display
+				stop_cpu_usage_timer();
+				set_window_title();
+		
 				break;
 
 			case AppStatus.RUNNING:
