@@ -1452,7 +1452,9 @@ on the toolbar will open the file in a text editor.
 		};
 		
 		dialog.translators = {
-			"abuyop (Malay):launchpad.net/~abuyop"
+			"abuyop (Malay):launchpad.net/~abuyop",
+			"B. W. Knight (Korean):launchpad.net/~kbd0651",
+			"Felix Moreno (Spanish):launchpad.net/~felix-justdust"
 		}; 
 		
 		dialog.documenters = null; 
