@@ -57,7 +57,6 @@ public class MainWindow : Gtk.Window{
     private Gtk.Toolbar toolbar2;
     private ToolButton btnAddPreset;
 	private ToolButton btnRemovePreset;
-	private ToolButton btnEditPreset;
 	private ToolButton btnBrowsePresetFolder;
 	private ToolButton btnPresetInfo;
 
@@ -67,6 +66,7 @@ public class MainWindow : Gtk.Window{
 	private ComboBox cmbScriptFolder;
 	private Label lblScriptFile;
 	private Label lblScriptFolder;
+	private Button btnEditPreset;
 	private TreeView tvFiles;
 	private ScrolledWindow swFiles;
 	private Label lblStatus;
@@ -372,12 +372,12 @@ public class MainWindow : Gtk.Window{
 		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
 		toolbar2.add (btnRemovePreset);
 		
-		//btnEditPreset
+		/*//btnEditPreset
 		btnEditPreset = new Gtk.ToolButton.from_stock ("gtk-edit");
 		btnEditPreset.is_important = true;
 		btnEditPreset.clicked.connect (btnEditPreset_clicked);
 		btnEditPreset.set_tooltip_text (_("Edit Preset"));
-		toolbar2.add (btnEditPreset);
+		toolbar2.add (btnEditPreset);*/
 		
 		//btnBrowsePresetFolder
 		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
@@ -387,11 +387,11 @@ public class MainWindow : Gtk.Window{
 		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
 		toolbar2.add (btnBrowsePresetFolder);
 		
-		//separator
+		/*//separator
 		var separator1 = new Gtk.SeparatorToolItem();
 		separator1.set_draw (false);
 		separator1.set_expand (true);
-		toolbar2.add (separator1);
+		toolbar2.add (separator1);*/
 		
 		//btnPresetInfo
 		btnPresetInfo = new Gtk.ToolButton.from_stock ("gtk-info");
@@ -444,7 +444,17 @@ public class MainWindow : Gtk.Window{
         cmbScriptFile.set_tooltip_text (_("Encoding Script or Preset File"));
         cmbScriptFile.changed.connect(cmbScriptFile_changed);
         gridConfig.attach(cmbScriptFile,1,1,1,1);
-
+		
+		//btnEditPreset
+		btnEditPreset = new Button.with_label("");
+		btnEditPreset.always_show_image = true;
+		btnEditPreset.image = new Gtk.Image.from_file(App.SharedImagesFolder + "/video-edit.png");
+		//btnEditPreset.image_position = PositionType.TOP;
+		//btnEditPreset.set_size_request(64,64);
+		btnEditPreset.set_tooltip_text(_("Edit Preset"));
+		btnEditPreset.clicked.connect(btnEditPreset_clicked);
+        gridConfig.attach(btnEditPreset,2,0,1,2);
+        
 		//lblStatus
 		lblStatus = new Label("");
 		lblStatus.ellipsize = Pango.EllipsizeMode.END;
@@ -922,7 +932,7 @@ public class MainWindow : Gtk.Window{
 
 Ø These are files with a ".json" extension.
 
-Ø Files are present in $HOME/selene/presets.
+Ø Files are present in $HOME/.config/selene/presets.
 
 Ø Clicking the "Edit" button on the toolbar will display a GUI for
 configuring the preset file.
@@ -931,7 +941,7 @@ configuring the preset file.
 
 Ø These are bash scripts with a ".sh" extension.
 
-Ø Files are present in $HOME/selene/scripts.
+Ø Files are present in $HOME/.config/selene/scripts.
 
 Ø Bash scripts can be used for converting files using any command line
 utility (even those tools which are not directly supported by Selene)
