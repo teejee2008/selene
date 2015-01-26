@@ -1,4 +1,4 @@
-selene (2.5.1) trusty; urgency=low
+selene (2.5.2) trusty; urgency=low
 
   * Added VP9 encoding support
   
@@ -8,4 +8,4 @@ selene (2.5.1) trusty; urgency=low
   
   * Fixed: x264 encoding fails if not compiled with lavf/ffms support
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 26 Jan 2015 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Mon, 26 Jan 2015 11:00:00 +0530
