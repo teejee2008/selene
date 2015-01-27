@@ -208,9 +208,9 @@ public class EncoderConfigWindow : Dialog {
 		
 		//styles ---------------------------------------------------
 		
-		string css_style = """
+		/*string css_style = """
             GtkNotebook tab {
-				padding: 0px;
+				padding: 1px;
 			}
         """;//color: #703910;
         
@@ -220,7 +220,9 @@ public class EncoderConfigWindow : Dialog {
             Gtk.StyleContext.add_provider_for_screen(this.get_screen(),css_provider,Gtk.STYLE_PROVIDER_PRIORITY_USER);
         } catch (GLib.Error e) {
             warning(e.message);
-        }
+        }*/
+        
+        /* Note: Setting tab button padding to 0 causes problems with some GTK themes like Mint-X */
 
 		//General tab ---------------------------------------------
 		

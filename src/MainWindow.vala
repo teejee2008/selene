@@ -99,6 +99,7 @@ public class MainWindow : Gtk.Window{
 	private Regex regexLibAV_video;
 	private Regex regexLibAV_audio;
 	private Regex regexX264;
+	
 	private string statusLine;
 	private uint timerID = 0;
 	private uint startupTimer = 0;
@@ -111,6 +112,8 @@ public class MainWindow : Gtk.Window{
 		{ "text/uri-list", 0, 0}
 	};
 	
+	// initialize window -----------------
+	
 	public MainWindow() {
 		set_window_title();
         window_position = WindowPosition.CENTER;
@@ -120,19 +123,34 @@ public class MainWindow : Gtk.Window{
 
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
 		drag_data_received.connect(on_drag_data_received);
-		
-		Gdk.RGBA gray = Gdk.RGBA();
-		gray.parse ("rgba(200,200,200,1)");
 
         //vboxMain
         vboxMain = new Box (Orientation.VERTICAL, 0);
         add (vboxMain);
-        
-        //vboxMain2
-        vboxMain2 = new Box (Orientation.VERTICAL, 0);
-		vboxMain2.margin_left = 6;
-        vboxMain2.margin_right = 6;
-        
+
+        //main toolbar
+		init_main_toolbar();
+		
+		//listview
+		init_list_view();
+		init_list_view_context_menu();
+		refresh_list_view(true);
+
+		//presets
+		init_preset_toolbar();
+		init_preset_dropdowns();
+        populate_script_folders();
+		select_script();
+		
+		//statusbar
+		init_statusbar();
+		statusbar_default_message();
+		
+		//regex
+		init_regular_expressions();
+	}
+	
+	public void init_main_toolbar(){
 		//toolbar
 		toolbar = new Gtk.Toolbar();
 		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
@@ -266,7 +284,9 @@ public class MainWindow : Gtk.Window{
 		btnOpenOutputFolder.visible = false;
 		btnOpenOutputFolder.no_show_all = true;
 		toolbar.add (btnOpenOutputFolder);
-		
+	}
+	
+	public void init_list_view(){
 		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
@@ -346,123 +366,11 @@ public class MainWindow : Gtk.Window{
 
 		Gtk.drag_dest_set (tvFiles,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
         tvFiles.drag_data_received.connect(on_drag_data_received);
-
-		// Preset tool bar --------------------------------------
-
-        //toolbar
-		toolbar2 = new Gtk.Toolbar();
-		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
-		//toolbar2.margin_top = 3;
-		toolbar2.set_icon_size(IconSize.SMALL_TOOLBAR);
-		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-		vboxMain.add (toolbar2);
-
-		//btnAddPreset
-		btnAddPreset = new Gtk.ToolButton.from_stock ("gtk-add");
-		btnAddPreset.is_important = true;
-		btnAddPreset.label = _("Add Preset");
-		btnAddPreset.clicked.connect (btnAddPreset_clicked);
-		btnAddPreset.set_tooltip_text (_("Add New Preset"));
-		toolbar2.add (btnAddPreset);
-
-		//btnRemovePreset
-		btnRemovePreset = new Gtk.ToolButton.from_stock ("gtk-delete");
-		btnRemovePreset.is_important = true;
-		btnRemovePreset.clicked.connect (btnRemovePreset_clicked);
-		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
-		toolbar2.add (btnRemovePreset);
-		
-		/*//btnEditPreset
-		btnEditPreset = new Gtk.ToolButton.from_stock ("gtk-edit");
-		btnEditPreset.is_important = true;
-		btnEditPreset.clicked.connect (btnEditPreset_clicked);
-		btnEditPreset.set_tooltip_text (_("Edit Preset"));
-		toolbar2.add (btnEditPreset);*/
-		
-		//btnBrowsePresetFolder
-		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
-		btnBrowsePresetFolder.is_important = true;
-		btnBrowsePresetFolder.label = _("Browse");
-		btnBrowsePresetFolder.clicked.connect (btnBrowsePresetFolder_clicked);
-		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
-		toolbar2.add (btnBrowsePresetFolder);
-		
-		/*//separator
-		var separator1 = new Gtk.SeparatorToolItem();
-		separator1.set_draw (false);
-		separator1.set_expand (true);
-		toolbar2.add (separator1);*/
-		
-		//btnPresetInfo
-		btnPresetInfo = new Gtk.ToolButton.from_stock ("gtk-info");
-		btnPresetInfo.is_important = true;
-		btnPresetInfo.margin_right = 6;
-		btnPresetInfo.label = _("Info");
-		btnPresetInfo.clicked.connect (btnPresetInfo_clicked);
-		btnPresetInfo.set_tooltip_text (_("Info"));
-		toolbar2.add (btnPresetInfo);
-
-        //Config ---------------------------------------------------
-        
-        vboxMain.add (vboxMain2);
-
-        //gridConfig
-        gridConfig = new Grid();
-        gridConfig.set_column_spacing (6);
-        gridConfig.set_row_spacing (6);
-        gridConfig.visible = false;
-        gridConfig.margin_top = 6;
-        gridConfig.margin_bottom = 6;
-        vboxMain2.add (gridConfig);
-
-		//lblScriptFolder
-		lblScriptFolder = new Gtk.Label(_("Folder"));
-		lblScriptFolder.xalign = (float) 0.0;
-		gridConfig.attach(lblScriptFolder,0,0,1,1);
-		
-        //cmbScriptFolder 
-		cmbScriptFolder = new ComboBox();
-		CellRendererText cellScriptFolder = new CellRendererText();
-        cmbScriptFolder.pack_start( cellScriptFolder, false );
-        cmbScriptFolder.set_cell_data_func (cellScriptFolder, cellScriptFolder_render);
-        cmbScriptFolder.set_size_request(100,-1);
-		cmbScriptFolder.set_tooltip_text (_("Folder"));
-		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
-		gridConfig.attach(cmbScriptFolder,1,0,1,1);
-		
-		//lblScriptFile
-		lblScriptFile = new Gtk.Label(_("Preset"));
-		lblScriptFile.xalign = (float) 0.0;
-		gridConfig.attach(lblScriptFile,0,1,1,1);
-		
-		//cmbScriptFile
-		cmbScriptFile = new ComboBox();
-		cmbScriptFile.hexpand = true;
-		CellRendererText cellScriptFile = new CellRendererText();
-        cmbScriptFile.pack_start( cellScriptFile, false );
-        cmbScriptFile.set_cell_data_func (cellScriptFile, cellScriptFile_render);
-        cmbScriptFile.set_tooltip_text (_("Encoding Script or Preset File"));
-        cmbScriptFile.changed.connect(cmbScriptFile_changed);
-        gridConfig.attach(cmbScriptFile,1,1,1,1);
-		
-		//btnEditPreset
-		btnEditPreset = new Button.with_label("");
-		btnEditPreset.always_show_image = true;
-		btnEditPreset.image = new Gtk.Image.from_file(App.SharedImagesFolder + "/video-edit.png");
-		//btnEditPreset.image_position = PositionType.TOP;
-		//btnEditPreset.set_size_request(64,64);
-		btnEditPreset.set_tooltip_text(_("Edit Preset"));
-		btnEditPreset.clicked.connect(btnEditPreset_clicked);
-        gridConfig.attach(btnEditPreset,2,0,1,2);
-        
-		//lblStatus
-		lblStatus = new Label("");
-		lblStatus.ellipsize = Pango.EllipsizeMode.END;
-		lblStatus.margin_top = 6;
-		lblStatus.margin_bottom = 6;
-		vboxMain2.add (lblStatus);
-		
-		statusbar_default_message();
+	}
+	
+	public void init_list_view_context_menu(){	
+		Gdk.RGBA gray = Gdk.RGBA();
+		gray.parse ("rgba(200,200,200,1)");
 		
 		// menuFile
 		menuFile = new Gtk.Menu();
@@ -550,9 +458,132 @@ public class MainWindow : Gtk.Window{
 
 				return false;
 			});
+	}
 
-		refresh_file_list(true);
+	public void init_preset_toolbar(){
+		// Preset tool bar --------------------------------------
+
+        //toolbar
+		toolbar2 = new Gtk.Toolbar();
+		toolbar2.toolbar_style = ToolbarStyle.BOTH_HORIZ;
+		//toolbar2.margin_top = 3;
+		toolbar2.set_icon_size(IconSize.SMALL_TOOLBAR);
+		//toolbar2.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+		vboxMain.add (toolbar2);
+
+		//btnAddPreset
+		btnAddPreset = new Gtk.ToolButton.from_stock ("gtk-add");
+		btnAddPreset.is_important = true;
+		btnAddPreset.label = _("Add Preset");
+		btnAddPreset.clicked.connect (btnAddPreset_clicked);
+		btnAddPreset.set_tooltip_text (_("Add New Preset"));
+		toolbar2.add (btnAddPreset);
+
+		//btnRemovePreset
+		btnRemovePreset = new Gtk.ToolButton.from_stock ("gtk-delete");
+		btnRemovePreset.is_important = true;
+		btnRemovePreset.clicked.connect (btnRemovePreset_clicked);
+		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
+		toolbar2.add (btnRemovePreset);
 		
+		/*//btnEditPreset
+		btnEditPreset = new Gtk.ToolButton.from_stock ("gtk-edit");
+		btnEditPreset.is_important = true;
+		btnEditPreset.clicked.connect (btnEditPreset_clicked);
+		btnEditPreset.set_tooltip_text (_("Edit Preset"));
+		toolbar2.add (btnEditPreset);*/
+		
+		//btnBrowsePresetFolder
+		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
+		btnBrowsePresetFolder.is_important = true;
+		btnBrowsePresetFolder.label = _("Browse");
+		btnBrowsePresetFolder.clicked.connect (btnBrowsePresetFolder_clicked);
+		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
+		toolbar2.add (btnBrowsePresetFolder);
+		
+		/*//separator
+		var separator1 = new Gtk.SeparatorToolItem();
+		separator1.set_draw (false);
+		separator1.set_expand (true);
+		toolbar2.add (separator1);*/
+		
+		//btnPresetInfo
+		btnPresetInfo = new Gtk.ToolButton.from_stock ("gtk-info");
+		btnPresetInfo.is_important = true;
+		btnPresetInfo.margin_right = 6;
+		btnPresetInfo.label = _("Info");
+		btnPresetInfo.clicked.connect (btnPresetInfo_clicked);
+		btnPresetInfo.set_tooltip_text (_("Info"));
+		toolbar2.add (btnPresetInfo);
+	}
+	
+	public void init_preset_dropdowns(){
+		//vboxMain2
+        vboxMain2 = new Box (Orientation.VERTICAL, 0);
+		vboxMain2.margin_left = 6;
+        vboxMain2.margin_right = 6;
+        vboxMain.add (vboxMain2);
+
+        //gridConfig
+        gridConfig = new Grid();
+        gridConfig.set_column_spacing (6);
+        gridConfig.set_row_spacing (6);
+        gridConfig.visible = false;
+        gridConfig.margin_top = 6;
+        gridConfig.margin_bottom = 6;
+        vboxMain2.add (gridConfig);
+
+		//lblScriptFolder
+		lblScriptFolder = new Gtk.Label(_("Folder"));
+		lblScriptFolder.xalign = (float) 0.0;
+		gridConfig.attach(lblScriptFolder,0,0,1,1);
+		
+        //cmbScriptFolder 
+		cmbScriptFolder = new ComboBox();
+		CellRendererText cellScriptFolder = new CellRendererText();
+        cmbScriptFolder.pack_start( cellScriptFolder, false );
+        cmbScriptFolder.set_cell_data_func (cellScriptFolder, cellScriptFolder_render);
+        cmbScriptFolder.set_size_request(100,-1);
+		cmbScriptFolder.set_tooltip_text (_("Folder"));
+		cmbScriptFolder.changed.connect(cmbScriptFolder_changed);
+		gridConfig.attach(cmbScriptFolder,1,0,1,1);
+		
+		//lblScriptFile
+		lblScriptFile = new Gtk.Label(_("Preset"));
+		lblScriptFile.xalign = (float) 0.0;
+		gridConfig.attach(lblScriptFile,0,1,1,1);
+		
+		//cmbScriptFile
+		cmbScriptFile = new ComboBox();
+		cmbScriptFile.hexpand = true;
+		CellRendererText cellScriptFile = new CellRendererText();
+        cmbScriptFile.pack_start( cellScriptFile, false );
+        cmbScriptFile.set_cell_data_func (cellScriptFile, cellScriptFile_render);
+        cmbScriptFile.set_tooltip_text (_("Encoding Script or Preset File"));
+        cmbScriptFile.changed.connect(cmbScriptFile_changed);
+        gridConfig.attach(cmbScriptFile,1,1,1,1);
+		
+		//btnEditPreset
+		btnEditPreset = new Button.with_label("");
+		btnEditPreset.always_show_image = true;
+		btnEditPreset.image = new Gtk.Image.from_file(App.SharedImagesFolder + "/video-edit.png");
+		//btnEditPreset.image_position = PositionType.TOP;
+		//btnEditPreset.set_size_request(64,64);
+		btnEditPreset.set_tooltip_text(_("Edit Preset"));
+		btnEditPreset.clicked.connect(btnEditPreset_clicked);
+        gridConfig.attach(btnEditPreset,2,0,1,2);
+	}
+	
+	public void init_statusbar(){
+		//lblStatus
+		lblStatus = new Label("");
+		lblStatus.ellipsize = Pango.EllipsizeMode.END;
+		lblStatus.margin_top = 6;
+		lblStatus.margin_bottom = 6;
+		vboxMain2.add (lblStatus);
+	}
+	
+	public void init_regular_expressions(){
 		try{
 			regexGeneric = new Regex("""([0-9]+[.]?[0-9]*)%""");
 			regexMkvMerge = new Regex("""Progress: ([0-9]+[.]?[0-9]*)%""");
@@ -571,10 +602,6 @@ public class MainWindow : Gtk.Window{
 		catch (Error e) {
 			stderr.printf ("Error: %s\n", e.message);
 		}
-		
-        //populate and select script
-        populate_script_folders();
-		select_script();
 	}
 	
 	public void set_window_title(){
@@ -588,15 +615,6 @@ public class MainWindow : Gtk.Window{
 		cmbScriptFolder.set_model(model);
 		TreeIter iter0;
 
-		/*model.append (out iter0, null);
-		model.set (iter0, 0, App.ScriptsFolder_Official, 1, "Official Scripts");
-		iter_append_children (model, iter0, App.ScriptsFolder_Official);
-		
-		model.append (out iter0, null);
-		model.set (iter0, 0, App.PresetsFolder_Official,1, "Official Presets");
-		iter_append_children (model, iter0, App.PresetsFolder_Official);
-		*/
-		
 		model.append (out iter0, null);
 		model.set (iter0, 0, App.ScriptsFolder_Custom,1, _("scripts"));
 		iter_append_children (model, iter0, App.ScriptsFolder_Custom);
@@ -1012,7 +1030,7 @@ on the toolbar will open the file in a text editor.
 		}
 	}
 	
-	// file list and context menu -------------------------
+	// list view and context menu -------------------------
 	
 	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) {
         foreach(string uri in data.get_uris()){
@@ -1027,7 +1045,7 @@ on the toolbar will open the file in a text editor.
 			}
 		}
         
-        refresh_file_list(true);
+        refresh_list_view(true);
 		
         Gtk.drag_finish (drag_context, true, false, time);
     }
@@ -1340,7 +1358,7 @@ on the toolbar will open the file in a text editor.
 		}
     }
 
-	private void refresh_file_list (bool refresh_model){
+	private void refresh_list_view (bool refresh_model){
 		ListStore inputStore = new ListStore (9, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
 		
 		TreeIter iter;
@@ -1414,7 +1432,7 @@ on the toolbar will open the file in a text editor.
 			App.InputDirectory = dlgAddFiles.get_current_folder();
 	 	}
 
-	 	refresh_file_list(true);
+	 	refresh_list_view(true);
 	 	
 	 	dlgAddFiles.destroy(); //resets cursor
 	}
@@ -1435,12 +1453,12 @@ on the toolbar will open the file in a text editor.
 		}
 		
 		App.remove_files(list);
-		refresh_file_list(true);
+		refresh_list_view(true);
 	}
 	
 	private void btnClearFiles_clicked(){
 		App.remove_all();
-		refresh_file_list(true);
+		refresh_list_view(true);
 	}
 	
 	private void btnAbout_clicked(){
