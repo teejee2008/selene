@@ -105,6 +105,7 @@ public class MainWindow : Gtk.Window{
 	private uint startupTimer = 0;
 	private uint statusTimer = 0;
 	private uint cpuUsageTimer = 0;
+
 	private bool paused = false;
 	private MediaFile lastFile;
 
@@ -133,9 +134,9 @@ public class MainWindow : Gtk.Window{
 		
 		//listview
 		init_list_view();
+		refresh_list_view();
 		init_list_view_context_menu();
-		refresh_list_view(true);
-
+		
 		//presets
 		init_preset_toolbar();
 		init_preset_dropdowns();
@@ -290,7 +291,7 @@ public class MainWindow : Gtk.Window{
 		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
-		tvFiles.set_tooltip_text (_("File(s) to convert"));
+		tvFiles.set_tooltip_text (_("Right-click for more options"));
 		tvFiles.set_rules_hint (true);
 
 		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
@@ -305,10 +306,61 @@ public class MainWindow : Gtk.Window{
 		colName = new TreeViewColumn();
 		colName.title = _("File");
 		colName.expand = true;
+		
+		CellRendererPixbuf cellThumb = new CellRendererPixbuf ();
+		colName.pack_start (cellThumb, false);
+
+		CellRendererText cellSpacer = new CellRendererText();
+		colName.pack_start (cellSpacer, false);
+		
 		CellRendererText cellName = new CellRendererText();
 		cellName.ellipsize = Pango.EllipsizeMode.END;
 		colName.pack_start (cellName, false);
-		colName.set_attributes(cellName, "text", InputField.FILE_NAME);
+
+		colName.set_cell_data_func (cellThumb, (cell_layout, cell, model, iter)=>{
+			string imagePath;
+			model.get (iter, InputField.FILE_THUMB, out imagePath, -1);
+			
+			Gdk.Pixbuf pixThumb = null;
+			try{
+				pixThumb = new Gdk.Pixbuf.from_file (imagePath);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+	    
+			if (App.TileView){
+				(cell as Gtk.CellRendererPixbuf).pixbuf = pixThumb;
+			}
+			else{
+				(cell as Gtk.CellRendererPixbuf).pixbuf = null;
+			}
+		});
+		
+		colName.set_cell_data_func (cellName, (cell_layout, cell, model, iter)=>{
+			string fileName, fileSize, duration, formatInfo, spanStart, spanEnd;
+			MediaFile mf;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.FILE_NAME, out fileName, -1);
+			model.get (iter, InputField.FILE_SIZE, out fileSize, -1);
+			model.get (iter, InputField.FILE_DURATION, out duration, -1);
+			
+			spanStart = "<span foreground='#606060'>";
+			spanEnd = "</span>";
+			fileName = fileName.replace("&","&amp;");
+
+			formatInfo = ((mf.FileFormat.length > 0) ? ("" + mf.FileFormat) : "") 
+				+ ((mf.VideoFormat.length > 0) ? (" - " + mf.VideoFormat) : "") 
+				+ ((mf.AudioFormat.length > 0) ? (" - " + mf.AudioFormat) : "");
+			
+			if (App.TileView){
+				(cell as Gtk.CellRendererText).markup = "%s\n%s%s | %s\n%s%s".printf(fileName, spanStart, duration, fileSize, formatInfo, spanEnd);
+			}
+			else{
+				(cell as Gtk.CellRendererText).text = fileName;
+			}
+		});
+		
 		tvFiles.append_column(colName);
 		
 		//colSize
@@ -353,7 +405,7 @@ public class MainWindow : Gtk.Window{
 		colSpacer = new TreeViewColumn();
 		colSpacer.expand = false;
 		colSpacer.fixed_width = 10;
-		CellRendererText cellSpacer = new CellRendererText();
+		cellSpacer = new CellRendererText();
 		colSpacer.pack_start (cellSpacer, false);
 		tvFiles.append_column(colSpacer);
 
@@ -450,7 +502,9 @@ public class MainWindow : Gtk.Window{
 		
 		menuFile.show_all();
 		
+		//connect signal for shift+F10
         tvFiles.popup_menu.connect(() => { return menuFile_popup (menuFile, null); });
+        //connect signal for right-click
 		tvFiles.button_press_event.connect ((w, event) => {
 				if (event.button == 3) {
 					return menuFile_popup (menuFile, event);
@@ -460,6 +514,37 @@ public class MainWindow : Gtk.Window{
 			});
 	}
 
+	private void refresh_list_view (bool refresh_model = true){
+		if (refresh_model){
+			ListStore inputStore = new ListStore (10, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string));
+			
+			TreeIter iter;
+			foreach(MediaFile mFile in App.InputFiles) {
+				inputStore.append (out iter);
+				inputStore.set (iter, InputField.FILE_REF, mFile);
+				inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
+				inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
+				inputStore.set (iter, InputField.FILE_SIZE, format_file_size(mFile.Size));
+				inputStore.set (iter, InputField.FILE_DURATION, format_duration(mFile.Duration));
+				inputStore.set (iter, InputField.FILE_STATUS, "gtk-media-pause");
+				inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info());
+				inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
+				inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
+				inputStore.set (iter, InputField.FILE_THUMB, mFile.ThumbnailImagePath);
+			}
+				
+			tvFiles.set_model (inputStore);
+		}
+		
+		colSize.visible = !App.TileView;
+		colDuration.visible = !App.TileView;
+		colCrop.visible = !App.TileView;
+		tvFiles.headers_visible = !App.TileView;
+		
+		tvFiles.columns_autosize();
+	}
+
+	
 	public void init_preset_toolbar(){
 		// Preset tool bar --------------------------------------
 
@@ -1045,7 +1130,7 @@ on the toolbar will open the file in a text editor.
 			}
 		}
         
-        refresh_list_view(true);
+        refresh_list_view();
 		
         Gtk.drag_finish (drag_context, true, false, time);
     }
@@ -1358,28 +1443,6 @@ on the toolbar will open the file in a text editor.
 		}
     }
 
-	private void refresh_list_view (bool refresh_model){
-		ListStore inputStore = new ListStore (9, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string));
-		
-		TreeIter iter;
-		foreach(MediaFile mFile in App.InputFiles) {
-			inputStore.append (out iter);
-			inputStore.set (iter, InputField.FILE_REF, mFile);
-			inputStore.set (iter, InputField.FILE_PATH, mFile.Path);
-	    	inputStore.set (iter, InputField.FILE_NAME, mFile.Name);
-	    	inputStore.set (iter, InputField.FILE_SIZE, format_file_size(mFile.Size));
-	    	inputStore.set (iter, InputField.FILE_DURATION, format_duration(mFile.Duration));
-	    	inputStore.set (iter, InputField.FILE_STATUS, "gtk-media-pause");
-	    	inputStore.set (iter, InputField.FILE_CROPVAL, mFile.crop_values_info());
-	    	inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
-	    	inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
-		}
-			
-		tvFiles.set_model (inputStore);
-		
-		tvFiles.columns_autosize();
-	}
-	
 	public void tvFiles_crop_cell_edited (string path, string new_text) {
 		int index = int.parse (path.to_string());
 		MediaFile mf = App.InputFiles[index];
@@ -1432,8 +1495,8 @@ on the toolbar will open the file in a text editor.
 			App.InputDirectory = dlgAddFiles.get_current_folder();
 	 	}
 
-	 	refresh_list_view(true);
-	 	
+	 	refresh_list_view();
+
 	 	dlgAddFiles.destroy(); //resets cursor
 	}
 	
@@ -1453,12 +1516,12 @@ on the toolbar will open the file in a text editor.
 		}
 		
 		App.remove_files(list);
-		refresh_list_view(true);
+		refresh_list_view();
 	}
 	
 	private void btnClearFiles_clicked(){
 		App.remove_all();
-		refresh_list_view(true);
+		refresh_list_view();
 	}
 	
 	private void btnAbout_clicked(){
@@ -1510,10 +1573,12 @@ on the toolbar will open the file in a text editor.
 	}
 	
 	private void btnAppSettings_clicked(){
-	    var window = new AppConfigWindow();
-	    window.set_transient_for(this);
-	    window.show_all();
-	    window.run();
+	    var dialog = new AppConfigWindow();
+	    dialog.set_transient_for(this);
+	    dialog.show_all();
+	    dialog.run();
+
+	    refresh_list_view(false);
 	}
 	
 	private void btnShutdown_clicked(){
@@ -1631,7 +1696,7 @@ on the toolbar will open the file in a text editor.
 		paused = false;
 		btnPause.stock_id = "gtk-media-pause";
 		
-		colCrop.visible = false;
+		colCrop.visible = !App.TileView;
 		colProgress.visible = true;
 		
 		start_cpu_usage_timer();
@@ -1641,7 +1706,7 @@ on the toolbar will open the file in a text editor.
 		toolbar2.visible = true;
 		gridConfig.visible = true;
 
-		colCrop.visible = true;
+		colCrop.visible = !App.TileView;
 		colProgress.visible = false;
 		
 		btnStart.visible = true;
@@ -1798,5 +1863,6 @@ public enum InputField{
 	FILE_STATUS,
 	FILE_CROPVAL,
 	FILE_PROGRESS,
-	FILE_PROGRESS_TEXT
+	FILE_PROGRESS_TEXT,
+	FILE_THUMB
 }

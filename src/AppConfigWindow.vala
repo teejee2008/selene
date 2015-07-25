@@ -35,6 +35,7 @@ using TeeJee.Misc;
 public class AppConfigWindow : Dialog {
 
 	private Box vboxMain;
+	private Label lblView;
 	private Label lblOutput;
 	private CheckButton chkOutput;
 	private FileChooserButton fcbOutput;
@@ -43,9 +44,10 @@ public class AppConfigWindow : Dialog {
 	private FileChooserButton fcbBackup;
 	private Button btnSave;
 	private Button btnCancel;
+	private ComboBox cmbFileView;
 	
 	public AppConfigWindow() {
-		title = "Application Settings";
+		title = "Settings";
 		set_default_size (350, 400);
 			
         window_position = WindowPosition.CENTER_ON_PARENT;
@@ -58,6 +60,43 @@ public class AppConfigWindow : Dialog {
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;
+
+		// lblView
+		lblView = new Label (_("<b>General</b>"));
+		lblView.set_use_markup(true);
+		lblView.halign = Align.START;
+		lblView.margin_bottom = 12;
+		lblView.margin_top = 12;
+		vboxMain.pack_start (lblView, false, true, 0);
+		
+		//hboxFileView
+		Box hboxFileView = new Box(Orientation.HORIZONTAL,6);
+        vboxMain.add(hboxFileView);
+
+		Label lblFileView = new Gtk.Label(_("File View"));
+		lblFileView.xalign = (float) 0.0;
+		hboxFileView.pack_start(lblFileView,false,false,0);
+		
+		cmbFileView = new ComboBox();
+		var textCell = new CellRendererText();
+        cmbFileView.pack_start(textCell, false);
+        cmbFileView.set_attributes(textCell, "text", 0);
+		hboxFileView.pack_start(cmbFileView,false,false,0);
+		
+		Gtk.TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("Simple"), 1, "list");
+		model.append (out iter);
+		model.set (iter, 0, _("Tiles"), 1, "tiles");
+		cmbFileView.set_model(model);
+		
+		if (App.TileView){
+			cmbFileView.set_active(1);
+		}
+		else{
+			cmbFileView.set_active(0);
+		}
 		
 		// lblOutput
 		lblOutput = new Label (_("<b>Output Folder</b>"));
@@ -144,6 +183,8 @@ public class AppConfigWindow : Dialog {
 				App.BackupDirectory = fcbBackup.get_filename();
 			}
 		}
+		
+		App.TileView = (cmbFileView.active == 1);
 		
 		// Save settings
 		App.save_config();

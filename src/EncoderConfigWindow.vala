@@ -180,7 +180,7 @@ public class EncoderConfigWindow : Dialog {
 	
 	public EncoderConfigWindow() {
 		title = "Preset";
-		set_default_size (400, 550);	
+		set_default_size (450, 550);	
 		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
@@ -201,7 +201,7 @@ public class EncoderConfigWindow : Dialog {
 
 		//tabMain
 		tabMain = new Notebook();
-		tabMain.tab_pos = PositionType.LEFT;
+		//tabMain.tab_pos = PositionType.LEFT;
 		tabMain.set_show_border(false);
 		tabMain.margin = 6;
 		vboxMain.pack_start (tabMain, true, true, 0);

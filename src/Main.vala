@@ -83,6 +83,7 @@ public class Main : GLib.Object{
 	public string OutputDirectory = "";
 	public string BackupDirectory = "";
 	public string InputDirectory = "";
+	public bool TileView = true;
 	
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
@@ -482,6 +483,7 @@ Notes:
 		config.set_string_member("backup-dir", BackupDirectory);
 		config.set_string_member("output-dir", OutputDirectory);
 		config.set_string_member("last-script", SelectedScript.Path);
+		config.set_string_member("tile-view", TileView.to_string());
 		
 		if (SelectedScript != null) {
 			config.set_string_member("last-script", SelectedScript.Path);
@@ -538,6 +540,8 @@ Notes:
 		if (val != null && val.length > 0) {
 			SelectedScript = new ScriptFile(val);
 		}
+	
+		TileView = json_get_bool(config,"tile-view",true);
 	}
 	
 	public void exit_app(){
@@ -2559,6 +2563,7 @@ public class MediaFile : GLib.Object{
 	
 	public int64 Size = 0;
 	public long Duration = 0; //in milliseconds
+	public string ThumbnailImagePath = "";
 	
 	public string SubFile = "";
 	public string SubName = "";
@@ -2588,11 +2593,16 @@ public class MediaFile : GLib.Object{
 	public string InfoText;
 	public bool HasAudio = false;
 	public bool HasVideo = false;
+	public bool HasSubs = false;
 	public int SourceWidth = 0;
 	public int SourceHeight = 0;
 	public double SourceFrameRate = 0;
 	public int AudioChannels = 0;
 	
+	public string FileFormat = "";
+	public string VideoFormat = "";
+	public string AudioFormat = "";
+
 	public string TempScriptFile;
 	public string TempDirectory = "";
 	public string LogFile = "";
@@ -2643,6 +2653,7 @@ public class MediaFile : GLib.Object{
 			            SubName = fileInfo.get_name();
 			            SubFile = Location + "/" + SubName;
 	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
+	                	HasSubs = true;
 	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
 	                }
 	            }
@@ -2652,6 +2663,11 @@ public class MediaFile : GLib.Object{
         catch(Error e){
 	        log_error (e.message);
 	    }
+	    
+	    
+	    // get thumbnail ---------
+	    
+	    generate_thumbnail();
 	    
 		IsValid = true;
 	}
@@ -2680,6 +2696,10 @@ public class MediaFile : GLib.Object{
 				}
 				else if (line.contains ("General")){
 					sectionType = "general";
+				}
+				else if (line.contains ("Text")){
+					sectionType = "text";
+					HasSubs = true;
 				}
 			}
 			else{
@@ -2726,6 +2746,9 @@ public class MediaFile : GLib.Object{
 						case "comment":
 							Comment = val;
 							break;
+						case "format":
+							FileFormat = val;
+							break;
 					}
 				}
 				else if (sectionType == "video"){
@@ -2740,12 +2763,18 @@ public class MediaFile : GLib.Object{
 						case "original frame rate":
 							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip());
 							break;
+						case "format":
+							VideoFormat = val;
+							break;
 					}
 				}
 				else if (sectionType == "audio"){
 					switch (key.down()) {
 						case "channel(s)":
 							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip());
+							break;
+						case "format":
+							AudioFormat = val;
 							break;
 					}
 				}
@@ -2767,6 +2796,14 @@ public class MediaFile : GLib.Object{
 		else{
 			OutputFrameCount = 0;
 		}
+	}
+	
+	public void generate_thumbnail(){
+		int imageWidth = 80;
+		int imageHeight= 64;
+		ThumbnailImagePath = get_temp_file_path() + ".png";
+		string std_out, std_err;
+		execute_command_script_sync("avconv -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(Path,imageWidth,imageHeight,ThumbnailImagePath), out std_out, out std_err);
 	}
 	
 	public bool crop_detect(){

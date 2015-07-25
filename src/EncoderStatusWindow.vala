@@ -43,7 +43,7 @@ public class EncoderStatusWindow : Dialog {
 	
 	public EncoderStatusWindow () {
 		title = _("Encoders");
-		set_default_size (450, 400);
+		set_default_size (500, 450);
 		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
