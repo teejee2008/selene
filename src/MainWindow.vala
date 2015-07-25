@@ -1544,7 +1544,7 @@ on the toolbar will open the file in a text editor.
 
 		dialog.program_name = AppName;
 		dialog.comments = _("An audio-video converter for Linux");
-		dialog.copyright = "Copyright © 2014 Tony George (%s)".printf(AppAuthorEmail);
+		dialog.copyright = "Copyright © 2015 Tony George (%s)".printf(AppAuthorEmail);
 		dialog.version = AppVersion;
 		dialog.logo = get_app_icon(128);
 

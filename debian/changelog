@@ -1,11 +1,5 @@
-selene (2.5.2) trusty; urgency=low
+selene (2.5.3) trusty; urgency=low
 
-  * Added VP9 encoding support
-  
-  * Updated VP8 encoding options to use ffmpeg/avconv instead of vpxenc
-  
-  * Fixed: Progress not displayed for x264 encoding
-  
-  * Fixed: x264 encoding fails if not compiled with lavf/ffms support
+  * Added tiled view for file list
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 26 Jan 2015 11:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 25 Jul 2015 11:00:00 +0530
