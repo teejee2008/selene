@@ -1202,12 +1202,12 @@ public class EncoderConfigWindow : Dialog {
 	}
 	
 	private void cmbFileFormat_changed(){
-		ListStore model;
+		Gtk.ListStore model;
 		TreeIter iter;
 		
 		//populate file extensions ---------------------------
 		
-		model = new ListStore(2, typeof(string), typeof(string));
+		model = new Gtk.ListStore(2, typeof(string), typeof(string));
 		cmbFileExtension.set_model(model);
 
 		switch (format) {
@@ -1472,7 +1472,7 @@ public class EncoderConfigWindow : Dialog {
 	}
 	
 	private void cmbACodec_changed(){
-		ListStore model;
+		Gtk.ListStore model;
 		TreeIter iter;
 
 		//show & hide options
@@ -1893,7 +1893,7 @@ public class EncoderConfigWindow : Dialog {
 	}
 
 	private void cmbVCodec_changed(){
-		ListStore model;
+		Gtk.ListStore model;
 		TreeIter iter;
 		
 		//show x264 options

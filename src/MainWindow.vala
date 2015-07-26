@@ -516,7 +516,7 @@ public class MainWindow : Gtk.Window{
 
 	private void refresh_list_view (bool refresh_model = true){
 		if (refresh_model){
-			ListStore inputStore = new ListStore (10, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string));
+			Gtk.ListStore inputStore = new Gtk.ListStore (10, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string));
 			
 			TreeIter iter;
 			foreach(MediaFile mFile in App.InputFiles) {
@@ -735,7 +735,7 @@ public class MainWindow : Gtk.Window{
 	
 	private void cmbScriptFolder_changed(){
 		//create empty model
-		ListStore model = new ListStore(2, typeof(ScriptFile), typeof(string));
+		Gtk.ListStore model = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 		
 		string path = gtk_combobox_get_value(cmbScriptFolder,0,"");
@@ -824,7 +824,7 @@ public class MainWindow : Gtk.Window{
 			cmbScriptFolder.set_active(-1); 
 			
 			//add the selected file
-			ListStore model1 = new ListStore(2, typeof(ScriptFile), typeof(string));
+			Gtk.ListStore model1 = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
 			cmbScriptFile.set_model(model1);
 			ScriptFile sh = new ScriptFile(filePath);
 			model1.append(out iter);
@@ -835,7 +835,7 @@ public class MainWindow : Gtk.Window{
 		}
 
 		//select file
-		ListStore model1 = (ListStore) cmbScriptFile.model;
+		Gtk.ListStore model1 = (Gtk.ListStore) cmbScriptFile.model;
 		for (bool next = model1.get_iter_first (out iter); next; next = model1.iter_next (ref iter)) {
 			ScriptFile sh = new ScriptFile(filePath);
 			model1.get (iter, 0, out sh);
@@ -1316,10 +1316,10 @@ on the toolbar will open the file in a text editor.
 			MediaFile file = App.InputFiles[index];
 			
 			if (file.crop_detect()){
-				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
+				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
 			}
 			else{
-				((ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
+				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
 			}	
 			
 			do_events();
@@ -1462,7 +1462,7 @@ on the toolbar will open the file in a text editor.
 			}
 		}
 		
-		ListStore model = (ListStore) tvFiles.model;
+		Gtk.ListStore model = (Gtk.ListStore) tvFiles.model;
 		TreeIter iter;
 		model.get_iter (out iter, new TreePath.from_string (path));
 		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info());
@@ -1734,7 +1734,7 @@ on the toolbar will open the file in a text editor.
 
 	public bool update_status(){
 		TreeIter iter;
-		ListStore model = (ListStore)tvFiles.model;
+		Gtk.ListStore model = (Gtk.ListStore)tvFiles.model;
 
 		switch (App.Status) {
 			case AppStatus.PAUSED:
@@ -1830,7 +1830,7 @@ on the toolbar will open the file in a text editor.
 	}
 	
 	public void update_status_all(){
-		ListStore model = (ListStore)tvFiles.model;
+		Gtk.ListStore model = (Gtk.ListStore)tvFiles.model;
 		MediaFile mf;
 		int index = -1;
 		TreeIter iter;
