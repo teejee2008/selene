@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2015-07-26 11:40-0400\n"
+"POT-Creation-Date: 2015-07-26 11:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,37 +126,30 @@ msgstr ""
 msgid "AC3 Audio (*.ac3)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:208
 #: MainWindow.vala:208
 msgid "Abort"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:256
 #: MainWindow.vala:256
 msgid "About"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1474
 #: MainWindow.vala:1474
 msgid "Add File(s)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:163
 #: MainWindow.vala:163
 msgid "Add Files"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:564
 #: MainWindow.vala:564
 msgid "Add New Preset"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:562
 #: MainWindow.vala:562
 msgid "Add Preset"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:166
 #: MainWindow.vala:166
 msgid "Add file(s)"
 msgstr ""
@@ -169,12 +162,10 @@ msgstr ""
 msgid "All files removed"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1546
 #: MainWindow.vala:1546
 msgid "An audio-video converter for Linux"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:232
 #: MainWindow.vala:232
 msgid "Application Settings"
 msgstr ""
@@ -197,7 +188,6 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:437
 #: MainWindow.vala:437
 msgid "AutoCrop Video"
 msgstr ""
@@ -218,7 +208,6 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:271
 #: MainWindow.vala:271
 msgid "Background"
 msgstr ""
@@ -243,12 +232,10 @@ msgstr ""
 msgid "Boost or cut the treble (upper) frequencies of the audio."
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:584
 #: MainWindow.vala:584
 msgid "Browse"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1821
 #: MainWindow.vala:1821
 msgid "CPU: "
 msgstr ""
@@ -293,7 +280,6 @@ msgstr ""
 msgid "Converting..."
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1113
 #: MainWindow.vala:1113
 #, c-format
 msgid "Converting: '%s'"
@@ -307,7 +293,6 @@ msgstr ""
 msgid "Credits"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:384
 #: MainWindow.vala:384
 msgid "CropVideo (L:T:R:B)"
 msgstr ""
@@ -316,7 +301,6 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:571
 #: MainWindow.vala:571
 msgid "Delete Preset"
 msgstr ""
@@ -370,10 +354,7 @@ msgstr ""
 msgid "Documenters"
 msgstr ""
 
-#: DonationWindow.vala:36
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:245
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:246
-#: MainWindow.vala:245 MainWindow.vala:246
+#: DonationWindow.vala:36 MainWindow.vala:245 MainWindow.vala:246
 msgid "Donate"
 msgstr ""
 
@@ -390,17 +371,14 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1101
 #: MainWindow.vala:1101
 msgid "Drag files on this window or click the 'Add' button"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:376
 #: MainWindow.vala:376
 msgid "Duration"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:657
 #: MainWindow.vala:657
 msgid "Edit Preset"
 msgstr ""
@@ -417,9 +395,7 @@ msgstr ""
 msgid "Empty Preset Name"
 msgstr ""
 
-#: EncoderStatusWindow.vala:45
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:238
-#: MainWindow.vala:238
+#: EncoderStatusWindow.vala:45 MainWindow.vala:238
 msgid "Encoders"
 msgstr ""
 
@@ -427,7 +403,6 @@ msgstr ""
 msgid "Encoding Mode"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:647
 #: MainWindow.vala:647
 msgid "Encoding Script or Preset File"
 msgstr ""
@@ -492,17 +467,14 @@ msgstr ""
 msgid "Fast"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:307
 #: MainWindow.vala:307
 msgid "File"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:499
 #: MainWindow.vala:499
 msgid "File Info (Output)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:493
 #: MainWindow.vala:493
 msgid "File Info (Source)"
 msgstr ""
@@ -515,7 +487,6 @@ msgstr ""
 msgid "File added:"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1129
 #: MainWindow.vala:1129
 #, c-format
 msgid "File added: '%s'"
@@ -538,8 +509,6 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:216
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:218
 #: MainWindow.vala:216 MainWindow.vala:218
 msgid "Finish"
 msgstr ""
@@ -552,8 +521,6 @@ msgstr ""
 msgid "Fixed Bitrate"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:622
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:632
 #: MainWindow.vala:622 MainWindow.vala:632
 msgid "Folder"
 msgstr ""
@@ -562,7 +529,6 @@ msgstr ""
 msgid "Following encoders are not installed on your system:"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1659
 #: MainWindow.vala:1659
 msgid "Following encoders were not found on your system:"
 msgstr ""
@@ -575,7 +541,6 @@ msgstr ""
 msgid "Format / Codec"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1491
 #: MainWindow.vala:1491
 msgid "Format not supported:"
 msgstr ""
@@ -604,14 +569,10 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:599
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:601
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1057
 #: MainWindow.vala:599 MainWindow.vala:601 MainWindow.vala:1057
 msgid "Info"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1637
 #: MainWindow.vala:1637
 msgid ""
 "Input queue is empty!\n"
@@ -698,8 +659,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: Main.vala:309 MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1659
-#: MainWindow.vala:1659
+#: Main.vala:309 MainWindow.vala:1659
 msgid "Missing Encoders"
 msgstr ""
 
@@ -711,9 +671,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: Main.vala:2856
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1322
-#: MainWindow.vala:1322
+#: Main.vala:2856 MainWindow.vala:1322
 msgid "N/A"
 msgstr ""
 
@@ -761,27 +719,22 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:586
 #: MainWindow.vala:586
 msgid "Open Folder"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:470
 #: MainWindow.vala:470
 msgid "Open Log File"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:464
 #: MainWindow.vala:464
 msgid "Open Output Folder"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:458
 #: MainWindow.vala:458
 msgid "Open Temp Folder"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:284
 #: MainWindow.vala:284
 msgid "Open output folder"
 msgstr ""
@@ -794,7 +747,6 @@ msgstr ""
 msgid "Opus Audio (*.opus)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:282
 #: MainWindow.vala:282
 msgid "Output"
 msgstr ""
@@ -803,9 +755,6 @@ msgstr ""
 msgid "Output Location"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:199
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1618
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1620
 #: MainWindow.vala:199 MainWindow.vala:1618 MainWindow.vala:1620
 msgid "Pause"
 msgstr ""
@@ -822,12 +771,10 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:487
 #: MainWindow.vala:487
 msgid "Play File (Output)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:481
 #: MainWindow.vala:481
 msgid "Play File (Source)"
 msgstr ""
@@ -836,7 +783,6 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1659
 #: MainWindow.vala:1659
 msgid "Please install required packages or select another preset"
 msgstr ""
@@ -845,23 +791,18 @@ msgstr ""
 msgid "Please install the 'sox' package on your system to use this feature"
 msgstr ""
 
-#: EncoderConfigWindow.vala:431
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:637
-#: MainWindow.vala:637
+#: EncoderConfigWindow.vala:431 MainWindow.vala:637
 msgid "Preset"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:995
 #: MainWindow.vala:995
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1753
 #: MainWindow.vala:1753
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:442
 #: MainWindow.vala:442
 msgid "Preview File"
 msgstr ""
@@ -882,7 +823,6 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1639
 #: MainWindow.vala:1639
 msgid "Queue is Empty"
 msgstr ""
@@ -895,12 +835,10 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:180
 #: MainWindow.vala:180
 msgid "Remove all file(s)"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:173
 #: MainWindow.vala:173
 msgid "Remove selected file(s)"
 msgstr ""
@@ -918,18 +856,14 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1612
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1614
 #: MainWindow.vala:1612 MainWindow.vala:1614
 msgid "Resume"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:294
 #: MainWindow.vala:294
 msgid "Right-click for more options"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:276
 #: MainWindow.vala:276
 msgid "Run processes with lower priority"
 msgstr ""
@@ -946,7 +880,6 @@ msgstr ""
 msgid "Save in input file location"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1099
 #: MainWindow.vala:1099
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
@@ -966,22 +899,18 @@ msgid ""
 "Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:261
 #: MainWindow.vala:261
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1591
 #: MainWindow.vala:1591
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1588
 #: MainWindow.vala:1588
 msgid "Shutdown Enabled"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:266
 #: MainWindow.vala:266
 msgid "Shutdown system after completion"
 msgstr ""
@@ -990,12 +919,10 @@ msgstr ""
 msgid "Simple"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:368
 #: MainWindow.vala:368
 msgid "Size"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:432
 #: MainWindow.vala:432
 msgid "Skip File"
 msgstr ""
@@ -1029,8 +956,6 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:190
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:192
 #: MainWindow.vala:190 MainWindow.vala:192
 msgid "Start"
 msgstr ""
@@ -1040,9 +965,7 @@ msgstr ""
 msgid "Starting batch of %d file(s):"
 msgstr ""
 
-#: EncoderStatusWindow.vala:99
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:395
-#: MainWindow.vala:395
+#: EncoderStatusWindow.vala:99 MainWindow.vala:395
 msgid "Status"
 msgstr ""
 
@@ -1079,12 +1002,10 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1755
 #: MainWindow.vala:1755
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1762
 #: MainWindow.vala:1762
 #, c-format
 msgid "System shutdown was cancelled by user!"
@@ -1094,8 +1015,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:676 MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1752
-#: MainWindow.vala:1752
+#: Main.vala:676 MainWindow.vala:1752
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1142,7 +1062,6 @@ msgstr ""
 msgid "Unknown format:"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1126
 #: MainWindow.vala:1126
 #, c-format
 msgid "Unknown format: '%s'"
@@ -1216,23 +1135,19 @@ msgstr ""
 msgid "Width x Height"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1105
 #: MainWindow.vala:1105
 msgid ""
 "[Batch completed] Right-click for options or click 'Finish' to continue."
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:1109
 #: MainWindow.vala:1109
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:708
 #: MainWindow.vala:708
 msgid "presets"
 msgstr ""
 
-#: MainWindow (teejee-pc's conflicted copy 2015-07-26).vala:704
 #: MainWindow.vala:704
 msgid "scripts"
 msgstr ""

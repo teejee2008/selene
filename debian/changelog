@@ -1,5 +1,7 @@
-selene (2.5.4) trusty; urgency=low
+selene (2.5.5) trusty; urgency=low
 
   * Added tiled view for file list
 
- -- Tony George <tony.george.kol@gmail.com>  Sat, 25 Jul 2015 14:00:00 +0530
+  * Fixed build errors due to ambiguous references to Gtk.ListStore
+  
+ -- Tony George <tony.george.kol@gmail.com>  Sun, 26 Jul 2015 10:00:00 +0530
