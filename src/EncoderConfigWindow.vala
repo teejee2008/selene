@@ -87,6 +87,7 @@ public class EncoderConfigWindow : Dialog {
 	private Label lblVideoQuality;
 	private SpinButton spinVideoQuality;
 	
+	private ComboBox cmbVpxSpeed;
 	private Label lblVpxSpeed;
 	private Scale scaleVpxSpeed;
 	
@@ -473,21 +474,42 @@ public class EncoderConfigWindow : Dialog {
         cmbX264Profile.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Profile,1,row,1,1);
 
-		tt = _("<b>Quality Vs Encoding Speed</b>\nHigher values speed-up encoding at the expense of quality.\nLower values improve quality at the expense of encoding speed.");
-
 		//lblVpxSpeed
 		lblVpxSpeed = new Gtk.Label(_("Speed"));
 		lblVpxSpeed.xalign = (float) 0.0;
 		lblVpxSpeed.no_show_all = true;
-		lblVpxSpeed.set_tooltip_markup(tt);
 		gridVideo.attach(lblVpxSpeed,0,++row,1,1);
 		
+		Box hboxVpxSpeed = new Box (Orientation.HORIZONTAL, 0);
+		hboxVpxSpeed.homogeneous = false;
+		gridVideo.attach(hboxVpxSpeed,1,row,1,1);
+
+		//cmbVpxSpeed
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("Best"), 1, "best");
+		model.append (out iter);
+		model.set (iter, 0, _("Good"), 1, "good");
+		model.append (out iter);
+		model.set (iter, 0, _("Realtime"), 1, "realtime");
+		cmbVpxSpeed = new ComboBox.with_model(model);
+		textCell = new CellRendererText();
+        cmbVpxSpeed.pack_start( textCell, false );
+        cmbVpxSpeed.set_attributes( textCell, "text", 0 );
+        hboxVpxSpeed.add(cmbVpxSpeed);
+        
+        cmbVpxSpeed.changed.connect(cmbVpxSpeed_changed);
+        
+        Label lblSpacer = new Gtk.Label("    ");
+        hboxVpxSpeed.add(lblSpacer);
+        
 		//scaleVpxSpeed
-        scaleVpxSpeed = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -16, 16, 1);
+        scaleVpxSpeed = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 5, 1);
 		scaleVpxSpeed.adjustment.value = 1;
 		scaleVpxSpeed.has_origin = false;
 		scaleVpxSpeed.value_pos = PositionType.LEFT;
-        gridVideo.attach(scaleVpxSpeed,1,row,1,1);
+		scaleVpxSpeed.hexpand = true;
+        hboxVpxSpeed.add(scaleVpxSpeed);
 
 		tt = _("<b>Additional Options</b>\nThese options will be passed to the encoder\non the command line. Please do not specify\nany options that are already provided by the GUI.");
 		
@@ -1178,6 +1200,7 @@ public class EncoderConfigWindow : Dialog {
 		cmbOpusOptimize.set_active(0);
 		cmbX264Preset.set_active(3);
 		//cmbX264Profile.set_active(2);
+		cmbVpxSpeed.set_active (1);
 		cmbFPS.set_active (0);
 		cmbFrameSize.set_active (0);
 		cmbFadeType.set_active (0);
@@ -1952,10 +1975,20 @@ public class EncoderConfigWindow : Dialog {
 				lblVpxSpeed.visible = true;
 				scaleVpxSpeed.visible = true;
 				scaleVpxSpeed.adjustment.value = 1;
+				
+				lblVpxSpeed.set_tooltip_markup("");
+				string tt = _("<b>Quality Vs Encoding Speed</b>\n\n<b>Best:</b> Best quality, slower\n<b>Good:</b> Good quality, faster\n<b>Realtime:</b> Fastest");
+				cmbVpxSpeed.set_tooltip_markup(tt);
+				tt = _("<b>Quality Vs Encoding Speed</b>\n\nSmaller values = Better quality, slower\nLarger value = Lower quality, faster\n");
+				scaleVpxSpeed.set_tooltip_markup(tt);
 				break;
+				
 			default:
 				lblVpxSpeed.visible = false;
 				scaleVpxSpeed.visible = false;
+				
+				string tt = _("<b>Quality Vs Encoding Speed</b>\nHigher values speed-up encoding at the expense of quality.\nLower values improve quality at the expense of encoding speed.");
+				lblVpxSpeed.set_tooltip_markup(tt);
 				break;
 		}
 		
@@ -2302,6 +2335,26 @@ public class EncoderConfigWindow : Dialog {
 		
 	}
 	
+	private void cmbVpxSpeed_changed(){
+		switch (vpx_deadline) {
+			case "best":
+				scaleVpxSpeed.adjustment.configure(0, 0, 0, 1, 1, 0);
+				scaleVpxSpeed.sensitive = false;
+				break;
+			
+			case "realtime":
+				scaleVpxSpeed.sensitive = true;	
+				scaleVpxSpeed.adjustment.configure(0, 0, 15, 1, 1, 0);
+				break;
+				
+			case "good":
+			default:
+				scaleVpxSpeed.sensitive = true;	
+				scaleVpxSpeed.adjustment.configure(1, 0, 5, 1, 1, 0);
+				break;
+		}
+	}
+
 	private void cmbSubtitleMode_changed(){
 		string msg = _("\n\nSubtitle files should be present in the same folder\nand should start with same name.");
 
@@ -2377,6 +2430,7 @@ public class EncoderConfigWindow : Dialog {
 				video.set_string_member("preset",x264_preset);
 			}
 			if ((vcodec == "vp8")||(vcodec == "vp9")){
+				video.set_string_member("vpx_deadline",vpx_deadline);
 				video.set_string_member("vpx_speed",vpx_speed);
 			}
 			video.set_string_member("options",x264_options);
@@ -2482,6 +2536,9 @@ public class EncoderConfigWindow : Dialog {
 					break;
 				case "vp8":
 				case "vp9":
+					if (video.has_member("vpx_deadline")){
+						vpx_deadline = video.get_string_member("vpx_deadline");
+					}
 					if (video.has_member("vpx_speed")){
 						vpx_speed = video.get_string_member("vpx_speed");
 					}
@@ -2490,7 +2547,7 @@ public class EncoderConfigWindow : Dialog {
 			video_mode = video.get_string_member("mode");
 			video_bitrate = video.get_string_member("bitrate");
 			video_quality = video.get_string_member("quality");
-			
+
 			//video filters ------------------------
 			
 			frame_size = video.get_string_member("frameSize");
@@ -2669,6 +2726,15 @@ public class EncoderConfigWindow : Dialog {
 		}
     }
 
+    public string vpx_deadline{
+        owned get { 
+			return gtk_combobox_get_value(cmbVpxSpeed,1,"good");
+		}
+        set { 
+			gtk_combobox_set_value(cmbVpxSpeed,1,value);
+		}
+    }
+    
     public string vpx_speed{
         owned get { 
 			return scaleVpxSpeed.adjustment.value.to_string();
@@ -2677,8 +2743,7 @@ public class EncoderConfigWindow : Dialog {
 			scaleVpxSpeed.adjustment.value = int.parse(value);
 		}
     }
-    
-    
+  
     public string frame_size{
         owned get { 
 			return gtk_combobox_get_value(cmbFrameSize,1,"disable");

@@ -4,4 +4,6 @@ selene (2.5.5) trusty; urgency=low
 
   * Fixed build errors due to ambiguous references to Gtk.ListStore
   
+  * Updated speed options for vp8 and vp9
+  
  -- Tony George <tony.george.kol@gmail.com>  Sun, 26 Jul 2015 10:00:00 +0530

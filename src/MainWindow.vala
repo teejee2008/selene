@@ -244,7 +244,7 @@ public class MainWindow : Gtk.Window{
 		btnDonate.icon_widget = get_shared_icon("donate","donate.svg",24);
 		btnDonate.label = _("Donate");
 		btnDonate.set_tooltip_text (_("Donate"));
-        toolbar.add(btnDonate);
+        //toolbar.add(btnDonate);
 
         btnDonate.clicked.connect(btnDonation_clicked);
         

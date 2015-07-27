@@ -1863,9 +1863,22 @@ Notes:
 				break;
 		}
 		
-		s += " -quality good";
-		if (video.has_member("vpx_speed")){
-			s += " -speed " + video.get_string_member("vpx_speed");
+		switch(vcodec){
+			case "vp8":
+			case "vp9":
+				if (video.has_member("vpx_deadline")){
+					s += " -deadline " + video.get_string_member("vpx_deadline");
+				}
+				else{
+					s += " -deadline good";
+				}
+				if (video.has_member("vpx_speed")){
+					s += " -cpu-used " + video.get_string_member("vpx_speed");
+				}
+				else{
+					s += " -cpu-used 1";
+				}
+				break;
 		}
 
 		//---------------
