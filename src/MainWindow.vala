@@ -750,7 +750,7 @@ public class MainWindow : Gtk.Window{
 	        while ((file = enumerator.next_file()) != null) {
 				files.add(dir.resolve_relative_path(file.get_name()).get_path());
 	        } 
-	        files.sort_with_data((a,b) => { return strcmp((string)a, (string)b); });
+	        files.sort((a,b) => { return strcmp((string)a, (string)b); });
 	        
 	        foreach(string filePath in files){
 		        string fileName = File.new_for_path(filePath).get_basename();
