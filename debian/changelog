@@ -1,11 +1,5 @@
-selene (2.5.6) trusty; urgency=low
+selene (2.5.7) trusty; urgency=low
 
-  * Added tiled view for file list
-
-  * Fixed build errors due to ambiguous references to Gtk.ListStore
+  * Use newer version of libgee, libgee-0.8
   
-  * Updated speed options for vp8 and vp9
-
-  * Updated build dependency to valac-0.26
-  
- -- Tony George <tony.george.kol@gmail.com>  Sun, 26 Jul 2015 14:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Fri, 14 Aug 2015 14:00:00 +0530
