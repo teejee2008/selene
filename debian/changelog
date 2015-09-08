@@ -1,5 +1,5 @@
-selene (2.5.7) trusty; urgency=low
+selene (2.5.8) trusty; urgency=low
 
-  * Use newer version of libgee, libgee-0.8
-  
- -- Tony George <tony.george.kol@gmail.com>  Fri, 14 Aug 2015 14:00:00 +0530
+  * Fixed a UI issue
+
+ -- Tony George <tony.george.kol@gmail.com>  Mon, 07 Sep 2015 14:00:00 +0530

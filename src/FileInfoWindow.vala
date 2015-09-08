@@ -1,26 +1,26 @@
 /*
  * FileInfoWindow.vala
- * 
+ *
  * Copyright 2012 Tony George <teejee2008@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
- 
+
 using Gtk;
 
 using TeeJee.Logging;
@@ -39,25 +39,25 @@ public class FileInfoWindow : Dialog {
 	public MediaFile file;
 	private TreeView tvInfo;
 	private ScrolledWindow swInfo;
-	
+
 	public FileInfoWindow (MediaFile _file) {
 		title = _("Properties");
 		set_default_size (700, 500);
-		
+
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
         skip_taskbar_hint = true;
 		modal = true;
 		deletable = false;
 		icon = get_app_icon(16);
-		
+
 		//save reference
 		file = _file;
-		
+
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;
-				
+
 		//tvInfo
 		tvInfo = new TreeView();
 		tvInfo.get_selection().mode = SelectionMode.MULTIPLE;
@@ -77,10 +77,10 @@ public class FileInfoWindow : Dialog {
 		int index = -1;
 		infoStore.append (out iter0, null);
 		//infoStore.remove (ref iter0);
-		
+
 		foreach (string line in file.InfoText.split ("\n")){
 			if (line.strip() == "") { continue; }
-			
+
 			index = line.index_of (":");
 
 			if (index == -1){
@@ -95,7 +95,7 @@ public class FileInfoWindow : Dialog {
 		}
 		tvInfo.set_model (infoStore);
 		tvInfo.expand_all();
-		
+
         // btnOk
         btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btnOk.clicked.connect (() => {  destroy();  });
