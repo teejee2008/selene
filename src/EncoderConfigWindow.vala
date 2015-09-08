@@ -1,26 +1,26 @@
 /*
  * ConfigWindow.vala
- * 
+ *
  * Copyright 2012 Tony George <teejee2008@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
- 
+
 using Gtk;
 using Json;
 
@@ -34,50 +34,50 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public class EncoderConfigWindow : Dialog {
-	
+
 	public string Folder;
 	public string Name;
 	public bool CreateNew = false;
-	
+
 	private Notebook tabMain;
 	private Box vboxMain;
 
 	private Label lblGeneral;
 	private Grid gridGeneral;
-	
+
 	private Label lblVideo;
 	private Grid gridVideo;
-	
+
 	private Label lblAudio;
 	private Grid gridAudio;
-	
+
 	private Label lblSubtitle;
 	private Grid gridSubtitle;
-	
+
 	private Label lblVideoFilters;
 	private Grid gridVideoFilters;
-	
+
 	private Label lblAudioFilters;
 	private Grid gridAudioFilters;
-	
+
 	private Label lblPresetName;
 	private Entry txtPresetName;
 
 	private Label lblFileFormat;
 	private ComboBox cmbFileFormat;
-	
+
 	private Label lblFileExtension;
 	private ComboBox cmbFileExtension;
-	
+
 	private Label lblVCodec;
 	private ComboBox cmbVCodec;
-	
+
 	private Label lblVideoMode;
 	private ComboBox cmbVideoMode;
-	
+
 	private Label lblVideoBitrate;
 	private SpinButton spinVideoBitrate;
-	
+
 	private ComboBox cmbX264Preset;
 	private Label lblX264Preset;
 
@@ -86,11 +86,11 @@ public class EncoderConfigWindow : Dialog {
 
 	private Label lblVideoQuality;
 	private SpinButton spinVideoQuality;
-	
+
 	private ComboBox cmbVpxSpeed;
 	private Label lblVpxSpeed;
 	private Scale scaleVpxSpeed;
-	
+
 	private Label lblHeaderFileFormat;
 	private Label lblHeaderPreset;
 	private Label lblHeaderFrameSize;
@@ -99,7 +99,7 @@ public class EncoderConfigWindow : Dialog {
 	private Gtk.Image imgAudioCodec;
 	private Gtk.Image imgVideoCodec;
 	private Gtk.Image imgFileFormat;
-	
+
 	private Label lblFrameSize;
 	private ComboBox cmbFrameSize;
 	private Label lblFrameSizeCustom;
@@ -108,7 +108,7 @@ public class EncoderConfigWindow : Dialog {
 	private Box hboxFrameSize;
 	private CheckButton chkNoUpScale;
 	private CheckButton chkFitToBox;
-	
+
 	private Label lblFPS;
 	private ComboBox cmbFPS;
 	private Label lblFPSCustom;
@@ -117,37 +117,37 @@ public class EncoderConfigWindow : Dialog {
 	private Box hboxFPS;
 	private Label lblResizingMethod;
 	private ComboBox cmbResizingMethod;
-	
+
 	private Label lblVCodecOptions;
 	private Gtk.TextView txtVCodecOptions;
-	
+
 	private Label lblACodec;
 	private ComboBox cmbACodec;
-	
+
 	private Label lblAudioMode;
 	private ComboBox cmbAudioMode;
-	
+
 	private Label lblAudioBitrate;
 	private SpinButton spinAudioBitrate;
-	
+
 	private Label lblAudioQuality;
 	private SpinButton spinAudioQuality;
-	
+
 	private Label lblOpusOptimize;
 	private ComboBox cmbOpusOptimize;
-	
+
 	private Label lblAuthorName;
 	private Entry txtAuthorName;
-	
+
 	private Label lblAuthorEmail;
 	private Entry txtAuthorEmail;
-	
+
 	private Label lblPresetVersion;
 	private Entry txtPresetVersion;
-	
+
 	private Label lblAudioSampleRate;
 	private ComboBox cmbAudioSampleRate;
-	
+
 	private Label lblAudioChannels;
 	private ComboBox cmbAudioChannels;
 
@@ -173,48 +173,48 @@ public class EncoderConfigWindow : Dialog {
 
 	private Label lblSubtitleMode;
 	private ComboBox cmbSubtitleMode;
-	
+
 	private Label lblSubFormatMessage;
-	
+
 	private Button btnSave;
 	private Button btnCancel;
-	
+
 	public EncoderConfigWindow() {
 		title = "Preset";
-		set_default_size (450, 550);	
-		
-        window_position = WindowPosition.CENTER_ON_PARENT;
-        destroy_with_parent = true;
-        skip_taskbar_hint = true;
+		set_default_size (450, 550);
+
+    window_position = WindowPosition.CENTER_ON_PARENT;
+    destroy_with_parent = true;
+    skip_taskbar_hint = true;
 		modal = true;
 		icon = get_app_icon(16);
-		
+
 		this.delete_event.connect(on_delete_event);
-		
+
 		int row = 0;
         Gtk.ListStore model;
         Gtk.CellRendererText textCell;
         Gtk.TreeIter iter;
         string tt;
-        
+
 		//get content area
 		vboxMain = get_content_area();
 
 		//tabMain
 		tabMain = new Notebook();
-		//tabMain.tab_pos = PositionType.LEFT;
+		tabMain.tab_pos = PositionType.LEFT;
 		tabMain.set_show_border(false);
 		tabMain.margin = 6;
 		vboxMain.pack_start (tabMain, true, true, 0);
-		
+
 		//styles ---------------------------------------------------
-		
+
 		/*string css_style = """
             GtkNotebook tab {
 				padding: 1px;
 			}
         """;//color: #703910;
-        
+
 		CssProvider css_provider = new CssProvider();
         try {
             css_provider.load_from_data(css_style,-1);
@@ -222,13 +222,13 @@ public class EncoderConfigWindow : Dialog {
         } catch (GLib.Error e) {
             warning(e.message);
         }*/
-        
+
         /* Note: Setting tab button padding to 0 causes problems with some GTK themes like Mint-X */
 
 		//General tab ---------------------------------------------
-		
+
 		//lblGeneral
-		lblGeneral = new Label (" " + _("General") + " ");
+		lblGeneral = new Label ("" + _("General") + "");
 
         //gridGeneral
         gridGeneral = new Grid();
@@ -237,9 +237,9 @@ public class EncoderConfigWindow : Dialog {
         gridGeneral.margin = 12;
         gridGeneral.visible = false;
         tabMain.append_page (gridGeneral, lblGeneral);
-		
+
 		row = -1;
-		
+
 		//lblHeaderFileFormat
 		lblHeaderFileFormat = new Gtk.Label(_("<b>File Format:</b>"));
 		lblHeaderFileFormat.set_use_markup(true);
@@ -247,15 +247,15 @@ public class EncoderConfigWindow : Dialog {
 		//lblHeaderFileFormat.margin_top = 6;
 		lblHeaderFileFormat.margin_bottom = 6;
 		gridGeneral.attach(lblHeaderFileFormat,0,++row,2,1);
-				
+
 		//lblFileFormat
 		lblFileFormat = new Gtk.Label(_("Format"));
 		lblFileFormat.xalign = (float) 0.0;
 		gridGeneral.attach(lblFileFormat,0,++row,1,1);
-		
+
 		//cmbFileFormat
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		
+
 		model.append (out iter);
 		model.set (iter,0,_("Matroska Video (*.mkv)"),1,"mkv");
 		model.append (out iter);
@@ -278,7 +278,7 @@ public class EncoderConfigWindow : Dialog {
 		model.set (iter,0,_("Opus Audio (*.opus)"),1,"opus");
 		model.append (out iter);
 		model.set (iter,0,_("WAV Audio (*.wav)"),1,"wav");
-		
+
 		cmbFileFormat = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbFileFormat.pack_start( textCell, false );
@@ -296,7 +296,7 @@ public class EncoderConfigWindow : Dialog {
         cmbFileExtension.pack_start( textCell, false );
         cmbFileExtension.set_attributes( textCell, "text", 0 );
         gridGeneral.attach(cmbFileExtension,1,row,1,1);
-        
+
         //lblHeaderPreset
 		lblHeaderPreset = new Gtk.Label(_("<b>Preset:</b>"));
 		lblHeaderPreset.set_use_markup(true);
@@ -304,63 +304,63 @@ public class EncoderConfigWindow : Dialog {
 		lblHeaderPreset.margin_top = 6;
 		lblHeaderPreset.margin_bottom = 6;
 		gridGeneral.attach(lblHeaderPreset,0,++row,2,1);
-		
+
         //lblPresetName
 		lblPresetName = new Gtk.Label(_("Name"));
 		lblPresetName.xalign = (float) 0.0;
 		gridGeneral.attach(lblPresetName,0,++row,1,1);
-		
+
 		//txtPresetName
 		txtPresetName = new Gtk.Entry();
 		txtPresetName.xalign = (float) 0.0;
 		txtPresetName.text = _("New Preset");
 		txtPresetName.hexpand = true;
 		gridGeneral.attach(txtPresetName,1,row,1,1);
-		
+
 		//lblPresetVersion
 		lblPresetVersion = new Gtk.Label(_("Version"));
 		lblPresetVersion.xalign = (float) 0.0;
 		gridGeneral.attach(lblPresetVersion,0,++row,1,1);
-		
+
 		//txtPresetVersion
 		txtPresetVersion = new Gtk.Entry();
 		txtPresetVersion.xalign = (float) 0.0;
 		txtPresetVersion.text = "1.0";
 		gridGeneral.attach(txtPresetVersion,1,row,1,1);
-		
+
         //lblAuthorName
 		lblAuthorName = new Gtk.Label(_("Author"));
 		lblAuthorName.xalign = (float) 0.0;
 		gridGeneral.attach(lblAuthorName,0,++row,1,1);
-		
+
 		//txtAuthorName
 		txtAuthorName = new Gtk.Entry();
 		txtAuthorName.xalign = (float) 0.0;
 		txtAuthorName.text = "";
 		gridGeneral.attach(txtAuthorName,1,row,1,1);
-		
+
 		//lblAuthorEmail
 		lblAuthorEmail = new Gtk.Label(_("Email"));
 		lblAuthorEmail.xalign = (float) 0.0;
 		gridGeneral.attach(lblAuthorEmail,0,++row,1,1);
-		
+
 		//txtAuthorEmail
 		txtAuthorEmail = new Gtk.Entry();
 		txtAuthorEmail.xalign = (float) 0.0;
 		txtAuthorEmail.text = "";
 		gridGeneral.attach(txtAuthorEmail,1,row,1,1);
-		
+
 		//imgFileFormat
 		imgFileFormat = new Gtk.Image();
 		imgFileFormat.margin_top = 6;
 		imgFileFormat.margin_bottom = 6;
 		imgFileFormat.expand = true;
         gridGeneral.attach(imgFileFormat,0,++row,2,1);
-        
+
 		//Video tab ---------------------------------------------
-		
+
 		//lblVideo
-		lblVideo = new Label(" " + _("Video") + " ");
+		lblVideo = new Label("" + _("Video") + "");
 
         //gridVideo
         gridVideo = new Grid();
@@ -369,14 +369,14 @@ public class EncoderConfigWindow : Dialog {
         gridVideo.visible = false;
         gridVideo.margin = 12;
         tabMain.append_page (gridVideo, lblVideo);
-		
+
 		row = -1;
-		
+
 		//lblVCodec
 		lblVCodec = new Gtk.Label(_("Format / Codec"));
 		lblVCodec.xalign = (float) 0.0;
 		gridVideo.attach(lblVCodec,0,++row,1,1);
-		
+
 		//cmbVCodec
 		cmbVCodec = new ComboBox();
 		textCell = new CellRendererText();
@@ -385,12 +385,12 @@ public class EncoderConfigWindow : Dialog {
         cmbVCodec.changed.connect(cmbVCodec_changed);
         cmbVCodec.hexpand = true;
         gridVideo.attach(cmbVCodec,1,row,1,1);
-        
+
         //lblVideoMode
 		lblVideoMode = new Gtk.Label(_("Encoding Mode"));
 		lblVideoMode.xalign = (float) 0.0;
 		gridVideo.attach(lblVideoMode,0,++row,1,1);
-		
+
 		//cmbVideoMode
 		cmbVideoMode = new ComboBox();
 		textCell = new CellRendererText();
@@ -410,9 +410,9 @@ public class EncoderConfigWindow : Dialog {
 		spinVideoBitrate = new Gtk.SpinButton (adjVideoBitrate, 0.1, 2);
 		spinVideoBitrate.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoBitrate,1,row,1,1);
-		
+
 		tt = _("<b>Compression Vs Quality</b>\nSmaller values give better quality video and larger files");
-		
+
         //lblVideoQuality
 		lblVideoQuality = new Gtk.Label(_("Quality"));
 		lblVideoQuality.xalign = (float) 0.0;
@@ -425,15 +425,15 @@ public class EncoderConfigWindow : Dialog {
 		spinVideoQuality.set_tooltip_markup(tt);
 		spinVideoQuality.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoQuality,1,row,1,1);
-		
+
 		tt = _("<b>Compression Vs Encoding Speed</b>\nSlower presets give better compression and smaller files\nbut take more time to encode.");
-		
+
         //lblPreset
 		lblX264Preset = new Gtk.Label(_("Preset"));
 		lblX264Preset.xalign = (float) 0.0;
 		lblX264Preset.set_tooltip_markup(tt);
 		gridVideo.attach(lblX264Preset,0,++row,1,1);
-		
+
 		//cmbx264Preset
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -450,7 +450,7 @@ public class EncoderConfigWindow : Dialog {
 		model.set (iter, 0, _("Slower"), 1, "slower");
 		model.append (out iter);
 		model.set (iter, 0, _("VerySlow"), 1, "veryslow");
-		
+
 		cmbX264Preset = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbX264Preset.pack_start( textCell, false );
@@ -459,13 +459,13 @@ public class EncoderConfigWindow : Dialog {
         gridVideo.attach(cmbX264Preset,1,row,1,1);
 
 		tt = _("<b>Compression Vs Device Compatibility</b>\n'High' profile gives the best compression.\nChange this to 'Baseline' or 'Main' only if you are encoding\nfor a particular device (mobiles,PMPs,etc) which does not\nsupport the 'High' profile");
-		
+
 		//lblProfile
 		lblX264Profile = new Gtk.Label(_("Profile"));
 		lblX264Profile.xalign = (float) 0.0;
 		lblX264Profile.set_tooltip_markup(tt);
 		gridVideo.attach(lblX264Profile,0,++row,1,1);
-	
+
 		//cmbX264Profile
 		cmbX264Profile = new ComboBox();
 		textCell = new CellRendererText();
@@ -479,7 +479,7 @@ public class EncoderConfigWindow : Dialog {
 		lblVpxSpeed.xalign = (float) 0.0;
 		lblVpxSpeed.no_show_all = true;
 		gridVideo.attach(lblVpxSpeed,0,++row,1,1);
-		
+
 		Box hboxVpxSpeed = new Box (Orientation.HORIZONTAL, 0);
 		hboxVpxSpeed.homogeneous = false;
 		gridVideo.attach(hboxVpxSpeed,1,row,1,1);
@@ -497,12 +497,12 @@ public class EncoderConfigWindow : Dialog {
         cmbVpxSpeed.pack_start( textCell, false );
         cmbVpxSpeed.set_attributes( textCell, "text", 0 );
         hboxVpxSpeed.add(cmbVpxSpeed);
-        
+
         cmbVpxSpeed.changed.connect(cmbVpxSpeed_changed);
-        
+
         Label lblSpacer = new Gtk.Label("    ");
         hboxVpxSpeed.add(lblSpacer);
-        
+
 		//scaleVpxSpeed
         scaleVpxSpeed = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 5, 1);
 		scaleVpxSpeed.adjustment.value = 1;
@@ -512,14 +512,14 @@ public class EncoderConfigWindow : Dialog {
         hboxVpxSpeed.add(scaleVpxSpeed);
 
 		tt = _("<b>Additional Options</b>\nThese options will be passed to the encoder\non the command line. Please do not specify\nany options that are already provided by the GUI.");
-		
+
 		//lblVCodecOptions
 		lblVCodecOptions = new Gtk.Label(_("Extra Options"));
 		lblVCodecOptions.xalign = (float) 0.0;
 		lblVCodecOptions.margin_top = 6;
 		lblVCodecOptions.set_tooltip_markup(tt);
 		gridVideo.attach(lblVCodecOptions,0,++row,1,1);
-		
+
 		//txtVCodecOptions
 		txtVCodecOptions = new Gtk.TextView();
 		TextBuffer buff = new TextBuffer(null);
@@ -530,23 +530,23 @@ public class EncoderConfigWindow : Dialog {
 		//txtVCodecOptions.set_size_request(-1,100);
 		txtVCodecOptions.set_tooltip_markup(tt);
 		txtVCodecOptions.set_wrap_mode (Gtk.WrapMode.WORD);
-		
+
 		Gtk.ScrolledWindow scrollWin = new Gtk.ScrolledWindow (null, null);
 		scrollWin.set_shadow_type (ShadowType.ETCHED_IN);
 		scrollWin.add (txtVCodecOptions);
 		//scrollWin.set_size_request(-1,100);
 		gridVideo.attach(scrollWin,0,++row,2,1);
-		
+
 		//imgVideoCodec
 		imgVideoCodec = new Gtk.Image();
 		imgVideoCodec.margin_top = 6;
 		imgVideoCodec.margin_bottom = 6;
         gridVideo.attach(imgVideoCodec,0,++row,2,1);
-        
+
 		//Video Filters tab ---------------------------------------------
-		
+
 		//lblVideoFilters
-		lblVideoFilters = new Label (" " + _("Filters") + " ");
+		lblVideoFilters = new Label ("" + _("Filters") + "");
 
         //gridVideoFilters
         gridVideoFilters = new Grid();
@@ -555,21 +555,21 @@ public class EncoderConfigWindow : Dialog {
         gridVideoFilters.margin = 12;
         gridVideoFilters.visible = false;
         tabMain.append_page (gridVideoFilters, lblVideoFilters);
-		
+
 		row = -1;
-		
+
 		//lblHeaderFrameSize
 		lblHeaderFrameSize = new Gtk.Label(_("<b>Resize:</b>"));
 		lblHeaderFrameSize.set_use_markup(true);
 		lblHeaderFrameSize.xalign = (float) 0.0;
 		lblHeaderFrameSize.margin_bottom = 6;
 		gridVideoFilters.attach(lblHeaderFrameSize,0,++row,1,1);
-		
+
 		//lblFrameSize
 		lblFrameSize = new Gtk.Label(_("Resolution"));
 		lblFrameSize.xalign = (float) 0.0;
 		gridVideoFilters.attach(lblFrameSize,0,++row,1,1);
-		
+
 		//cmbFrameSize
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -584,7 +584,7 @@ public class EncoderConfigWindow : Dialog {
 		model.set (iter,0,"720p",1,"720p");
 		model.append (out iter);
 		model.set (iter,0,"1080p",1,"1080p");
-		
+
 		cmbFrameSize = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbFrameSize.pack_start( textCell, false );
@@ -592,7 +592,7 @@ public class EncoderConfigWindow : Dialog {
         cmbFrameSize.changed.connect(cmbFrameSize_changed);
         cmbFrameSize.hexpand = true;
         gridVideoFilters.attach(cmbFrameSize,1,row,1,1);
-		
+
 		tt = _("Set either Width or Height and leave the other as 0.\nIt will be calculated automatically.\n\nSetting both width and height is not recommended\nsince the video may get stretched or squeezed.\n\nEnable the 'Fit-To-Box' option to avoid changes to aspect ratio.");
 
         //lblFrameSizeCustom
@@ -624,9 +624,9 @@ public class EncoderConfigWindow : Dialog {
 		spinFrameHeight.width_chars = 5;
 		spinFrameHeight.set_tooltip_text (_("Height"));
 		hboxFrameSize.pack_start (spinFrameHeight, false, false, 5);
-		
+
 		tt = _("The resizing filter affects the sharpness and compressibility of the video.\nFor example, the 'Lanzos' filter gives sharper video but the extra detail\nmakes the video more difficult to compress resulting in slightly bigger files.\nThe 'Bilinear' filter gives smoother video (less detail) and smaller files.");
-		
+
 		//lblResizingMethod
 		lblResizingMethod = new Gtk.Label(_("Resizing Method"));
 		lblResizingMethod.xalign = (float) 0.0;
@@ -644,15 +644,15 @@ public class EncoderConfigWindow : Dialog {
         gridVideoFilters.attach(cmbResizingMethod,1,row,1,1);
 
 		tt = _("Fits the video in a box of given width and height.");
-		
+
 		//chkFitToBox
 		chkFitToBox = new CheckButton.with_label(_("Do not stretch or squeeze the video (Fit-To-Box)"));
 		chkFitToBox.active = true;
 		chkFitToBox.set_tooltip_markup(tt);
 		gridVideoFilters.attach(chkFitToBox,0,++row,2,1);
-		
+
 		tt = _("Video will not be resized if it's smaller than the given width and height");
-		
+
 		//chkNoUpScale
 		chkNoUpScale = new CheckButton.with_label(_("No Up-Scaling"));
 		chkNoUpScale.active = true;
@@ -666,13 +666,13 @@ public class EncoderConfigWindow : Dialog {
 		lblHeaderFrameRate.margin_top = 6;
 		lblHeaderFrameRate.margin_bottom = 6;
 		gridVideoFilters.attach(lblHeaderFrameRate,0,++row,1,1);
-		
+
 		//lblFPS
 		lblFPS = new Gtk.Label(_("Frame Rate"));
 		lblFPS.xalign = (float) 0.0;
 		lblFPS.set_tooltip_text (_("Frames/sec"));
 		gridVideoFilters.attach(lblFPS,0,++row,1,1);
-		
+
 		//cmbFPS
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -687,14 +687,14 @@ public class EncoderConfigWindow : Dialog {
 		model.set (iter,0,"30",1,"30");
 		model.append (out iter);
 		model.set (iter,0,"60",1,"60");
-		
+
 		cmbFPS = new ComboBox.with_model(model);
 		textCell = new CellRendererText();
         cmbFPS.pack_start( textCell, false );
         cmbFPS.set_attributes( textCell, "text", 0 );
         cmbFPS.changed.connect(cmbFPS_changed);
         gridVideoFilters.attach(cmbFPS,1,row,1,1);
-        
+
 		//lblFPSCustom
 		lblFPSCustom = new Gtk.Label(_("FPS Ratio"));
 		lblFPSCustom.xalign = (float) 0.0;
@@ -707,7 +707,7 @@ public class EncoderConfigWindow : Dialog {
         hboxFPS = new Box (Orientation.HORIZONTAL, 0);
 		hboxFPS.homogeneous = false;
         gridVideoFilters.attach(hboxFPS,1,row,1,1);
-        
+
         //spinFPSNum
 		Gtk.Adjustment adjFPSNum = new Gtk.Adjustment(0, 0, 999999, 1, 1, 0);
 		spinFPSNum = new Gtk.SpinButton (adjFPSNum, 1, 0);
@@ -716,7 +716,7 @@ public class EncoderConfigWindow : Dialog {
 		spinFPSNum.width_chars = 5;
 		spinFPSNum.set_tooltip_text (_("Numerator"));
 		hboxFPS.pack_start(spinFPSNum, false, false, 0);
-		
+
 		//spinFPSDenom
 		Gtk.Adjustment adjFPSDenom = new Gtk.Adjustment(0, 0, 999999, 1, 1, 0);
 		spinFPSDenom = new Gtk.SpinButton (adjFPSDenom, 1, 0);
@@ -725,11 +725,11 @@ public class EncoderConfigWindow : Dialog {
 		spinFPSDenom.width_chars = 5;
 		spinFPSDenom.set_tooltip_text (_("Denominator"));
 		hboxFPS.pack_start(spinFPSDenom, false, false, 5);
-				
+
 		// Audio tab --------------------------------------------------
-		
+
 		//lblAudio
-		lblAudio = new Label (" " + _("Audio") + " ");
+		lblAudio = new Label ("" + _("Audio") + "");
 
         //gridAudio
         gridAudio = new Grid();
@@ -738,14 +738,14 @@ public class EncoderConfigWindow : Dialog {
         gridAudio.margin = 12;
         gridAudio.visible = false;
         tabMain.append_page (gridAudio, lblAudio);
-		
+
 		row = -1;
 
 		//lblACodec
 		lblACodec = new Gtk.Label(_("Format / Codec"));
 		lblACodec.xalign = (float) 0.0;
 		gridAudio.attach(lblACodec,0,++row,1,1);
-		
+
 		//cmbACodec
 		cmbACodec = new ComboBox();
 		textCell = new CellRendererText();
@@ -754,7 +754,7 @@ public class EncoderConfigWindow : Dialog {
         cmbACodec.changed.connect(cmbACodec_changed);
         cmbACodec.hexpand = true;
         gridAudio.attach(cmbACodec,1,row,1,1);
-        
+
 		//lblAudioMode
 		lblAudioMode = new Gtk.Label(_("Encoding Mode"));
 		lblAudioMode.xalign = (float) 0.0;
@@ -767,29 +767,29 @@ public class EncoderConfigWindow : Dialog {
         cmbAudioMode.set_attributes(textCell, "text", 0);
         cmbAudioMode.changed.connect(cmbAudioMode_changed);
         gridAudio.attach(cmbAudioMode,1,row,1,1);
-        
+
 		//lblAudioBitrate
 		lblAudioBitrate = new Gtk.Label(_("Bitrate (kbps)"));
 		lblAudioBitrate.xalign = (float) 0.0;
 		gridAudio.attach(lblAudioBitrate,0,++row,1,1);
-		
+
 		//spinAudioBitrate
 		Gtk.Adjustment adjAudioBitrate = new Gtk.Adjustment(128, 32, 320, 1, 1, 0);
 		spinAudioBitrate = new Gtk.SpinButton (adjAudioBitrate, 1, 0);
 		spinAudioBitrate.xalign = (float) 0.5;
 		gridAudio.attach(spinAudioBitrate,1,row,1,1);
-		
+
 		//lblAudioQuality
 		lblAudioQuality = new Gtk.Label(_("Quality"));
 		lblAudioQuality.xalign = (float) 0.0;
 		gridAudio.attach(lblAudioQuality,0,++row,1,1);
-		
+
 		//spinAudioQuality
 		Gtk.Adjustment adjAudioQuality = new Gtk.Adjustment(4, 0, 9, 1, 1, 0);
 		spinAudioQuality = new Gtk.SpinButton (adjAudioQuality, 1, 0);
 		spinAudioQuality.xalign = (float) 0.5;
 		gridAudio.attach(spinAudioQuality,1,row,1,1);
-		
+
 		//lblOpusOptimize
 		lblOpusOptimize = new Gtk.Label(_("Optimization"));
 		lblOpusOptimize.xalign = (float) 0.0;
@@ -804,7 +804,7 @@ public class EncoderConfigWindow : Dialog {
         cmbOpusOptimize.no_show_all = true;
         cmbOpusOptimize.set_size_request(150,-1);
         gridAudio.attach(cmbOpusOptimize,1,row,1,1);
-        
+
         //populate
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -814,18 +814,18 @@ public class EncoderConfigWindow : Dialog {
 		model.append (out iter);
 		model.set (iter,0,_("Music"),1,"music");
 		cmbOpusOptimize.set_model(model);
-		
+
 		//imgAudioCodec
 		imgAudioCodec = new Gtk.Image();
 		imgAudioCodec.margin_top = 6;
 		imgAudioCodec.margin_bottom = 6;
 		imgAudioCodec.expand = true;
         gridAudio.attach(imgAudioCodec,0,++row,3,1);
-        
+
 		//Audio Filters tab ---------------------------------------------
-		
+
 		//lblAudioFilters
-		lblAudioFilters = new Label (" " + _("Filters") + " ");
+		lblAudioFilters = new Label ("" + _("Filters") + "");
 
         //gridAudioFilters
         gridAudioFilters = new Grid();
@@ -834,7 +834,7 @@ public class EncoderConfigWindow : Dialog {
         gridAudioFilters.margin = 12;
         gridAudioFilters.visible = false;
         tabMain.append_page (gridAudioFilters, lblAudioFilters);
-		
+
 		row = -1;
 		int col;
 
@@ -843,20 +843,20 @@ public class EncoderConfigWindow : Dialog {
 		lblHeaderSampling.set_use_markup(true);
 		lblHeaderSampling.xalign = (float) 0.0;
 		gridAudioFilters.attach(lblHeaderSampling,col=0,++row,2,1);
-		
+
 		//lblAudioSampleRate
 		lblAudioSampleRate = new Gtk.Label(_("Sampling Rate (Hz)"));
 		lblAudioSampleRate.xalign = (float) 0.0;
 		gridAudioFilters.attach(lblAudioSampleRate,col=0,++row,1,1);
-		
+
 		//cmbAudioSampleRate
 		cmbAudioSampleRate = new ComboBox();
 		textCell = new CellRendererText();
-        cmbAudioSampleRate.pack_start(textCell, false);        
+        cmbAudioSampleRate.pack_start(textCell, false);
         cmbAudioSampleRate.set_attributes(textCell, "text", 0);
         cmbAudioSampleRate.hexpand = true;
         gridAudioFilters.attach(cmbAudioSampleRate,col+1,row,1,1);
-        
+
 		//lblAudioChannels
 		lblAudioChannels = new Gtk.Label(_("Channels"));
 		lblAudioChannels.xalign = (float) 0.0;
@@ -874,20 +874,20 @@ public class EncoderConfigWindow : Dialog {
 		int scaleWidth = 200;
 		int sliderMarginBottom = 0;
 		int spacing = 5;
-		
+
 		//lblAudioFilters
-		Label lblAudioSox = new Label (" " + _("SOX") + " ");
+		Label lblAudioSox = new Label ("" + _("SOX") + "");
 
         //vboxSox
         Box vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
 		vboxSoxOuter.margin = 12;
         tabMain.append_page (vboxSoxOuter, lblAudioSox);
-		
+
 		//hboxSoxSwitch
 		Box hboxSoxSwitch = new Box(Orientation.HORIZONTAL,0);
 		hboxSoxSwitch.margin_bottom = 6;
         vboxSoxOuter.add(hboxSoxSwitch);
-        
+
 		//lblHeaderSox
 		lblHeaderSox = new Gtk.Label(_("<b>SOX Audio Processing:</b>"));
 		lblHeaderSox.set_use_markup(true);
@@ -903,10 +903,10 @@ public class EncoderConfigWindow : Dialog {
         //vboxSox
         Box vboxSox = new Box(Orientation.VERTICAL,spacing);
         vboxSoxOuter.add(vboxSox);
-        
+
         switchSox.notify["active"].connect(()=>{
 			vboxSox.sensitive = switchSox.active;
-			
+
 			App.Encoders["sox"].CheckAvailability();
 			if (!App.Encoders["sox"].IsAvailable){
 				if (switchSox.active){
@@ -915,7 +915,7 @@ public class EncoderConfigWindow : Dialog {
 				}
 			}
 		});
-		
+
 		switchSox.active = false;
 		vboxSox.sensitive = switchSox.active;
 
@@ -927,7 +927,7 @@ public class EncoderConfigWindow : Dialog {
 		//lblHeaderAdjustments.margin_top = 5;
 		lblHeaderAdjustments.margin_bottom = 5;
 		vboxSox.add(lblHeaderAdjustments);
-		
+
 		//hboxBass
 		Box hboxBass = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxBass);
@@ -938,7 +938,7 @@ public class EncoderConfigWindow : Dialog {
 		lblAudioBass.xalign = (float) 0.0;
 		lblAudioBass.set_tooltip_text(tt);
 		hboxBass.pack_start(lblAudioBass,false,false,0);
-		
+
 		scaleBass = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -20, 20, 1);
 		scaleBass.adjustment.value = 0;
 		scaleBass.has_origin = false;
@@ -946,25 +946,25 @@ public class EncoderConfigWindow : Dialog {
 		scaleBass.set_size_request(scaleWidth,-1);
 		scaleBass.margin_bottom = sliderMarginBottom;
 		hboxBass.pack_start(scaleBass,true,true,0);
-		
+
 		scaleBass.format_value.connect((val)=>{ return "%.0f ".printf(val); });
 
 		Button btnReset = new Button.with_label("X");
 		btnReset.clicked.connect(()=>{ scaleBass.adjustment.value = 0; });
 		btnReset.set_tooltip_text(_("Reset"));
         hboxBass.pack_start(btnReset,false,true,0);
-        
+
 		//hboxTreble
 		Box hboxTreble = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxTreble);
 
 		tt = _("Boost or cut the treble (upper) frequencies of the audio.");
-		
+
 		lblAudioTreble = new Gtk.Label(_("Treble (upper freq)") + ": ");
 		lblAudioTreble.xalign = (float) 0.0;
 		lblAudioTreble.set_tooltip_text(tt);
 		hboxTreble.pack_start(lblAudioTreble,false,false,0);
-		
+
 		scaleTreble = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, -20, 20, 1);
 		scaleTreble.adjustment.value = 0;
 		scaleTreble.has_origin = false;
@@ -972,14 +972,14 @@ public class EncoderConfigWindow : Dialog {
 		scaleTreble.set_size_request(scaleWidth,-1);
 		scaleTreble.margin_bottom = sliderMarginBottom;
 		hboxTreble.pack_start(scaleTreble,true,true,0);
-		
+
 		scaleTreble.format_value.connect((val)=>{ return "%.0f ".printf(val); });
 
 		btnReset = new Button.with_label("X");
 		btnReset.clicked.connect(()=>{ scaleTreble.adjustment.value = 0; });
 		btnReset.set_tooltip_text(_("Reset"));
         hboxTreble.pack_start(btnReset,false,true,0);
-        
+
 		//hboxPitch
 		Box hboxPitch = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxPitch);
@@ -990,7 +990,7 @@ public class EncoderConfigWindow : Dialog {
 		lblAudioPitch.xalign = (float) 0.0;
 		lblAudioPitch.set_tooltip_text(tt);
 		hboxPitch.pack_start(lblAudioPitch,false,false,0);
-		
+
 		scalePitch = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 500, 1);
 		scalePitch.adjustment.value = 100;
 		//scalePitch.has_origin = false;
@@ -998,25 +998,25 @@ public class EncoderConfigWindow : Dialog {
 		scalePitch.set_size_request(scaleWidth,-1);
 		scalePitch.margin_bottom = sliderMarginBottom;
 		hboxPitch.pack_start(scalePitch,true,true,0);
-		
+
 		scalePitch.format_value.connect((val)=>{ return "%.0f%% ".printf(val); });
 
 		btnReset = new Button.with_label("X");
 		btnReset.clicked.connect(()=>{ scalePitch.adjustment.value = 100; });
 		btnReset.set_tooltip_text(_("Reset"));
         hboxPitch.pack_start(btnReset,false,true,0);
-        
+
 		//hboxTempo
 		Box hboxTempo = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxTempo);
-        
+
 		tt = _("Change audio tempo (speed) without changing audio pitch (shrillness).\n\nWARNING: This will change the duration of the audio track");
 
 		lblAudioTempo = new Gtk.Label(_("Tempo (speed)") + ": ");
 		lblAudioTempo.xalign = (float) 0.0;
 		lblAudioTempo.set_tooltip_text(tt);
 		hboxTempo.pack_start(lblAudioTempo,false,false,0);
-		
+
 		scaleTempo = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 200, 1);
 		scaleTempo.adjustment.value = 100;
 		//scaleTempo.has_origin = false;
@@ -1031,7 +1031,7 @@ public class EncoderConfigWindow : Dialog {
 		btnReset.clicked.connect(()=>{ scaleTempo.adjustment.value = 100; });
 		btnReset.set_tooltip_text(_("Reset"));
         hboxTempo.pack_start(btnReset,false,true,0);
-        
+
 		//lblHeaderFade
 		Label lblHeaderFade = new Gtk.Label(_("<b>Fade:</b>"));
 		lblHeaderFade.set_use_markup(true);
@@ -1040,11 +1040,11 @@ public class EncoderConfigWindow : Dialog {
 		lblHeaderFade.margin_top = 5;
 		lblHeaderFade.margin_bottom = 5;
 		vboxSox.add(lblHeaderFade);
-		
+
 		//hboxFadeIn
 		Box hboxFadeIn = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxFadeIn);
-        
+
 		lblFadeIn = new Gtk.Label(_("Fade In (seconds)"));
 		lblFadeIn.xalign = (float) 0.0;
 		lblFadeIn.set_size_request(150,-1);
@@ -1054,11 +1054,11 @@ public class EncoderConfigWindow : Dialog {
 		spinFadeIn = new Gtk.SpinButton (adjFadeIn, 1, 0);
 		spinFadeIn.xalign = (float) 0.5;
 		hboxFadeIn.pack_start(spinFadeIn,false,false,0);
-		
+
 		//hboxFadeOut
 		Box hboxFadeOut = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxFadeOut);
-        
+
 		lblFadeOut = new Gtk.Label(_("Fade Out (seconds)"));
 		lblFadeOut.xalign = (float) 0.0;
 		lblFadeOut.set_size_request(150,-1);
@@ -1068,7 +1068,7 @@ public class EncoderConfigWindow : Dialog {
 		spinFadeOut = new Gtk.SpinButton (adjFadeOut, 1, 0);
 		spinFadeOut.xalign = (float) 0.5;
 		hboxFadeOut.pack_start(spinFadeOut,false,false,0);
-		
+
 		//hboxFadeType
 		Box hboxFadeType = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hboxFadeType);
@@ -1077,13 +1077,13 @@ public class EncoderConfigWindow : Dialog {
 		lblFadeType.xalign = (float) 0.0;
 		lblFadeType.set_size_request(150,-1);
 		hboxFadeType.pack_start(lblFadeType,false,false,0);
-		
+
 		cmbFadeType = new ComboBox();
 		textCell = new CellRendererText();
         cmbFadeType.pack_start(textCell, false);
         cmbFadeType.set_attributes(textCell, "text", 0);
 		hboxFadeType.pack_start(cmbFadeType,false,false,0);
-        
+
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter,0,_("Quarter Sine"),1,"q");
@@ -1105,19 +1105,19 @@ public class EncoderConfigWindow : Dialog {
 		lblHeaderOther.margin_top = 5;
 		lblHeaderOther.margin_bottom = 5;
 		vboxSox.add(lblHeaderOther);
-		
+
 		//hboxNormalize
 		Box hboxNormalize = new Box(Orientation.HORIZONTAL,0);
         vboxSox.add(hboxNormalize);
 
 		tt = _("Maximize the volume level (loudness)");
-		
+
 		lblNormalize = new Gtk.Label(_("Maximize Volume Level (Normalize)"));
 		lblNormalize.xalign = (float) 0.0;
 		lblNormalize.hexpand = true;
 		lblNormalize.set_tooltip_text(tt);
 		hboxNormalize.pack_start(lblNormalize,true,true,0);
-		
+
         switchNormalize = new Gtk.Switch();
         switchNormalize.set_size_request(100,-1);
         switchNormalize.active = false;
@@ -1128,7 +1128,7 @@ public class EncoderConfigWindow : Dialog {
         vboxSox.add(hboxEarWax);
 
 		tt = _("Makes audio easier to listen to on headphones. Adds 'cues' to the audio so that when listened to on headphones the stereo image is moved from inside your head (standard for headphones) to outside and in front of the listener (standard for speakers).");
-		
+
 		lblEarWax = new Gtk.Label(_("Adjust Stereo for Headphones"));
 		lblEarWax.xalign = (float) 0.0;
 		lblEarWax.hexpand = true;
@@ -1146,11 +1146,11 @@ public class EncoderConfigWindow : Dialog {
 		lnkSoxHome.valign = Align.END;
 		lnkSoxHome.activate_link.connect(()=>{ return exo_open_url(lnkSoxHome.uri); });
         vboxSoxOuter.pack_end(lnkSoxHome,true,true,0);
-        
+
 		//Subtitles tab ---------------------------------------------
-		
+
 		//lblSubtitle
-		lblSubtitle = new Label (" " + _("Subs") + " ");
+		lblSubtitle = new Label ("" + _("Subs") + "");
 
         //gridSubtitle
         gridSubtitle = new Grid();
@@ -1159,19 +1159,19 @@ public class EncoderConfigWindow : Dialog {
         gridSubtitle.margin = 12;
         gridSubtitle.visible = false;
         tabMain.append_page (gridSubtitle, lblSubtitle);
-		
+
 		row = -1;
-		
+
 		tt = _("<b>Embed</b> - Subtitle files will be combined with the output file.\nThese subtitles can be switched off since they are added as a separate track");
 		tt += "\n\n";
 		tt += _("<b>Render</b> - Subtitles are rendered/burned on the video.\nThese subtitles cannot be switched off since they become a part of the video");
-		
+
 		//lblSubtitleMode
 		lblSubtitleMode = new Gtk.Label(_("Subtitle Mode"));
 		lblSubtitleMode.xalign = (float) 0.0;
 		lblSubtitleMode.set_tooltip_markup (tt);
 		gridSubtitle.attach(lblSubtitleMode,0,++row,1,1);
-		
+
 		//cmbSubtitleMode
 		cmbSubtitleMode = new ComboBox();
 		textCell = new CellRendererText();
@@ -1181,7 +1181,7 @@ public class EncoderConfigWindow : Dialog {
         cmbSubtitleMode.hexpand = true;
         cmbSubtitleMode.set_tooltip_markup (tt);
         gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
-        
+
         //lblSubFormatMessage
 		lblSubFormatMessage = new Gtk.Label(_("Subtitles"));
 		lblSubFormatMessage.xalign = (float) 0.0;
@@ -1192,7 +1192,7 @@ public class EncoderConfigWindow : Dialog {
 		gridSubtitle.attach(lblSubFormatMessage,0,++row,2,1);
 
 		//Defaults --------------------------------
-		
+
 		cmbFileFormat.set_active(0);
 		//cmbAudioMode.set_active(0);
 		//cmbVideoMode.set_active(0);
@@ -1206,30 +1206,30 @@ public class EncoderConfigWindow : Dialog {
 		cmbFadeType.set_active (0);
 		//cmbResizingMethod.set_active (2);
 		//cmbFileExtension.set_active (0);
-		
+
 		// Actions ----------------------------------------------
-		
+
         //btnSave
         btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
         btnSave.clicked.connect (btnSave_clicked);
-        
+
         //btnCancel
         btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (() => { destroy(); });
 	}
-	
+
 	private bool on_delete_event(Gdk.EventAny event){
 		this.delete_event.disconnect(on_delete_event); //disconnect this handler
 		btnSave_clicked();
 		return false;
 	}
-	
+
 	private void cmbFileFormat_changed(){
 		Gtk.ListStore model;
 		TreeIter iter;
-		
+
 		//populate file extensions ---------------------------
-		
+
 		model = new Gtk.ListStore(2, typeof(string), typeof(string));
 		cmbFileExtension.set_model(model);
 
@@ -1268,12 +1268,12 @@ public class EncoderConfigWindow : Dialog {
 				cmbFileExtension.set_active(0);
 				break;
 		}
-		
+
 		//populate video codecs ---------------------------
-		
+
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbVCodec.set_model(model);
-		
+
 		switch (format) {
 			case "mkv":
 				model.append (out iter);
@@ -1307,7 +1307,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbVCodec.set_active(0);
 				break;
 		}
-		
+
 		switch (format) {
 			case "mkv":
 			case "mp4v":
@@ -1321,12 +1321,12 @@ public class EncoderConfigWindow : Dialog {
 				gridVideoFilters.sensitive = false;
 				break;
 		}
-		
+
 		//populate audio codecs ---------------------------
-		
+
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbACodec.set_model(model);
-		
+
 		switch (format) {
 			case "mkv":
 				model.append (out iter);
@@ -1337,7 +1337,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
 				break;
-			
+
 			case "mp4v":
 				model.append (out iter);
 				model.set (iter,0,_("Disable Audio"),1,"disable");
@@ -1345,7 +1345,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
 				break;
-			
+
 			case "ogv":
 			case "webm":
 				model.append (out iter);
@@ -1354,7 +1354,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"Vorbis",1,"vorbis");
 				cmbACodec.set_active(1);
 				break;
-			
+
 			case "ogg":
 				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
@@ -1366,31 +1366,31 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
 				cmbACodec.set_active(0);
 				break;
-			
+
 			case "mp4a":
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(0);
 				break;
-				
+
 			case "opus":
 				model.append (out iter);
 				model.set (iter,0,"Opus",1,"opus");
 				cmbACodec.set_active(0);
 				break;
-				
+
 			case "ac3":
 				model.append (out iter);
 				model.set (iter,0,"AC3 / Libav",1,"ac3");
 				cmbACodec.set_active(0);
 				break;
-				
+
 			case "flac":
 				model.append (out iter);
 				model.set (iter,0,"FLAC / Libav",1,"flac");
 				cmbACodec.set_active(0);
 				break;
-				
+
 			case "wav":
 				//model.append (out iter);
 				//model.set (iter,0,"PCM 8-bit Signed / Libav",1,"pcm_s8");
@@ -1423,33 +1423,33 @@ public class EncoderConfigWindow : Dialog {
 				cmbACodec.set_active(1);
 				break;
 		}
-		
+
 		//populate subtitle options
-		
+
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbSubtitleMode.set_model(model);
-		
+
 		switch (format){
 			case "mkv":
 			case "mp4v":
 			case "ogg":
 			case "ogv":
 				gridSubtitle.sensitive = true;
-				
+
 				model.append (out iter);
 				model.set (iter,0,_("No Subtitles"),1,"disable");
 				model.append (out iter);
 				model.set (iter,0,_("Embed / Soft Subs"),1,"embed");
 				cmbSubtitleMode.set_active(1);
 				break;
-				
+
 			default:
 				gridSubtitle.sensitive = false;
 				break;
 		}
 
 		//set logo
-		
+
 		switch (format){
 			case "mkv":
 				imgFileFormat.set_from_file(App.SharedImagesFolder + "/matroska.png");
@@ -1493,7 +1493,7 @@ public class EncoderConfigWindow : Dialog {
 				break;
 		}
 	}
-	
+
 	private void cmbACodec_changed(){
 		Gtk.ListStore model;
 		TreeIter iter;
@@ -1549,7 +1549,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbOpusOptimize.visible = false;
 				break;
 		}
-		
+
 		//disable options when audio is disabled
 		switch (acodec){
 			case "disable":
@@ -1559,11 +1559,11 @@ public class EncoderConfigWindow : Dialog {
 				gridAudioFilters.sensitive = true;
 				break;
 		}
-		
+
 		//populate encoding modes
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioMode.set_model(model);
-		
+
 		switch (acodec){
 			case "mp3lame":
 				model.append (out iter);
@@ -1575,21 +1575,21 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate (Strict)"),1,"cbr-strict");
 				cmbAudioMode.set_active(0);
-				
+
 				spinAudioBitrate.adjustment.configure(128, 32, 320, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
-				
+
 				spinAudioQuality.adjustment.configure(4, 0, 9, 1, 1, 0);
 				spinAudioQuality.set_tooltip_text ("");
 				spinAudioQuality.digits = 0;
-				
+
 				cmbAudioMode.sensitive = true;
 				spinAudioBitrate.sensitive = true;
 				spinAudioQuality.sensitive = true;
 				cmbAudioMode_changed();
 				break;
-				
+
 			case "neroaac":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
@@ -1598,7 +1598,7 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
-				
+
 				spinAudioBitrate.adjustment.configure(160, 8, 400, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
@@ -1616,11 +1616,11 @@ public class EncoderConfigWindow : Dialog {
 0.85 = ~332 kbps
 0.95 = ~381 kbps""");
 				spinAudioQuality.digits = 1;
-				
+
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
-			
+
 			case "opus":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
@@ -1629,43 +1629,43 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
-				
+
 				spinAudioBitrate.adjustment.configure(128, 6, 512, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
-				
+
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
-			
+
 			case "vorbis":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
 				model.append (out iter);
 				model.set (iter,0,_("Average Bitrate"),1,"abr");
 				cmbAudioMode.set_active(0);
-				
+
 				spinAudioBitrate.adjustment.configure(128, 32, 500, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
-				
+
 				spinAudioQuality.adjustment.configure(3, -2, 10, 1, 1, 0);
 				spinAudioQuality.set_tooltip_text ("");
 				spinAudioQuality.digits = 1;
-				
+
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
-				
+
 			case "ac3":
 				model.append (out iter);
 				model.set (iter,0,_("Fixed Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
-				
+
 				spinAudioBitrate.adjustment.configure(128, 1, 512, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
-				
+
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
 				break;
@@ -1688,17 +1688,17 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Lossless"),1,"lossless");
 				cmbAudioMode.set_active(0);
-				
+
 				cmbAudioMode.sensitive = true;
 				break;
-				
+
 			default: //disable
 				cmbAudioMode.sensitive = false;
 				spinAudioBitrate.sensitive = false;
 				spinAudioQuality.sensitive = false;
 				break;
 		}
-		
+
 		//populate sampling rates
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioSampleRate.set_model(model);
@@ -1727,7 +1727,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"48000",1,"48000");
 				cmbAudioSampleRate.set_active(0);
 				break;
-			
+
 			case "pcm_s8":
 			case "pcm_u8":
 			case "pcm_s16le":
@@ -1771,7 +1771,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"96000",1,"96000");
 				cmbAudioSampleRate.set_active(0);
 				break;
-			
+
 			case "ac3":
 				model.append (out iter);
 				model.set (iter,0,_("No Change"),1,"disable");
@@ -1785,14 +1785,14 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"48000",1,"48000");
 				cmbAudioSampleRate.set_active(0);
 				break;
-				
+
 			default:
 				model.append (out iter);
 				model.set (iter,0,_("No Change"),1,"disable");
 				cmbAudioSampleRate.set_active(0);
 				break;
 		}
-		
+
 		//populate channels
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbAudioChannels.set_model(model);
@@ -1845,7 +1845,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbAudioChannels.set_active(0);
 				break;
 		}
-		
+
 		//set logo
 		switch (acodec){
 			case "opus":
@@ -1893,7 +1893,7 @@ public class EncoderConfigWindow : Dialog {
 				break;
 		}
 	}
-	
+
 	private void cmbAudioMode_changed(){
 		switch (audio_mode) {
 			case "vbr":
@@ -1918,7 +1918,7 @@ public class EncoderConfigWindow : Dialog {
 	private void cmbVCodec_changed(){
 		Gtk.ListStore model;
 		TreeIter iter;
-		
+
 		//show x264 options
 		switch (vcodec){
 			case "x264":
@@ -1935,7 +1935,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbX264Profile.visible = false;
 				break;
 		}
-		
+
 		switch(vcodec){
 			case "x264":
 				model = new Gtk.ListStore (2, typeof (string), typeof (string));
@@ -1954,7 +1954,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbX264Profile.set_model(model);
 				cmbX264Profile.set_active(2);
 				break;
-				
+
 			case "x265":
 				model = new Gtk.ListStore (2, typeof (string), typeof (string));
 				model.append (out iter);
@@ -1967,37 +1967,39 @@ public class EncoderConfigWindow : Dialog {
 				cmbX264Profile.set_active(0);
 				break;
 		}
-		
+
 		//show vp8 options
 		switch (vcodec){
 			case "vp8":
 			case "vp9":
 				lblVpxSpeed.visible = true;
+        cmbVpxSpeed.visible = true;
 				scaleVpxSpeed.visible = true;
 				scaleVpxSpeed.adjustment.value = 1;
-				
+
 				lblVpxSpeed.set_tooltip_markup("");
 				string tt = _("<b>Quality Vs Encoding Speed</b>\n\n<b>Best:</b> Best quality, slower\n<b>Good:</b> Good quality, faster\n<b>Realtime:</b> Fastest");
 				cmbVpxSpeed.set_tooltip_markup(tt);
 				tt = _("<b>Quality Vs Encoding Speed</b>\n\nSmaller values = Better quality, slower\nLarger value = Lower quality, faster\n");
 				scaleVpxSpeed.set_tooltip_markup(tt);
 				break;
-				
+
 			default:
 				lblVpxSpeed.visible = false;
+        cmbVpxSpeed.visible = false;
 				scaleVpxSpeed.visible = false;
-				
+
 				string tt = _("<b>Quality Vs Encoding Speed</b>\nHigher values speed-up encoding at the expense of quality.\nLower values improve quality at the expense of encoding speed.");
 				lblVpxSpeed.set_tooltip_markup(tt);
 				break;
 		}
-		
+
 		//populate encoding modes
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbVideoMode.set_model(model);
 		lblVideoQuality.visible = true;
 		spinVideoQuality.visible = true;
-		
+
 		switch (vcodec){
 			case "x264":
 				model.append (out iter);
@@ -2007,21 +2009,21 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
 				cmbVideoMode.set_active(0);
-				
+
 				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
-				
+
 				spinVideoQuality.adjustment.configure(23.0, 0, 51, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
-				
+
 				cmbVideoMode.sensitive = true;
 				spinVideoBitrate.sensitive = true;
 				spinVideoQuality.sensitive = true;
 				cmbVideoMode_changed();
 				break;
-				
+
 			case "x265":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate / CRF"),1,"vbr");
@@ -2030,21 +2032,21 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
 				cmbVideoMode.set_active(0);
-				
+
 				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
-				
+
 				spinVideoQuality.adjustment.configure(28.0, 0, 51, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
-				
+
 				cmbVideoMode.sensitive = true;
 				spinVideoBitrate.sensitive = true;
 				spinVideoQuality.sensitive = true;
 				cmbVideoMode_changed();
 				break;
-			
+
 			case "theora":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
@@ -2053,21 +2055,21 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Average Bitrate (2-pass)"),1,"2pass");
 				cmbVideoMode.set_active(0);
-				
+
 				spinVideoBitrate.adjustment.configure(800, 1, 10000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
-				
+
 				spinVideoQuality.adjustment.configure(6, 0, 10, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
-				
+
 				cmbVideoMode.sensitive = true;
 				spinVideoBitrate.sensitive = true;
 				spinVideoQuality.sensitive = true;
 				cmbVideoMode_changed();
 				break;
-			
+
 			case "vp8":
 			case "vp9":
 				model.append (out iter);
@@ -2079,15 +2081,15 @@ public class EncoderConfigWindow : Dialog {
 				//model.append (out iter);
 				//model.set (iter,0,_("Constant Quality"),1,"cq");
 				cmbVideoMode.set_active(0);
-				
+
 				spinVideoBitrate.adjustment.configure(800, 1, 1000000000, 1, 1, 0);
 				spinVideoBitrate.set_tooltip_text ("");
 				spinVideoBitrate.digits = 0;
-				
+
 				/*spinVideoQuality.adjustment.configure(-1, -1, 63, 1, 1, 0);
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 0;*/
-				
+
 				cmbVideoMode.sensitive = true;
 				spinVideoBitrate.sensitive = true;
 				//spinVideoQuality.sensitive = true;
@@ -2095,18 +2097,18 @@ public class EncoderConfigWindow : Dialog {
 				spinVideoQuality.visible = false;
 				cmbVideoMode_changed();
 				break;
-				
+
 			default: //disable
 				cmbVideoMode.sensitive = false;
 				spinVideoBitrate.sensitive = false;
 				spinVideoQuality.sensitive = false;
 				break;
 		}
-		
+
 		//populate resize methods
         model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbResizingMethod.set_model(model);
-		
+
 		switch (vcodec){
 			case "x264":
 			case "x265":
@@ -2134,12 +2136,12 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"Lanczos",1,"lanczos");
 				cmbResizingMethod.set_active(2);
 				break;
-				
+
 			default:
 				lblResizingMethod.visible = false;
 				cmbResizingMethod.visible = false;
 				break;
-			
+
 		}
 
 		//set logo
@@ -2174,7 +2176,7 @@ public class EncoderConfigWindow : Dialog {
 				break;
 		}
 	}
-	
+
 	private void cmbFrameSize_changed(){
 		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "custom") {
 			spinFrameWidth.sensitive = true;
@@ -2184,7 +2186,7 @@ public class EncoderConfigWindow : Dialog {
 			spinFrameWidth.sensitive = false;
 			spinFrameHeight.sensitive = false;
 		}
-		
+
 		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "disable") {
 			cmbResizingMethod.sensitive = false;
 			chkFitToBox.sensitive = false;
@@ -2195,7 +2197,7 @@ public class EncoderConfigWindow : Dialog {
 			chkFitToBox.sensitive = true;
 			chkNoUpScale.sensitive = true;
 		}
-		
+
 		switch (gtk_combobox_get_value(cmbFrameSize,1,"disable")) {
 			case "disable":
 				spinFrameWidth.value = 0;
@@ -2222,11 +2224,11 @@ public class EncoderConfigWindow : Dialog {
 				spinFrameHeight.value = 1080;
 				break;
 		}
-		
+
 		lblFrameSizeCustom.visible = true;
 		spinFrameWidth.visible = true;
 		spinFrameHeight.visible = true;
-			
+
 		/*
 		if (gtk_combobox_get_value(cmbFrameSize,1,"disable") == "disable"){
 			lblFrameSizeCustom.visible = false;
@@ -2249,7 +2251,7 @@ public class EncoderConfigWindow : Dialog {
 			spinFPSNum.sensitive = false;
 			spinFPSDenom.sensitive = false;
 		}
-		
+
 		switch (gtk_combobox_get_value(cmbFPS,1,"disable")) {
 			case "disable":
 				spinFPSNum.value = 0;
@@ -2276,7 +2278,7 @@ public class EncoderConfigWindow : Dialog {
 				spinFPSDenom.value = 1;
 				break;
 		}
-		
+
 		lblFPSCustom.visible = true;
 		spinFPSNum.visible = true;
 		spinFPSDenom.visible = true;
@@ -2292,7 +2294,7 @@ public class EncoderConfigWindow : Dialog {
 			spinFPSDenom.visible = true;
 		}*/
 	}
-	
+
 	private void cmbVideoMode_changed(){
 		switch(vcodec){
 			case "vp8":
@@ -2332,24 +2334,24 @@ public class EncoderConfigWindow : Dialog {
 				}
 				break;
 		}
-		
+
 	}
-	
+
 	private void cmbVpxSpeed_changed(){
 		switch (vpx_deadline) {
 			case "best":
 				scaleVpxSpeed.adjustment.configure(0, 0, 0, 1, 1, 0);
 				scaleVpxSpeed.sensitive = false;
 				break;
-			
+
 			case "realtime":
-				scaleVpxSpeed.sensitive = true;	
+				scaleVpxSpeed.sensitive = true;
 				scaleVpxSpeed.adjustment.configure(0, 0, 15, 1, 1, 0);
 				break;
-				
+
 			case "good":
 			default:
-				scaleVpxSpeed.sensitive = true;	
+				scaleVpxSpeed.sensitive = true;
 				scaleVpxSpeed.adjustment.configure(1, 0, 5, 1, 1, 0);
 				break;
 		}
@@ -2378,7 +2380,7 @@ public class EncoderConfigWindow : Dialog {
 						break;
 				}
 				break;
-				
+
 			default:
 				lblSubFormatMessage.label = "";
 				break;
@@ -2396,10 +2398,10 @@ public class EncoderConfigWindow : Dialog {
 			dlg.set_transient_for(this);
 			dlg.run();
 			dlg.destroy();
-		
+
 			return;
 		}
-		
+
 		save_script();
 		destroy();
 	}
@@ -2410,7 +2412,7 @@ public class EncoderConfigWindow : Dialog {
 		var video = new Json.Object();
 		var audio = new Json.Object();
 		var subs = new Json.Object();
-		
+
 		config.set_object_member("general",general);
 		general.set_string_member("format",format);
 		general.set_string_member("extension",extension);
@@ -2418,7 +2420,7 @@ public class EncoderConfigWindow : Dialog {
 		general.set_string_member("authorEmail",author_email);
 		general.set_string_member("presetName",preset_name);
 		general.set_string_member("presetVersion",preset_version);
-		
+
 		config.set_object_member("video",video);
 		video.set_string_member("codec",vcodec);
 		if (vcodec != "disable") {
@@ -2444,7 +2446,7 @@ public class EncoderConfigWindow : Dialog {
 			video.set_string_member("fpsNum",frame_rate_num);
 			video.set_string_member("fpsDenom",frame_rate_denom);
 		}
-	
+
 		config.set_object_member("audio",audio);
 		audio.set_string_member("codec",acodec);
 		if (acodec != "disable") {
@@ -2457,7 +2459,7 @@ public class EncoderConfigWindow : Dialog {
 			}
 			audio.set_string_member("channels",audio_channels);
 			audio.set_string_member("samplingRate",audio_sampling);
-			
+
 			//sox
 			audio.set_boolean_member("soxEnabled",sox_enabled);
 			if (sox_enabled) {
@@ -2472,10 +2474,10 @@ public class EncoderConfigWindow : Dialog {
 				audio.set_boolean_member("soxEarwax",sox_earwax);
 			}
 		}
-		
+
 		config.set_object_member("subtitle",subs);
 		subs.set_string_member("mode",subtitle_mode);
-		
+
 		var filePath = Folder + "/" + txtPresetName.text + ".json";
 		var json = new Json.Generator();
 		json.pretty = true;
@@ -2483,7 +2485,7 @@ public class EncoderConfigWindow : Dialog {
 		var node = new Json.Node(NodeType.OBJECT);
 		node.set_object(config);
 		json.set_root(node);
-		
+
 		try{
 			json.to_file(filePath);
 		} catch (Error e) {
@@ -2493,13 +2495,13 @@ public class EncoderConfigWindow : Dialog {
 	    //Set the newly saved file as the active script
 	    App.SelectedScript = new ScriptFile(filePath);
 	}
-	
+
 	public void load_script(){
 		var filePath = Folder + "/" + Name + ".json";
 		if(file_exists(filePath) == false){ return; }
-		
+
 		txtPresetName.text = Name;
-		
+
 		var parser = new Json.Parser();
         try{
 			parser.load_from_file(filePath);
@@ -2512,20 +2514,20 @@ public class EncoderConfigWindow : Dialog {
 		Json.Object video = (Json.Object) config.get_object_member("video");
 		Json.Object audio = (Json.Object) config.get_object_member("audio");
 		Json.Object subs = (Json.Object) config.get_object_member("subtitle");
-		
+
 		//general ----------------------------
-		
+
 		format = general.get_string_member("format");
 		extension = general.get_string_member("extension");
 		//preset_name = general.get_string_member("presetName"); //set from file name
 		preset_version = general.get_string_member("presetVersion");
 		author_name = general.get_string_member("authorName");
 		author_email = general.get_string_member("authorEmail");
-		
+
 		//video --------------------------
-		
+
 		vcodec = video.get_string_member("codec");
-		
+
 		if (vcodec != "disable") {
 			switch(vcodec){
 				case "x264":
@@ -2549,7 +2551,7 @@ public class EncoderConfigWindow : Dialog {
 			video_quality = video.get_string_member("quality");
 
 			//video filters ------------------------
-			
+
 			frame_size = video.get_string_member("frameSize");
 			frame_width = video.get_string_member("frameWidth");
 			frame_height = video.get_string_member("frameHeight");
@@ -2560,11 +2562,11 @@ public class EncoderConfigWindow : Dialog {
 			frame_rate_num = video.get_string_member("fpsNum");
 			frame_rate_denom = video.get_string_member("fpsDenom");
 		}
-	
+
 		//audio ---------------------
-		
+
 		acodec = audio.get_string_member("codec");
-		
+
 		if (acodec != "disable") {
 			//codec config
 			audio_mode = audio.get_string_member("mode");
@@ -2575,9 +2577,9 @@ public class EncoderConfigWindow : Dialog {
 			}
 			audio_channels = audio.get_string_member("channels");
 			audio_sampling = audio.get_string_member("samplingRate");
-			
+
 			//sox config
-			
+
 			if (audio.get_boolean_member("soxEnabled")){
 				App.Encoders["sox"].CheckAvailability();
 				if (!App.Encoders["sox"].IsAvailable){
@@ -2605,384 +2607,384 @@ public class EncoderConfigWindow : Dialog {
 		}
 
 		//subtitles --------------
-		
+
 		subtitle_mode = subs.get_string_member("mode");
 	}
 
 	public string format{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbFileFormat,1,"mkv");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbFileFormat,1,value);
 		}
     }
 
 	public string extension{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbFileExtension,1,".mkv");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbFileExtension,1,value);
 		}
     }
-    
+
     public string author_name{
-        owned get { 
+        owned get {
 			return txtAuthorName.text;
 		}
-        set { 
+        set {
 			txtAuthorName.text = value;
 		}
     }
-    
+
     public string author_email{
-        owned get { 
+        owned get {
 			return txtAuthorEmail.text;
 		}
-        set { 
+        set {
 			txtAuthorEmail.text = value;
 		}
     }
-    
+
     public string preset_name{
-        owned get { 
+        owned get {
 			return txtPresetName.text;
 		}
-        set { 
+        set {
 			txtPresetName.text = value;
 		}
     }
-    
+
     public string preset_version{
-        owned get { 
+        owned get {
 			return txtPresetVersion.text;
 		}
-        set { 
+        set {
 			txtPresetVersion.text = value;
 		}
     }
-    
+
 	public string vcodec{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbVCodec,1,"x264");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbVCodec,1,value);
 		}
     }
-    
+
     public string video_mode{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbVideoMode,1,"vbr");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbVideoMode,1,value);
 		}
     }
 
     public string video_bitrate{
-        owned get { 
-			return spinVideoBitrate.get_value().to_string(); 
+        owned get {
+			return spinVideoBitrate.get_value().to_string();
 		}
-        set { 
+        set {
 			spinVideoBitrate.set_value(double.parse(value));
 		}
     }
-    
+
     public string video_quality{
-        owned get { 
-			return "%.1f".printf(spinVideoQuality.get_value()); 
+        owned get {
+			return "%.1f".printf(spinVideoQuality.get_value());
 		}
-        set { 
+        set {
 			spinVideoQuality.get_adjustment().set_value(double.parse(value));
 		}
     }
-    
+
 	public string x264_preset {
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbX264Preset,1,"medium");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbX264Preset,1,value);
 		}
     }
-    
+
     public string x264_profile{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbX264Profile,1,"high");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbX264Profile, 1, value);
 		}
     }
 
     public string x264_options{
-        owned get { 
+        owned get {
 			return txtVCodecOptions.buffer.text;
 		}
-        set { 
+        set {
 			txtVCodecOptions.buffer.text = value;
 		}
     }
 
     public string vpx_deadline{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbVpxSpeed,1,"good");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbVpxSpeed,1,value);
 		}
     }
-    
+
     public string vpx_speed{
-        owned get { 
+        owned get {
 			return scaleVpxSpeed.adjustment.value.to_string();
 		}
-        set { 
+        set {
 			scaleVpxSpeed.adjustment.value = int.parse(value);
 		}
     }
-  
+
     public string frame_size{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbFrameSize,1,"disable");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbFrameSize, 1, value);
 		}
     }
-    
+
     public string resizing_method{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbResizingMethod,1,"cubic");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbResizingMethod, 1, value);
 		}
     }
-    
+
     public string frame_width{
-        owned get { 
-			return spinFrameWidth.get_value().to_string(); 
+        owned get {
+			return spinFrameWidth.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFrameWidth.set_value(double.parse(value));
 		}
     }
-    
+
     public string frame_height{
-        owned get { 
-			return spinFrameHeight.get_value().to_string(); 
+        owned get {
+			return spinFrameHeight.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFrameHeight.set_value(double.parse(value));
 		}
     }
-	
+
 	public bool fit_to_box{
-        get { 
-			return chkFitToBox.active; 
+        get {
+			return chkFitToBox.active;
 		}
-        set { 
+        set {
 			chkFitToBox.set_active((bool)value);
 		}
     }
-    
+
     public bool no_upscaling{
-        get { 
-			return chkNoUpScale.active; 
+        get {
+			return chkNoUpScale.active;
 		}
-        set { 
+        set {
 			chkNoUpScale.set_active((bool)value);
 		}
     }
-    
+
     public string frame_rate{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbFPS,1,"disable");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbFPS, 1, value);
 		}
     }
-    
+
     public string frame_rate_num{
-        owned get { 
-			return spinFPSNum.get_value().to_string(); 
+        owned get {
+			return spinFPSNum.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFPSNum.set_value(double.parse(value));
 		}
     }
 
     public string frame_rate_denom{
-        owned get { 
-			return spinFPSDenom.get_value().to_string(); 
+        owned get {
+			return spinFPSDenom.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFPSDenom.set_value(double.parse(value));
 		}
     }
-    
+
     public string acodec{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbACodec,1,"mp3lame");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbACodec,1,value);
 		}
     }
-    
+
     public string audio_mode{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbAudioMode,1,"vbr");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbAudioMode, 1, value);
 		}
     }
-    
+
     public string audio_opus_optimize{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbOpusOptimize,1,"none");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbOpusOptimize, 1, value);
 		}
     }
-    
+
     public string audio_bitrate{
-        owned get { 
-			return spinAudioBitrate.get_value().to_string(); 
+        owned get {
+			return spinAudioBitrate.get_value().to_string();
 		}
-        set { 
+        set {
 			spinAudioBitrate.set_value(double.parse(value));
 		}
     }
-    
+
     public string audio_quality{
-        owned get { 
-			return "%.1f".printf(spinAudioQuality.get_value()); 
+        owned get {
+			return "%.1f".printf(spinAudioQuality.get_value());
 		}
-        set { 
+        set {
 			spinAudioQuality.set_value(double.parse(value));
 		}
     }
-    
+
     public string audio_channels{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbAudioChannels,1,"disable");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbAudioChannels, 1, value);
 		}
     }
-    
+
     public string audio_sampling{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbAudioSampleRate,1,"disable");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbAudioSampleRate, 1, value);
 		}
     }
 
     public bool sox_enabled{
-        get { 
-			return switchSox.active; 
+        get {
+			return switchSox.active;
 		}
-        set { 
+        set {
 			switchSox.set_active((bool)value);
 		}
     }
-    
+
     public string sox_bass{
-        owned get { 
+        owned get {
 			return scaleBass.get_value().to_string();
 		}
-        set { 
+        set {
 			scaleBass.set_value(double.parse(value));
 		}
     }
 
     public string sox_treble{
-        owned get { 
+        owned get {
 			return scaleTreble.get_value().to_string();
 		}
-        set { 
+        set {
 			scaleTreble.set_value(double.parse(value));
 		}
     }
 
     public string sox_pitch{
-        owned get { 
+        owned get {
 			return "%.1f".printf(scalePitch.get_value()/100);
 		}
-        set { 
+        set {
 			scalePitch.set_value(double.parse(value) * 100);
 		}
     }
 
     public string sox_tempo{
-        owned get { 
+        owned get {
 			return "%.1f".printf(scaleTempo.get_value()/100);
 		}
-        set { 
+        set {
 			scaleTempo.set_value(double.parse(value) * 100);
 		}
     }
 
     public string sox_fade_in{
-        owned get { 
+        owned get {
 			return spinFadeIn.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFadeIn.set_value(double.parse(value));
 		}
     }
 
     public string sox_fade_out{
-        owned get { 
+        owned get {
 			return spinFadeOut.get_value().to_string();
 		}
-        set { 
+        set {
 			spinFadeOut.set_value(double.parse(value));
 		}
     }
 
     public string sox_fade_type{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbFadeType,1,"l");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbFadeType, 1, value);
 		}
     }
-    
+
     public bool sox_normalize{
-        get { 
-			return switchNormalize.active; 
+        get {
+			return switchNormalize.active;
 		}
-        set { 
+        set {
 			switchNormalize.set_active((bool)value);
 		}
     }
 
     public bool sox_earwax{
-        get { 
-			return switchEarWax.active; 
+        get {
+			return switchEarWax.active;
 		}
-        set { 
+        set {
 			switchEarWax.set_active((bool)value);
 		}
     }
-    
+
     public string subtitle_mode{
-        owned get { 
+        owned get {
 			return gtk_combobox_get_value(cmbSubtitleMode,1,"disable");
 		}
-        set { 
+        set {
 			gtk_combobox_set_value(cmbSubtitleMode, 1, value);
 		}
     }
