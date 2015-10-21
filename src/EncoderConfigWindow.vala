@@ -2,7 +2,7 @@
  * ConfigWindow.vala
  *
  * Copyright 2012 Tony George <teejee2008@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -202,8 +202,9 @@ public class EncoderConfigWindow : Dialog {
 
 		//tabMain
 		tabMain = new Notebook();
-		tabMain.tab_pos = PositionType.LEFT;
-		tabMain.set_show_border(false);
+		tabMain.tab_pos = PositionType.TOP;
+		tabMain.show_border = true;
+		tabMain.scrollable = true;
 		tabMain.margin = 6;
 		vboxMain.pack_start (tabMain, true, true, 0);
 
@@ -228,15 +229,15 @@ public class EncoderConfigWindow : Dialog {
 		//General tab ---------------------------------------------
 
 		//lblGeneral
-		lblGeneral = new Label ("" + _("General") + "");
+		lblGeneral = new Label (_("General"));
 
-        //gridGeneral
-        gridGeneral = new Grid();
-        gridGeneral.set_column_spacing (6);
-        gridGeneral.set_row_spacing (6);
-        gridGeneral.margin = 12;
-        gridGeneral.visible = false;
-        tabMain.append_page (gridGeneral, lblGeneral);
+    //gridGeneral
+    gridGeneral = new Grid();
+    gridGeneral.set_column_spacing (6);
+    gridGeneral.set_row_spacing (6);
+    gridGeneral.margin = 12;
+    gridGeneral.visible = false;
+    tabMain.append_page (gridGeneral, lblGeneral);
 
 		row = -1;
 
@@ -360,7 +361,7 @@ public class EncoderConfigWindow : Dialog {
 		//Video tab ---------------------------------------------
 
 		//lblVideo
-		lblVideo = new Label("" + _("Video") + "");
+		lblVideo = new Label(_("Video"));
 
         //gridVideo
         gridVideo = new Grid();
@@ -546,7 +547,7 @@ public class EncoderConfigWindow : Dialog {
 		//Video Filters tab ---------------------------------------------
 
 		//lblVideoFilters
-		lblVideoFilters = new Label ("" + _("Filters") + "");
+		lblVideoFilters = new Label (_("Filters"));
 
         //gridVideoFilters
         gridVideoFilters = new Grid();
@@ -729,7 +730,7 @@ public class EncoderConfigWindow : Dialog {
 		// Audio tab --------------------------------------------------
 
 		//lblAudio
-		lblAudio = new Label ("" + _("Audio") + "");
+		lblAudio = new Label (_("Audio"));
 
         //gridAudio
         gridAudio = new Grid();
@@ -825,7 +826,7 @@ public class EncoderConfigWindow : Dialog {
 		//Audio Filters tab ---------------------------------------------
 
 		//lblAudioFilters
-		lblAudioFilters = new Label ("" + _("Filters") + "");
+		lblAudioFilters = new Label (_("Filters"));
 
         //gridAudioFilters
         gridAudioFilters = new Grid();

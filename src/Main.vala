@@ -1210,14 +1210,14 @@ Notes:
 			process_set_priority (procID, prio);
 
 			Pid childPid;
-		    foreach (long pid in get_process_children (procID)){
-			    childPid = (Pid) pid;
+	    foreach (long pid in get_process_children (procID)){
+		    childPid = (Pid) pid;
 
-			    if (BackgroundMode)
-		    		process_set_priority (childPid, prio);
-		    	else
-		    		process_set_priority (childPid, prio);
-		    }
+		    if (BackgroundMode)
+	    		process_set_priority (childPid, prio);
+	    	else
+	    		process_set_priority (childPid, prio);
+	    }
 		}
 	}
 

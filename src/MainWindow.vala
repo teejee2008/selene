@@ -238,15 +238,15 @@ public class MainWindow : Gtk.Window{
 		btnEncoders.set_tooltip_text (_("Encoders"));
 		toolbar.add (btnEncoders);
 
-        //btn_donate
+		//btn_donate
 		btnDonate = new Gtk.ToolButton.from_stock ("gtk-dialog-info");
 		btnDonate.is_important = false;
 		btnDonate.icon_widget = get_shared_icon("donate","donate.svg",24);
 		btnDonate.label = _("Donate");
 		btnDonate.set_tooltip_text (_("Donate"));
-        //toolbar.add(btnDonate);
+		toolbar.add(btnDonate);
 
-        btnDonate.clicked.connect(btnDonation_clicked);
+		btnDonate.clicked.connect(btnDonation_clicked);
 
 		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock ("gtk-about");
@@ -297,7 +297,7 @@ public class MainWindow : Gtk.Window{
 		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
 		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
 		swFiles.add (tvFiles);
-		swFiles.margin = 6;
+		//swFiles.margin = 6;
 		swFiles.set_size_request (-1, 250);
 
 		vboxMain.pack_start (swFiles, true, true, 0);
