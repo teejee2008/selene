@@ -38,7 +38,7 @@ using TeeJee.Misc;
 public Main App;
 public const string AppName = "Selene";
 public const string AppShortName = "selene";
-public const string AppVersion = "2.5.8";
+public const string AppVersion = "2.6";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejeetech@gmail.com";
 

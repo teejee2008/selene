@@ -1,5 +1,5 @@
-selene (2.5.8) trusty; urgency=low
+selene (2.6) trusty; urgency=low
 
-  * Fixed a UI issue
+  * Minor UI changes
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 07 Sep 2015 14:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Wed, 21 Oct 2015 14:00:00 +0530
