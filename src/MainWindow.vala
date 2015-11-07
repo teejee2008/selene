@@ -1538,6 +1538,21 @@ on the toolbar will open the file in a text editor.
 			"Felix Moreno (Spanish):launchpad.net/~felix-justdust"
 		};
 
+		dialog.third_party = {
+			"x264 by Laurent Aimar, Loren Merritt, Fiona Glaser, Anton Mitrofanov and Henrik Gramner:http://www.videolan.org/developers/x264.html",
+			"x265 by MulticoreWare and the x265 development team:http://x265.org/",
+			"Ogg, Opus and Theora by Xiph.org:http://www.opus-codec.org/",
+			"WebM, VP8 and VP9 by On2, Xiph, Matroska and Google:http://www.webmproject.org/",
+			"ffmpeg by Fabrice Bellard:http://ffmpeg.org/",
+			"LAME MP3 Encoder by the LAME development team:http://lame.sourceforge.net/",
+			"Nero AAC Codec by Nero AG:http://www.nero.com/enu/company/about-nero/nero-aac-codec.php",
+			"SoX by Chris Bagwell and others:http://sox.sourceforge.net/",
+			"MediaInfo by Jérôme Martinez:http://mediaarea.net/MediaInfo",
+			"MKVToolNix by Moritz Bunkus:http://bunkus.org/videotools/mkvtoolnix/",
+			"MP4Box from the GPAC project:http://gpac.io/",
+			"ffmpeg2theora by Jan Gerber:http://v2v.cc/~j/ffmpeg2theora/"
+		};
+		
 		dialog.documenters = null;
 		dialog.artists = null;
 		dialog.donations = null;

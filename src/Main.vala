@@ -417,7 +417,7 @@ Notes:
 		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
 		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
 		Encoders["x264"] = new Encoder("x264","H.264 / MPEG-4 AVC Video Encoder","H264 Output");
-		Encoders["x265"] = new Encoder("x264","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
+		Encoders["x265"] = new Encoder("x265","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
 	}
 
 	public void check_all_encoders(){

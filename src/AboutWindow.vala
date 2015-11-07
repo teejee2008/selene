@@ -318,14 +318,6 @@ public class AboutWindow : Dialog {
 			add_line("\n");
 		}
 
-		if (third_party.length > 0){
-			add_line("<b>%s</b>\n".printf(_("Third Party Tools")));
-			foreach(string name in third_party){
-				add_line("%s\n".printf(name));
-			}
-			add_line("\n");
-		}
-
 		if (artists.length > 0){
 			add_line("<b>%s</b>\n".printf(_("Artists")));
 			foreach(string name in artists){
@@ -342,6 +334,14 @@ public class AboutWindow : Dialog {
 			add_line("\n");
 		}
 
+		if (third_party.length > 0){
+			add_line("<b>%s</b>\n".printf(_("Third Party Tools &amp; Software")));
+			foreach(string name in third_party){
+				add_line("%s\n".printf(name));
+			}
+			add_line("\n");
+		}
+		
 		if (documenters.length > 0){
 			add_line("<b>%s</b>\n".printf(_("Documenters")));
 			foreach(string name in documenters){
@@ -365,14 +365,15 @@ public class AboutWindow : Dialog {
 
 	public void add_line(string text){
 		if (text.split(":").length >= 2){
-			var link = new LinkButton(text.split(":")[0]);
+			var txt = break_string_by_word(text.split(":")[0].strip());
+			var link = new LinkButton(txt);
 			vbox_lines.add(link);
 
-			string val = text[text.index_of(":") + 1:text.length];
+			string val = text[text.index_of(":") + 1:text.length]; //break at first colon
 			if (val.contains("@")){
 				link.uri = "mailto:" + val;
 			}
-			else if(val.has_prefix("http://")){
+			else if(val.has_prefix("http://") || val.has_prefix("https://")){
 				link.uri = val;
 			}
 			else{
@@ -389,7 +390,8 @@ public class AboutWindow : Dialog {
 			});
 		}
 		else{
-			var lbl = new Label(text);
+			var txt = break_string_by_word(text);
+			var lbl = new Label(txt);
 			lbl.set_use_markup(true);
 			lbl.valign = Align.START;
 			lbl.wrap = true;

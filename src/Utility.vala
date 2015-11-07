@@ -1725,4 +1725,23 @@ namespace TeeJee.Misc {
 		.replace("&gt;",">")
 		;
 	}
+
+	public string break_string_by_word(string input_text){
+		string text = "";
+		string line = "";
+		foreach(string part in input_text.split(" ")){
+			line += part + " ";
+			if (line.length > 50){
+				text += line.strip() + "\n";
+				line = "";
+			}
+		}
+		if (line.length > 0){
+			text += line;
+		}
+		if (text.has_suffix("\n")){
+			text = text[0:text.length-1].strip();
+		}
+		return text;
+	}
 }
