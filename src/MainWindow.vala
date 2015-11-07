@@ -712,7 +712,7 @@ public class MainWindow : Gtk.Window{
 	private void iter_append_children (TreeStore model, TreeIter iter0, string path){
 		try{
 			var dir = File.parse_name (path);
-			var enumerator = dir.enumerate_children ("standard::*", 0);
+			var enumerator = dir.enumerate_children ("%s,%s".printf(FileAttribute.STANDARD_NAME,FileAttribute.STANDARD_TYPE), 0);
 			FileInfo file;
 			TreeIter iter1;
 
@@ -743,7 +743,7 @@ public class MainWindow : Gtk.Window{
 		try
 		{
 			var dir = File.parse_name (path);
-	        var enumerator = dir.enumerate_children ("standard::*", 0);
+	        var enumerator = dir.enumerate_children ("%s".printf(FileAttribute.STANDARD_NAME), 0);
 			Gee.ArrayList<string> files = new Gee.ArrayList<string>();
 
 	        FileInfo file;

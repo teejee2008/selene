@@ -2642,7 +2642,7 @@ public class MediaFile : GLib.Object{
 		FileInfo fi = null;
 
 		try{
-			fi = f.query_info ("*", FileQueryInfoFlags.NONE, null);
+			fi = f.query_info ("%s".printf(FileAttribute.STANDARD_SIZE), FileQueryInfoFlags.NONE, null);
 			Size = fi.get_size();
 		}
 		catch (Error e) {
@@ -2657,7 +2657,7 @@ public class MediaFile : GLib.Object{
 		// search for subtitle files ---------------
 
 		try{
-	        var enumerator = fp.enumerate_children ("standard::*", 0);
+	        var enumerator = fp.enumerate_children ("%s,%s".printf(FileAttribute.STANDARD_NAME,FileAttribute.STANDARD_TYPE), 0);
 			var fileInfo = enumerator.next_file();
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
