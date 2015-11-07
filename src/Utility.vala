@@ -1114,14 +1114,15 @@ namespace TeeJee.Multimedia{
 			return "%i:%i:%i:%i".printf(w,h,x,y);
 	}
 
-	public string get_mediainfo (string filePath){
+	public string get_mediainfo (string filePath, bool getRawText){
 
 		/* Returns the multimedia properties of an audio/video file using MediaInfo */
 
 		string output = "";
 
 		try {
-			Process.spawn_command_line_sync("mediainfo \"%s\"".printf(filePath), out output);
+			string cmd = "mediainfo%s '%s'".printf((getRawText ? " --Language=raw" : ""), filePath);
+			Process.spawn_command_line_sync(cmd, out output);
 		}
 		catch(Error e){
 	        log_error (e.message);

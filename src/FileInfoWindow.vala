@@ -54,6 +54,10 @@ public class FileInfoWindow : Dialog {
 		//save reference
 		file = _file;
 
+		if (file.InfoTextFormatted.length == 0){
+			file.query_mediainfo_formatted();
+		}
+		
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;
@@ -78,7 +82,7 @@ public class FileInfoWindow : Dialog {
 		infoStore.append (out iter0, null);
 		//infoStore.remove (ref iter0);
 
-		foreach (string line in file.InfoText.split ("\n")){
+		foreach (string line in file.InfoTextFormatted.split ("\n")){
 			if (line.strip() == "") { continue; }
 
 			index = line.index_of (":");

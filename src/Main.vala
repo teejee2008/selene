@@ -2603,7 +2603,9 @@ public class MediaFile : GLib.Object{
 	public string ProgressText = _("Queued");
 	public int ProgressPercent = 0;
 
-	public string InfoText;
+	public string InfoText = "";
+	public string InfoTextFormatted = "";
+	
 	public bool HasAudio = false;
 	public bool HasVideo = false;
 	public bool HasSubs = false;
@@ -2687,7 +2689,7 @@ public class MediaFile : GLib.Object{
 	}
 
 	public void query_mediainfo(){
-		InfoText = get_mediainfo (Path);
+		InfoText = get_mediainfo (Path, true);
 
 		if (InfoText == null || InfoText == ""){
 			return;
@@ -2725,7 +2727,7 @@ public class MediaFile : GLib.Object{
 
 				if (sectionType	== "general"){
 					switch (key.down()) {
-						case "duration":
+						case "duration/string":
 							Duration = 0;
 							foreach(string p in val.split(" ")){
 								string part = p.strip().down();
@@ -2739,10 +2741,10 @@ public class MediaFile : GLib.Object{
 									Duration += long.parse(part.replace ("s","")) * 1000;
 							}
 							break;
-						case "track name":
+						case "track":
 							TrackName = val;
 							break;
-						case "track name/position":
+						case "track/position":
 							TrackNumber = val;
 							break;
 						case "album":
@@ -2754,7 +2756,7 @@ public class MediaFile : GLib.Object{
 						case "genre":
 							Genre = val;
 							break;
-						case "recorded date":
+						case "recorded_date":
 							RecordedDate = val;
 							break;
 						case "comment":
@@ -2767,15 +2769,15 @@ public class MediaFile : GLib.Object{
 				}
 				else if (sectionType == "video"){
 					switch (key.down()) {
-						case "width":
-							SourceWidth = int.parse(val.replace ("pixels","").replace (" ","").strip());
+						case "width/string":
+							SourceWidth = int.parse(val.split(" ")[0].strip());
 							break;
-						case "height":
-							SourceHeight = int.parse(val.replace ("pixels","").replace (" ","").strip());
+						case "height/string":
+							SourceHeight = int.parse(val.split(" ")[0].strip());
 							break;
-						case "frame rate":
-						case "original frame rate":
-							SourceFrameRate = double.parse(val.replace ("fps","").replace (" ","").strip());
+						case "framerate/string":
+						case "framerate_original/string":
+							SourceFrameRate = double.parse(val.split(" ")[0].strip());
 							break;
 						case "format":
 							VideoFormat = val;
@@ -2784,8 +2786,8 @@ public class MediaFile : GLib.Object{
 				}
 				else if (sectionType == "audio"){
 					switch (key.down()) {
-						case "channel(s)":
-							AudioChannels = int.parse(val.replace ("channels","").replace ("channel","").strip());
+						case "channel(s)/string":
+							AudioChannels = int.parse(val.split(" ")[0].strip());
 							break;
 						case "format":
 							AudioFormat = val;
@@ -2794,6 +2796,10 @@ public class MediaFile : GLib.Object{
 				}
 			}
 		}
+	}
+
+	public void query_mediainfo_formatted(){
+		InfoTextFormatted = get_mediainfo (Path, false);
 	}
 
 	public void prepare (string baseTempDir){
