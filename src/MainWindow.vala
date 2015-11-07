@@ -251,7 +251,7 @@ public class MainWindow : Gtk.Window{
 		//btnAbout
 		btnAbout = new Gtk.ToolButton.from_stock ("gtk-about");
 		btnAbout.is_important = false;
-		btnAbout.icon_widget = get_shared_icon("","help-info.svg",24);
+		btnAbout.icon_widget = get_shared_icon("gtk-about","help-info.svg",24);
 		btnAbout.clicked.connect (btnAbout_clicked);
 		btnAbout.set_tooltip_text (_("About"));
 		toolbar.add (btnAbout);
