@@ -2607,6 +2607,7 @@ public class MediaFile : GLib.Object{
 	public bool HasAudio = false;
 	public bool HasVideo = false;
 	public bool HasSubs = false;
+	
 	public int SourceWidth = 0;
 	public int SourceHeight = 0;
 	public double SourceFrameRate = 0;
@@ -2774,7 +2775,7 @@ public class MediaFile : GLib.Object{
 							break;
 						case "frame rate":
 						case "original frame rate":
-							SourceFrameRate = int.parse(val.replace ("fps","").replace (" ","").strip());
+							SourceFrameRate = double.parse(val.replace ("fps","").replace (" ","").strip());
 							break;
 						case "format":
 							VideoFormat = val;
