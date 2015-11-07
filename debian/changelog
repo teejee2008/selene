@@ -1,5 +1,13 @@
-selene (2.6) trusty; urgency=low
+selene (2.6.1) trusty; urgency=medium
 
-  * Minor UI changes
+  * Fixed: If framerate is fractional, then audio-video is out-of-sync for H264 video
 
- -- Tony George <tony.george.kol@gmail.com>  Wed, 21 Oct 2015 14:00:00 +0530
+  * Fixed: Incorrect icon was displayed for 'About' button on toolbar
+
+  * Fixed: Input file properties were not parsed correctly for some files. These files would give a 'format not supported' error when added to the input list
+  
+  * Perf: Query only required properties when reading file info from disk
+  
+  * Added list of 3rd party tools to the About\Credits dialog
+
+ -- Tony George <tony.george.kol@gmail.com>  Wed, 07 Nov 2015 10:00:00 +0530
