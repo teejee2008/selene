@@ -1833,7 +1833,7 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private bool update_cpu_usage(){
-		this.title = _("CPU: ") + "%.2lf %%".printf(ProcStats.get_cpu_usage());
+		this.title = _("CPU: ") + "%.0lf %%".printf(ProcStats.get_cpu_usage());
 		return true;
 	}
 
