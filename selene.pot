@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-06 20:55+0530\n"
+"POT-Creation-Date: 2016-02-06 21:02+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:127
+#: AppConfigWindow.vala:128
 msgid "<b>Backup Folder</b>"
 msgstr ""
 
@@ -81,7 +81,7 @@ msgstr ""
 msgid "<b>File Format:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:65
+#: AppConfigWindow.vala:66
 msgid "<b>General</b>"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:102
+#: AppConfigWindow.vala:103
 msgid "<b>Output Folder</b>"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: AppConfigWindow.vala:135
+#: AppConfigWindow.vala:136
 msgid "Backup Location"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "Denominator"
 msgstr ""
 
-#: EncoderStatusWindow.vala:89
+#: EncoderStatusWindow.vala:90
 msgid "Description"
 msgstr ""
 
@@ -360,7 +360,7 @@ msgstr ""
 msgid "Disable Video"
 msgstr ""
 
-#: AppConfigWindow.vala:145
+#: AppConfigWindow.vala:146
 msgid "Do not move input files"
 msgstr ""
 
@@ -498,7 +498,7 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:76
+#: AppConfigWindow.vala:77
 msgid "File View"
 msgstr ""
 
@@ -564,7 +564,7 @@ msgstr ""
 msgid "Format not supported:"
 msgstr ""
 
-#: EncoderStatusWindow.vala:143
+#: EncoderStatusWindow.vala:144
 msgid "Found"
 msgstr ""
 
@@ -678,7 +678,7 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: EncoderStatusWindow.vala:143
+#: EncoderStatusWindow.vala:144
 msgid "Missing"
 msgstr ""
 
@@ -778,7 +778,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: AppConfigWindow.vala:110
+#: AppConfigWindow.vala:111
 msgid "Output Location"
 msgstr ""
 
@@ -862,7 +862,7 @@ msgstr ""
 msgid "Realtime"
 msgstr ""
 
-#: EncoderStatusWindow.vala:107
+#: EncoderStatusWindow.vala:108
 msgid "Refresh"
 msgstr ""
 
@@ -907,7 +907,7 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:120
+#: AppConfigWindow.vala:121
 msgid "Save in input file location"
 msgstr ""
 
@@ -946,7 +946,7 @@ msgstr ""
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: AppConfigWindow.vala:89
+#: AppConfigWindow.vala:90
 msgid "Simple"
 msgstr ""
 
@@ -996,7 +996,7 @@ msgstr ""
 msgid "Starting batch of %d file(s):"
 msgstr ""
 
-#: EncoderStatusWindow.vala:97 MainWindow.vala:396
+#: EncoderStatusWindow.vala:98 MainWindow.vala:396
 msgid "Status"
 msgstr ""
 
@@ -1072,7 +1072,7 @@ msgstr ""
 msgid "Third Party Tools &amp; Software"
 msgstr ""
 
-#: AppConfigWindow.vala:91
+#: AppConfigWindow.vala:92
 msgid "Tiles"
 msgstr ""
 

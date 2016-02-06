@@ -48,25 +48,26 @@ public class AppConfigWindow : Dialog {
 
 	public AppConfigWindow() {
 		title = "Settings";
-		set_default_size (350, 400);
-
+		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
         skip_taskbar_hint = true;
 		modal = true;
 		deletable = false;
+		resizable = false;
 		icon = get_app_icon(16);
 
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;
+		vboxMain.set_size_request(350, 400);
 
 		// lblView
 		lblView = new Label (_("<b>General</b>"));
 		lblView.set_use_markup(true);
 		lblView.halign = Align.START;
 		lblView.margin_bottom = 12;
-		lblView.margin_top = 12;
+		//lblView.margin_top = 12;
 		vboxMain.pack_start (lblView, false, true, 0);
 
 		//hboxFileView
