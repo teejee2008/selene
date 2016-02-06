@@ -1482,14 +1482,16 @@ on the toolbar will open the file in a text editor.
 			dlgAddFiles.set_current_folder(App.InputDirectory);
 		}
 
+		string message = "";
+		
  		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
 
 			set_busy(true,dlgAddFiles);
-
+			
 	 		foreach (string file in dlgAddFiles.get_filenames()){
 				bool added = App.add_file (file);
 				if (added == false){
-					statusbar_show_message (_("Format not supported:") + "'" + file + "'", true, true);
+					message += "%s\n".printf(file_basename(file));
 				}
 			}
 
@@ -1499,6 +1501,11 @@ on the toolbar will open the file in a text editor.
 	 	refresh_list_view();
 
 	 	dlgAddFiles.destroy(); //resets cursor
+
+	 	if (message.length > 0){
+			message = _("Some files could not be opened:") + "\n\n" + message;
+			gtk_messagebox("Unknown Format",message,this,true);
+		}
 	}
 
 	private void btnRemoveFiles_clicked(){

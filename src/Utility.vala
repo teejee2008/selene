@@ -169,6 +169,10 @@ namespace TeeJee.FileSystem{
 	    }
 	}
 
+	public string file_basename(string filePath){
+		return File.new_for_path(filePath).get_basename();
+	}
+
 	public bool file_exists (string filePath){
 
 		/* Check if file exists */
@@ -916,7 +920,7 @@ namespace TeeJee.GtkHelper{
 
 		/* Shows a simple message box */
 
-		Gtk.MessageType type = Gtk.MessageType.INFO;
+		var type = Gtk.MessageType.INFO;
 		if (is_error){
 			type = Gtk.MessageType.ERROR;
 		}
@@ -924,7 +928,7 @@ namespace TeeJee.GtkHelper{
 			type = Gtk.MessageType.INFO;
 		}
 
-		var dlg = new Gtk.MessageDialog.with_markup(null, Gtk.DialogFlags.MODAL, type, Gtk.ButtonsType.OK, message);
+		/*var dlg = new Gtk.MessageDialog.with_markup(null, Gtk.DialogFlags.MODAL, type, Gtk.ButtonsType.OK, message);
 		dlg.title = title;
 		dlg.set_default_size (200, -1);
 		if (parent_win != null){
@@ -932,9 +936,12 @@ namespace TeeJee.GtkHelper{
 			dlg.set_modal(true);
 		}
 		dlg.run();
-		dlg.destroy();
-	}
+		dlg.destroy();*/
 
+		var dlg = new CustomMessageDialog(title,message,type,parent_win);
+		dlg.run();
+	}
+	
 	public bool gtk_combobox_set_value (ComboBox combo, int index, string val){
 
 		/* Conveniance function to set combobox value */

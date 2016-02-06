@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-06 21:02+0530\n"
+"POT-Creation-Date: 2016-02-06 21:16+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,7 +179,7 @@ msgstr ""
 msgid "All files removed"
 msgstr ""
 
-#: MainWindow.vala:1562
+#: MainWindow.vala:1569
 msgid "An audio-video converter for Linux"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:1835
+#: MainWindow.vala:1842
 msgid "CPU: "
 msgstr ""
 
@@ -478,7 +478,7 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: Utility.vala:1397
+#: Utility.vala:1404
 msgid "Failed to set ownership"
 msgstr ""
 
@@ -548,7 +548,7 @@ msgstr ""
 msgid "Following encoders are not installed on your system:"
 msgstr ""
 
-#: MainWindow.vala:1673
+#: MainWindow.vala:1680
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -558,10 +558,6 @@ msgstr ""
 
 #: EncoderConfigWindow.vala:377 EncoderConfigWindow.vala:746
 msgid "Format / Codec"
-msgstr ""
-
-#: MainWindow.vala:1492
-msgid "Format not supported:"
 msgstr ""
 
 #: EncoderStatusWindow.vala:144
@@ -596,7 +592,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: MainWindow.vala:1651
+#: MainWindow.vala:1658
 msgid ""
 "Input queue is empty!\n"
 "Please add some files.\n"
@@ -682,11 +678,11 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: Main.vala:309 MainWindow.vala:1673
+#: Main.vala:309 MainWindow.vala:1680
 msgid "Missing Encoders"
 msgstr ""
 
-#: Utility.vala:1025
+#: Utility.vala:1032
 msgid "Missing Icon"
 msgstr ""
 
@@ -782,7 +778,7 @@ msgstr ""
 msgid "Output Location"
 msgstr ""
 
-#: MainWindow.vala:199 MainWindow.vala:1632 MainWindow.vala:1634
+#: MainWindow.vala:199 MainWindow.vala:1639 MainWindow.vala:1641
 msgid "Pause"
 msgstr ""
 
@@ -810,7 +806,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:1673
+#: MainWindow.vala:1680
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -826,7 +822,7 @@ msgstr ""
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:1767
+#: MainWindow.vala:1774
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
@@ -850,7 +846,7 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: MainWindow.vala:1653
+#: MainWindow.vala:1660
 msgid "Queue is Empty"
 msgstr ""
 
@@ -887,7 +883,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:1626 MainWindow.vala:1628
+#: MainWindow.vala:1633 MainWindow.vala:1635
 msgid "Resume"
 msgstr ""
 
@@ -934,11 +930,11 @@ msgstr ""
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:1605
+#: MainWindow.vala:1612
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:1602
+#: MainWindow.vala:1609
 msgid "Shutdown Enabled"
 msgstr ""
 
@@ -964,6 +960,10 @@ msgstr ""
 
 #: EncoderConfigWindow.vala:451
 msgid "Slower"
+msgstr ""
+
+#: MainWindow.vala:1506
+msgid "Some files could not be opened:"
 msgstr ""
 
 #: Main.vala:622
@@ -1000,7 +1000,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: Utility.vala:753
+#: Utility.vala:757
 msgid "Stopped"
 msgstr ""
 
@@ -1033,11 +1033,11 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow.vala:1769
+#: MainWindow.vala:1776
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:1776
+#: MainWindow.vala:1783
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1046,7 +1046,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:676 MainWindow.vala:1766
+#: Main.vala:676 MainWindow.vala:1773
 msgid "System will shutdown in one minute!"
 msgstr ""
 
