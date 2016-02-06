@@ -17,12 +17,12 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=10
-FILE_NAME_0=39333;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
-FILE_NAME_1=1183;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_2=9694;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_3=618;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_4=575;None;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fchangelog;0;4
+current_page=2
+FILE_NAME_0=3747;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
+FILE_NAME_1=13024;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
+FILE_NAME_2=46302;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_3=554;Make;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_4=330;None;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fchangelog;0;4
 FILE_NAME_5=186;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fcontrol;0;4
 FILE_NAME_6=342;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FDonationWindow.vala;0;4
 FILE_NAME_7=5928;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FEncoderConfigWindow.vala;0;4
@@ -36,6 +36,7 @@ FILE_NAME_14=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2F
 FILE_NAME_15=0;None;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FNOTES;0;4
 FILE_NAME_16=0;None;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FPPA;0;4
 FILE_NAME_17=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fselene-uninstall;0;4
+FILE_NAME_18=2606;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FCustomMessageDialog.vala;0;4
 
 [VTE]
 last_dir=/home/teejee
