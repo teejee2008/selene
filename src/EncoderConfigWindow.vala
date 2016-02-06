@@ -231,13 +231,13 @@ public class EncoderConfigWindow : Dialog {
 		//lblGeneral
 		lblGeneral = new Label (_("General"));
 
-    //gridGeneral
-    gridGeneral = new Grid();
-    gridGeneral.set_column_spacing (6);
-    gridGeneral.set_row_spacing (6);
-    gridGeneral.margin = 12;
-    gridGeneral.visible = false;
-    tabMain.append_page (gridGeneral, lblGeneral);
+		//gridGeneral
+		gridGeneral = new Grid();
+		gridGeneral.set_column_spacing (6);
+		gridGeneral.set_row_spacing (6);
+		gridGeneral.margin = 12;
+		gridGeneral.visible = false;
+		tabMain.append_page (gridGeneral, lblGeneral);
 
 		row = -1;
 

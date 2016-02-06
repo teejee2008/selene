@@ -1581,9 +1581,7 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void btnEncoders_clicked(){
-	    var dialog = new EncoderStatusWindow();
-	    dialog.set_transient_for(this);
-	    dialog.show_all();
+	    var dialog = new EncoderStatusWindow(this);
 	    dialog.run();
 	    dialog.destroy();
 	}

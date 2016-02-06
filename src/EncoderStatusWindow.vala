@@ -34,35 +34,37 @@ using TeeJee.Misc;
 
 public class EncoderStatusWindow : Dialog {
 
-	private Box vboxMain;
-	private Box vbox_actions;
-	private Button btnOk;
-	private Button btnRefesh;
-	private TreeView tv;
-	private ScrolledWindow sw;
+	private Gtk.Box vboxMain;
+	private Gtk.Box vbox_actions;
+	private Gtk.Button btnOk;
+	private Gtk.Button btnRefesh;
+	private Gtk.TreeView tv;
+	private Gtk.ScrolledWindow sw;
 
-	public EncoderStatusWindow () {
+	public EncoderStatusWindow (Gtk.Window parent) {
 		title = _("Encoders");
-		set_default_size (500, 450);
 
+		set_transient_for(parent);
+		set_modal(true);
+		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
         skip_taskbar_hint = true;
-		modal = true;
 		deletable = true;
+		resizable = false;
 		icon = get_app_icon(16);
 
 		// get content area
 		vboxMain = get_content_area();
-		vboxMain.margin = 6;
+		vboxMain.set_size_request (500, 450);
 
 		// get action area
 		vbox_actions = (Box) get_action_area();
 
 	    tv = new TreeView();
-		tv.get_selection().mode = SelectionMode.NONE;
+		tv.get_selection().mode = SelectionMode.SINGLE;
 		tv.headers_visible = true;
-		tv.set_rules_hint (true);
+		//tv.set_rules_hint (true);
 
 		sw = new ScrolledWindow(null, null);
 		sw.set_shadow_type (ShadowType.ETCHED_IN);
@@ -70,23 +72,20 @@ public class EncoderStatusWindow : Dialog {
 		sw.expand = true;
 		vboxMain.add(sw);
 
-		TreeViewColumn col_icon = new TreeViewColumn();
-		//col_icon.title = _("");
-		col_icon.resizable = true;
-		tv.append_column(col_icon);
-
+		TreeViewColumn col_name = new TreeViewColumn();
+		col_name.title = " " + _("Tool") + " ";
+		col_name.resizable = true;
+		
 		CellRendererPixbuf cell_icon = new CellRendererPixbuf ();
-		col_icon.pack_start (cell_icon, false);
-		col_icon.set_attributes(cell_icon, "pixbuf", 3);
+		col_name.pack_start (cell_icon, false);
+		col_name.set_attributes(cell_icon, "pixbuf", 3);
+		
+		CellRendererText cell_name = new CellRendererText ();
+		col_name.pack_start (cell_name, false);
+		col_name.set_attributes(cell_name, "text", 0);
 
-		TreeViewColumn col_cmd = new TreeViewColumn();
-		col_cmd.title = " " + _("Encoding Tool") + " ";
-		tv.append_column(col_cmd);
-
-		CellRendererText cell_cmd = new CellRendererText ();
-		col_cmd.pack_start (cell_cmd, false);
-		col_cmd.set_attributes(cell_cmd, "text", 0);
-
+		tv.append_column(col_name);
+		
 		TreeViewColumn col_desc = new TreeViewColumn();
 		col_desc.title = " " + _("Description") + " ";
 		tv.append_column(col_desc);
@@ -118,6 +117,8 @@ public class EncoderStatusWindow : Dialog {
         //btnOk
         btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btnOk.clicked.connect (() => {  destroy();  });
+
+		show_all();
 	}
 
 	public void tv_refresh(){
