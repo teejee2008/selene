@@ -306,6 +306,7 @@ public class MainWindow : Gtk.Window{
 		colName = new TreeViewColumn();
 		colName.title = _("File");
 		colName.expand = true;
+		colName.resizable = true;
 
 		CellRendererPixbuf cellThumb = new CellRendererPixbuf ();
 		colName.pack_start (cellThumb, false);
@@ -1711,7 +1712,7 @@ on the toolbar will open the file in a text editor.
 		paused = false;
 		btnPause.stock_id = "gtk-media-pause";
 
-		colCrop.visible = !App.TileView;
+		colCrop.visible = false;
 		colProgress.visible = true;
 
 		start_cpu_usage_timer();
