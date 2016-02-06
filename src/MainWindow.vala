@@ -393,7 +393,7 @@ public class MainWindow : Gtk.Window{
 		//colProgress
 		colProgress = new TreeViewColumn();
 		colProgress.title = _("Status");
-		colProgress.fixed_width = 120;
+		colProgress.fixed_width = 150;
 		CellRendererProgress2 cellProgress = new CellRendererProgress2();
 		cellProgress.height = 15;
 		cellProgress.width = 150;
