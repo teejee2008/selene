@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-06 21:25+0530\n"
+"POT-Creation-Date: 2016-02-07 12:10+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:128
+#: AppConfigWindow.vala:153
 msgid "<b>Backup Folder</b>"
 msgstr ""
 
@@ -229,10 +229,6 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: AppConfigWindow.vala:136
-msgid "Backup Location"
-msgstr ""
-
 #: EncoderConfigWindow.vala:938
 msgid "Bass (lower freq)"
 msgstr ""
@@ -360,7 +356,7 @@ msgstr ""
 msgid "Disable Video"
 msgstr ""
 
-#: AppConfigWindow.vala:146
+#: AppConfigWindow.vala:196
 msgid "Do not move input files"
 msgstr ""
 
@@ -774,7 +770,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: AppConfigWindow.vala:111
+#: AppConfigWindow.vala:114
 msgid "Output Location"
 msgstr ""
 
@@ -903,12 +899,20 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:121
+#: AppConfigWindow.vala:146
 msgid "Save in input file location"
+msgstr ""
+
+#: AppConfigWindow.vala:126 AppConfigWindow.vala:176
+msgid "Select Path"
 msgstr ""
 
 #: MainWindow.vala:1100
 msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr ""
+
+#: AppConfigWindow.vala:164
+msgid "Select or enter path"
 msgstr ""
 
 #: DonationWindow.vala:81

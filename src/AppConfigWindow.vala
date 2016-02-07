@@ -38,10 +38,10 @@ public class AppConfigWindow : Dialog {
 	private Label lblView;
 	private Label lblOutput;
 	private CheckButton chkOutput;
-	private FileChooserButton fcbOutput;
+	private Entry txtBackup;
 	private CheckButton chkBackup;
 	private Label lblBackup;
-	private FileChooserButton fcbBackup;
+	private Entry txtOutput;
 	private Button btnSave;
 	private Button btnCancel;
 	private ComboBox cmbFileView;
@@ -107,15 +107,40 @@ public class AppConfigWindow : Dialog {
 		lblOutput.margin_top = 12;
 		vboxMain.pack_start (lblOutput, false, true, 0);
 
-		// fcbOutput
-		fcbOutput = new FileChooserButton (_("Output Location"), FileChooserAction.SELECT_FOLDER);
-		fcbOutput.set_sensitive(App.OutputDirectory.length > 0);
-		fcbOutput.margin_left = 6;
-		fcbOutput.margin_bottom = 6;
+		// txtOutput
+		txtOutput = new Gtk.Entry();
+		txtOutput.hexpand = true;
+		txtOutput.secondary_icon_stock = "gtk-open";
+		txtOutput.placeholder_text = _("Output Location");
+		txtOutput.margin_left = 6;
+		txtOutput.margin_bottom = 6;
+		vboxMain.add (txtOutput);
+
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
-			fcbOutput.set_filename (App.OutputDirectory);
+			txtOutput.text = App.OutputDirectory;
 		}
-		vboxMain.add (fcbOutput);
+
+		txtOutput.icon_release.connect((p0, p1) => {
+			//chooser
+			var chooser = new Gtk.FileChooserDialog(
+			    _("Select Path"),
+			    this,
+			    FileChooserAction.SELECT_FOLDER,
+			    "_Cancel",
+			    Gtk.ResponseType.CANCEL,
+			    "_Open",
+			    Gtk.ResponseType.ACCEPT
+			);
+
+			chooser.select_multiple = false;
+			chooser.set_filename(App.OutputDirectory);
+
+			if (chooser.run() == Gtk.ResponseType.ACCEPT) {
+				txtOutput.text = chooser.get_filename();
+			}
+
+			chooser.destroy();
+		});
 
 		// chkOutput
 		chkOutput = new CheckButton.with_label (_("Save in input file location"));
@@ -132,16 +157,41 @@ public class AppConfigWindow : Dialog {
 		lblBackup.margin_top = 12;
 		vboxMain.pack_start (lblBackup, false, true, 0);
 
-		// fcbBackup
-		fcbBackup = new FileChooserButton (_("Backup Location"), FileChooserAction.SELECT_FOLDER);
-		fcbBackup.set_sensitive(App.BackupDirectory.length > 0);
-		fcbBackup.margin_left = 6;
-		fcbBackup.margin_bottom = 6;
-		if ((App.BackupDirectory.length > 0) && dir_exists (App.BackupDirectory)){
-			fcbBackup.set_filename (App.BackupDirectory);
-		}
-		vboxMain.add (fcbBackup);
+		// txtBackup
+		txtBackup = new Gtk.Entry();
+		txtBackup.hexpand = true;
+		txtBackup.secondary_icon_stock = "gtk-open";
+		txtBackup.placeholder_text = _("Select or enter path");
+		txtBackup.margin_left = 6;
+		txtBackup.margin_bottom = 6;
+		vboxMain.add (txtBackup);
 
+		if ((App.BackupDirectory != null) && dir_exists (App.BackupDirectory)){
+			txtBackup.text = App.BackupDirectory;
+		}
+
+		txtBackup.icon_release.connect((p0, p1) => {
+			//chooser
+			var chooser = new Gtk.FileChooserDialog(
+			    _("Select Path"),
+			    this,
+			    FileChooserAction.SELECT_FOLDER,
+			    "_Cancel",
+			    Gtk.ResponseType.CANCEL,
+			    "_Open",
+			    Gtk.ResponseType.ACCEPT
+			);
+
+			chooser.select_multiple = false;
+			chooser.set_filename(App.BackupDirectory);
+
+			if (chooser.run() == Gtk.ResponseType.ACCEPT) {
+				txtBackup.text = chooser.get_filename();
+			}
+
+			chooser.destroy();
+		});
+		
 		// chkBackup
 		chkBackup = new CheckButton.with_label (_("Do not move input files"));
 		chkBackup.active = (App.BackupDirectory.length == 0);
@@ -156,14 +206,17 @@ public class AppConfigWindow : Dialog {
         // btnCancel
         btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (btnCancel_clicked);
+
+        chkOutput_clicked();
+        chkBackup_clicked();
 	}
 
 	private void chkOutput_clicked(){
-		fcbOutput.set_sensitive(!chkOutput.active);
+		txtOutput.set_sensitive(!chkOutput.active);
 	}
 
 	private void chkBackup_clicked(){
-		fcbBackup.set_sensitive(!chkBackup.active);
+		txtBackup.set_sensitive(!chkBackup.active);
 	}
 
 	private void btnSave_clicked(){
@@ -171,8 +224,11 @@ public class AppConfigWindow : Dialog {
 			App.OutputDirectory = "";
 		}
 		else {
-			if (dir_exists (fcbOutput.get_filename())){
-				App.OutputDirectory = fcbOutput.get_filename();
+			if (dir_exists(txtOutput.text)){
+				App.OutputDirectory = txtOutput.text;
+			}
+			else{
+				App.OutputDirectory = "";
 			}
 		}
 
@@ -180,8 +236,11 @@ public class AppConfigWindow : Dialog {
 			App.BackupDirectory = "";
 		}
 		else {
-			if (dir_exists (fcbBackup.get_filename())){
-				App.BackupDirectory = fcbBackup.get_filename();
+			if (dir_exists(txtBackup.text)){
+				App.BackupDirectory = txtBackup.text;
+			}
+			else{
+				App.BackupDirectory = "";
 			}
 		}
 
