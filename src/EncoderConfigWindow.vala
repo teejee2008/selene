@@ -1335,6 +1335,8 @@ public class EncoderConfigWindow : Dialog {
 				model.append (out iter);
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
 				model.append (out iter);
+				model.set (iter,0,"AAC / Libav",1,"aac");
+				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
 				break;
@@ -1342,6 +1344,8 @@ public class EncoderConfigWindow : Dialog {
 			case "mp4v":
 				model.append (out iter);
 				model.set (iter,0,_("Disable Audio"),1,"disable");
+				model.append (out iter);
+				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(1);
@@ -1369,6 +1373,8 @@ public class EncoderConfigWindow : Dialog {
 				break;
 
 			case "mp4a":
+				model.append (out iter);
+				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				cmbACodec.set_active(0);
@@ -1539,6 +1545,7 @@ public class EncoderConfigWindow : Dialog {
 				lblOpusOptimize.visible = false;
 				cmbOpusOptimize.visible = false;
 				break;
+			case "aac":
 			case "neroaac":
 			case "mp3lame":
 			case "vorbis":
@@ -1591,6 +1598,7 @@ public class EncoderConfigWindow : Dialog {
 				cmbAudioMode_changed();
 				break;
 
+			case "aac":
 			case "neroaac":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
@@ -1744,6 +1752,7 @@ public class EncoderConfigWindow : Dialog {
 			case "pcm_u32le":
 			case "pcm_u32be":
 			case "flac":
+			case "aac":
 			case "neroaac":
 			case "vorbis":
 				model.append (out iter);
@@ -1815,6 +1824,7 @@ public class EncoderConfigWindow : Dialog {
 			case "pcm_u32le":
 			case "pcm_u32be":
 			case "neroaac":
+			case "aac":
 			case "opus":
 			case "vorbis":
 				model.append (out iter);

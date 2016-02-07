@@ -324,7 +324,8 @@ public class MainWindow : Gtk.Window{
 
 			Gdk.Pixbuf pixThumb = null;
 			try{
-				pixThumb = new Gdk.Pixbuf.from_file (imagePath);
+				//pixThumb = new Gdk.Pixbuf.from_file_at_scale(imagePath,64,MediaFile.ThumbnailWidth,true);
+				pixThumb = new Gdk.Pixbuf.from_file(imagePath);
 			}
 			catch(Error e){
 				log_error (e.message);

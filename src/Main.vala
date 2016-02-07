@@ -1252,6 +1252,7 @@ Notes:
 				case "mp3lame":
 					s += "tempAudio=\"${tempDir}/audio.mp3\"\n";
 					break;
+				case "aac":
 				case "neroaac":
 					s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
 					break;
@@ -1302,6 +1303,13 @@ Notes:
 						case "neroaac":
 							s += encode_audio_neroaac(mf,settings);
 							encoderList.add("neroaacenc");
+							if (audio.get_boolean_member("soxEnabled")){
+								encoderList.add("sox");
+							};
+							break;
+						case "aac":
+							s += encode_audio_avconv(mf,settings);
+							encoderList.add("avconv");
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
 							};
@@ -1363,13 +1371,25 @@ Notes:
 				break;
 
 			case "mp4a":
-				s += encode_audio_neroaac(mf,settings);
-				encoderList.add("neroaacenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
+				switch (acodec) {
+				case "neroaac":		
+					s += encode_audio_neroaac(mf,settings);
+					encoderList.add("neroaacenc");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+					
+				case "aac":		
+					s += encode_audio_avconv(mf,settings);
+					encoderList.add("avconv");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+				}
 				break;
-
+				
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				encoderList.add("opusenc");
@@ -2614,7 +2634,7 @@ public class MediaFile : GLib.Object{
 	public int SourceHeight = 0;
 	public double SourceFrameRate = 0;
 	public int AudioChannels = 0;
-
+	
 	public string FileFormat = "";
 	public string VideoFormat = "";
 	public string AudioFormat = "";
@@ -2625,6 +2645,9 @@ public class MediaFile : GLib.Object{
 	public string OutputFilePath = "";
 	public long OutputFrameCount = 0;
 
+	public static int ThumbnailWidth = 80;
+	public static int ThumbnailHeight= 64;
+			
 	public MediaFile(string filePath){
 		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
@@ -2819,11 +2842,14 @@ public class MediaFile : GLib.Object{
 	}
 
 	public void generate_thumbnail(){
-		int imageWidth = 80;
-		int imageHeight= 64;
-		ThumbnailImagePath = get_temp_file_path() + ".png";
-		string std_out, std_err;
-		execute_command_script_sync("avconv -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(Path,imageWidth,imageHeight,ThumbnailImagePath), out std_out, out std_err);
+		if (HasVideo){
+			ThumbnailImagePath = get_temp_file_path() + ".png";
+			string std_out, std_err;
+			execute_command_script_sync("avconv -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
+		}
+		else{
+			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.png");
+		}
 	}
 
 	public bool crop_detect(){
