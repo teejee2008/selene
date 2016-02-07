@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-07 12:10+0530\n"
+"POT-Creation-Date: 2016-02-07 12:38+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,8 +37,8 @@ msgstr ""
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:153
-msgid "<b>Backup Folder</b>"
+#: AppConfigWindow.vala:154
+msgid "<b>Backup Directory</b>"
 msgstr ""
 
 #: EncoderConfigWindow.vala:843
@@ -81,7 +81,7 @@ msgstr ""
 msgid "<b>File Format:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:66
+#: AppConfigWindow.vala:67
 msgid "<b>General</b>"
 msgstr ""
 
@@ -89,8 +89,8 @@ msgstr ""
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:103
-msgid "<b>Output Folder</b>"
+#: AppConfigWindow.vala:104
+msgid "<b>Output Directory</b>"
 msgstr ""
 
 #: EncoderConfigWindow.vala:302
@@ -356,10 +356,6 @@ msgstr ""
 msgid "Disable Video"
 msgstr ""
 
-#: AppConfigWindow.vala:196
-msgid "Do not move input files"
-msgstr ""
-
 #: EncoderConfigWindow.vala:650
 msgid "Do not stretch or squeeze the video (Fit-To-Box)"
 msgstr ""
@@ -430,6 +426,10 @@ msgstr ""
 msgid "Enter any key to Cancel..."
 msgstr ""
 
+#: AppConfigWindow.vala:122 AppConfigWindow.vala:172
+msgid "Enter path or browse for directory"
+msgstr ""
+
 #: Main.vala:995 Utility.vala:108
 msgid "Error"
 msgstr ""
@@ -494,7 +494,7 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:77
+#: AppConfigWindow.vala:78
 msgid "File View"
 msgstr ""
 
@@ -682,6 +682,10 @@ msgstr ""
 msgid "Missing Icon"
 msgstr ""
 
+#: AppConfigWindow.vala:162
+msgid "Move source files after encoding is complete"
+msgstr ""
+
 #: EncoderConfigWindow.vala:816
 msgid "Music"
 msgstr ""
@@ -768,10 +772,6 @@ msgstr ""
 
 #: MainWindow.vala:282
 msgid "Output"
-msgstr ""
-
-#: AppConfigWindow.vala:114
-msgid "Output Location"
 msgstr ""
 
 #: MainWindow.vala:199 MainWindow.vala:1639 MainWindow.vala:1641
@@ -899,20 +899,16 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:146
-msgid "Save in input file location"
+#: AppConfigWindow.vala:112
+msgid "Save files in following location"
 msgstr ""
 
-#: AppConfigWindow.vala:126 AppConfigWindow.vala:176
+#: AppConfigWindow.vala:134 AppConfigWindow.vala:184
 msgid "Select Path"
 msgstr ""
 
 #: MainWindow.vala:1100
 msgid "Select a script from the dropdown and click 'Start' to begin"
-msgstr ""
-
-#: AppConfigWindow.vala:164
-msgid "Select or enter path"
 msgstr ""
 
 #: DonationWindow.vala:81
@@ -946,7 +942,7 @@ msgstr ""
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: AppConfigWindow.vala:90
+#: AppConfigWindow.vala:91
 msgid "Simple"
 msgstr ""
 
@@ -1076,7 +1072,7 @@ msgstr ""
 msgid "Third Party Tools &amp; Software"
 msgstr ""
 
-#: AppConfigWindow.vala:92
+#: AppConfigWindow.vala:93
 msgid "Tiles"
 msgstr ""
 

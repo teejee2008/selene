@@ -53,20 +53,21 @@ public class AppConfigWindow : Dialog {
         destroy_with_parent = true;
         skip_taskbar_hint = true;
 		modal = true;
-		deletable = false;
+		deletable = true;
 		resizable = false;
 		icon = get_app_icon(16);
 
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.margin = 6;
+		vboxMain.spacing = 6;
 		vboxMain.set_size_request(350, 400);
 
 		// lblView
 		lblView = new Label (_("<b>General</b>"));
 		lblView.set_use_markup(true);
 		lblView.halign = Align.START;
-		lblView.margin_bottom = 12;
+		//lblView.margin_bottom = 12;
 		//lblView.margin_top = 12;
 		vboxMain.pack_start (lblView, false, true, 0);
 
@@ -100,20 +101,27 @@ public class AppConfigWindow : Dialog {
 		}
 
 		// lblOutput
-		lblOutput = new Label (_("<b>Output Folder</b>"));
+		lblOutput = new Label (_("<b>Output Directory</b>"));
 		lblOutput.set_use_markup(true);
 		lblOutput.halign = Align.START;
-		lblOutput.margin_bottom = 12;
+		//lblOutput.margin_bottom = 12;
 		lblOutput.margin_top = 12;
 		vboxMain.pack_start (lblOutput, false, true, 0);
 
+		// chkOutput
+		chkOutput = new CheckButton.with_label (_("Save files in following location"));
+		chkOutput.active = (App.OutputDirectory.length > 0);
+		//chkOutput.margin_left = 6;
+		chkOutput.clicked.connect (chkOutput_clicked);
+		vboxMain.pack_start (chkOutput, false, true, 0);
+		
 		// txtOutput
 		txtOutput = new Gtk.Entry();
 		txtOutput.hexpand = true;
 		txtOutput.secondary_icon_stock = "gtk-open";
-		txtOutput.placeholder_text = _("Output Location");
-		txtOutput.margin_left = 6;
-		txtOutput.margin_bottom = 6;
+		txtOutput.placeholder_text = _("Enter path or browse for directory");
+		//txtOutput.margin_left = 6;
+		//txtOutput.margin_bottom = 6;
 		vboxMain.add (txtOutput);
 
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
@@ -142,28 +150,28 @@ public class AppConfigWindow : Dialog {
 			chooser.destroy();
 		});
 
-		// chkOutput
-		chkOutput = new CheckButton.with_label (_("Save in input file location"));
-		chkOutput.active = (App.OutputDirectory.length == 0);
-		chkOutput.margin_left = 6;
-		chkOutput.clicked.connect (chkOutput_clicked);
-		vboxMain.pack_start (chkOutput, false, true, 0);
-
 		// lblBackup
-		lblBackup = new Label (_("<b>Backup Folder</b>"));
+		lblBackup = new Label (_("<b>Backup Directory</b>"));
 		lblBackup.set_use_markup(true);
 		lblBackup.halign = Align.START;
-		lblBackup.margin_bottom = 12;
+		//lblBackup.margin_bottom = 12;
 		lblBackup.margin_top = 12;
 		vboxMain.pack_start (lblBackup, false, true, 0);
 
+		// chkBackup
+		chkBackup = new CheckButton.with_label (_("Move source files after encoding is complete"));
+		chkBackup.active = (App.BackupDirectory.length > 0);
+		//chkBackup.margin_left = 6;
+		chkBackup.clicked.connect (chkBackup_clicked);
+		vboxMain.pack_start (chkBackup, false, true, 0);
+		
 		// txtBackup
 		txtBackup = new Gtk.Entry();
 		txtBackup.hexpand = true;
 		txtBackup.secondary_icon_stock = "gtk-open";
-		txtBackup.placeholder_text = _("Select or enter path");
-		txtBackup.margin_left = 6;
-		txtBackup.margin_bottom = 6;
+		txtBackup.placeholder_text = _("Enter path or browse for directory");
+		//txtBackup.margin_left = 6;
+		//txtBackup.margin_bottom = 6;
 		vboxMain.add (txtBackup);
 
 		if ((App.BackupDirectory != null) && dir_exists (App.BackupDirectory)){
@@ -191,13 +199,6 @@ public class AppConfigWindow : Dialog {
 
 			chooser.destroy();
 		});
-		
-		// chkBackup
-		chkBackup = new CheckButton.with_label (_("Do not move input files"));
-		chkBackup.active = (App.BackupDirectory.length == 0);
-		chkBackup.margin_left = 6;
-		chkBackup.clicked.connect (chkBackup_clicked);
-		vboxMain.pack_start (chkBackup, false, true, 0);
 
         // btnSave
         btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
@@ -212,18 +213,15 @@ public class AppConfigWindow : Dialog {
 	}
 
 	private void chkOutput_clicked(){
-		txtOutput.set_sensitive(!chkOutput.active);
+		txtOutput.set_sensitive(chkOutput.active);
 	}
 
 	private void chkBackup_clicked(){
-		txtBackup.set_sensitive(!chkBackup.active);
+		txtBackup.set_sensitive(chkBackup.active);
 	}
 
 	private void btnSave_clicked(){
 		if (chkOutput.active){
-			App.OutputDirectory = "";
-		}
-		else {
 			if (dir_exists(txtOutput.text)){
 				App.OutputDirectory = txtOutput.text;
 			}
@@ -231,17 +229,20 @@ public class AppConfigWindow : Dialog {
 				App.OutputDirectory = "";
 			}
 		}
+		else {
+			App.OutputDirectory = "";
+		}
 
 		if (chkBackup.active){
-			App.BackupDirectory = "";
-		}
-		else {
 			if (dir_exists(txtBackup.text)){
 				App.BackupDirectory = txtBackup.text;
 			}
 			else{
 				App.BackupDirectory = "";
 			}
+		}
+		else {
+			App.BackupDirectory = "";
 		}
 
 		App.TileView = (cmbFileView.active == 1);
