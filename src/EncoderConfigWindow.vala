@@ -1338,6 +1338,8 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
+				model.append (out iter);
+				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
 				cmbACodec.set_active(1);
 				break;
 
@@ -1348,6 +1350,8 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
+				model.append (out iter);
+				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
 				cmbACodec.set_active(1);
 				break;
 
@@ -1377,6 +1381,8 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
+				model.append (out iter);
+				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
 				cmbACodec.set_active(0);
 				break;
 
@@ -1547,6 +1553,7 @@ public class EncoderConfigWindow : Dialog {
 				break;
 			case "aac":
 			case "neroaac":
+			case "libfdk_aac":
 			case "mp3lame":
 			case "vorbis":
 				lblAudioBitrate.visible = true;
@@ -1611,6 +1618,32 @@ public class EncoderConfigWindow : Dialog {
 
 				spinAudioQuality.adjustment.configure(1.0, 0.0, 2.0, 0.1, 0.1, 0);
 				spinAudioQuality.digits = 1;
+
+				cmbAudioMode.sensitive = true;
+				cmbAudioMode_changed();
+				break;
+
+			case "libfdk_aac":
+				model.append (out iter);
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
+				cmbAudioMode.set_active(0);
+
+				spinAudioBitrate.adjustment.configure(96, 8, 400, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
+				spinAudioBitrate.digits = 0;
+
+				spinAudioQuality.adjustment.configure(3, 1, 5, 1, 1, 0);
+				spinAudioQuality.digits = 1;
+				spinAudioQuality.set_tooltip_text (
+"""
+1 = ~20-32 kbps/channel
+2 = ~32-40 kbps/channel
+3 = ~48-56 kbps/channel
+4 = ~64-72 kbps/channel
+5 = ~96-112 kbps/channel
+""");
 
 				cmbAudioMode.sensitive = true;
 				cmbAudioMode_changed();
@@ -1770,6 +1803,7 @@ public class EncoderConfigWindow : Dialog {
 			case "pcm_u32be":
 			case "flac":
 			case "aac":
+			case "libfdk_aac":
 			case "neroaac":
 			case "vorbis":
 				model.append (out iter);
@@ -1842,6 +1876,7 @@ public class EncoderConfigWindow : Dialog {
 			case "pcm_u32be":
 			case "neroaac":
 			case "aac":
+			case "libfdk_aac":
 			case "opus":
 			case "vorbis":
 				model.append (out iter);
@@ -2416,6 +2451,7 @@ public class EncoderConfigWindow : Dialog {
 	}
 
 	private void btnSave_clicked(){
+
 		if (txtPresetName.text.length < 1) {
 			tabMain.page = 0;
 

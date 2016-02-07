@@ -136,14 +136,31 @@ public class EncoderStatusWindow : Dialog {
 	        log_error (e.message);
 	    }
 
+		TreeIter iter;
+		
 		foreach (Encoder enc in App.Encoders.values){
-			TreeIter iter;
 			store.append(out iter, null);
 			store.set(iter, 0, enc.Command);
 			store.set(iter, 1, enc.Name);
 			store.set(iter, 2, enc.IsAvailable ? _("Found") : _("Missing"));
 			store.set(iter, 3, enc.IsAvailable ? pix_ok : pix_missing);
 		}
+		
+		/*foreach(string codec_name in new string[]{"libfdk_aac"}){
+			store.append(out iter, null);
+			store.set(iter, 0, "%s (FFmpeg)".printf(codec_name));
+			if (App.FFmpegCodecs.has_key(codec_name)){
+				var codec = App.FFmpegCodecs[codec_name];
+				store.set(iter, 1, codec.Description);
+				store.set(iter, 2, codec.EncodingSupported ? _("Found") : _("Missing"));
+				store.set(iter, 3, codec.EncodingSupported ? pix_ok : pix_missing);
+			}
+			else{
+				store.set(iter, 1, "");
+				store.set(iter, 2, _("Missing"));
+				store.set(iter, 3, pix_missing);
+			}
+		}*/
 
 		tv.set_model (store);
 	}

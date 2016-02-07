@@ -68,6 +68,7 @@ public enum AppStatus{
 public class Main : GLib.Object{
 	public Gee.ArrayList<MediaFile> InputFiles;
 	public Gee.HashMap<string,Encoder> Encoders;
+	public Gee.HashMap<string,FFmpegCodec> FFmpegCodecs;
 
 	public string ScriptsFolder_Official = "";
 	public string ScriptsFolder_Custom = "";
@@ -301,7 +302,8 @@ Notes:
 		//check encoders
 		init_encoder_list();
 		check_all_encoders();
-
+		check_ffmpeg_codec_support();
+		
 		//check critical encoders
 		foreach(string enc in new string[]{"mediainfo","avconv"}){
 			Encoders[enc].CheckAvailability();
@@ -405,13 +407,14 @@ Notes:
 	}
 
 	public void init_encoder_list(){
-		Encoders["avconv"] = new Encoder("avconv","Libav Encoder","Audio-Video Decoding");
+		Encoders["avconv"] = new Encoder("avconv","FFmpeg/Libav Encoder","Audio-Video Decoding");
 		Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
 		Encoders["lame"] = new Encoder("lame","LAME MP3 Encoder", "MP3 Output");
 		Encoders["mediainfo"] = new Encoder("mediainfo","Media Information Utility","Reading Audio Video Properties");
 		Encoders["mkvmerge"] = new Encoder("mkvmerge","Matroska Muxer","MKV Output");
 		Encoders["mp4box"] = new Encoder("MP4Box","MP4 Muxer","MP4 Output");
 		Encoders["neroaacenc"] = new Encoder("neroAacEnc","Nero AAC Audio Encoder","AAC/MP4 Output");
+		Encoders["fdkaac"] = new Encoder("aac-enc","Fraunhofer FDK AAC Encoder","AAC/MP4 Output");
 		Encoders["oggenc"] = new Encoder("oggenc","OGG Audio Encoder","OGG Output");
 		Encoders["opusenc"] = new Encoder("opusenc","Opus Audio Encoder","Opus Output");
 		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
@@ -426,6 +429,10 @@ Notes:
 		}
 	}
 
+	public void check_ffmpeg_codec_support(){
+		FFmpegCodecs = FFmpegCodec.check_codec_support();
+	}
+	
 	public void start_input_thread(){
 		// start thread for reading user input
 
@@ -1254,6 +1261,7 @@ Notes:
 					break;
 				case "aac":
 				case "neroaac":
+				case "libfdk_aac":
 					s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
 					break;
 				case "vorbis":
@@ -1308,7 +1316,8 @@ Notes:
 							};
 							break;
 						case "aac":
-							s += encode_audio_avconv(mf,settings);
+						case "libfdk_aac":
+							s += encode_audio_fdkaac(mf,settings);
 							encoderList.add("avconv");
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
@@ -1380,9 +1389,10 @@ Notes:
 					};
 					break;
 					
-				case "aac":		
-					s += encode_audio_avconv(mf,settings);
-					encoderList.add("avconv");
+				case "aac":
+				case "libfdk_aac":	
+					s += encode_audio_fdkaac(mf,settings);
+					encoderList.add("fdkaac");
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
@@ -2134,6 +2144,44 @@ Notes:
 		return s;
 	}
 
+	private string encode_audio_fdkaac (MediaFile mf, Json.Object settings){
+		string s = "";
+
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+
+		//decode to WAV file with avconv
+		s += decode_audio_avconv(mf, settings, false, "audio.wav");
+
+		//encode with aac-enc
+		s += "aac-enc";
+		switch (audio.get_string_member("mode")){
+			case "vbr":
+				s += " -v " + audio.get_string_member("quality");
+				break;
+			case "abr":
+				s += " -r " + audio.get_string_member("bitrate");
+				break;
+		}
+		s += " audio.wav audio.aac";
+		s += "\n";
+
+		
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += mux_mp4box_aac_to_mp4("audio.aac","\"${tempAudio}\"");
+		}
+		else {
+			//encode to outputFile
+			s += mux_mp4box_aac_to_mp4("audio.aac","\"${outputFile}\"");
+		}
+
+		s += "\n";
+
+		return s;
+	}
+
 	private string encode_audio_opus (MediaFile mf, Json.Object settings){
 		string s = "";
 
@@ -2229,9 +2277,11 @@ Notes:
 			s += " -acodec " + audio.get_string_member("codec");
 			break;
 		default:
-			switch(audio.get_string_member("codec")){
+			string acodec = audio.get_string_member("codec");
+			switch(acodec){
 			case "aac":
-				s += " -f mp4 -acodec aac";
+			case "libfdk_aac":
+				s += " -f mp4 -acodec %s".printf(acodec);
 				s += " -strict experimental"; //for compatibility with older versions; not required with newer versions where 'aac' is marked as stable.
 				switch (audio.get_string_member("mode")){
 				case "vbr":
@@ -2408,7 +2458,7 @@ Notes:
 		return s;
 	}
 
-	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent){
+	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent, string temp_file_name = ""){
 		string s = "";
 
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
@@ -2451,22 +2501,40 @@ Notes:
 		}
 
 		//output
-		s += " -vn -y - | ";
+		s += " -vn";
 
 		if (sox_enabled){
-			s += process_audio_sox(mf,settings);
+			s += " -y - | ";
+			s += process_audio_sox(mf,settings,temp_file_name);
+		}
+		else{
+			if (temp_file_name.length > 0){
+				s += " -y '%s'".printf(temp_file_name);
+				s += "\n";
+			}
+			else{
+				s += " -y - | ";
+			}
 		}
 
 		return s;
 	}
 
-	private string process_audio_sox(MediaFile mf, Json.Object settings){
+	private string process_audio_sox(MediaFile mf, Json.Object settings, string temp_file_name = ""){
 		string s = "";
 
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		s += "sox";
-		s += " -t aiff - -t wav -";
+		s += " -t aiff -";
+
+		if (temp_file_name.length > 0){
+			s += " -t wav '%s'".printf(temp_file_name);
+		}
+		else{
+			s += " -t wav -";
+		}
+		
 		s += " -q"; //silent
 
 		string sox_bass = audio.get_string_member("soxBass");
@@ -2504,8 +2572,12 @@ Notes:
 			s += " earwax";
 		}
 
-		//pipe
-		s += " | ";
+		if (temp_file_name.length > 0){
+			s += "\n";
+		}
+		else{
+			s += " | ";
+		}
 
 		return s;
 	}
@@ -2583,6 +2655,17 @@ Notes:
 		return s;
 	}
 
+	private string mux_mp4box_aac_to_mp4 (string input_file, string output_file){
+		string s = "";
+
+		s += "MP4Box -new";
+		s += " -add %s".printf(input_file);
+		s += " %s".printf(output_file);
+		s += "\n";
+
+		return s;
+	}
+
 	private string mux_avconv (MediaFile mf, Json.Object settings){
 		string s = "";
 
@@ -2611,6 +2694,22 @@ Notes:
 
 		return s;
 	}
+
+	private string mux_avconv_aac_to_mp4 (string input_file, string output_file){
+		//Warning: Produces MP4 audio that cannot be read by MKVMerge
+		
+		string s = "";
+
+		s += "avconv";
+		s += " -i %s".printf(input_file);
+		s += " -f mp4";
+		s += " -c:a copy -vn -sn";
+		s += " -y %s".printf(output_file);
+		s += "\n";
+		
+		return s;
+	}
+	
 }
 
 public class MediaFile : GLib.Object{
@@ -3030,5 +3129,56 @@ public class Encoder : GLib.Object{
 		}
 		IsAvailable = available;
 		return IsAvailable;
+	}
+}
+
+public class FFmpegCodec : GLib.Object{
+	public string Name = "";
+	public string Description = "";
+	public bool DecodingSupported = false;
+	public bool EncodingSupported = false;
+	public string CodecType = "";
+
+	public FFmpegCodec(){
+	}
+
+	public static Gee.HashMap<string,FFmpegCodec> check_codec_support(){
+		var list = new Gee.HashMap<string,FFmpegCodec>();
+
+		string output = execute_command_sync_get_output("avconv -codecs");
+
+		Regex regex = null;
+		MatchInfo match;
+		
+		try{
+			//D.V.L. mpegvideo_xvmc       MPEG-1/2 video XvMC (X-Video Motion Compensation)
+			//DEA.L. opus                 Opus (Opus Interactive Audio Codec) (decoders: opus libopus ) (encoders: libopus )
+			regex = new Regex("""^([D\.])([E\.])([VAS])([I\.])([L\.])([S\.])[ \t]+([^ \t]*)[ \t]+([^ \t]*)$""");
+		}
+		catch (Error e) {
+			log_error (e.message);
+		}
+
+		foreach(string line in output.split("\n")){
+			if (regex.match (line, 0, out match)){
+				FFmpegCodec codec = new FFmpegCodec();
+				codec.DecodingSupported = (match.fetch(1).strip() == "D");
+				codec.EncodingSupported = (match.fetch(2).strip() == "E");
+				codec.CodecType = match.fetch(3).strip();
+				codec.Name = match.fetch(7).strip();
+				codec.Description = match.fetch(8).strip();
+				list[codec.Name] = codec;
+			}
+		}
+
+		if (!list.has_key("libfdk_aac")){
+			FFmpegCodec codec = new FFmpegCodec();
+			codec.CodecType = "A";
+			codec.Name = "libfdk_aac";
+			codec.Description = "Fraunhofer FDK AAC Encoder";
+			list[codec.Name] = codec;
+		}
+		
+		return list;
 	}
 }

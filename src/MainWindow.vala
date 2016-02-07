@@ -1667,7 +1667,6 @@ on the toolbar will open the file in a text editor.
 			return;
 		}
 
-
 		ScriptFile sh;
 		TreeIter iter;
 		cmbScriptFile.get_active_iter(out iter);
