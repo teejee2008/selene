@@ -2200,7 +2200,7 @@ Notes:
 		string s = "";
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");
-		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		string format = general.get_string_member("format");
@@ -2217,17 +2217,34 @@ Notes:
 		}
 
 		switch (format){
-			case "ac3":
-				s += " -f ac3 -acodec ac3";
-				s += " -b:a " + audio.get_string_member("bitrate") + "k";
+		case "ac3":
+			s += " -f ac3 -acodec ac3";
+			s += " -b:a " + audio.get_string_member("bitrate") + "k";
+			break;
+		case "flac":
+			s += " -f flac -acodec flac";
+			break;
+		case "wav":
+			s += " -f wav";
+			s += " -acodec " + audio.get_string_member("codec");
+			break;
+		default:
+			switch(audio.get_string_member("codec")){
+			case "aac":
+				s += " -f mp4 -acodec aac";
+				s += " -strict experimental"; //for compatibility with older versions; not required with newer versions where 'aac' is marked as stable.
+				switch (audio.get_string_member("mode")){
+				case "vbr":
+					s += " -q:a " + audio.get_string_member("quality");
+					break;
+				case "abr":
+					s += " -b:a " + audio.get_string_member("bitrate") + "k";
+					break;
+				}
+				
 				break;
-			case "flac":
-				s += " -f flac -acodec flac";
-				break;
-			case "wav":
-				s += " -f wav";
-				s += " -acodec " + audio.get_string_member("codec");
-				break;
+			}
+			break;
 		}
 
 		//channels
@@ -2253,8 +2270,18 @@ Notes:
 
 		s += " -vn -sn";
 
-		s += " -y \"${outputFile}\"";
+		//output
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " -y \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " -y \"${outputFile}\"";
+		}
 
+		s += "\n";
+		
 		return s;
 	}
 
@@ -2556,8 +2583,7 @@ Notes:
 		return s;
 	}
 
-	private string mux_avconv (MediaFile mf, Json.Object settings)
-	{
+	private string mux_avconv (MediaFile mf, Json.Object settings){
 		string s = "";
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");

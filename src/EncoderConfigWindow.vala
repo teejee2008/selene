@@ -1599,6 +1599,23 @@ public class EncoderConfigWindow : Dialog {
 				break;
 
 			case "aac":
+				model.append (out iter);
+				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
+				model.append (out iter);
+				model.set (iter,0,_("Average Bitrate"),1,"abr");
+				cmbAudioMode.set_active(0);
+
+				spinAudioBitrate.adjustment.configure(96, 8, 400, 1, 1, 0);
+				spinAudioBitrate.set_tooltip_text ("");
+				spinAudioBitrate.digits = 0;
+
+				spinAudioQuality.adjustment.configure(1.0, 0.0, 2.0, 0.1, 0.1, 0);
+				spinAudioQuality.digits = 1;
+
+				cmbAudioMode.sensitive = true;
+				cmbAudioMode_changed();
+				break;
+				
 			case "neroaac":
 				model.append (out iter);
 				model.set (iter,0,_("Variable Bitrate"),1,"vbr");
@@ -1608,7 +1625,7 @@ public class EncoderConfigWindow : Dialog {
 				model.set (iter,0,_("Constant Bitrate"),1,"cbr");
 				cmbAudioMode.set_active(0);
 
-				spinAudioBitrate.adjustment.configure(160, 8, 400, 1, 1, 0);
+				spinAudioBitrate.adjustment.configure(96, 8, 400, 1, 1, 0);
 				spinAudioBitrate.set_tooltip_text ("");
 				spinAudioBitrate.digits = 0;
 

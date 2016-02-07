@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-07 13:22+0530\n"
+"POT-Creation-Date: 2016-02-07 13:51+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: EncoderConfigWindow.vala:2372
+#: EncoderConfigWindow.vala:2389
 msgid ""
 "\n"
 "\n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "<b>Preset:</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1992
+#: EncoderConfigWindow.vala:2009
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "\n"
@@ -106,7 +106,7 @@ msgid ""
 "<b>Realtime:</b> Fastest"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1994
+#: EncoderConfigWindow.vala:2011
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "\n"
@@ -114,7 +114,7 @@ msgid ""
 "Larger value = Lower quality, faster\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2003
+#: EncoderConfigWindow.vala:2020
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "Higher values speed-up encoding at the expense of quality.\n"
@@ -209,15 +209,15 @@ msgstr ""
 msgid "AutoCrop Video"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1580 EncoderConfigWindow.vala:1606
-#: EncoderConfigWindow.vala:1637 EncoderConfigWindow.vala:1654
-#: EncoderConfigWindow.vala:2019 EncoderConfigWindow.vala:2042
-#: EncoderConfigWindow.vala:2065
+#: EncoderConfigWindow.vala:1580 EncoderConfigWindow.vala:1605
+#: EncoderConfigWindow.vala:1623 EncoderConfigWindow.vala:1654
+#: EncoderConfigWindow.vala:1671 EncoderConfigWindow.vala:2036
+#: EncoderConfigWindow.vala:2059 EncoderConfigWindow.vala:2082
 msgid "Average Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2021 EncoderConfigWindow.vala:2044
-#: EncoderConfigWindow.vala:2067
+#: EncoderConfigWindow.vala:2038 EncoderConfigWindow.vala:2061
+#: EncoderConfigWindow.vala:2084
 msgid "Average Bitrate (2-pass)"
 msgstr ""
 
@@ -284,8 +284,8 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1582 EncoderConfigWindow.vala:1608
-#: EncoderConfigWindow.vala:1639 EncoderConfigWindow.vala:2091
+#: EncoderConfigWindow.vala:1582 EncoderConfigWindow.vala:1625
+#: EncoderConfigWindow.vala:1656 EncoderConfigWindow.vala:2108
 msgid "Constant Bitrate"
 msgstr ""
 
@@ -406,7 +406,7 @@ msgstr ""
 msgid "Embed / Soft Subs"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2407
+#: EncoderConfigWindow.vala:2424
 msgid "Empty Preset Name"
 msgstr ""
 
@@ -532,7 +532,7 @@ msgstr ""
 msgid "Fits the video in a box of given width and height."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1671
+#: EncoderConfigWindow.vala:1688
 msgid "Fixed Bitrate"
 msgstr ""
 
@@ -626,7 +626,7 @@ msgstr ""
 msgid "Logarithmic"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1698
+#: EncoderConfigWindow.vala:1715
 msgid "Lossless"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: Main.vala:2902 MainWindow.vala:1324
+#: Main.vala:2928 MainWindow.vala:1324
 msgid "N/A"
 msgstr ""
 
@@ -703,10 +703,10 @@ msgid "New Preset"
 msgstr ""
 
 #: EncoderConfigWindow.vala:577 EncoderConfigWindow.vala:680
-#: EncoderConfigWindow.vala:703 EncoderConfigWindow.vala:1718
-#: EncoderConfigWindow.vala:1759 EncoderConfigWindow.vala:1787
-#: EncoderConfigWindow.vala:1801 EncoderConfigWindow.vala:1831
-#: EncoderConfigWindow.vala:1851
+#: EncoderConfigWindow.vala:703 EncoderConfigWindow.vala:1735
+#: EncoderConfigWindow.vala:1776 EncoderConfigWindow.vala:1804
+#: EncoderConfigWindow.vala:1818 EncoderConfigWindow.vala:1848
+#: EncoderConfigWindow.vala:1868
 msgid "No Change"
 msgstr ""
 
@@ -798,7 +798,7 @@ msgstr ""
 msgid "Play File (Source)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2405
+#: EncoderConfigWindow.vala:2422
 msgid "Please enter a name for this preset"
 msgstr ""
 
@@ -846,7 +846,7 @@ msgstr ""
 msgid "Queue is Empty"
 msgstr ""
 
-#: Main.vala:634 Main.vala:693 Main.vala:2623
+#: Main.vala:634 Main.vala:693 Main.vala:2649
 msgid "Queued"
 msgstr ""
 
@@ -1028,8 +1028,8 @@ msgstr ""
 msgid "SuperFast"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2378 EncoderConfigWindow.vala:2381
-#: EncoderConfigWindow.vala:2384 EncoderConfigWindow.vala:2387
+#: EncoderConfigWindow.vala:2395 EncoderConfigWindow.vala:2398
+#: EncoderConfigWindow.vala:2401 EncoderConfigWindow.vala:2404
 msgid "Supported Formats:"
 msgstr ""
 
@@ -1110,17 +1110,18 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1578 EncoderConfigWindow.vala:1604
-#: EncoderConfigWindow.vala:1635 EncoderConfigWindow.vala:1652
-#: EncoderConfigWindow.vala:2063 EncoderConfigWindow.vala:2087
+#: EncoderConfigWindow.vala:1578 EncoderConfigWindow.vala:1603
+#: EncoderConfigWindow.vala:1621 EncoderConfigWindow.vala:1652
+#: EncoderConfigWindow.vala:1669 EncoderConfigWindow.vala:2080
+#: EncoderConfigWindow.vala:2104
 msgid "Variable Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2089
+#: EncoderConfigWindow.vala:2106
 msgid "Variable Bitrate (2pass)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2017 EncoderConfigWindow.vala:2040
+#: EncoderConfigWindow.vala:2034 EncoderConfigWindow.vala:2057
 msgid "Variable Bitrate / CRF"
 msgstr ""
 
