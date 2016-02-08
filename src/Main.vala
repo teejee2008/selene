@@ -414,7 +414,7 @@ Notes:
 		Encoders["mkvmerge"] = new Encoder("mkvmerge","Matroska Muxer","MKV Output");
 		Encoders["mp4box"] = new Encoder("MP4Box","MP4 Muxer","MP4 Output");
 		Encoders["neroaacenc"] = new Encoder("neroAacEnc","Nero AAC Audio Encoder","AAC/MP4 Output");
-		Encoders["fdkaac"] = new Encoder("aac-enc","Fraunhofer FDK AAC Encoder","AAC/MP4 Output");
+		Encoders["aacenc"] = new Encoder("aac-enc","Fraunhofer FDK AAC Encoder","AAC/MP4 Output");
 		Encoders["oggenc"] = new Encoder("oggenc","OGG Audio Encoder","OGG Output");
 		Encoders["opusenc"] = new Encoder("opusenc","Opus Audio Encoder","Opus Output");
 		Encoders["sox"] = new Encoder("sox","SoX Audio Processing Utility","Sound Effects");
@@ -1316,9 +1316,15 @@ Notes:
 							};
 							break;
 						case "aac":
+							s += encode_audio_avconv(mf,settings);
+							encoderList.add("avconv");
+							if (audio.get_boolean_member("soxEnabled")){
+								encoderList.add("sox");
+							};
+							break;
 						case "libfdk_aac":
 							s += encode_audio_fdkaac(mf,settings);
-							encoderList.add("avconv");
+							encoderList.add("aacenc");
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
 							};
@@ -1390,9 +1396,16 @@ Notes:
 					break;
 					
 				case "aac":
+					s += encode_audio_avconv(mf,settings);
+					encoderList.add("avconv");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+					
 				case "libfdk_aac":	
 					s += encode_audio_fdkaac(mf,settings);
-					encoderList.add("fdkaac");
+					encoderList.add("aacenc");
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
@@ -1403,7 +1416,7 @@ Notes:
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				encoderList.add("opusenc");
-				if (audio.get_boolean_member("soxEnabled")){
+				if (audio.getcase _boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
 				break;
@@ -2111,6 +2124,22 @@ Notes:
 				s += " -cbr " + audio.get_string_member("bitrate");
 				break;
 		}
+		if (audio.has_member("aacProfile")){
+			switch(audio.get_string_member("aacProfile")){
+			case "auto":
+				//do nothing
+				break;
+			case "lc":
+				s += " -lc";
+				break;
+			case "he":
+				s += " -he";
+				break;
+			case "hev2":
+				s += " -hev2";
+				break;
+			}
+		}
 		s += " -if -";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
@@ -2163,6 +2192,37 @@ Notes:
 			case "abr":
 				s += " -r " + audio.get_string_member("bitrate");
 				break;
+		}
+		if (audio.has_member("aacProfile")){
+			switch(audio.get_string_member("aacProfile")){
+			case "auto":
+				//do nothing
+				break;
+			case "lc":
+				s += " -t 2";
+				break;
+			case "he":
+				s += " -t 5";
+				break;
+			case "hev2":
+				s += " -t 29";
+				break;
+			case "ld":
+				s += " -t 23";
+				break;
+			case "eld":
+				s += " -t 39";
+				break;
+			case "mpeg2_lc":
+				s += " -t 129";
+				break;
+			case "mpeg2_he":
+				s += " -t 132";
+				break;
+			case "mpeg2_hev2":
+				s += " -t 156";
+				break;
+			}
 		}
 		s += " audio.wav audio.aac";
 		s += "\n";
@@ -2279,7 +2339,8 @@ Notes:
 		default:
 			string acodec = audio.get_string_member("codec");
 			switch(acodec){
-			case "aac":
+			case "aac": //if aac
+			case "neroaac": //if aac
 			case "libfdk_aac":
 				s += " -f mp4 -acodec %s".printf(acodec);
 				s += " -strict experimental"; //for compatibility with older versions; not required with newer versions where 'aac' is marked as stable.
@@ -2291,7 +2352,37 @@ Notes:
 					s += " -b:a " + audio.get_string_member("bitrate") + "k";
 					break;
 				}
-				
+				if (audio.has_member("aacProfile")){
+					switch(audio.get_string_member("aacProfile")){
+					case "auto":
+						//do nothing
+						break;
+					case "lc":
+						s += " -profile aac_low";
+						break;
+					case "he":
+						s += " -profile aac_he";
+						break;
+					case "hev2":
+						s += " -profile aac_he_v2";
+						break;
+					case "ld":
+						s += " -profile aac_ld";
+						break;
+					case "eld":
+						s += " -profile aac_eld";
+						break;
+					case "mpeg2_lc":
+						s += " -profile mpeg2_aac_low";
+						break;
+					case "mpeg2_he":
+						s += " -profile mpeg2_aac_he";
+						break;
+					case "mpeg2_hev2":
+						//not supported
+						break;
+					}
+				}
 				break;
 			}
 			break;
