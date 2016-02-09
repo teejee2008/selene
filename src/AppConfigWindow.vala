@@ -34,6 +34,7 @@ using TeeJee.Misc;
 
 public class AppConfigWindow : Dialog {
 	private Box vboxMain;
+	private Gtk.Notebook notebook;
 	private Label lblView;
 	private Label lblOutput;
 	private CheckButton chkOutput;
@@ -44,8 +45,9 @@ public class AppConfigWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	private ComboBox cmbFileView;
-	private ComboBox cmdSelectFFmpeg;
-
+	private ComboBox cmbSelectEncoder;
+	private ComboBox cmbSelectPlayer;
+	
 	public AppConfigWindow() {
 		title = "Settings";
 		
@@ -59,61 +61,55 @@ public class AppConfigWindow : Dialog {
 
 		// get content area
 		vboxMain = get_content_area();
-		vboxMain.margin_top = vboxMain.margin_left = vboxMain.margin_right = 12;
-		vboxMain.spacing = 6;
-		vboxMain.set_size_request(350, 450);
+		vboxMain.set_size_request(400,500);
 
-		// lblView
-		lblView = new Label (_("<b>General</b>"));
-		lblView.set_use_markup(true);
-		lblView.halign = Align.START;
-		//lblView.margin_bottom = 12;
-		//lblView.margin_top = 12;
-		vboxMain.pack_start (lblView, false, true, 0);
+		//notebook
+		notebook = new Notebook();
+		notebook.tab_pos = PositionType.TOP;
+		notebook.show_border = true;
+		notebook.scrollable = true;
+		notebook.margin = 6;
+		vboxMain.pack_start (notebook, true, true, 0);
+		
+		init_ui_tab_general();
 
-		//hboxFileView
-		Box hboxFileView = new Box(Orientation.HORIZONTAL,6);
-        vboxMain.add(hboxFileView);
+		init_ui_tab_tools();
+		
+        // btnSave
+        btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
+        btnSave.clicked.connect (btnSave_clicked);
 
-		Label lblFileView = new Gtk.Label(_("File View"));
-		lblFileView.xalign = (float) 0.0;
-		hboxFileView.pack_start(lblFileView,false,false,0);
+        // btnCancel
+        btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
+        btnCancel.clicked.connect (btnCancel_clicked);
 
-		cmbFileView = new ComboBox();
-		var textCell = new CellRendererText();
-        cmbFileView.pack_start(textCell, false);
-        cmbFileView.set_attributes(textCell, "text", 0);
-		hboxFileView.pack_start(cmbFileView,false,false,0);
+        chkOutput_clicked();
+        chkBackup_clicked();
+	}
 
-		Gtk.TreeIter iter;
-		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		model.append (out iter);
-		model.set (iter, 0, _("Simple"), 1, "list");
-		model.append (out iter);
-		model.set (iter, 0, _("Tiles"), 1, "tiles");
-		cmbFileView.set_model(model);
+	private void init_ui_tab_general(){
+		//lblTabGeneral
+		var lblTabGeneral = new Label (_("General"));
 
-		if (App.TileView){
-			cmbFileView.set_active(1);
-		}
-		else{
-			cmbFileView.set_active(0);
-		}
+        //vboxTabGeneral
+        var vboxTabGeneral = new Box(Orientation.VERTICAL,6);
+        vboxTabGeneral.margin = 12;
+        notebook.append_page (vboxTabGeneral, lblTabGeneral);
 
 		// lblOutput
 		lblOutput = new Label (_("<b>Output Directory</b>"));
 		lblOutput.set_use_markup(true);
 		lblOutput.halign = Align.START;
 		//lblOutput.margin_bottom = 12;
-		lblOutput.margin_top = 12;
-		vboxMain.pack_start (lblOutput, false, true, 0);
+		//lblOutput.margin_top = 12;
+		vboxTabGeneral.pack_start (lblOutput, false, true, 0);
 
 		// chkOutput
 		chkOutput = new CheckButton.with_label (_("Save files in following location"));
 		chkOutput.active = (App.OutputDirectory.length > 0);
 		//chkOutput.margin_left = 6;
 		chkOutput.clicked.connect (chkOutput_clicked);
-		vboxMain.pack_start (chkOutput, false, true, 0);
+		vboxTabGeneral.pack_start (chkOutput, false, true, 0);
 		
 		// txtOutput
 		txtOutput = new Gtk.Entry();
@@ -122,7 +118,7 @@ public class AppConfigWindow : Dialog {
 		txtOutput.placeholder_text = _("Enter path or browse for directory");
 		//txtOutput.margin_left = 6;
 		//txtOutput.margin_bottom = 6;
-		vboxMain.add (txtOutput);
+		vboxTabGeneral.add (txtOutput);
 
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
 			txtOutput.text = App.OutputDirectory;
@@ -156,14 +152,14 @@ public class AppConfigWindow : Dialog {
 		lblBackup.halign = Align.START;
 		//lblBackup.margin_bottom = 12;
 		lblBackup.margin_top = 12;
-		vboxMain.pack_start (lblBackup, false, true, 0);
+		vboxTabGeneral.pack_start (lblBackup, false, true, 0);
 
 		// chkBackup
 		chkBackup = new CheckButton.with_label (_("Move source files after encoding is complete"));
 		chkBackup.active = (App.BackupDirectory.length > 0);
 		//chkBackup.margin_left = 6;
 		chkBackup.clicked.connect (chkBackup_clicked);
-		vboxMain.pack_start (chkBackup, false, true, 0);
+		vboxTabGeneral.pack_start (chkBackup, false, true, 0);
 		
 		// txtBackup
 		txtBackup = new Gtk.Entry();
@@ -172,7 +168,7 @@ public class AppConfigWindow : Dialog {
 		txtBackup.placeholder_text = _("Enter path or browse for directory");
 		//txtBackup.margin_left = 6;
 		//txtBackup.margin_bottom = 6;
-		vboxMain.add (txtBackup);
+		vboxTabGeneral.add (txtBackup);
 
 		if ((App.BackupDirectory != null) && dir_exists (App.BackupDirectory)){
 			txtBackup.text = App.BackupDirectory;
@@ -200,68 +196,165 @@ public class AppConfigWindow : Dialog {
 			chooser.destroy();
 		});
 
-		// lblPreferred
-		var lblPreferred = new Label (_("<b>Preferred Tools &amp; Encoders</b>"));
-		lblPreferred.set_use_markup(true);
-		lblPreferred.halign = Align.START;
-		lblPreferred.margin_top = 12;
-		vboxMain.pack_start (lblPreferred, false, true, 0);
-
-
-		var hboxFFmpeg = new Gtk.Box(Orientation.HORIZONTAL,6);
-		vboxMain.pack_start (hboxFFmpeg, false, true, 0);
-
-		// lblSelectFFmpeg
-		var lblSelectFFmpeg = new Label ("Audio-video processing tool");
-		lblSelectFFmpeg.set_use_markup(true);
-		lblSelectFFmpeg.halign = Align.START;
-		lblSelectFFmpeg.hexpand = true;
-		hboxFFmpeg.add(lblSelectFFmpeg);
+		// lblView
+		lblView = new Label (_("<b>Main Window</b>"));
+		lblView.set_use_markup(true);
+		lblView.halign = Align.START;
+		//lblView.margin_bottom = 12;
+		lblView.margin_top = 12;
+		vboxTabGeneral.pack_start (lblView, false, true, 0);
 		
-		//cmdSelectFFmpeg ---------
+		//hboxFileView
+		Box hboxFileView = new Box(Orientation.HORIZONTAL,6);
+        vboxTabGeneral.add(hboxFileView);
+
+		Label lblFileView = new Gtk.Label(_("File View"));
+		lblFileView.xalign = (float) 0.0;
+		hboxFileView.pack_start(lblFileView,false,false,0);
+
+		cmbFileView = new ComboBox();
+		var textCell = new CellRendererText();
+        cmbFileView.pack_start(textCell, false);
+        cmbFileView.set_attributes(textCell, "text", 0);
+		hboxFileView.pack_start(cmbFileView,false,false,0);
+
+		Gtk.TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("Simple"), 1, "list");
+		model.append (out iter);
+		model.set (iter, 0, _("Tiles"), 1, "tiles");
+		cmbFileView.set_model(model);
+
+		if (App.TileView){
+			cmbFileView.set_active(1);
+		}
+		else{
+			cmbFileView.set_active(0);
+		}
+
+	}
+
+	private void init_ui_tab_tools(){
+		//lblTabTools
+		var lblTabTools = new Label (_("Tools"));
+
+        //vboxTabTools
+        var vboxTabTools = new Box(Orientation.VERTICAL,6);
+        vboxTabTools.margin = 12;
+        notebook.append_page (vboxTabTools, lblTabTools);
 		
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		Gtk.SizeGroup sizegroup = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
+		
+		//hboxEncoder -----------------------------------------------
+		
+		var hboxEncoder = new Gtk.Box(Orientation.HORIZONTAL,6);
+		vboxTabTools.pack_start (hboxEncoder, false, true, 0);
+
+		//lblSelectEncoder
+		var lblSelectEncoder = new Label ("Use FFmpeg or Libav encoder");
+		lblSelectEncoder.set_use_markup(true);
+		lblSelectEncoder.halign = Align.START;
+		lblSelectEncoder.hexpand = true;
+		hboxEncoder.add(lblSelectEncoder);
+		
+		//cmbSelectEncoder
+		TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter, 0, _("ffmpeg"), 1, "ffmpeg");
 		model.append (out iter);
 		model.set (iter, 0, _("avconv / Libav"), 1, "avconv");
 
-		cmdSelectFFmpeg = new ComboBox.with_model(model);
-		hboxFFmpeg.add(cmdSelectFFmpeg);
+		cmbSelectEncoder = new ComboBox.with_model(model);
+		hboxEncoder.add(cmbSelectEncoder);
+		sizegroup.add_widget(cmbSelectEncoder);
 		
-		textCell = new CellRendererText();
-        cmdSelectFFmpeg.pack_start( textCell, false );
-        cmdSelectFFmpeg.set_attributes( textCell, "text", 0 );
+		var textCell = new CellRendererText();
+        cmbSelectEncoder.pack_start( textCell, false );
+        cmbSelectEncoder.set_attributes( textCell, "text", 0 );
 			
         string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
-        tt += _("<b>ffmpeg</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
-        cmdSelectFFmpeg.set_tooltip_markup(tt);
-		lblSelectFFmpeg.set_tooltip_markup(tt);
+        tt += _("<b>Encoder</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
+        cmbSelectEncoder.set_tooltip_markup(tt);
+		lblSelectEncoder.set_tooltip_markup(tt);
 		
 		switch(App.AVEncoder){
-		case "ffmpeg":
-			cmdSelectFFmpeg.active = 0;
+		case "Encoder":
+			cmbSelectEncoder.active = 0;
 			break;
 		case "avconv":
-			cmdSelectFFmpeg.active = 1;
+			cmbSelectEncoder.active = 1;
 			break;
 		default:
-			cmdSelectFFmpeg.active = 0;
+			cmbSelectEncoder.active = 0;
 			break;
 		}
 
-        // btnSave
-        btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
-        btnSave.clicked.connect (btnSave_clicked);
-
-        // btnCancel
-        btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
-        btnCancel.clicked.connect (btnCancel_clicked);
-
-        chkOutput_clicked();
-        chkBackup_clicked();
+		//hboxPlayer -----------------------------------------------
+		
+		var hboxPlayer = new Gtk.Box(Orientation.HORIZONTAL,6);
+		vboxTabTools.pack_start (hboxPlayer, false, true, 0);
+		
+		//lblSelectPlayer
+		var lblSelectPlayer = new Label ("Media player");
+		lblSelectPlayer.set_use_markup(true);
+		lblSelectPlayer.halign = Align.START;
+		lblSelectPlayer.hexpand = true;
+		hboxPlayer.add(lblSelectPlayer);
+		
+		//cmdSelectPlayer
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("ffplay"), 1, "ffplay");
+		model.append (out iter);
+		model.set (iter, 0, _("avplay"), 1, "avplay");
+		model.append (out iter);
+		model.set (iter, 0, _("mpv"), 1, "mpv");
+		model.append (out iter);
+		model.set (iter, 0, _("mplayer"), 1, "mplayer");
+		model.append (out iter);
+		model.set (iter, 0, _("smplayer"), 1, "smplayer");
+		model.append (out iter);
+		model.set (iter, 0, _("vlc"), 1, "vlc");
+		
+		cmbSelectPlayer = new ComboBox.with_model(model);
+		hboxPlayer.add(cmbSelectPlayer);
+		sizegroup.add_widget(cmbSelectPlayer);
+		
+		textCell = new CellRendererText();
+        cmbSelectPlayer.pack_start( textCell, false );
+        cmbSelectPlayer.set_attributes( textCell, "text", 0 );
+			
+        tt = _("Select the media player to be used for playing audio and video files");
+        cmbSelectPlayer.set_tooltip_markup(tt);
+		lblSelectPlayer.set_tooltip_markup(tt);
+		
+		switch(App.AVPlayer){
+		case "ffplay":
+			cmbSelectPlayer.active = 0;
+			break;
+		case "avplay":
+			cmbSelectPlayer.active = 1;
+			break;
+		case "mpv":
+			cmbSelectPlayer.active = 2;
+			break;
+		case "mplayer":
+			cmbSelectPlayer.active = 3;
+			break;
+		case "smplayer":
+			cmbSelectPlayer.active = 4;
+			break;
+		case "vlc":
+			cmbSelectPlayer.active = 5;
+			break;
+		default:
+			cmbSelectPlayer.active = 0;
+			break;
+		}
 	}
-
+	
 	private void chkOutput_clicked(){
 		txtOutput.set_sensitive(chkOutput.active);
 	}
@@ -297,7 +390,8 @@ public class AppConfigWindow : Dialog {
 
 		App.TileView = (cmbFileView.active == 1);
 
-		App.AVEncoder = gtk_combobox_get_value(cmdSelectFFmpeg,1,"ffmpeg");
+		App.AVEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
+		App.AVPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mplayer");
 		
 		// Save settings
 		App.save_config();

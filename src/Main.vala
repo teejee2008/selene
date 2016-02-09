@@ -438,9 +438,11 @@ Notes:
 
 		Encoders["ffplay"] = new Encoder("ffplay","FFmpeg's Audio Video Player","Audio-Video Playback");
 		Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
-		Encoders["mplayer"] = new Encoder("mplayer","mplayer - Audio Video Player","Audio-Video Playback");
-		Encoders["mplayer2"] = new Encoder("mplayer2","mplayer2 - Audio Video Player","Audio-Video Playback");
-		Encoders["mpv"] = new Encoder("mpv","mpv - Audio Video Player","Audio-Video Playback");
+		Encoders["mplayer"] = new Encoder("mplayer","Media Player","Audio-Video Playback");
+		Encoders["mplayer2"] = new Encoder("mplayer2","Media Player","Audio-Video Playback");
+		Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
+		Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
+		Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
 	}
 
 	public void check_all_encoders(){
@@ -569,7 +571,7 @@ Notes:
 
 		check_and_default_av_encoder();
 
-		AVEncoder = json_get_string(config,"av-player", "ffplay");
+		AVPlayer = json_get_string(config,"av-player", "ffplay");
 
 		check_and_default_av_player();
 		
@@ -588,10 +590,12 @@ Notes:
 		
 		if (Encoders["ffmpeg"].IsAvailable){
 			AVEncoder = "ffmpeg";
+			return;
 		}
 
 		if (Encoders["avconv"].IsAvailable){
 			AVEncoder = "avconv";
+			return;
 		}
 	}
 
@@ -599,16 +603,36 @@ Notes:
 		if (Encoders.has_key(AVPlayer) && Encoders[AVPlayer].IsAvailable){
 			return;
 		}
+
+		if (Encoders["smplayer"].IsAvailable){
+			AVPlayer = "smplayer";
+			return;
+		}
+		
+		if (Encoders["vlc"].IsAvailable){
+			AVPlayer = "vlc";
+			return;
+		}
+		
+		if (Encoders["mpv"].IsAvailable){
+			AVPlayer = "mpv";
+			return;
+		}
+
+		if (Encoders["mplayer"].IsAvailable){
+			AVPlayer = "mplayer";
+			return;
+		}
 		
 		if (Encoders["ffplay"].IsAvailable){
 			AVPlayer = "ffplay";
+			return;
 		}
 
 		if (Encoders["avplay"].IsAvailable){
 			AVPlayer = "avplay";
+			return;
 		}
-
-		//TODO: check mplayer, mpv
 	}
 	
 	public void exit_app(){
@@ -3195,44 +3219,43 @@ public class MediaFile : GLib.Object{
 	}
 
 	public void preview_output(string av_player){
-		string output = "";
-		string error = "";
-
-		try {
-			Process.spawn_command_line_sync("%s -i \"%s\" -vf crop=%s".printf(av_player, Path, crop_values_libav()), out output, out error);
-		}
-		catch(Error e){
-	        log_error (e.message);
-	    }
+		//deprecated
 	}
 
 	public void play_source(string av_player){
-		if(file_exists(Path)){
-			string output = "";
-			string error = "";
-
-			try {
-				Process.spawn_command_line_sync("%s -i \"%s\"".printf(av_player,Path), out output, out error);
-			}
-			catch(Error e){
-				log_error (e.message);
-			}
-		}
+		play_file(Path, av_player);
 	}
 
 	public void play_output(string av_player){
-		if(file_exists(OutputFilePath)){
+		play_file(OutputFilePath, av_player);
+	}
+
+	private void play_file(string file_path, string av_player){
+		if (file_exists(file_path)){
+			
 			string output = "";
 			string error = "";
 
+			string cmd = "";
+			switch(av_player){
+				case "avplay":
+				case "ffplay":
+					cmd = "%s -i \"%s\"".printf(av_player, file_path);
+					break;
+				default:
+					cmd = "%s \"%s\"".printf(av_player, file_path);
+					break;
+			}
+		
 			try {
-				Process.spawn_command_line_sync("%s -i \"%s\"".printf(av_player, OutputFilePath), out output, out error);
+				Process.spawn_command_line_sync(cmd, out output, out error);
 			}
 			catch(Error e){
 				log_error (e.message);
 			}
 		}
 	}
+	
 }
 
 public class ScriptFile : GLib.Object{

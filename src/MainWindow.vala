@@ -1161,7 +1161,7 @@ on the toolbar will open the file in a text editor.
 
 				miFileInfo.visible = true;
 				miFileInfoOutput.visible = false;
-				miFilePreview.visible = true;
+				miFilePreview.visible = false;
 				miFilePlaySource.visible = true;
 				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = true;
