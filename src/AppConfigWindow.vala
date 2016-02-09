@@ -48,8 +48,11 @@ public class AppConfigWindow : Dialog {
 	private ComboBox cmbSelectEncoder;
 	private ComboBox cmbSelectPlayer;
 	
-	public AppConfigWindow() {
+	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
+
+		set_transient_for(parent);
+		set_modal(true);
 		
         window_position = WindowPosition.CENTER_ON_PARENT;
         destroy_with_parent = true;
@@ -85,6 +88,8 @@ public class AppConfigWindow : Dialog {
 
         chkOutput_clicked();
         chkBackup_clicked();
+
+        show_all();
 	}
 
 	private void init_ui_tab_general(){

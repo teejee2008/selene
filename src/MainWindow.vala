@@ -1595,11 +1595,10 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void btnAppSettings_clicked(){
-	    var dialog = new AppConfigWindow();
-	    dialog.set_transient_for(this);
-	    dialog.show_all();
+	    var dialog = new AppConfigWindow(this);
 	    dialog.run();
-
+		dialog.destroy();
+		
 	    refresh_list_view(false);
 	}
 

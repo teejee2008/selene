@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-09 22:01+0530\n"
+"POT-Creation-Date: 2016-02-09 22:14+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:150
+#: AppConfigWindow.vala:155
 msgid "<b>Backup Directory</b>"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgid ""
 "These subtitles can be switched off since they are added as a separate track"
 msgstr ""
 
-#: AppConfigWindow.vala:278
+#: AppConfigWindow.vala:283
 msgid ""
 "<b>Encoder</b>\n"
 "Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
@@ -124,7 +124,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: AppConfigWindow.vala:200
+#: AppConfigWindow.vala:205
 msgid "<b>Main Window</b>"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr ""
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:100
+#: AppConfigWindow.vala:105
 msgid "<b>Output Directory</b>"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr ""
 msgid "<b>SOX Audio Processing:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:277
+#: AppConfigWindow.vala:282
 msgid ""
 "<b>avconv</b>\n"
 "Use the 'avconv' encoding tool from the Libav project\n"
@@ -330,7 +330,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:1842
+#: MainWindow.vala:1841
 msgid "CPU: "
 msgstr ""
 
@@ -503,7 +503,7 @@ msgstr ""
 msgid "Enter any key to Cancel..."
 msgstr ""
 
-#: AppConfigWindow.vala:118 AppConfigWindow.vala:168
+#: AppConfigWindow.vala:123 AppConfigWindow.vala:173
 msgid "Enter path or browse for directory"
 msgstr ""
 
@@ -571,7 +571,7 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:211
+#: AppConfigWindow.vala:216
 msgid "File View"
 msgstr ""
 
@@ -617,7 +617,7 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:1680
+#: MainWindow.vala:1679
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -645,7 +645,7 @@ msgstr ""
 msgid "Frames/sec"
 msgstr ""
 
-#: AppConfigWindow.vala:92 EncoderConfigWindow.vala:271
+#: AppConfigWindow.vala:97 EncoderConfigWindow.vala:271
 msgid "General"
 msgstr ""
 
@@ -675,7 +675,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: MainWindow.vala:1659
+#: MainWindow.vala:1658
 msgid ""
 "Input queue is empty!\n"
 "Please add some files.\n"
@@ -773,7 +773,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:1680
+#: MainWindow.vala:1679
 msgid "Missing Encoders"
 msgstr ""
 
@@ -785,7 +785,7 @@ msgstr ""
 msgid "Missing Utilities"
 msgstr ""
 
-#: AppConfigWindow.vala:158
+#: AppConfigWindow.vala:163
 msgid "Move source files after encoding is complete"
 msgstr ""
 
@@ -877,7 +877,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:199 MainWindow.vala:1640 MainWindow.vala:1642
+#: MainWindow.vala:199 MainWindow.vala:1639 MainWindow.vala:1641
 msgid "Pause"
 msgstr ""
 
@@ -905,7 +905,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:1680
+#: MainWindow.vala:1679
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -921,7 +921,7 @@ msgstr ""
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:1774
+#: MainWindow.vala:1773
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
@@ -945,7 +945,7 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: MainWindow.vala:1661
+#: MainWindow.vala:1660
 msgid "Queue is Empty"
 msgstr ""
 
@@ -982,7 +982,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:1634 MainWindow.vala:1636
+#: MainWindow.vala:1633 MainWindow.vala:1635
 msgid "Resume"
 msgstr ""
 
@@ -1002,11 +1002,11 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:108
+#: AppConfigWindow.vala:113
 msgid "Save files in following location"
 msgstr ""
 
-#: AppConfigWindow.vala:130 AppConfigWindow.vala:180
+#: AppConfigWindow.vala:135 AppConfigWindow.vala:185
 msgid "Select Path"
 msgstr ""
 
@@ -1014,7 +1014,7 @@ msgstr ""
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
 
-#: AppConfigWindow.vala:329
+#: AppConfigWindow.vala:334
 msgid "Select the media player to be used for playing audio and video files"
 msgstr ""
 
@@ -1037,11 +1037,11 @@ msgstr ""
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:1613
+#: MainWindow.vala:1612
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:1610
+#: MainWindow.vala:1609
 msgid "Shutdown Enabled"
 msgstr ""
 
@@ -1049,7 +1049,7 @@ msgstr ""
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: AppConfigWindow.vala:224
+#: AppConfigWindow.vala:229
 msgid "Simple"
 msgstr ""
 
@@ -1140,11 +1140,11 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow.vala:1776
+#: MainWindow.vala:1775
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:1783
+#: MainWindow.vala:1782
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1153,7 +1153,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:767 MainWindow.vala:1773
+#: Main.vala:767 MainWindow.vala:1772
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1179,7 +1179,7 @@ msgstr ""
 msgid "Third Party Tools &amp; Software"
 msgstr ""
 
-#: AppConfigWindow.vala:226
+#: AppConfigWindow.vala:231
 msgid "Tiles"
 msgstr ""
 
@@ -1187,7 +1187,7 @@ msgstr ""
 msgid "Tool"
 msgstr ""
 
-#: AppConfigWindow.vala:240
+#: AppConfigWindow.vala:245
 msgid "Tools"
 msgstr ""
 
@@ -1291,27 +1291,27 @@ msgstr ""
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
-#: AppConfigWindow.vala:267
+#: AppConfigWindow.vala:272
 msgid "avconv / Libav"
 msgstr ""
 
-#: AppConfigWindow.vala:311
+#: AppConfigWindow.vala:316
 msgid "avplay"
 msgstr ""
 
-#: AppConfigWindow.vala:265
+#: AppConfigWindow.vala:270
 msgid "ffmpeg"
 msgstr ""
 
-#: AppConfigWindow.vala:309
+#: AppConfigWindow.vala:314
 msgid "ffplay"
 msgstr ""
 
-#: AppConfigWindow.vala:315
+#: AppConfigWindow.vala:320
 msgid "mplayer"
 msgstr ""
 
-#: AppConfigWindow.vala:313
+#: AppConfigWindow.vala:318
 msgid "mpv"
 msgstr ""
 
@@ -1323,10 +1323,10 @@ msgstr ""
 msgid "scripts"
 msgstr ""
 
-#: AppConfigWindow.vala:317
+#: AppConfigWindow.vala:322
 msgid "smplayer"
 msgstr ""
 
-#: AppConfigWindow.vala:319
+#: AppConfigWindow.vala:324
 msgid "vlc"
 msgstr ""
