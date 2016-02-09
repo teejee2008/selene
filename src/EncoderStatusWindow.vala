@@ -137,8 +137,16 @@ public class EncoderStatusWindow : Dialog {
 	    }
 
 		TreeIter iter;
-		
+		var list = new Gee.ArrayList<Encoder>();
 		foreach (Encoder enc in App.Encoders.values){
+			list.add(enc);
+		}
+		CompareDataFunc<Encoder> func = (a, b) => {
+			return strcmp(a.Command,b.Command);
+		};
+		list.sort((owned)func);
+		
+		foreach (Encoder enc in list){
 			store.append(out iter, null);
 			store.set(iter, 0, enc.Command);
 			store.set(iter, 1, enc.Name);

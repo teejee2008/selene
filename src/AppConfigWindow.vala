@@ -33,7 +33,6 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public class AppConfigWindow : Dialog {
-
 	private Box vboxMain;
 	private Label lblView;
 	private Label lblOutput;
@@ -45,6 +44,7 @@ public class AppConfigWindow : Dialog {
 	private Button btnSave;
 	private Button btnCancel;
 	private ComboBox cmbFileView;
+	private ComboBox cmdSelectFFmpeg;
 
 	public AppConfigWindow() {
 		title = "Settings";
@@ -59,9 +59,9 @@ public class AppConfigWindow : Dialog {
 
 		// get content area
 		vboxMain = get_content_area();
-		vboxMain.margin = 6;
+		vboxMain.margin_top = vboxMain.margin_left = vboxMain.margin_right = 12;
 		vboxMain.spacing = 6;
-		vboxMain.set_size_request(350, 400);
+		vboxMain.set_size_request(350, 450);
 
 		// lblView
 		lblView = new Label (_("<b>General</b>"));
@@ -200,6 +200,56 @@ public class AppConfigWindow : Dialog {
 			chooser.destroy();
 		});
 
+		// lblPreferred
+		var lblPreferred = new Label (_("<b>Preferred Tools &amp; Encoders</b>"));
+		lblPreferred.set_use_markup(true);
+		lblPreferred.halign = Align.START;
+		lblPreferred.margin_top = 12;
+		vboxMain.pack_start (lblPreferred, false, true, 0);
+
+
+		var hboxFFmpeg = new Gtk.Box(Orientation.HORIZONTAL,6);
+		vboxMain.pack_start (hboxFFmpeg, false, true, 0);
+
+		// lblSelectFFmpeg
+		var lblSelectFFmpeg = new Label ("Audio-video processing tool");
+		lblSelectFFmpeg.set_use_markup(true);
+		lblSelectFFmpeg.halign = Align.START;
+		lblSelectFFmpeg.hexpand = true;
+		hboxFFmpeg.add(lblSelectFFmpeg);
+		
+		//cmdSelectFFmpeg ---------
+		
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("ffmpeg"), 1, "ffmpeg");
+		model.append (out iter);
+		model.set (iter, 0, _("avconv / Libav"), 1, "avconv");
+
+		cmdSelectFFmpeg = new ComboBox.with_model(model);
+		hboxFFmpeg.add(cmdSelectFFmpeg);
+		
+		textCell = new CellRendererText();
+        cmdSelectFFmpeg.pack_start( textCell, false );
+        cmdSelectFFmpeg.set_attributes( textCell, "text", 0 );
+			
+        string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
+        tt += _("<b>ffmpeg</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
+        cmdSelectFFmpeg.set_tooltip_markup(tt);
+		lblSelectFFmpeg.set_tooltip_markup(tt);
+		
+		switch(App.AVEncoder){
+		case "ffmpeg":
+			cmdSelectFFmpeg.active = 0;
+			break;
+		case "avconv":
+			cmdSelectFFmpeg.active = 1;
+			break;
+		default:
+			cmdSelectFFmpeg.active = 0;
+			break;
+		}
+
         // btnSave
         btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
         btnSave.clicked.connect (btnSave_clicked);
@@ -247,6 +297,8 @@ public class AppConfigWindow : Dialog {
 
 		App.TileView = (cmbFileView.active == 1);
 
+		App.AVEncoder = gtk_combobox_get_value(cmdSelectFFmpeg,1,"ffmpeg");
+		
 		// Save settings
 		App.save_config();
 

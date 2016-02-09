@@ -85,6 +85,9 @@ public class Main : GLib.Object{
 	public string BackupDirectory = "";
 	public string InputDirectory = "";
 	public bool TileView = true;
+	
+	public string AVEncoder = "ffmpeg";
+	public string AVPlayer = "ffplay";
 
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
@@ -296,23 +299,33 @@ Notes:
 	}
 
 	public Main(string arg0){
+		
 		InputFiles = new Gee.ArrayList<MediaFile>();
 		Encoders = new Gee.HashMap<string,Encoder>();
 
+		log_msg("here");
 		//check encoders
 		init_encoder_list();
 		check_all_encoders();
+		check_and_default_av_encoder();
+		check_and_default_av_player();
 		check_ffmpeg_codec_support();
-		
-		//check critical encoders
-		foreach(string enc in new string[]{"mediainfo","avconv"}){
-			Encoders[enc].CheckAvailability();
-			if (!Encoders[enc].IsAvailable){
-				gtk_messagebox(_("Missing Encoders"), _("Following encoders are not installed on your system:") + "\n\n%s\n\n".printf(Encoders[enc].Command) + _("Not possible to continue!"), null, true);
-				exit(1);
-			}
-		}
 
+		//check critical encoders -------------------------
+		
+		string msg = "";
+		if (!Encoders["mediainfo"].IsAvailable){
+			msg += "%s ".printf("mediainfo");
+		}
+		if (!Encoders["ffmpeg"].IsAvailable && !Encoders["avconv"].IsAvailable){
+			msg += "%s ".printf("ffmpeg avconv");
+		}
+		if (msg.length > 0){
+			msg = _("Following utilities are not installed on your system:") + "\n\n%s\n\n".printf(msg) + _("Not possible to continue!");
+			gtk_messagebox(_("Missing Utilities"), msg, null, true);
+			exit(1);
+		}
+		
 		// check for admin priviledges
 		AdminMode = user_is_admin();
 
@@ -407,7 +420,8 @@ Notes:
 	}
 
 	public void init_encoder_list(){
-		Encoders["avconv"] = new Encoder("avconv","FFmpeg/Libav Encoder","Audio-Video Decoding");
+		Encoders["avconv"] = new Encoder("avconv","Libav Encoder","Audio-Video Decoding");
+		Encoders["ffmpeg"] = new Encoder("ffmpeg","FFmpeg Encoder","Audio-Video Decoding");
 		Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
 		Encoders["lame"] = new Encoder("lame","LAME MP3 Encoder", "MP3 Output");
 		Encoders["mediainfo"] = new Encoder("mediainfo","Media Information Utility","Reading Audio Video Properties");
@@ -421,6 +435,12 @@ Notes:
 		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
 		Encoders["x264"] = new Encoder("x264","H.264 / MPEG-4 AVC Video Encoder","H264 Output");
 		Encoders["x265"] = new Encoder("x265","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
+
+		Encoders["ffplay"] = new Encoder("ffplay","FFmpeg's Audio Video Player","Audio-Video Playback");
+		Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
+		Encoders["mplayer"] = new Encoder("mplayer","mplayer - Audio Video Player","Audio-Video Playback");
+		Encoders["mplayer2"] = new Encoder("mplayer2","mplayer2 - Audio Video Player","Audio-Video Playback");
+		Encoders["mpv"] = new Encoder("mpv","mpv - Audio Video Player","Audio-Video Playback");
 	}
 
 	public void check_all_encoders(){
@@ -430,7 +450,7 @@ Notes:
 	}
 
 	public void check_ffmpeg_codec_support(){
-		FFmpegCodecs = FFmpegCodec.check_codec_support();
+		FFmpegCodecs = FFmpegCodec.check_codec_support(AVEncoder);
 	}
 	
 	public void start_input_thread(){
@@ -491,7 +511,9 @@ Notes:
 		config.set_string_member("output-dir", OutputDirectory);
 		config.set_string_member("last-script", SelectedScript.Path);
 		config.set_string_member("tile-view", TileView.to_string());
-
+		config.set_string_member("av-encoder", AVEncoder);
+		config.set_string_member("av-player", AVPlayer);
+		
 		if (SelectedScript != null) {
 			config.set_string_member("last-script", SelectedScript.Path);
 		} else {
@@ -543,6 +565,14 @@ Notes:
 		else
 			OutputDirectory = "";
 
+		AVEncoder = json_get_string(config,"av-encoder", "ffmpeg");
+
+		check_and_default_av_encoder();
+
+		AVEncoder = json_get_string(config,"av-player", "ffplay");
+
+		check_and_default_av_player();
+		
 		val = json_get_string(config,"last-script", "");
 		if (val != null && val.length > 0) {
 			SelectedScript = new ScriptFile(val);
@@ -551,13 +581,43 @@ Notes:
 		TileView = json_get_bool(config,"tile-view",true);
 	}
 
+	public void check_and_default_av_encoder(){
+		if (Encoders.has_key(AVEncoder) && Encoders[AVEncoder].IsAvailable){
+			return;
+		}
+		
+		if (Encoders["ffmpeg"].IsAvailable){
+			AVEncoder = "ffmpeg";
+		}
+
+		if (Encoders["avconv"].IsAvailable){
+			AVEncoder = "avconv";
+		}
+	}
+
+	public void check_and_default_av_player(){
+		if (Encoders.has_key(AVPlayer) && Encoders[AVPlayer].IsAvailable){
+			return;
+		}
+		
+		if (Encoders["ffplay"].IsAvailable){
+			AVPlayer = "ffplay";
+		}
+
+		if (Encoders["avplay"].IsAvailable){
+			AVPlayer = "avplay";
+		}
+
+		//TODO: check mplayer, mpv
+	}
+	
 	public void exit_app(){
 		save_config();
 		Gtk.main_quit();
 	}
 
 	public bool add_file (string filePath){
-		MediaFile mFile = new MediaFile (filePath);
+		MediaFile mFile = new MediaFile (filePath, App.AVEncoder);
 
 		if (mFile.IsValid
 			&& mFile.Extension != ".srt"
@@ -817,7 +877,7 @@ Notes:
 				var dis = new DataInputStream (fileScript.read());
 
 				MatchInfo match;
-				Regex rxCrop_libav = new Regex ("""avconv.*-vf.*(crop=[^, ]+)""");
+				Regex rxCrop_libav = new Regex ("""(avconv|ffmpeg).*-vf.*(crop=[^, ]+)""");
 				Regex rxCrop_x264 = new Regex ("""x264.*(--vf|--video-filter).*(crop:[^/ ]+)""");
 				Regex rxCrop_f2t = new Regex ("""ffmpeg2theora.*""");
 				Regex rxCrop_f2t_left = new Regex ("""ffmpeg2theora.*(--cropleft [0-9]+) """);
@@ -827,11 +887,11 @@ Notes:
 
 				string line = dis.read_line (null);
 				while (line != null) {
-					line = line.replace ("${audiodec}", """avconv -i "${inFile}" -f wav -acodec pcm_s16le -vn -y -""");
+					line = line.replace ("${audiodec}", "%s -i \"${inFile}\" -f wav -acodec pcm_s16le -vn -y -".printf(AVEncoder));
 
 					if (mf.crop_enabled()){
 						if (rxCrop_libav.match (line, 0, out match)){
-							line = line.replace (match.fetch(1), "crop=" + mf.crop_values_libav());
+							line = line.replace (match.fetch(2), "crop=" + mf.crop_values_libav());
 						}
 						else if (rxCrop_x264.match (line, 0, out match)){
 							line = line.replace (match.fetch(2), "crop:" + mf.crop_values_x264());
@@ -1054,10 +1114,10 @@ Notes:
 			Progress = (dblVal * 1000) / CurrentFile.Duration;
 
 			if (regex_libav_video.match (tempLine, 0, out match)){
-				StatusLine = "(avconv) %s fps, %s kbps, %s kb".printf(match.fetch(1), match.fetch(3), match.fetch(2));
+				StatusLine = "(ffmpeg) %s fps, %s kbps, %s kb".printf(match.fetch(1), match.fetch(3), match.fetch(2));
 			}
 			else if (regex_libav_audio.match (tempLine, 0, out match)){
-				StatusLine = "(avconv) %s kbps, %s kb".printf(match.fetch(2), match.fetch(1));
+				StatusLine = "(ffmpeg) %s kbps, %s kb".printf(match.fetch(2), match.fetch(1));
 			}
 			else {
 				StatusLine = tempLine;
@@ -1294,7 +1354,7 @@ Notes:
 					case "vp8":
 					case "vp9":
 						s += encode_video_avconv(mf,settings);
-						encoderList.add("avconv");
+						encoderList.add(AVEncoder);
 						break;
 				}
 
@@ -1317,7 +1377,7 @@ Notes:
 							break;
 						case "aac":
 							s += encode_audio_avconv(mf,settings);
-							encoderList.add("avconv");
+							encoderList.add(AVEncoder);
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
 							};
@@ -1345,7 +1405,7 @@ Notes:
 						switch (vcodec){
 							case "x265":
 								s += mux_avconv(mf,settings);
-								encoderList.add("avconv");
+								encoderList.add(AVEncoder);
 								break;
 							default:
 								s += mux_mkvmerge(mf,settings);
@@ -1361,7 +1421,7 @@ Notes:
 						switch (vcodec){
 							case "x265":
 								s += mux_avconv(mf,settings);
-								encoderList.add("avconv");
+								encoderList.add(AVEncoder);
 								break;
 							default:
 								s += mux_mp4box(mf,settings);
@@ -1397,7 +1457,7 @@ Notes:
 					
 				case "aac":
 					s += encode_audio_avconv(mf,settings);
-					encoderList.add("avconv");
+					encoderList.add(AVEncoder);
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
@@ -1416,7 +1476,7 @@ Notes:
 			case "opus":
 				s += encode_audio_opus(mf,settings);
 				encoderList.add("opusenc");
-				if (audio.getcase _boolean_member("soxEnabled")){
+				if (audio.get_boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
 				break;
@@ -1433,7 +1493,7 @@ Notes:
 			case "flac":
 			case "wav":
 				s += encode_audio_avconv(mf,settings);
-				encoderList.add("avconv");
+				encoderList.add(AVEncoder);
 				if (audio.get_boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
@@ -1697,7 +1757,7 @@ Notes:
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
-		s += "avconv";
+		s += AVEncoder;
 		s += " -i \"${inFile}\"";
 		s += " -f " + general.get_string_member("format");
 		s += " -an -sn -c:v libvpx";
@@ -1871,7 +1931,7 @@ Notes:
 		string vcodec = video.get_string_member("codec");
 		string format = general.get_string_member("format");
 
-		s += "avconv";
+		s += AVEncoder;
 		s += " -i \"${inFile}\"";
 		s += " -f " + format;
 
@@ -2316,11 +2376,11 @@ Notes:
 
 		if (sox_enabled){
 			s += decode_audio_avconv(mf, settings, true);
-			s += "avconv";
+			s += AVEncoder;
 			s += " -i -";
 		}
 		else{
-			s += "avconv";
+			s += AVEncoder;
 			s += " -i \"${inFile}\"";
 		}
 
@@ -2489,7 +2549,7 @@ Notes:
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
-		s += "avconv";
+		s += AVEncoder;
 
 		//progress info
 		if (silent){
@@ -2556,7 +2616,7 @@ Notes:
 		string acodec = audio.get_string_member("codec");
 		bool sox_enabled = audio.get_boolean_member("soxEnabled");
 
-		s += "avconv";
+		s += AVEncoder;
 
 		//progress info
 		if (silent){
@@ -2765,7 +2825,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string format = general.get_string_member("format");
 
-		s += "avconv";
+		s += AVEncoder;
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			s += " -i \"${tempAudio}\"";
 		}
@@ -2791,7 +2851,7 @@ Notes:
 		
 		string s = "";
 
-		s += "avconv";
+		s += AVEncoder;
 		s += " -i %s".printf(input_file);
 		s += " -f mp4";
 		s += " -c:a copy -vn -sn";
@@ -2864,7 +2924,7 @@ public class MediaFile : GLib.Object{
 	public static int ThumbnailWidth = 80;
 	public static int ThumbnailHeight= 64;
 			
-	public MediaFile(string filePath){
+	public MediaFile(string filePath, string av_encoder){
 		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
 
@@ -2922,7 +2982,7 @@ public class MediaFile : GLib.Object{
 
 	    // get thumbnail ---------
 
-	    generate_thumbnail();
+	    generate_thumbnail(av_encoder);
 
 		IsValid = true;
 	}
@@ -3057,11 +3117,11 @@ public class MediaFile : GLib.Object{
 		}
 	}
 
-	public void generate_thumbnail(){
+	public void generate_thumbnail(string av_encoder){
 		if (HasVideo){
 			ThumbnailImagePath = get_temp_file_path() + ".png";
 			string std_out, std_err;
-			execute_command_script_sync("avconv -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
+			execute_command_script_sync("%s -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(av_encoder,Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
 		}
 		else{
 			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.png");
@@ -3134,25 +3194,25 @@ public class MediaFile : GLib.Object{
 			return "0,0,0,0";
 	}
 
-	public void preview_output(){
+	public void preview_output(string av_player){
 		string output = "";
 		string error = "";
 
 		try {
-			Process.spawn_command_line_sync("avplay -i \"%s\" -vf crop=%s".printf(Path, crop_values_libav()), out output, out error);
+			Process.spawn_command_line_sync("%s -i \"%s\" -vf crop=%s".printf(av_player, Path, crop_values_libav()), out output, out error);
 		}
 		catch(Error e){
 	        log_error (e.message);
 	    }
 	}
 
-	public void play_source(){
+	public void play_source(string av_player){
 		if(file_exists(Path)){
 			string output = "";
 			string error = "";
 
 			try {
-				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(Path), out output, out error);
+				Process.spawn_command_line_sync("%s -i \"%s\"".printf(av_player,Path), out output, out error);
 			}
 			catch(Error e){
 				log_error (e.message);
@@ -3160,13 +3220,13 @@ public class MediaFile : GLib.Object{
 		}
 	}
 
-	public void play_output(){
+	public void play_output(string av_player){
 		if(file_exists(OutputFilePath)){
 			string output = "";
 			string error = "";
 
 			try {
-				Process.spawn_command_line_sync("avplay -i \"%s\"".printf(OutputFilePath), out output, out error);
+				Process.spawn_command_line_sync("%s -i \"%s\"".printf(av_player, OutputFilePath), out output, out error);
 			}
 			catch(Error e){
 				log_error (e.message);
@@ -3233,10 +3293,10 @@ public class FFmpegCodec : GLib.Object{
 	public FFmpegCodec(){
 	}
 
-	public static Gee.HashMap<string,FFmpegCodec> check_codec_support(){
+	public static Gee.HashMap<string,FFmpegCodec> check_codec_support(string av_encoder){
 		var list = new Gee.HashMap<string,FFmpegCodec>();
 
-		string output = execute_command_sync_get_output("avconv -codecs");
+		string output = execute_command_sync_get_output("%s -codecs".printf(av_encoder));
 
 		Regex regex = null;
 		MatchInfo match;

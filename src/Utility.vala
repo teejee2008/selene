@@ -1069,8 +1069,20 @@ namespace TeeJee.Multimedia{
 		string output = "";
 		string error = "";
 
+		string av_encoder = "";
+		string str = get_cmd_path ("ffmpeg");
+		if ((str != null)&&(str.length > 0)){
+			av_encoder = "ffmpeg";
+		}
+		else{
+			str = get_cmd_path ("avconv");
+			if ((str != null)&&(str.length > 0)){
+				av_encoder = "avconv";
+			}
+		}
+		
 		try {
-			Process.spawn_command_line_sync("avconv -i \"%s\" -vf cropdetect=30 -ss 5 -t 5 -f matroska -an -y /dev/null".printf(filePath), out output, out error);
+			Process.spawn_command_line_sync("%s -i \"%s\" -vf cropdetect=30 -ss 5 -t 5 -f matroska -an -y /dev/null".printf(av_encoder,filePath), out output, out error);
 		}
 		catch(Error e){
 	        log_error (e.message);
