@@ -3148,7 +3148,7 @@ public class MediaFile : GLib.Object{
 			execute_command_script_sync("%s -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(av_encoder,Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
 		}
 		else{
-			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.png");
+			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.svg");
 		}
 	}
 

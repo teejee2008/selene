@@ -396,7 +396,7 @@ public class MainWindow : Gtk.Window{
 		colName.title = _("File");
 		colName.expand = true;
 		colName.resizable = true;
-
+		
 		CellRendererPixbuf cellThumb = new CellRendererPixbuf ();
 		colName.pack_start (cellThumb, false);
 
@@ -409,23 +409,31 @@ public class MainWindow : Gtk.Window{
 
 		colName.set_cell_data_func (cellThumb, (cell_layout, cell, model, iter)=>{
 			string imagePath;
-			model.get (iter, InputField.FILE_THUMB, out imagePath, -1);
+			bool hasVideo;
+			model.get (iter, InputField.FILE_THUMB, out imagePath, InputField.FILE_HAS_VIDEO, out hasVideo, -1);
 
 			Gdk.Pixbuf pixThumb = null;
+
 			try{
-				//pixThumb = new Gdk.Pixbuf.from_file_at_scale(imagePath,64,MediaFile.ThumbnailWidth,true);
-				pixThumb = new Gdk.Pixbuf.from_file(imagePath);
+				if (App.TileView){
+					pixThumb = new Gdk.Pixbuf.from_file_at_scale(imagePath,MediaFile.ThumbnailWidth,MediaFile.ThumbnailHeight,true);
+				}
+				else{
+					if (hasVideo){
+						var img = get_shared_icon("video-x-generic","video.svg",16);
+						pixThumb = (img == null) ? null : img.pixbuf;
+					}
+					else{
+						var img = get_shared_icon("audio-x-generic","audio.svg",16);
+						pixThumb = (img == null) ? null : img.pixbuf;
+					}
+				}
 			}
 			catch(Error e){
 				log_error (e.message);
 			}
 
-			if (App.TileView){
-				(cell as Gtk.CellRendererPixbuf).pixbuf = pixThumb;
-			}
-			else{
-				(cell as Gtk.CellRendererPixbuf).pixbuf = null;
-			}
+			(cell as Gtk.CellRendererPixbuf).pixbuf = pixThumb;
 		});
 
 		colName.set_cell_data_func (cellName, (cell_layout, cell, model, iter)=>{
@@ -607,7 +615,7 @@ public class MainWindow : Gtk.Window{
 
 	private void refresh_list_view (bool refresh_model = true){
 		if (refresh_model){
-			Gtk.ListStore inputStore = new Gtk.ListStore (10, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string));
+			Gtk.ListStore inputStore = new Gtk.ListStore (11, typeof(MediaFile), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (int), typeof (string), typeof (string), typeof (bool));
 
 			TreeIter iter;
 			foreach(MediaFile mFile in App.InputFiles) {
@@ -622,6 +630,7 @@ public class MainWindow : Gtk.Window{
 				inputStore.set (iter, InputField.FILE_PROGRESS, mFile.ProgressPercent);
 				inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
 				inputStore.set (iter, InputField.FILE_THUMB, mFile.ThumbnailImagePath);
+				inputStore.set (iter, InputField.FILE_HAS_VIDEO, mFile.HasVideo);
 			}
 
 			tvFiles.set_model (inputStore);
@@ -2007,5 +2016,6 @@ public enum InputField{
 	FILE_CROPVAL,
 	FILE_PROGRESS,
 	FILE_PROGRESS_TEXT,
-	FILE_THUMB
+	FILE_THUMB,
+	FILE_HAS_VIDEO
 }
