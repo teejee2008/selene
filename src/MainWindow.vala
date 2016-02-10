@@ -36,9 +36,10 @@ using TeeJee.Misc;
 public class MainWindow : Gtk.Window{
 	//main toolbar
 	private Gtk.Toolbar toolbar;
-    private ToolButton btnAddFiles;
-	private ToolButton btnRemoveFiles;
-    private ToolButton btnClearFiles;
+	private MenuToolButton btnAddFiles;
+	private MenuToolButton btnRemoveFiles;
+	private Gtk.Menu menuAddFiles;
+	private Gtk.Menu menuRemoveFiles;
     private ToolButton btnEncoders;
     private ToolButton btnAppSettings;
     private ToolButton btnAbout;
@@ -131,7 +132,7 @@ public class MainWindow : Gtk.Window{
         add (vboxMain);
 
         //main toolbar
-		init_main_toolbar();
+		init_ui_main_toolbar();
 
 		//listview
 		init_list_view();
@@ -152,13 +153,18 @@ public class MainWindow : Gtk.Window{
 		init_regular_expressions();
 	}
 
-	public void init_main_toolbar(){
+	public void init_ui_main_toolbar(){
 		//toolbar
 		toolbar = new Gtk.Toolbar();
 		toolbar.toolbar_style = ToolbarStyle.BOTH_HORIZ;
 		toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 		vboxMain.pack_start (toolbar, false, false, 0);
 
+		init_ui_main_toolbar_add();
+
+		init_ui_main_toolbar_remove();
+		
+		/*
 		//btnAddFiles
 		btnAddFiles = new Gtk.ToolButton.from_stock ("gtk-add");
 		btnAddFiles.label = _("Add Files");
@@ -180,7 +186,8 @@ public class MainWindow : Gtk.Window{
 		btnClearFiles.clicked.connect (btnClearFiles_clicked);
 		btnClearFiles.set_tooltip_text (_("Remove all file(s)"));
 		toolbar.add (btnClearFiles);
-
+		*/
+		
 		//separator
 		separator1 = new Gtk.SeparatorToolItem();
 		toolbar.add(separator1);
@@ -288,6 +295,87 @@ public class MainWindow : Gtk.Window{
 		toolbar.add (btnOpenOutputFolder);
 	}
 
+	public void init_ui_main_toolbar_add(){
+		// menuAdd
+		menuAddFiles = new Gtk.Menu();
+
+		// miAddFile
+		var miAddFile = new Gtk.MenuItem();
+		miAddFile.activate.connect (() => { btnAddItems_clicked(true); });
+		menuAddFiles.append(miAddFile);
+
+		var box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		box.add(get_shared_icon("gtk-file","",32));
+		box.add(new Gtk.Label(_("Add File(s)...")));
+		miAddFile.add(box);
+		
+		// miAddFolder
+		var miAddFolder = new Gtk.MenuItem();
+		miAddFolder.activate.connect (() => { btnAddItems_clicked(false); });
+		menuAddFiles.append(miAddFolder);
+
+		box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		box.add(get_shared_icon("gtk-directory","",32));
+		box.add(new Gtk.Label(_("Add Folder(s)...")));
+		miAddFolder.add(box);
+
+		//btnAddFiles
+		btnAddFiles = new Gtk.MenuToolButton.from_stock ("gtk-add");
+		btnAddFiles.set_menu(menuAddFiles);
+		btnAddFiles.is_important = true;
+		btnAddFiles.set_tooltip_text (_("Add File(s)"));
+		toolbar.add (btnAddFiles);
+
+		btnAddFiles.clicked.connect(()=>{
+			//menuAddFiles.popup (null, null, null, 0, Gtk.get_current_event_time());
+			btnAddItems_clicked(true);
+		});
+
+		menuAddFiles.show_all();
+	}
+
+	public void init_ui_main_toolbar_remove(){
+		// menuRemove
+		menuRemoveFiles = new Gtk.Menu();
+
+		// miRemoveFiles
+		var miRemoveFiles = new Gtk.MenuItem();
+		//miRemoveFiles.set_reserve_indicator(false);
+		miRemoveFiles.activate.connect (() => { btnRemoveFiles_clicked(); });
+		menuRemoveFiles.append(miRemoveFiles);
+
+		var box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		box.add(get_shared_icon("gtk-remove","",32));
+		box.add(new Gtk.Label(_("Remove Selected Items")));
+		
+		miRemoveFiles.add(box);
+
+		// miClearList
+		var miClearList = new Gtk.MenuItem();
+		miClearList.set_reserve_indicator(false);
+		miClearList.activate.connect (() => { btnClearFiles_clicked(); });
+		menuRemoveFiles.append(miClearList);
+
+		box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		box.add(get_shared_icon("gtk-clear","",32));
+		box.add(new Gtk.Label(_("Clear List")));
+		miClearList.add(box);
+
+		//btnRemoveFiles
+		btnRemoveFiles = new Gtk.MenuToolButton.from_stock ("gtk-remove");
+		btnRemoveFiles.set_menu(menuRemoveFiles);
+		btnRemoveFiles.is_important = true;
+		btnRemoveFiles.set_tooltip_text (_("Remove File(s)"));
+		toolbar.add (btnRemoveFiles);
+
+		btnRemoveFiles.clicked.connect(()=>{
+			//menuRemoveFiles.popup (null, null, null, 0, Gtk.get_current_event_time());
+			btnRemoveFiles_clicked();
+		});
+		
+		menuRemoveFiles.show_all();
+	}
+	
 	public void init_list_view(){
 		//tvFiles
 		tvFiles = new TreeView();
@@ -560,9 +648,9 @@ public class MainWindow : Gtk.Window{
 		vboxMain.add (toolbar2);
 
 		//btnAddPreset
-		btnAddPreset = new Gtk.ToolButton.from_stock ("gtk-add");
+		btnAddPreset = new Gtk.ToolButton.from_stock ("gtk-new");
 		btnAddPreset.is_important = true;
-		btnAddPreset.label = _("Add Preset");
+		btnAddPreset.label = _("New Preset");
 		btnAddPreset.clicked.connect (btnAddPreset_clicked);
 		btnAddPreset.set_tooltip_text (_("Add New Preset"));
 		toolbar2.add (btnAddPreset);
@@ -1455,38 +1543,48 @@ on the toolbar will open the file in a text editor.
 
 	// add files --------------------------------
 
-	private void btnAddFiles_clicked(){
-		var dlgAddFiles = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
-							"gtk-cancel", Gtk.ResponseType.CANCEL,
-							"gtk-open", Gtk.ResponseType.ACCEPT);
-		dlgAddFiles.local_only = true;
- 		dlgAddFiles.set_modal (true);
- 		dlgAddFiles.set_select_multiple (true);
-		if (App.InputDirectory.length > 0) {
-			dlgAddFiles.set_current_folder(App.InputDirectory);
+	private void btnAddItems_clicked(bool add_files){
+		Gtk.FileChooserDialog dlg = null;
+
+		if (add_files){
+			dlg = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
+					"gtk-cancel", Gtk.ResponseType.CANCEL, "gtk-open", Gtk.ResponseType.ACCEPT);
+		}
+		else{
+			dlg = new Gtk.FileChooserDialog(_("Add Folder(s)"), this, Gtk.FileChooserAction.SELECT_FOLDER,
+					"gtk-cancel", Gtk.ResponseType.CANCEL, "gtk-open", Gtk.ResponseType.ACCEPT);
 		}
 
-		string message = "";
+		dlg.local_only = true;
+ 		dlg.set_modal (true);
+ 		dlg.set_select_multiple (true);
+
+		if (App.InputDirectory.length > 0) {
+			dlg.set_current_folder(App.InputDirectory);
+		}
+
+		msg_add = "";
 		
- 		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
+ 		if (dlg.run() == Gtk.ResponseType.ACCEPT){
 
-			set_busy(true,dlgAddFiles);
+			set_busy(true,dlg);
 
-			msg_add = "";
-	 		foreach (string item_path in dlgAddFiles.get_filenames()){
+	 		foreach (string item_path in dlg.get_filenames()){
 				add_item(item_path);
 			}
 
-			App.InputDirectory = dlgAddFiles.get_current_folder();
+			set_busy(false,dlg);
+			
+			App.InputDirectory = dlg.get_current_folder();
 	 	}
 
 	 	refresh_list_view();
 
-	 	dlgAddFiles.destroy(); //resets cursor
+	 	dlg.destroy(); //resets cursor
 
 	 	if (msg_add.length > 0){
-			message = _("Some files could not be opened:") + "\n\n" + message;
-			gtk_messagebox("Unknown Format",message,this,true);
+			msg_add = _("Some files could not be opened:") + "\n\n" + msg_add;
+			gtk_messagebox("Unknown Format",msg_add,this,true);
 		}
 	}
 
@@ -1727,7 +1825,6 @@ on the toolbar will open the file in a text editor.
 		btnStart.visible = false;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = false;
-		btnClearFiles.visible = false;
 		btnAppSettings.visible = false;
 		btnEncoders.visible = false;
 		btnDonate.visible = false;
@@ -1759,7 +1856,6 @@ on the toolbar will open the file in a text editor.
 		btnStart.visible = true;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = true;
-		btnClearFiles.visible = true;
 		btnAppSettings.visible = true;
 		btnEncoders.visible = true;
 		btnDonate.visible = true;
