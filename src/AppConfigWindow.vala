@@ -226,7 +226,7 @@ public class AppConfigWindow : Dialog {
 		Gtk.TreeIter iter;
 		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
-		model.set (iter, 0, _("Simple"), 1, "list");
+		model.set (iter, 0, _("List"), 1, "list");
 		model.append (out iter);
 		model.set (iter, 0, _("Tiles"), 1, "tiles");
 		cmbFileView.set_model(model);

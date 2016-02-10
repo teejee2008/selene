@@ -108,7 +108,8 @@ public class MainWindow : Gtk.Window{
 
 	private bool paused = false;
 	private MediaFile lastFile;
-
+	private string msg_add;
+	
 	private const Gtk.TargetEntry[] targets = {
 		{ "text/uri-list", 0, 0}
 	};
@@ -1119,24 +1120,6 @@ on the toolbar will open the file in a text editor.
 
 	// list view and context menu -------------------------
 
-	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) {
-        foreach(string uri in data.get_uris()){
-			string file = uri.replace("file://","").replace("file:/","");
-			file = Uri.unescape_string (file);
-			bool valid = App.add_file (file);
-			if (!valid){
-				statusbar_show_message (_("Unknown format: '%s'").printf (file), true, true);
-			}
-			else {
-				statusbar_show_message (_("File added: '%s'").printf (file));
-			}
-		}
-
-        refresh_list_view();
-
-        Gtk.drag_finish (drag_context, true, false, time);
-    }
-
     private bool menuFile_popup (Gtk.Menu popup, Gdk.EventButton? event) {
 		TreeSelection selection = tvFiles.get_selection();
 		int index = -1;
@@ -1470,7 +1453,7 @@ on the toolbar will open the file in a text editor.
 		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info());
 	}
 
-	// toolbar --------------------------------
+	// add files --------------------------------
 
 	private void btnAddFiles_clicked(){
 		var dlgAddFiles = new Gtk.FileChooserDialog(_("Add File(s)"), this, Gtk.FileChooserAction.OPEN,
@@ -1488,12 +1471,10 @@ on the toolbar will open the file in a text editor.
  		if (dlgAddFiles.run() == Gtk.ResponseType.ACCEPT){
 
 			set_busy(true,dlgAddFiles);
-			
-	 		foreach (string file in dlgAddFiles.get_filenames()){
-				bool added = App.add_file (file);
-				if (added == false){
-					message += "%s\n".printf(file_basename(file));
-				}
+
+			msg_add = "";
+	 		foreach (string item_path in dlgAddFiles.get_filenames()){
+				add_item(item_path);
 			}
 
 			App.InputDirectory = dlgAddFiles.get_current_folder();
@@ -1503,12 +1484,58 @@ on the toolbar will open the file in a text editor.
 
 	 	dlgAddFiles.destroy(); //resets cursor
 
-	 	if (message.length > 0){
+	 	if (msg_add.length > 0){
 			message = _("Some files could not be opened:") + "\n\n" + message;
 			gtk_messagebox("Unknown Format",message,this,true);
 		}
 	}
 
+	private void add_item(string item_path){
+		File file = File.new_for_path (item_path);
+		if (file.query_exists()){
+			try{
+				FileInfo f_info = file.query_info("%s,%s".printf(FileAttribute.STANDARD_NAME,FileAttribute.STANDARD_TYPE), FileQueryInfoFlags.NONE);
+				if (f_info.get_file_type() == FileType.REGULAR){
+					add_file(item_path);
+				}
+				else if (f_info.get_file_type() == FileType.DIRECTORY){
+					FileEnumerator f_enum = file.enumerate_children ("%s".printf(FileAttribute.STANDARD_NAME), 0);
+					FileInfo f_info_child;
+					while ((f_info_child = f_enum.next_file ()) != null) {
+						string name = f_info_child.get_name();
+						string item = item_path + "/" + name;
+						add_item(item);
+					}
+				}
+			}
+			catch (Error e) {
+				log_error (e.message);
+			}
+		}
+	}
+
+	private void add_file(string file_path){
+		bool added = App.add_file (file_path);
+		if (added == false){
+			msg_add += "%s\n".printf(file_basename(file_path));
+		}
+	}
+
+	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) {
+		msg_add = "";
+        foreach(string uri in data.get_uris()){
+			string item_path = uri.replace("file://","").replace("file:/","");
+			item_path = Uri.unescape_string (item_path);
+			add_item (item_path);
+		}
+
+        refresh_list_view();
+
+        Gtk.drag_finish (drag_context, true, false, time);
+    }
+
+    // toolbar --------------------------------
+    
 	private void btnRemoveFiles_clicked(){
 		Gee.ArrayList<MediaFile> list = new Gee.ArrayList<MediaFile>();
 		TreeSelection sel = tvFiles.get_selection();
