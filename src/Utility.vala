@@ -1140,7 +1140,7 @@ namespace TeeJee.Multimedia{
 		string output = "";
 
 		try {
-			string cmd = "mediainfo%s '%s'".printf((getRawText ? " --Language=raw" : ""), filePath);
+			string cmd = "mediainfo%s '%s'".printf((getRawText ? " --Language=raw" : ""), filePath.replace("'","'\\''"));
 			Process.spawn_command_line_sync(cmd, out output);
 		}
 		catch(Error e){

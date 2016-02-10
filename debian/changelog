@@ -1,11 +1,29 @@
-selene (16.2) trusty; urgency=medium
+selene (16.2.1) trusty; urgency=medium
 
-  * List of unsupported files will be displayed when files are added
+  * App settings: Allow user to enter backup path and output path
 
-  * Round-up the CPU percentage in progress window title bar
+  * App settings: Updated checkboxes for selecting directories
+  
+  * App settings: Added option to choose between 'ffmpeg' and 'avconv'
 
-  * Hide the crop column while encoding is in-progress
+  * App settings: Added option to select media player
+  
+  * Added thumbnail image for audio files
+
+  * Added option to encode audio with FFmpeg's Native AAC encoder
+
+  * Added support for encoding with Fraunhofer FDK AAC encoder (aac-enc)
+
+  * Added option to change AAC profile
+
+  * Removed the 'Preview Output' right-click option in file list
+  
+  * Folders can be dragged and dropped on the main window to add files
+
+  * Updated toolbar items for adding and removing files
+
+  * Show icon beside file name in list view
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Sat, 06 Feb 2016 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Wed, 10 Feb 2016 10:00:00 +0530
