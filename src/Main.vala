@@ -3240,10 +3240,10 @@ public class MediaFile : GLib.Object{
 			switch(av_player){
 				case "avplay":
 				case "ffplay":
-					cmd = "%s -i \"%s\"".printf(av_player, file_path);
+					cmd = "nohup %s -i \"%s\"".printf(av_player, file_path);
 					break;
 				default:
-					cmd = "%s \"%s\"".printf(av_player, file_path);
+					cmd = "nohup %s \"%s\"".printf(av_player, file_path);
 					break;
 			}
 		
