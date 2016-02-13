@@ -89,12 +89,19 @@ public class Main : GLib.Object{
 	public string AVEncoder = "ffmpeg";
 	public string AVPlayer = "ffplay";
 
+	public string ListViewColumns = "";
+	
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
 	public string CurrentLine;
 	public string StatusLine;
 	public double Progress;
 
+	//used by SimpleProgressWindow
+	public string status_line = "";
+	public int progress_total = 0;
+	public int progress_count = 0;
+	
 	public bool BatchStarted = false;
 	public bool BatchCompleted = false;
 	public bool Aborted;
@@ -515,6 +522,7 @@ Notes:
 		config.set_string_member("tile-view", TileView.to_string());
 		config.set_string_member("av-encoder", AVEncoder);
 		config.set_string_member("av-player", AVPlayer);
+		config.set_string_member("list-view-columns", ListViewColumns);
 		
 		if (SelectedScript != null) {
 			config.set_string_member("last-script", SelectedScript.Path);
@@ -581,6 +589,8 @@ Notes:
 		}
 
 		TileView = json_get_bool(config,"tile-view",true);
+
+		ListViewColumns = json_get_string(config,"list-view-columns", ListViewColumns);
 	}
 
 	public void check_and_default_av_encoder(){
@@ -2929,15 +2939,18 @@ public class MediaFile : GLib.Object{
 	public bool HasAudio = false;
 	public bool HasVideo = false;
 	public bool HasSubs = false;
-	
+
+	public string FileFormat = "";
+	public string VideoFormat = "";
+	public string AudioFormat = "";
 	public int SourceWidth = 0;
 	public int SourceHeight = 0;
 	public double SourceFrameRate = 0;
 	public int AudioChannels = 0;
-	
-	public string FileFormat = "";
-	public string VideoFormat = "";
-	public string AudioFormat = "";
+	public int AudioSampleRate = 0;
+	public int AudioBitRate = 0;
+	public int VideoBitRate = 0;
+	public int BitRate = 0;
 
 	public string TempScriptFile;
 	public string TempDirectory = "";
@@ -3088,6 +3101,9 @@ public class MediaFile : GLib.Object{
 						case "format":
 							FileFormat = val;
 							break;
+						case "overallbitrate/string":
+							BitRate = int.parse(val.split(" ")[0].strip());
+							break;
 					}
 				}
 				else if (sectionType == "video"){
@@ -3105,6 +3121,9 @@ public class MediaFile : GLib.Object{
 						case "format":
 							VideoFormat = val;
 							break;
+						case "bitrate/string":
+							VideoBitRate = int.parse(val.split(" ")[0].strip());
+							break;
 					}
 				}
 				else if (sectionType == "audio"){
@@ -3112,8 +3131,14 @@ public class MediaFile : GLib.Object{
 						case "channel(s)/string":
 							AudioChannels = int.parse(val.split(" ")[0].strip());
 							break;
+						case "samplingrate/string":
+							AudioSampleRate = (int)(double.parse(val.split(" ")[0].strip()) * 1000);
+							break;
 						case "format":
 							AudioFormat = val;
+							break;
+						case "bitrate/string":
+							AudioBitRate = int.parse(val.split(" ")[0].strip());
 							break;
 					}
 				}
