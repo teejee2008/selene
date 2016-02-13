@@ -35,6 +35,8 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public class ColumnSelectionDialog : Dialog {
+
+	private Gtk.TreeView tvCols;
 	
 	public ColumnSelectionDialog.with_parent(Window parent, Gee.HashMap<TreeViewColumn,TreeViewListColumn> col_list) {
 		title = _("Select Columns");
@@ -44,18 +46,20 @@ public class ColumnSelectionDialog : Dialog {
 		set_skip_taskbar_hint(true);
 		set_skip_pager_hint(true);
 		window_position = WindowPosition.CENTER_ON_PARENT;
-
+		deletable = false;
+		resizable = false;
+		
 		set_transient_for(parent);
 		set_modal(true);
 
 		// get content area
 		var vboxMain = get_content_area();
-		vboxMain.set_size_request(300,400);
+		vboxMain.set_size_request(300,300);
 
 		//add treeview for columns
-		var tvCols = new TreeView();
+		tvCols = new TreeView();
 		tvCols.get_selection().mode = SelectionMode.MULTIPLE;
-		tvCols.set_tooltip_text (_("Drag to re-order columns"));
+		tvCols.set_tooltip_text (_("Drag-and-drop to re-order columns"));
 		tvCols.headers_visible = false;
 		tvCols.reorderable = true;
 
@@ -108,18 +112,39 @@ public class ColumnSelectionDialog : Dialog {
 			(cell as Gtk.CellRendererText).text = col.FullDisplayName;
 		});
 
-		//create sorted list
+		//create sorted list ---------------------
+		
 		TreeIter iter;
-		var lst = new Gee.ArrayList<TreeViewListColumn>();
+		var lst_all = new Gee.ArrayList<TreeViewListColumn>();
 		foreach(TreeViewListColumn col in col_list.values){
-			lst.add(col);
+			lst_all.add(col);
 		}
 		CompareDataFunc<TreeViewListColumn> func = (a, b) => {
 			return strcmp(a.FullDisplayName,b.FullDisplayName);
 		};
-		lst.sort((owned)func);
+		lst_all.sort((owned)func);
 
-		//add rows
+		//created ordered list --------------------
+		
+		var lst = new Gee.ArrayList<TreeViewListColumn>();
+		//add selected columns in order
+		foreach(string col_name in App.ListViewColumns.split(",")){
+			foreach(TreeViewListColumn col in col_list.values){
+				if (col.Name == col_name){
+					lst.add(col);
+					break;
+				}
+			}
+		}
+		//add unselected
+		foreach(TreeViewListColumn col in lst_all){
+			if (!col.Selected){
+				lst.add(col);
+			}
+		}
+		
+		//add rows ----------------------
+		
 		var store = new Gtk.ListStore (2, typeof(bool), typeof(TreeViewListColumn));
 		foreach(TreeViewListColumn col in lst){
 			store.append (out iter);
@@ -140,7 +165,7 @@ public class ColumnSelectionDialog : Dialog {
         btnCancel.clicked.connect (()=>{
 			this.close();
 		});
-
+		
         show_all();
 	}
 
@@ -150,7 +175,23 @@ public class ColumnSelectionDialog : Dialog {
 		}
 
 		string s = "";
-		foreach(TreeViewListColumn col in col_list.values){
+
+		//get ordered list -----------------------
+		
+		var list = new Gee.ArrayList<TreeViewListColumn>();
+
+		TreeIter iter;
+		bool iterExists = tvCols.model.get_iter_first (out iter);
+		while (iterExists) {
+			TreeViewListColumn item;
+			tvCols.model.get (iter, 1, out item, -1);
+			list.add(item);
+			iterExists = tvCols.model.iter_next (ref iter);
+		}
+
+		// create string of column names -------------
+		
+		foreach(TreeViewListColumn col in list){
 			if (col.Selected){
 				s += col.Name + ",";
 			}
