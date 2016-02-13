@@ -59,7 +59,7 @@ public class ColumnSelectionDialog : Dialog {
 		//add treeview for columns
 		tvCols = new TreeView();
 		tvCols.get_selection().mode = SelectionMode.MULTIPLE;
-		tvCols.set_tooltip_text (_("Drag-and-drop to re-order columns"));
+		tvCols.set_tooltip_text (_("Drag and drop to re-order"));
 		tvCols.headers_visible = false;
 		tvCols.reorderable = true;
 

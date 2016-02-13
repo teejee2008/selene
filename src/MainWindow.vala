@@ -104,6 +104,13 @@ public class MainWindow : Gtk.Window{
 	private TreeViewColumn colVWidth;
 	private TreeViewColumn colVHeight;
 	private TreeViewColumn colVFps;
+	private TreeViewColumn colArtist;
+	private TreeViewColumn colAlbum;
+	private TreeViewColumn colGenre;
+	private TreeViewColumn colTrackName;
+	private TreeViewColumn colTrackNum;
+	private TreeViewColumn colComments;
+	private TreeViewColumn colRecordedDate;
 	private Grid gridConfig;
 
 	private Gee.HashMap<TreeViewColumn,TreeViewListColumn> col_list;
@@ -716,6 +723,92 @@ public class MainWindow : Gtk.Window{
 			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_VRATE, out val, -1);
 			(cell as Gtk.CellRendererText).text = mf.HasVideo ? "%.3f".printf(val) : "";
 		});
+
+		//colArtist
+		colArtist = new TreeViewColumn();
+		colArtist.title = _("Artist");
+		colArtist.clickable = true;
+		colArtist.reorderable = true;
+		colArtist.sort_column_id = InputField.FILE_ARTIST;
+		tvFiles.append_column(colArtist);
+		
+		cellText = new CellRendererText();
+		colArtist.pack_start (cellText, false);
+		colArtist.set_attributes(cellText, "text", InputField.FILE_ARTIST);
+
+		//colAlbum
+		colAlbum = new TreeViewColumn();
+		colAlbum.title = _("Album");
+		colAlbum.clickable = true;
+		colAlbum.reorderable = true;
+		colAlbum.sort_column_id = InputField.FILE_ALBUM;
+		tvFiles.append_column(colAlbum);
+		
+		cellText = new CellRendererText();
+		colAlbum.pack_start (cellText, false);
+		colAlbum.set_attributes(cellText, "text", InputField.FILE_ALBUM);
+
+		//colGenre
+		colGenre = new TreeViewColumn();
+		colGenre.title = _("Genre");
+		colGenre.clickable = true;
+		colGenre.reorderable = true;
+		colGenre.sort_column_id = InputField.FILE_GENRE;
+		tvFiles.append_column(colGenre);
+		
+		cellText = new CellRendererText();
+		colGenre.pack_start (cellText, false);
+		colGenre.set_attributes(cellText, "text", InputField.FILE_GENRE);
+
+		//colTrackName
+		colTrackName = new TreeViewColumn();
+		colTrackName.title = _("Title");
+		colTrackName.clickable = true;
+		colTrackName.reorderable = true;
+		colTrackName.sort_column_id = InputField.FILE_TRACK_NAME;
+		tvFiles.append_column(colTrackName);
+		
+		cellText = new CellRendererText();
+		colTrackName.pack_start (cellText, false);
+		colTrackName.set_attributes(cellText, "text", InputField.FILE_TRACK_NAME);
+
+		//colTrackNum
+		colTrackNum = new TreeViewColumn();
+		colTrackNum.title = _("Track #");
+		colTrackNum.clickable = true;
+		colTrackNum.reorderable = true;
+		colTrackNum.sort_column_id = InputField.FILE_TRACK_NUM;
+		tvFiles.append_column(colTrackNum);
+		
+		cellText = new CellRendererText();
+		cellText.xalign = (float) 1.0;
+		colTrackNum.pack_start (cellText, false);
+		colTrackNum.set_attributes(cellText, "text", InputField.FILE_TRACK_NUM);
+
+		//colComments
+		colComments = new TreeViewColumn();
+		colComments.title = _("Comments");
+		colComments.clickable = true;
+		colComments.reorderable = true;
+		colComments.sort_column_id = InputField.FILE_COMMENTS;
+		tvFiles.append_column(colComments);
+		
+		cellText = new CellRendererText();
+		colComments.pack_start (cellText, false);
+		colComments.set_attributes(cellText, "text", InputField.FILE_COMMENTS);
+
+		//colRecordedDate
+		colRecordedDate = new TreeViewColumn();
+		colRecordedDate.title = _("Recorded Date");
+		colRecordedDate.clickable = true;
+		colRecordedDate.reorderable = true;
+		colRecordedDate.sort_column_id = InputField.FILE_RECORDED_DATE;
+		tvFiles.append_column(colRecordedDate);
+		
+		cellText = new CellRendererText();
+		cellText.xalign = (float) 1.0;
+		colRecordedDate.pack_start (cellText, false);
+		colRecordedDate.set_attributes(cellText, "text", InputField.FILE_RECORDED_DATE);
 		
 		/*
 		//colCrop
@@ -885,7 +978,7 @@ public class MainWindow : Gtk.Window{
 
 	private void refresh_list_view (bool refresh_model = true){
 		if (refresh_model){
-			Gtk.ListStore inputStore = new Gtk.ListStore (22,  
+			Gtk.ListStore inputStore = new Gtk.ListStore (29,  
 				typeof(MediaFile), 	//FILE_REF
 				typeof(string), 	//FILE_PATH
 				typeof(string), 	//FILE_NAME
@@ -907,7 +1000,14 @@ public class MainWindow : Gtk.Window{
 				typeof(int), 		//FILE_VHEIGHT
 				typeof(double),		//FILE_VRATE
 				typeof(int), 		//FILE_VBITRATE
-				typeof(int) 		//FILE_BITRATE
+				typeof(int), 		//FILE_BITRATE
+				typeof(string),		//FILE_ARTIST
+				typeof(string),		//FILE_ALBUM
+				typeof(string),		//FILE_GENRE
+				typeof(string),		//FILE_TRACK_NAME
+				typeof(string),		//FILE_TRACK_NUM
+				typeof(string),		//FILE_COMMENTS
+				typeof(string)		//FILE_RECORDED_DATE
 				);
 
 			TreeIter iter;
@@ -935,6 +1035,13 @@ public class MainWindow : Gtk.Window{
 				inputStore.set (iter, InputField.FILE_VRATE, 		mFile.SourceFrameRate);
 				inputStore.set (iter, InputField.FILE_VBITRATE, 	mFile.VideoBitRate);
 				inputStore.set (iter, InputField.FILE_BITRATE, 		mFile.BitRate);
+				inputStore.set (iter, InputField.FILE_ARTIST, 		mFile.Artist);
+				inputStore.set (iter, InputField.FILE_ALBUM, 		mFile.Album);
+				inputStore.set (iter, InputField.FILE_GENRE, 		mFile.Genre);
+				inputStore.set (iter, InputField.FILE_TRACK_NAME, 	mFile.TrackName);
+				inputStore.set (iter, InputField.FILE_TRACK_NUM, 	mFile.TrackNumber);
+				inputStore.set (iter, InputField.FILE_COMMENTS, 	mFile.Comment);
+				inputStore.set (iter, InputField.FILE_RECORDED_DATE, 	mFile.RecordedDate);
 			}
 
 			tvFiles.set_model (inputStore);
@@ -978,6 +1085,13 @@ public class MainWindow : Gtk.Window{
 		FILE_VRATE,
 		FILE_VBITRATE,
 		FILE_BITRATE,
+		FILE_ARTIST,
+		FILE_ALBUM,
+		FILE_GENRE,
+		FILE_TRACK_NAME,
+		FILE_TRACK_NUM,
+		FILE_COMMENTS,
+		FILE_RECORDED_DATE
 	}
 	
 	// presets -------------------------------------
@@ -1960,7 +2074,15 @@ on the toolbar will open the file in a text editor.
 		//progressDlg.destroy();
 		gtk_do_events();
 
+		//Adjustment adj = swFiles.get_vadjustment();
+		//double pos = adj.get_value();
+		//log_msg("%f".printf(tvFiles.vadjustment.get_value()));
 		refresh_list_view();
+
+		//adj.set_value(adj.upper-adj.page_size);
+		//swFiles.set_vadjustment(adj);
+
+		//log_msg("%f".printf(tvFiles.vadjustment.get_value()));
 
 	 	if (msg_add.length > 0){
 			msg_add = _("Some files could not be opened:") + "\n\n" + msg_add;
@@ -2065,6 +2187,13 @@ on the toolbar will open the file in a text editor.
 		col_list[colBitrate] = new TreeViewListColumn("bitrate","Bitrate",colBitrate);
 		col_list[colABitrate] = new TreeViewListColumn("abitrate","Audio Bitrate",colABitrate);
 		col_list[colVBitrate] = new TreeViewListColumn("vbitrate","Video Bitrate",colVBitrate);
+		col_list[colArtist] = new TreeViewListColumn("artist","Artist",colArtist);
+		col_list[colAlbum] = new TreeViewListColumn("album","Album",colAlbum);
+		col_list[colGenre] = new TreeViewListColumn("genre","Genre",colGenre);
+		col_list[colTrackName] = new TreeViewListColumn("title","Title",colTrackName);
+		col_list[colTrackNum] = new TreeViewListColumn("tracknum","Track No.",colTrackNum);
+		col_list[colComments] = new TreeViewListColumn("comments","Comments",colComments);
+		col_list[colRecordedDate] = new TreeViewListColumn("recordeddate","RecordedDate",colRecordedDate);
 		//col_list[colProgress] = new TreeViewListColumn("status",colProgress);
 		//col_list[colSpacer] = new TreeViewListColumn("spacer",colSpacer);
 	
