@@ -1,29 +1,19 @@
-selene (16.2.1) trusty; urgency=medium
+selene (16.2.2) trusty; urgency=medium
 
-  * App settings: Allow user to enter backup path and output path
+  * Changed package dependency to require either libav-tools or ffmpeg
 
-  * App settings: Updated checkboxes for selecting directories
-  
-  * App settings: Added option to choose between 'ffmpeg' and 'avconv'
+  * Playing the input file will run the media player independently
+  without grabbing focus from other windows
 
-  * App settings: Added option to select media player
-  
-  * Added thumbnail image for audio files
+  * Show a progress dialog when files are added
 
-  * Added option to encode audio with FFmpeg's Native AAC encoder
+  * Add additional columns to the file list view and allow column to be
+  re-ordered
 
-  * Added support for encoding with Fraunhofer FDK AAC encoder (aac-enc)
+  * Added dialog for selecting list view columns
 
-  * Added option to change AAC profile
-
-  * Removed the 'Preview Output' right-click option in file list
-  
-  * Folders can be dragged and dropped on the main window to add files
-
-  * Updated toolbar items for adding and removing files
-
-  * Show icon beside file name in list view
+  * Allow columns to be re-ordered from the column selection dialog
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Wed, 10 Feb 2016 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sun, 14 Feb 2016 10:00:00 +0530

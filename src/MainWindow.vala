@@ -944,7 +944,7 @@ public class MainWindow : Gtk.Window{
 		
 		// miListViewColumns
 		miListViewColumns = new ImageMenuItem.from_stock("gtk-select", null);
-		miListViewColumns.label = _("List View Columns...");
+		miListViewColumns.label = _("Columns...");
 		menuFile.append(miListViewColumns);
 		miListViewColumns.activate.connect(()=>{
 			var dlg = new ColumnSelectionDialog.with_parent(this, col_list);
