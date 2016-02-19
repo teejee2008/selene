@@ -45,6 +45,7 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnAbout;
     private ToolButton btnDonate;
     private ToolButton btnOpenOutputFolder;
+    private ToolButton btnCrop;
     private ToolButton btnStart;
     private ToolButton btnStop;
     private ToolButton btnFinish;
@@ -143,7 +144,7 @@ public class MainWindow : Gtk.Window{
 		set_window_title();
         window_position = WindowPosition.CENTER;
         destroy.connect (Gtk.main_quit);
-        set_default_size (550, 20);
+        set_default_size (650, 20);
         icon = get_app_icon(16);
 
 		Gtk.drag_dest_set (this,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
@@ -216,6 +217,14 @@ public class MainWindow : Gtk.Window{
 		separator1 = new Gtk.SeparatorToolItem();
 		toolbar.add(separator1);
 
+		//btnCrop
+		btnCrop = new Gtk.ToolButton.from_stock ("gtk-edit");
+		btnCrop.is_important = true;
+		btnCrop.label = _("Crop");
+		btnCrop.clicked.connect (crop_videos);
+		btnCrop.set_tooltip_text (_("Crop Videos"));
+		toolbar.add (btnCrop);
+		
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
 		btnStart.is_important = true;
@@ -414,7 +423,7 @@ public class MainWindow : Gtk.Window{
 		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
 		swFiles.add (tvFiles);
 		//swFiles.margin = 6;
-		swFiles.set_size_request (-1, 250);
+		swFiles.set_size_request (-1, 300);
 		vboxMain.pack_start (swFiles, true, true, 0);
 	
 		CellRendererText cellText;
@@ -871,10 +880,23 @@ public class MainWindow : Gtk.Window{
 		menuFile.append(miFileSkip);
 
 		// miFileCropAuto
-		miFileCropAuto = new Gtk.MenuItem.with_label (_("AutoCrop Video"));
+		miFileCropAuto = new Gtk.MenuItem.with_label (_("Crop Video..."));
 		miFileCropAuto.activate.connect(miFileCropAuto_clicked);
 		menuFile.append(miFileCropAuto);
 
+		// miFileSeparator0
+		var miFileSeparator0 = new Gtk.MenuItem();
+		miFileSeparator0.override_color (StateFlags.NORMAL, gray);
+		menuFile.append(miFileSeparator0);
+		
+		miFileCropAuto.show.connect(()=>{
+			miFileSeparator0.visible = miFileCropAuto.visible;
+		});
+
+		miFileCropAuto.hide.connect(()=>{
+			miFileSeparator0.visible = miFileCropAuto.visible;
+		});
+		
 		// miFilePreview
 		miFilePreview = new Gtk.MenuItem.with_label (_("Preview File"));
 		miFilePreview.activate.connect(miFilePreview_clicked);
@@ -1444,7 +1466,7 @@ public class MainWindow : Gtk.Window{
 		TreeIter iter;
 		cmbScriptFolder.get_active_iter(out iter);
 		model.get (iter, 0, out path, -1);
-		exo_open_folder (path);
+		exo_open_folder (path + "/");
 	}
 
 	private void miFileOpenLogFile_clicked(){
@@ -1721,12 +1743,12 @@ on the toolbar will open the file in a text editor.
 				miListViewColumns.visible = false;
 				
 				if (selection.count_selected_rows() == 1){
-					if (App.InputFiles[index].Status == FileStatus.RUNNING){
-						miFileSkip.sensitive = true;
-					}
-					else{
+					//if (App.InputFiles[index].Status == FileStatus.RUNNING){
+						//miFileSkip.sensitive = true;
+					//}
+					//else{
 						miFileSkip.sensitive = false;
-					}
+					//}
 					if (dir_exists(App.InputFiles[index].TempDirectory)){
 						miFileOpenTemp.sensitive = true;
 					}
@@ -1840,9 +1862,9 @@ on the toolbar will open the file in a text editor.
 
     private void miFileCropAuto_clicked() {
 		TreeSelection selection = tvFiles.get_selection();
-		if (selection.count_selected_rows() == 0){ return; }
+		if (selection.count_selected_rows() != 1){ return; }
 
-		set_busy (true,this);
+		//set_busy (true,this);
 
 		TreeModel model;
 		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
@@ -1852,19 +1874,25 @@ on the toolbar will open the file in a text editor.
 			TreeIter iter;
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string());
-			MediaFile file = App.InputFiles[index];
+			MediaFile mf = App.InputFiles[index];
+			var win = new CropVideoSingleWindow(this, mf);
+			this.hide();
+			//win.show_all();
 
+			/*
 			if (file.crop_detect()){
 				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
 			}
 			else{
 				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
 			}
+			* */
+			break;
 
 			do_events();
 		}
 
-		set_busy (false,this);
+		//set_busy (false,this);
     }
 
     private void miFileRemove_clicked() {
@@ -1884,7 +1912,7 @@ on the toolbar will open the file in a text editor.
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
-			exo_open_folder (mf.TempDirectory);
+			exo_open_folder (mf.TempDirectory + "/");
 		}
     }
 
@@ -1903,16 +1931,16 @@ on the toolbar will open the file in a text editor.
 			MediaFile mf = App.InputFiles[index];
 
 			if (App.OutputDirectory.length == 0){
-				exo_open_folder (mf.Location);
+				exo_open_folder (mf.Location + "/");
 			} else{
-				exo_open_folder (App.OutputDirectory);
+				exo_open_folder (App.OutputDirectory + "/");
 			}
 		}
     }
 
     private void btnOpenOutputFolder_click(){
 		if (App.OutputDirectory.length > 0 && dir_exists(App.OutputDirectory)){
-			exo_open_folder (App.OutputDirectory);
+			exo_open_folder (App.OutputDirectory + "/");
 		}
 	}
 
@@ -2422,6 +2450,27 @@ on the toolbar will open the file in a text editor.
 
 	// encoding ----------------------------------
 
+	private void crop_videos(){
+		if (App.InputFiles.size == 0){
+			string msg = _("Input queue is empty!\nPlease add some files.\n");
+			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
+			dlg.set_title(_("Queue is Empty"));
+			dlg.set_modal(true);
+			dlg.set_transient_for(this);
+			dlg.run();
+			dlg.destroy();
+
+			return;
+		}
+
+		//var dialog = new CropDialog(this);
+		var win = new CropVideoBatchWindow(this);
+		this.hide();
+		//win.show_all();
+	    //dialog.run();
+		//dialog.destroy();
+	}
+
 	private void start(){
 		if (App.InputFiles.size == 0){
 			string msg = _("Input queue is empty!\nPlease add some files.\n");
@@ -2466,6 +2515,7 @@ on the toolbar will open the file in a text editor.
         btnBackground.active = App.BackgroundMode;
         btnOpenOutputFolder.visible = dir_exists(App.OutputDirectory);
 
+		btnCrop.visible = false;
 		btnStart.visible = false;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = false;
@@ -2510,6 +2560,7 @@ on the toolbar will open the file in a text editor.
 		//colCrop.visible = !App.TileView;
 		colProgress.visible = false;
 
+		btnCrop.visible = true;
 		btnStart.visible = true;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = true;

@@ -34,7 +34,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class ColumnSelectionDialog : Dialog {
+public class ColumnSelectionDialog : Gtk.Dialog {
 
 	private Gtk.TreeView tvCols;
 	
@@ -89,7 +89,7 @@ public class ColumnSelectionDialog : Dialog {
 		});
 
 		cell_select.toggled.connect((path) => {
-			ListStore store = (ListStore) tvCols.model;
+			var store = (Gtk.ListStore) tvCols.model;
 			bool selected;
 			TreeViewListColumn col;
 

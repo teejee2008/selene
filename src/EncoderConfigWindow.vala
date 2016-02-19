@@ -33,7 +33,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class EncoderConfigWindow : Dialog {
+public class EncoderConfigWindow : Gtk.Dialog {
 
 	public string Folder;
 	public string Name;

@@ -32,7 +32,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class AppConfigWindow : Dialog {
+public class AppConfigWindow : Gtk.Dialog {
 	private Box vboxMain;
 	private Gtk.Notebook notebook;
 	private Label lblView;
@@ -89,6 +89,13 @@ public class AppConfigWindow : Dialog {
         chkOutput_clicked();
         chkBackup_clicked();
 
+		/*var list = new Gee.ArrayList<MediaFile>();
+		foreach(MediaFile mf in App.InputFiles){
+			if (mf.HasVideo){
+				list.add(mf);
+			}
+		}*/
+		
         show_all();
 	}
 

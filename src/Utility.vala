@@ -173,6 +173,10 @@ namespace TeeJee.FileSystem{
 		return File.new_for_path(filePath).get_basename();
 	}
 
+	public string file_path_escape_quotes(string filePath){
+		return filePath.replace("'","'\\''");
+	}
+	
 	public bool file_exists (string filePath){
 
 		/* Check if file exists */
@@ -1037,7 +1041,6 @@ namespace TeeJee.GtkHelper{
 
 		return img_icon;
 	}
-
 }
 
 namespace TeeJee.Multimedia{
@@ -1278,45 +1281,48 @@ namespace TeeJee.System{
 		*/
 
 		string path;
+		string args = "'%s'".printf(file_path_escape_quotes(dir_path));
 
+		log_msg("xdg-open " + args);
+		
 		if (xdg_open_try_first){
 			//try using xdg-open
 			path = get_cmd_path ("xdg-open");
 			if ((path != null)&&(path != "")){
-				return execute_command_script_async ("xdg-open \"" + dir_path + "\"");
+				return execute_command_script_async ("xdg-open " + args);
 			}
 		}
 
 		path = get_cmd_path ("nemo");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("nemo \"" + dir_path + "\"");
+			return execute_command_script_async ("nemo " + args);
 		}
 
 		path = get_cmd_path ("nautilus");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("nautilus \"" + dir_path + "\"");
+			return execute_command_script_async ("nautilus " + args);
 		}
 
 		path = get_cmd_path ("thunar");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("thunar \"" + dir_path + "\"");
+			return execute_command_script_async ("thunar " + args);
 		}
 
 		path = get_cmd_path ("pantheon-files");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("pantheon-files \"" + dir_path + "\"");
+			return execute_command_script_async ("pantheon-files " + args);
 		}
 
 		path = get_cmd_path ("marlin");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("marlin \"" + dir_path + "\"");
+			return execute_command_script_async ("marlin " + args);
 		}
 
 		if (xdg_open_try_first == false){
 			//try using xdg-open
 			path = get_cmd_path ("xdg-open");
 			if ((path != null)&&(path != "")){
-				return execute_command_script_async ("xdg-open \"" + dir_path + "\"");
+				return execute_command_script_async ("xdg-open " + args);
 			}
 		}
 
@@ -1328,15 +1334,16 @@ namespace TeeJee.System{
 		/* Tries to open the given text file in a text editor */
 
 		string path;
-
+		string args = "'%s'".printf(file_path_escape_quotes(txt));
+		
 		path = get_cmd_path ("exo-open");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("exo-open \"" + txt + "\"");
+			return execute_command_script_async ("exo-open " + args);
 		}
 
 		path = get_cmd_path ("gedit");
 		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("gedit --new-document \"" + txt + "\"");
+			return execute_command_script_async ("gedit --new-document " + args);
 		}
 
 		return false;
@@ -1483,7 +1490,9 @@ namespace TeeJee.System{
 		}
 	}
 
-
+	public void sleep(int milliseconds){
+		Thread.usleep ((ulong) milliseconds * 1000);
+	}
 }
 
 namespace TeeJee.Misc {

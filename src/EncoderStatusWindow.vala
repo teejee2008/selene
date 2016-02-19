@@ -32,7 +32,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class EncoderStatusWindow : Dialog {
+public class EncoderStatusWindow : Gtk.Dialog {
 
 	private Gtk.Box vboxMain;
 	private Gtk.Box vbox_actions;

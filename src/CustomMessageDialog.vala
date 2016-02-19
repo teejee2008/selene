@@ -34,7 +34,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class CustomMessageDialog : Dialog {
+public class CustomMessageDialog : Gtk.Dialog {
 	private Gtk.Box vbox_main;
 	private Gtk.Label lbl_msg;
 	private Gtk.ScrolledWindow sw_msg;

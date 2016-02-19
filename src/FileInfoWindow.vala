@@ -32,7 +32,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class FileInfoWindow : Dialog {
+public class FileInfoWindow : Gtk.Dialog {
 
 	private Box vboxMain;
 	private Button btnOk;

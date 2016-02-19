@@ -31,7 +31,7 @@ using TeeJee.GtkHelper;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class AboutWindow : Dialog {
+public class AboutWindow : Gtk.Dialog {
 	private Box vbox_main;
 	private Box vbox_logo;
 	private Box vbox_credits;
