@@ -1,19 +1,10 @@
-selene (16.2.2) trusty; urgency=medium
+selene (16.2.3) trusty; urgency=medium
 
-  * Changed package dependency to require either libav-tools or ffmpeg
+  * Added new window for cropping video files
 
-  * Playing the input file will run the media player independently
-  without grabbing focus from other windows
-
-  * Show a progress dialog when files are added
-
-  * Add additional columns to the file list view and allow column to be
-  re-ordered
-
-  * Added dialog for selecting list view columns
-
-  * Allow columns to be re-ordered from the column selection dialog
+  * Added option to run app in background in non-admin mode. This option
+  was available earlier only in admin mode.
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Sun, 14 Feb 2016 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Fri, 19 Feb 2016 10:00:00 +0530
