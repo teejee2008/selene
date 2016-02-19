@@ -51,7 +51,7 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnFinish;
     private ToolButton btnPause;
     private ToggleToolButton btnShutdown;
-    private ToggleToolButton btnBackground;
+    private ToolButton btnBackground;
     private SeparatorToolItem separator1;
     private SeparatorToolItem separator2;
 
@@ -251,6 +251,16 @@ public class MainWindow : Gtk.Window{
 		btnStop.no_show_all = true;
 		toolbar.add (btnStop);
 
+		//btnBackground
+        btnBackground = new Gtk.ToolButton.from_stock ("gtk-execute");
+        btnBackground.label = _("Background");
+        btnBackground.visible = false;
+        btnBackground.no_show_all = true;
+        btnBackground.is_important = true;
+        btnBackground.clicked.connect (btnBackground_clicked);
+        btnBackground.set_tooltip_text (_("Run in background with lower priority"));
+        toolbar.add (btnBackground);
+
 		//btnFinish
 		btnFinish = new Gtk.ToolButton.from_stock ("gtk-ok");
 		btnFinish.is_important = true;
@@ -306,16 +316,6 @@ public class MainWindow : Gtk.Window{
 		btnShutdown.clicked.connect (btnShutdown_clicked);
 		btnShutdown.set_tooltip_text (_("Shutdown system after completion"));
 		toolbar.add (btnShutdown);
-
-		//btnBackground
-        btnBackground = new Gtk.ToggleToolButton.from_stock ("gtk-sort-ascending");
-        btnBackground.label = _("Background");
-        btnBackground.visible = false;
-        btnBackground.no_show_all = true;
-        btnBackground.is_important = true;
-        btnBackground.clicked.connect (btnBackground_clicked);
-        btnBackground.set_tooltip_text (_("Run processes with lower priority"));
-        toolbar.add (btnBackground);
 
         //btnOpenOutputFolder
 		btnOpenOutputFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
@@ -2411,8 +2411,9 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void btnBackground_clicked(){
-		App.BackgroundMode = btnBackground.active;
+		App.BackgroundMode = true;
 		App.set_priority();
+		this.iconify();
 	}
 
 	private void btnPause_clicked(){
@@ -2511,8 +2512,7 @@ on the toolbar will open the file in a text editor.
 		btnShutdown.active = App.Shutdown;
 
 		btnShutdown.visible = App.AdminMode;
-		btnBackground.visible = App.AdminMode;
-        btnBackground.active = App.BackgroundMode;
+		btnBackground.visible = true;
         btnOpenOutputFolder.visible = dir_exists(App.OutputDirectory);
 
 		btnCrop.visible = false;
@@ -2634,6 +2634,8 @@ on the toolbar will open the file in a text editor.
 				//stop cpu usage display
 				stop_cpu_usage_timer();
 				set_window_title();
+
+				this.present();
 
 				break;
 

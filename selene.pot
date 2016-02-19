@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-19 21:58+0530\n"
+"POT-Creation-Date: 2016-02-19 22:24+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Abort"
 msgstr ""
 
-#: MainWindow.vala:297
+#: MainWindow.vala:307
 msgid "About"
 msgstr ""
 
@@ -304,7 +304,7 @@ msgstr ""
 msgid "An audio-video converter for Linux"
 msgstr ""
 
-#: MainWindow.vala:273
+#: MainWindow.vala:283
 msgid "Application Settings"
 msgstr ""
 
@@ -351,7 +351,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: MainWindow.vala:312
+#: MainWindow.vala:256
 msgid "Background"
 msgstr ""
 
@@ -379,7 +379,7 @@ msgstr ""
 msgid "Boost or cut the treble (upper) frequencies of the audio."
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:243 CropVideoBatchWindow.vala:179
+#: CropVideoBatchWindow.vala:179
 msgid "Bottom"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:2670
+#: MainWindow.vala:2674
 msgid "CPU: "
 msgstr ""
 
@@ -464,7 +464,7 @@ msgstr ""
 msgid "Crop"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:192 CropVideoBatchWindow.vala:128
+#: CropVideoBatchWindow.vala:128
 msgid "Crop Left"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgstr ""
 msgid "Crop Videos"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:347 CropVideoSingleWindow.vala:176
+#: CropVideoSingleWindow.vala:176
 msgid "Cropped:"
 msgstr ""
 
@@ -496,15 +496,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:336
-msgid "Detect"
-msgstr ""
-
 #: CropVideoSingleWindow.vala:189
 msgid "Detect Borders"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:339 CropVideoSingleWindow.vala:191
+#: CropVideoSingleWindow.vala:191
 msgid "Detect black borders in the video and set cropping parameters"
 msgstr ""
 
@@ -552,7 +548,7 @@ msgstr ""
 msgid "Documenters"
 msgstr ""
 
-#: DonationWindow.vala:36 MainWindow.vala:286 MainWindow.vala:287
+#: DonationWindow.vala:36 MainWindow.vala:296 MainWindow.vala:297
 msgid "Donate"
 msgstr ""
 
@@ -601,7 +597,7 @@ msgstr ""
 msgid "Empty Preset Name"
 msgstr ""
 
-#: EncoderStatusWindow.vala:45 MainWindow.vala:279
+#: EncoderStatusWindow.vala:45 MainWindow.vala:289
 msgid "Encoders"
 msgstr ""
 
@@ -673,8 +669,8 @@ msgstr ""
 msgid "Fast"
 msgstr ""
 
-#: ColumnSelectionDialog.vala:76 CropVideoBatchWindow (copy 1).vala:173
-#: CropVideoBatchWindow.vala:109 MainWindow.vala:433
+#: ColumnSelectionDialog.vala:76 CropVideoBatchWindow.vala:109
+#: MainWindow.vala:433
 msgid "File"
 msgstr ""
 
@@ -711,7 +707,7 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: MainWindow.vala:257 MainWindow.vala:259
+#: MainWindow.vala:267 MainWindow.vala:269
 msgid "Finish"
 msgstr ""
 
@@ -727,7 +723,7 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:2497
+#: MainWindow.vala:2498
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -789,7 +785,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: MainWindow.vala:2455 MainWindow.vala:2476
+#: MainWindow.vala:2456 MainWindow.vala:2477
 msgid ""
 "Input queue is empty!\n"
 "Please add some files.\n"
@@ -895,7 +891,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:2497
+#: MainWindow.vala:2498
 msgid "Missing Encoders"
 msgstr ""
 
@@ -999,7 +995,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:240 MainWindow.vala:2436 MainWindow.vala:2438
+#: MainWindow.vala:240 MainWindow.vala:2437 MainWindow.vala:2439
 msgid "Pause"
 msgstr ""
 
@@ -1015,20 +1011,12 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:360
-msgid "Play"
-msgstr ""
-
 #: MainWindow.vala:946
 msgid "Play File (Output)"
 msgstr ""
 
 #: MainWindow.vala:940
 msgid "Play File (Source)"
-msgstr ""
-
-#: CropVideoBatchWindow (copy 1).vala:364
-msgid "Play source video"
 msgstr ""
 
 #: CropVideoSingleWindow.vala:366
@@ -1039,7 +1027,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:2497
+#: MainWindow.vala:2498
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -1055,20 +1043,12 @@ msgstr ""
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:2602
+#: MainWindow.vala:2604
 msgid "Press 'Cancel' to abort shutdown"
-msgstr ""
-
-#: CropVideoBatchWindow (copy 1).vala:373
-msgid "Preview"
 msgstr ""
 
 #: MainWindow.vala:901
 msgid "Preview File"
-msgstr ""
-
-#: CropVideoBatchWindow (copy 1).vala:377
-msgid "Preview cropped video"
 msgstr ""
 
 #: EncoderConfigWindow.vala:496 EncoderConfigWindow.vala:973
@@ -1087,7 +1067,7 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: MainWindow.vala:2457 MainWindow.vala:2478
+#: MainWindow.vala:2458 MainWindow.vala:2479
 msgid "Queue is Empty"
 msgstr ""
 
@@ -1132,16 +1112,15 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:2430 MainWindow.vala:2432
+#: MainWindow.vala:2431 MainWindow.vala:2433
 msgid "Resume"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:209 CropVideoBatchWindow.vala:145
+#: CropVideoBatchWindow.vala:145
 msgid "Right"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:156 CropVideoBatchWindow.vala:92
-#: MainWindow.vala:418
+#: CropVideoBatchWindow.vala:92 MainWindow.vala:418
 msgid "Right-click for more options"
 msgstr ""
 
@@ -1149,8 +1128,8 @@ msgstr ""
 msgid "Right:"
 msgstr ""
 
-#: MainWindow.vala:317
-msgid "Run processes with lower priority"
+#: MainWindow.vala:261
+msgid "Run in background with lower priority"
 msgstr ""
 
 #: EncoderConfigWindow.vala:594
@@ -1196,7 +1175,7 @@ msgid ""
 "Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
 msgstr ""
 
-#: MainWindow.vala:302
+#: MainWindow.vala:312
 msgid "Shutdown"
 msgstr ""
 
@@ -1208,7 +1187,7 @@ msgstr ""
 msgid "Shutdown Enabled"
 msgstr ""
 
-#: MainWindow.vala:307
+#: MainWindow.vala:317
 msgid "Shutdown system after completion"
 msgstr ""
 
@@ -1237,8 +1216,7 @@ msgstr ""
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:342 CropVideoSingleWindow.vala:171
-#: Main.vala:825
+#: CropVideoSingleWindow.vala:171 Main.vala:825
 msgid "Source:"
 msgstr ""
 
@@ -1300,11 +1278,11 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow.vala:2604
+#: MainWindow.vala:2606
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:2611
+#: MainWindow.vala:2613
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1313,7 +1291,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:777 MainWindow.vala:2601
+#: Main.vala:777 MainWindow.vala:2603
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1355,7 +1333,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: CropVideoBatchWindow (copy 1).vala:226 CropVideoBatchWindow.vala:162
+#: CropVideoBatchWindow.vala:162
 msgid "Top"
 msgstr ""
 
