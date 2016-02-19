@@ -84,7 +84,7 @@ public class MediaPlayer : GLib.Object{
 			args += " " + ExtraOptions.strip();
 		}
 
-        log_msg(args);
+        log_debug(args);
 
         run(args);
 
@@ -166,12 +166,12 @@ public class MediaPlayer : GLib.Object{
 
 				//A:   2.9 V:   2.9 A-V:  0.000 ct:  0.000   0/  0  0%  0%  0.1% 0 0
 				
-				log_msg("err:" + err_line);
+				log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
 		}
 		catch (Error e) {
-			//log_msg("In read_error_line()");
+			//log_debug("In read_error_line()");
 			log_error (e.message);
 		}
 	}
@@ -189,7 +189,7 @@ public class MediaPlayer : GLib.Object{
 					int x = int.parse(match.fetch(3));
 					int y = int.parse(match.fetch(4));
 
-					//log_msg("match=%d,%d,%d,%d".printf(w,h,x,y));
+					//log_debug("match=%d,%d,%d,%d".printf(w,h,x,y));
 					
 					int cropL = x;
 					int cropR = mFile.SourceWidth - w - x;
@@ -210,14 +210,14 @@ public class MediaPlayer : GLib.Object{
 					}
 				}
 		
-				//log_msg("out:" + out_line);
+				//log_debug("out:" + out_line);
 				out_line = dis_out.read_line (null);  //read next
 			}
 
 			is_running = false;
 		}
 		catch (Error e) {
-			//log_msg("In read_output_line()");
+			//log_debug("In read_output_line()");
 			log_error (e.message);
 		}
 	}
@@ -225,13 +225,13 @@ public class MediaPlayer : GLib.Object{
 	private void write_to_stdin(string line) {
 		try {
 			if (is_running){
-				log_msg(line);
+				log_debug(line);
 				dos_inp.put_string(line + "\n");
 				dos_inp.flush();
 			}
 		}
 		catch (Error e) {
-			log_msg("In write_to_stdin()");
+			log_debug("In write_to_stdin()");
 			log_error (e.message);
 		}
 	}
