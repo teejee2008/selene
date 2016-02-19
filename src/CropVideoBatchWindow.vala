@@ -51,7 +51,7 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 	public CropVideoBatchWindow(Gtk.Window parent) {
 		set_transient_for(parent);
 		set_destroy_with_parent(true);
-        set_skip_taskbar_hint(true);
+        //set_skip_taskbar_hint(true);
 
 		window_position = WindowPosition.CENTER_ON_PARENT;
 		icon = get_app_icon(16);

@@ -55,7 +55,7 @@ public class CropVideoSingleWindow : Gtk.Window {
 	public CropVideoSingleWindow(Gtk.Window parent, MediaFile _mFile) {
 		set_transient_for(parent);
 		set_destroy_with_parent(true);
-        set_skip_taskbar_hint(true);
+        //set_skip_taskbar_hint(true);
 
 		window_position = WindowPosition.CENTER_ALWAYS;
 		icon = get_app_icon(16);
@@ -109,6 +109,8 @@ public class CropVideoSingleWindow : Gtk.Window {
 		Gtk.SpinButton spin;
 		Gtk.Label label;
 
+		string tt = _("Scroll mouse wheel to adjust");
+		
 		//left
 		label = new Gtk.Label(_("Left:"));
 		label.xalign = (float) 1.0;
@@ -119,6 +121,7 @@ public class CropVideoSingleWindow : Gtk.Window {
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
+		spin.set_tooltip_text(tt);
 		grid.attach(spin,1,0,1,1);
 		
 		spinCropL = spin;
@@ -134,6 +137,7 @@ public class CropVideoSingleWindow : Gtk.Window {
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
+		spin.set_tooltip_text(tt);
 		grid.attach(spin,1,1,1,1);
 
 		spinCropR = spin;
@@ -149,6 +153,7 @@ public class CropVideoSingleWindow : Gtk.Window {
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
+		spin.set_tooltip_text(tt);
 		grid.attach(spin,3,0,1,1);
 
 		spinCropT = spin;
@@ -164,6 +169,7 @@ public class CropVideoSingleWindow : Gtk.Window {
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
+		spin.set_tooltip_text(tt);
 		grid.attach(spin,3,1,1,1);
 		
 		spinCropB = spin;
