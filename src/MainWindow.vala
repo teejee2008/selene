@@ -1687,7 +1687,7 @@ on the toolbar will open the file in a text editor.
     private bool menuFile_popup (Gtk.Menu popup, Gdk.EventButton? event) {
 		TreeSelection selection = tvFiles.get_selection();
 		int index = -1;
-
+		MediaFile mFile = null;
 		//if (selection.count_selected_rows() == 0){
 		//	return true;
 		//}
@@ -1697,6 +1697,7 @@ on the toolbar will open the file in a text editor.
 			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 			TreePath path = lst.nth_data (0);
 			index = int.parse (path.to_string());
+			mFile = App.InputFiles[index];
 		}
 
 		switch(App.Status){
@@ -1719,7 +1720,7 @@ on the toolbar will open the file in a text editor.
 				
 				miFileInfo.sensitive = (selection.count_selected_rows() == 1);
 				miFilePlaySource.sensitive = (selection.count_selected_rows() == 1);
-				miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
+				miFileCropAuto.sensitive = (mFile != null) && (mFile.HasVideo);
 				miFileRemove.sensitive = (selection.count_selected_rows() > 0);
 				break;
 
@@ -1932,25 +1933,6 @@ on the toolbar will open the file in a text editor.
 		if (App.OutputDirectory.length > 0 && dir_exists(App.OutputDirectory)){
 			exo_open_folder (App.OutputDirectory + "/");
 		}
-	}
-
-	private void set_busy (bool busy, Gtk.Window win) {
-		Gdk.Cursor? cursor = null;
-
-		if (busy){
-			cursor = new Gdk.Cursor(Gdk.CursorType.WATCH);
-		}
-		else{
-			cursor = new Gdk.Cursor(Gdk.CursorType.ARROW);
-		}
-
-		var window = win.get_window();
-
-		if (window != null) {
-			window.set_cursor (cursor);
-		}
-
-		do_events();
 	}
 
     private void do_events(){
@@ -2342,7 +2324,7 @@ on the toolbar will open the file in a text editor.
 
 		dialog.program_name = AppName;
 		dialog.comments = _("An audio-video converter for Linux");
-		dialog.copyright = "Copyright © 2015 Tony George (%s)".printf(AppAuthorEmail);
+		dialog.copyright = "Copyright © 2016 Tony George (%s)".printf(AppAuthorEmail);
 		dialog.version = AppVersion;
 		dialog.logo = get_app_icon(128);
 
@@ -2430,14 +2412,23 @@ on the toolbar will open the file in a text editor.
 
 	private void crop_videos(){
 		if (App.InputFiles.size == 0){
-			string msg = _("Input queue is empty!\nPlease add some files.\n");
-			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
-			dlg.set_title(_("Queue is Empty"));
-			dlg.set_modal(true);
-			dlg.set_transient_for(this);
-			dlg.run();
-			dlg.destroy();
+			string title = _("No Files");
+			string msg = _("Add some files to the file list");
+			gtk_messagebox(title, msg, this, true);
+			return;
+		}
 
+		int count = 0 ;
+		foreach(var mf in App.InputFiles){
+			if (mf.HasVideo){
+				count++;
+			}
+		}
+		
+		if (count == 0){
+			string title = _("No Videos");
+			string msg = _("Add some videos to the file list");
+			gtk_messagebox(title, msg, this, true);
 			return;
 		}
 
@@ -2451,14 +2442,9 @@ on the toolbar will open the file in a text editor.
 
 	private void start(){
 		if (App.InputFiles.size == 0){
-			string msg = _("Input queue is empty!\nPlease add some files.\n");
-			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
-			dlg.set_title(_("Queue is Empty"));
-			dlg.set_modal(true);
-			dlg.set_transient_for(this);
-			dlg.run();
-			dlg.destroy();
-
+			string title = _("No Files");
+			string msg = _("Add some files to the file list");
+			gtk_messagebox(title, msg, this, true);
 			return;
 		}
 

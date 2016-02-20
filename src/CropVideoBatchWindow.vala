@@ -266,12 +266,14 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 
 		TreeIter iter;
 		foreach(MediaFile mf in App.InputFiles) {
-			store.append (out iter);
-			store.set(iter, 0, mf);
-			store.set(iter, 1, mf.CropL.to_string());
-			store.set(iter, 2, mf.CropR.to_string());
-			store.set(iter, 3, mf.CropT.to_string());
-			store.set(iter, 4, mf.CropB.to_string());
+			if (mf.HasVideo){
+				store.append (out iter);
+				store.set(iter, 0, mf);
+				store.set(iter, 1, mf.CropL.to_string());
+				store.set(iter, 2, mf.CropR.to_string());
+				store.set(iter, 3, mf.CropT.to_string());
+				store.set(iter, 4, mf.CropB.to_string());
+			}
 		}
 
 		tvFiles.set_model (store);
