@@ -87,7 +87,6 @@ public class Main : GLib.Object{
 	public bool TileView = true;
 	
 	public string AVEncoder = "ffmpeg";
-	public string AVPlayer = "ffplay";
 
 	public string ListViewColumns = "";
 	
@@ -316,7 +315,6 @@ Notes:
 		init_encoder_list();
 		check_all_encoders();
 		check_and_default_av_encoder();
-		check_and_default_av_player();
 		check_ffmpeg_codec_support();
 
 		//check critical encoders -------------------------
@@ -444,13 +442,13 @@ Notes:
 		Encoders["x264"] = new Encoder("x264","H.264 / MPEG-4 AVC Video Encoder","H264 Output");
 		Encoders["x265"] = new Encoder("x265","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
 
-		Encoders["ffplay"] = new Encoder("ffplay","FFmpeg's Audio Video Player","Audio-Video Playback");
-		Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
+		//Encoders["ffplay"] = new Encoder("ffplay","FFmpeg's Audio Video Player","Audio-Video Playback");
+		//Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
 		Encoders["mplayer"] = new Encoder("mplayer","Media Player","Audio-Video Playback");
-		Encoders["mplayer2"] = new Encoder("mplayer2","Media Player","Audio-Video Playback");
-		Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
-		Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
-		Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
+		//Encoders["mplayer2"] = new Encoder("mplayer2","Media Player","Audio-Video Playback");
+		//Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
+		//Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
+		//Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
 	}
 
 	public void check_all_encoders(){
@@ -522,7 +520,6 @@ Notes:
 		config.set_string_member("last-script", SelectedScript.Path);
 		config.set_string_member("tile-view", TileView.to_string());
 		config.set_string_member("av-encoder", AVEncoder);
-		config.set_string_member("av-player", AVPlayer);
 		config.set_string_member("list-view-columns", ListViewColumns);
 		
 		if (SelectedScript != null) {
@@ -580,10 +577,6 @@ Notes:
 
 		check_and_default_av_encoder();
 
-		AVPlayer = json_get_string(config,"av-player", "ffplay");
-
-		check_and_default_av_player();
-		
 		val = json_get_string(config,"last-script", "");
 		if (val != null && val.length > 0) {
 			SelectedScript = new ScriptFile(val);
@@ -610,42 +603,6 @@ Notes:
 		}
 	}
 
-	public void check_and_default_av_player(){
-		if (Encoders.has_key(AVPlayer) && Encoders[AVPlayer].IsAvailable){
-			return;
-		}
-
-		if (Encoders["smplayer"].IsAvailable){
-			AVPlayer = "smplayer";
-			return;
-		}
-		
-		if (Encoders["vlc"].IsAvailable){
-			AVPlayer = "vlc";
-			return;
-		}
-		
-		if (Encoders["mpv"].IsAvailable){
-			AVPlayer = "mpv";
-			return;
-		}
-
-		if (Encoders["mplayer"].IsAvailable){
-			AVPlayer = "mplayer";
-			return;
-		}
-		
-		if (Encoders["ffplay"].IsAvailable){
-			AVPlayer = "ffplay";
-			return;
-		}
-
-		if (Encoders["avplay"].IsAvailable){
-			AVPlayer = "avplay";
-			return;
-		}
-	}
-	
 	public void exit_app(){
 		save_config();
 		Gtk.main_quit();

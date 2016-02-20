@@ -78,7 +78,6 @@ public class MainWindow : Gtk.Window{
 	private ImageMenuItem miFileSkip;
 	private Gtk.MenuItem miFileCropAuto;
 	private Gtk.MenuItem miFileRemove;
-	private Gtk.MenuItem miFilePreview;
 	private Gtk.MenuItem miFilePlaySource;
 	private Gtk.MenuItem miFilePlayOutput;
 	private Gtk.MenuItem miFileSeparator1;
@@ -897,11 +896,6 @@ public class MainWindow : Gtk.Window{
 			miFileSeparator0.visible = miFileCropAuto.visible;
 		});
 		
-		// miFilePreview
-		miFilePreview = new Gtk.MenuItem.with_label (_("Preview File"));
-		miFilePreview.activate.connect(miFilePreview_clicked);
-		menuFile.append(miFilePreview);
-
 		// miFileRemove
 		miFileRemove = new ImageMenuItem.from_stock("gtk-remove", null);
 		miFileRemove.activate.connect(miFileRemove_clicked);
@@ -1714,7 +1708,6 @@ on the toolbar will open the file in a text editor.
 
 				miFileInfo.visible = true;
 				miFileInfoOutput.visible = false;
-				miFilePreview.visible = false;
 				miFilePlaySource.visible = true;
 				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = true;
@@ -1725,7 +1718,6 @@ on the toolbar will open the file in a text editor.
 				miListViewColumns.visible = !App.TileView;
 				
 				miFileInfo.sensitive = (selection.count_selected_rows() == 1);
-				miFilePreview.sensitive = (selection.count_selected_rows() == 1);
 				miFilePlaySource.sensitive = (selection.count_selected_rows() == 1);
 				miFileCropAuto.sensitive = (selection.count_selected_rows() > 0);
 				miFileRemove.sensitive = (selection.count_selected_rows() > 0);
@@ -1765,7 +1757,6 @@ on the toolbar will open the file in a text editor.
 
 				miFileInfo.visible = false;
 				miFileInfoOutput.visible = false;
-				miFilePreview.visible = false;
 				miFilePlaySource.visible = false;
 				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = false;
@@ -1792,7 +1783,6 @@ on the toolbar will open the file in a text editor.
 				miFileInfoOutput.visible = true;
 				miFilePlaySource.visible = true;
 				miFilePlayOutput.visible = true;
-				miFilePreview.visible = false;
 				miFileCropAuto.visible = false;
 				miFileRemove.visible = false;
 				miFileSeparator1.visible = false;
@@ -1968,20 +1958,6 @@ on the toolbar will open the file in a text editor.
 			Gtk.main_iteration();
 	}
 
-    private void miFilePreview_clicked() {
-		TreeSelection selection = tvFiles.get_selection();
-
-		if (selection.count_selected_rows() > 0){
-			TreeModel model;
-			GLib.List<TreePath> lst = selection.get_selected_rows (out model);
-			TreePath path = lst.nth_data (0);
-			int index = int.parse (path.to_string());
-			MediaFile mf = App.InputFiles[index];
-
-			mf.preview_output(App.AVPlayer);
-		}
-	}
-
     private void miFilePlayOutput_clicked() {
 		TreeSelection selection = tvFiles.get_selection();
 
@@ -1992,7 +1968,8 @@ on the toolbar will open the file in a text editor.
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 
-			mf.play_output(App.AVPlayer);
+			var mf_output = new MediaFile(mf.OutputFilePath, App.AVEncoder);
+			var win = new MediaPlayerWindow(this, mf_output);
 		}
     }
 

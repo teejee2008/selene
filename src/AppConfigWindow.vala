@@ -46,7 +46,6 @@ public class AppConfigWindow : Gtk.Dialog {
 	private Button btnCancel;
 	private ComboBox cmbFileView;
 	private ComboBox cmbSelectEncoder;
-	private ComboBox cmbSelectPlayer;
 	
 	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
@@ -89,13 +88,6 @@ public class AppConfigWindow : Gtk.Dialog {
         chkOutput_clicked();
         chkBackup_clicked();
 
-		/*var list = new Gee.ArrayList<MediaFile>();
-		foreach(MediaFile mf in App.InputFiles){
-			if (mf.HasVideo){
-				list.add(mf);
-			}
-		}*/
-		
         show_all();
 	}
 
@@ -112,14 +104,11 @@ public class AppConfigWindow : Gtk.Dialog {
 		lblOutput = new Label (_("<b>Output Directory</b>"));
 		lblOutput.set_use_markup(true);
 		lblOutput.halign = Align.START;
-		//lblOutput.margin_bottom = 12;
-		//lblOutput.margin_top = 12;
 		vboxTabGeneral.pack_start (lblOutput, false, true, 0);
 
 		// chkOutput
 		chkOutput = new CheckButton.with_label (_("Save files in following location"));
 		chkOutput.active = (App.OutputDirectory.length > 0);
-		//chkOutput.margin_left = 6;
 		chkOutput.clicked.connect (chkOutput_clicked);
 		vboxTabGeneral.pack_start (chkOutput, false, true, 0);
 		
@@ -128,8 +117,6 @@ public class AppConfigWindow : Gtk.Dialog {
 		txtOutput.hexpand = true;
 		txtOutput.secondary_icon_stock = "gtk-open";
 		txtOutput.placeholder_text = _("Enter path or browse for directory");
-		//txtOutput.margin_left = 6;
-		//txtOutput.margin_bottom = 6;
 		vboxTabGeneral.add (txtOutput);
 
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
@@ -162,14 +149,12 @@ public class AppConfigWindow : Gtk.Dialog {
 		lblBackup = new Label (_("<b>Backup Directory</b>"));
 		lblBackup.set_use_markup(true);
 		lblBackup.halign = Align.START;
-		//lblBackup.margin_bottom = 12;
 		lblBackup.margin_top = 12;
 		vboxTabGeneral.pack_start (lblBackup, false, true, 0);
 
 		// chkBackup
 		chkBackup = new CheckButton.with_label (_("Move source files after encoding is complete"));
 		chkBackup.active = (App.BackupDirectory.length > 0);
-		//chkBackup.margin_left = 6;
 		chkBackup.clicked.connect (chkBackup_clicked);
 		vboxTabGeneral.pack_start (chkBackup, false, true, 0);
 		
@@ -178,8 +163,6 @@ public class AppConfigWindow : Gtk.Dialog {
 		txtBackup.hexpand = true;
 		txtBackup.secondary_icon_stock = "gtk-open";
 		txtBackup.placeholder_text = _("Enter path or browse for directory");
-		//txtBackup.margin_left = 6;
-		//txtBackup.margin_bottom = 6;
 		vboxTabGeneral.add (txtBackup);
 
 		if ((App.BackupDirectory != null) && dir_exists (App.BackupDirectory)){
@@ -302,69 +285,6 @@ public class AppConfigWindow : Gtk.Dialog {
 			cmbSelectEncoder.active = 0;
 			break;
 		}
-
-		//hboxPlayer -----------------------------------------------
-		
-		var hboxPlayer = new Gtk.Box(Orientation.HORIZONTAL,6);
-		vboxTabTools.pack_start (hboxPlayer, false, true, 0);
-		
-		//lblSelectPlayer
-		var lblSelectPlayer = new Label ("Media player");
-		lblSelectPlayer.set_use_markup(true);
-		lblSelectPlayer.halign = Align.START;
-		lblSelectPlayer.hexpand = true;
-		hboxPlayer.add(lblSelectPlayer);
-		
-		//cmdSelectPlayer
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
-		model.append (out iter);
-		model.set (iter, 0, _("ffplay"), 1, "ffplay");
-		model.append (out iter);
-		model.set (iter, 0, _("avplay"), 1, "avplay");
-		model.append (out iter);
-		model.set (iter, 0, _("mpv"), 1, "mpv");
-		model.append (out iter);
-		model.set (iter, 0, _("mplayer"), 1, "mplayer");
-		model.append (out iter);
-		model.set (iter, 0, _("smplayer"), 1, "smplayer");
-		model.append (out iter);
-		model.set (iter, 0, _("vlc"), 1, "vlc");
-		
-		cmbSelectPlayer = new ComboBox.with_model(model);
-		hboxPlayer.add(cmbSelectPlayer);
-		sizegroup.add_widget(cmbSelectPlayer);
-		
-		textCell = new CellRendererText();
-        cmbSelectPlayer.pack_start( textCell, false );
-        cmbSelectPlayer.set_attributes( textCell, "text", 0 );
-			
-        tt = _("Select the media player to be used for playing audio and video files");
-        cmbSelectPlayer.set_tooltip_markup(tt);
-		lblSelectPlayer.set_tooltip_markup(tt);
-		
-		switch(App.AVPlayer){
-		case "ffplay":
-			cmbSelectPlayer.active = 0;
-			break;
-		case "avplay":
-			cmbSelectPlayer.active = 1;
-			break;
-		case "mpv":
-			cmbSelectPlayer.active = 2;
-			break;
-		case "mplayer":
-			cmbSelectPlayer.active = 3;
-			break;
-		case "smplayer":
-			cmbSelectPlayer.active = 4;
-			break;
-		case "vlc":
-			cmbSelectPlayer.active = 5;
-			break;
-		default:
-			cmbSelectPlayer.active = 0;
-			break;
-		}
 	}
 	
 	private void chkOutput_clicked(){
@@ -403,8 +323,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		App.TileView = (cmbFileView.active == 1);
 
 		App.AVEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
-		App.AVPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mplayer");
-		
+
 		// Save settings
 		App.save_config();
 

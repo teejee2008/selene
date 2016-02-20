@@ -362,10 +362,6 @@ public class MediaFile : GLib.Object{
 		play_file(Path, av_player);
 	}
 
-	public void play_output(string av_player){
-		play_file(OutputFilePath, av_player);
-	}
-
 	private void play_file(string file_path, string av_player){
 		if (file_exists(file_path)){
 			
