@@ -1263,7 +1263,7 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void set_window_title(){
-		title = AppName + " v" + AppVersion;// + " by " + AppAuthor + " (" + "teejeetech.blogspot.in" + ")";
+		title = AppName + " v" + AppVersion;
 	}
 
 	// script dropdown handlers -----------------------
@@ -2006,7 +2006,7 @@ on the toolbar will open the file in a text editor.
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 
-			mf.play_source(App.AVPlayer);
+			var win = new MediaPlayerWindow(this, mf);
 		}
     }
 

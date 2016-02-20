@@ -9,12 +9,16 @@ using TeeJee.Misc;
 
 public class MediaPlayer : GLib.Object{
 	public MediaFile mFile;
-	public string isRunning;
 
+	//playback state
+	public string isRunning;
 	public bool IsMuted = false;
     public bool IsPaused = false;
     public bool IsIdle = true;
-
+	public double Position = 0.0;
+	public int Volume = 100;
+	
+	//default state flags
     public bool MuteOnLoad = false;
     public bool PauseOnLoad = false;
 
@@ -40,8 +44,10 @@ public class MediaPlayer : GLib.Object{
 	public int CropB = 0;
 
 	private Regex rex_crop;
-	private Regex rex_playback_audio;
-	private Regex rex_playback_video;
+	private Regex rex_pause;
+	private Regex rex_av;
+	private Regex rex_audio;
+	private Regex rex_video;
 	private MatchInfo match;
 
 	public MediaPlayer(){
@@ -53,6 +59,19 @@ public class MediaPlayer : GLib.Object{
 			//[CROP] Crop area: X: 4..1275  Y: 40..689  (-vf crop=1264:640:8:46).
 			//[CROP] Crop area: X: 1..1279  Y: 40..699  (-vf crop=1264:656:10:42).
 			rex_crop = new Regex(""".*-vf crop=([0-9]+):([0-9]+):([0-9]+):([0-9]+)""");
+
+			//  =====  PAUSE  =====
+			rex_pause = new Regex(""".*=====  PAUSE  =====""");
+
+			//A:   1.9 V:   1.9 A-V:  0.001 ct:  0.000   0/  0  1%  1%  0.4% 0 0
+			rex_av = new Regex("""^A:[ \t]*([0-9.]+)[ \t]*V:[ \t]*([0-9.]+)[ \t]*""");
+
+			//A:   1.9 V:   1.9 A-V:  0.001 ct:  0.000   0/  0  1%  1%  0.4% 0 0
+			rex_video = new Regex("""^V:[ \t]*([0-9.]+)[ \t]*""");
+			
+			//A:   1.9 V:   1.9 A-V:  0.001 ct:  0.000   0/  0  1%  1%  0.4% 0 0
+			rex_audio = new Regex("""^A:[ \t]*([0-9.]+)[ \t]*""");
+			
 		}
 		catch (Error e) {
 			log_error (e.message);
@@ -162,11 +181,26 @@ public class MediaPlayer : GLib.Object{
 		try {
 			err_line = dis_err.read_line (null);
 			while (is_running && (err_line != null)) {
-
-
+				if (rex_av.match(err_line, 0, out match)){
+					Position = double.parse(match.fetch(2));
+					IsPaused = false;
+					//log_debug("Pos=%.2f".printf(Position));
+				}
+				else if (rex_video.match(err_line, 0, out match)){
+					Position = double.parse(match.fetch(1));
+					IsPaused = false;
+				}
+				else if (rex_audio.match(err_line, 0, out match)){
+					Position = double.parse(match.fetch(1));
+					IsPaused = false;
+				}
+				else if (rex_pause.match(err_line, 0, out match)){
+					IsPaused = true;
+					log_debug("PAUSED");
+				}
 				//A:   2.9 V:   2.9 A-V:  0.000 ct:  0.000   0/  0  0%  0%  0.1% 0 0
 				
-				log_debug("err:" + err_line);
+				//log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
 		}
@@ -209,6 +243,7 @@ public class MediaPlayer : GLib.Object{
 						mFile.CropB = cropB;
 					}
 				}
+
 		
 				//log_debug("out:" + out_line);
 				out_line = dis_out.read_line (null);  //read next
@@ -242,7 +277,7 @@ public class MediaPlayer : GLib.Object{
 		write_to_stdin("loadfile '%s'".printf(mFile.Path.replace("'","\\'")));
 		
 		if (pause){
-			Pause();
+			FrameStep(); //'frame_step' will pause the video, 'pause' will toggle
 		}
 		if (mute){
 			Mute();
@@ -252,22 +287,40 @@ public class MediaPlayer : GLib.Object{
 		}
 	}
 
-	public void Play(){
-		write_to_stdin("play ");
-	}
-
 	public void Loop(){
 		write_to_stdin("loop 0 ");
 	}
-	
+
 	public void Pause(){
+		FrameStep();
+	}
+
+	public void UnPause(){
+		if (IsPaused){
+			PauseToggle();
+		}
+	}
+	
+	public void PauseToggle(){
+		//pause/unpause
 		write_to_stdin("pause ");
 	}
 
 	public void Mute(){
-		write_to_stdin("mute ");
+		write_to_stdin("mute 1");
+		IsMuted = true;
 	}
 
+	public void UnMute(){
+		write_to_stdin("mute 0");
+		IsMuted = false;
+	}
+
+	public void SetVolume(int percent){
+		Volume = percent;
+		write_to_stdin("volume %d 1".printf(Volume));
+	}
+	
 	public void Stop(){
 		write_to_stdin("stop ");
 	}

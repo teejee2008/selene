@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-19 23:06+0530\n"
+"POT-Creation-Date: 2016-02-21 00:24+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: Main.vala:697
+#: Main.vala:698
 msgid "All files removed"
 msgstr ""
 
@@ -395,7 +395,7 @@ msgstr ""
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1252 Main.vala:1266
+#: Main.vala:1253 Main.vala:1267
 msgid "Cancelled"
 msgstr ""
 
@@ -430,7 +430,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: Main.vala:1091 Main.vala:1101 Main.vala:1109
+#: Main.vala:1092 Main.vala:1102 Main.vala:1110
 msgid "Completed"
 msgstr ""
 
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Constant Bitrate (Strict)"
 msgstr ""
 
-#: Main.vala:1007 Main.vala:1300
+#: Main.vala:1008 Main.vala:1301
 msgid "Converting..."
 msgstr ""
 
@@ -452,7 +452,7 @@ msgstr ""
 msgid "Converting: '%s'"
 msgstr ""
 
-#: Main.vala:1005 Main.vala:1298
+#: Main.vala:1006 Main.vala:1299
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
@@ -565,7 +565,7 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: Main.vala:1086
+#: Main.vala:1087
 msgid "Done"
 msgstr ""
 
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Encoding Script or Preset File"
 msgstr ""
 
-#: Main.vala:778
+#: Main.vala:779
 msgid "Enter any key to Cancel..."
 msgstr ""
 
@@ -617,11 +617,11 @@ msgstr ""
 msgid "Enter path or browse for directory"
 msgstr ""
 
-#: Main.vala:1096 Utility.vala:108
+#: Main.vala:1097 Utility.vala:108
 msgid "Error"
 msgstr ""
 
-#: Main.vala:813
+#: Main.vala:814
 msgid "Error: File missing"
 msgstr ""
 
@@ -657,7 +657,7 @@ msgstr ""
 msgid "Fade Type"
 msgstr ""
 
-#: Main.vala:1112
+#: Main.vala:1113
 msgid "Failed"
 msgstr ""
 
@@ -686,20 +686,20 @@ msgstr ""
 msgid "File View"
 msgstr ""
 
-#: Main.vala:677
+#: Main.vala:678
 msgid "File added:"
 msgstr ""
 
-#: Main.vala:691
+#: Main.vala:692
 msgid "File removed:"
 msgstr ""
 
-#: Main.vala:714
+#: Main.vala:715
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: Main.vala:717
+#: Main.vala:718
 msgid "Files will be saved in source directory"
 msgstr ""
 
@@ -727,7 +727,7 @@ msgstr ""
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
-#: Main.vala:331
+#: Main.vala:332
 msgid "Following utilities are not installed on your system:"
 msgstr ""
 
@@ -791,11 +791,11 @@ msgid ""
 "Please add some files.\n"
 msgstr ""
 
-#: Main.vala:705
+#: Main.vala:706
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
-#: Main.vala:246
+#: Main.vala:247
 msgid "Input queue is empty! Please select files to convert."
 msgstr ""
 
@@ -819,11 +819,11 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: Main.vala:379
+#: Main.vala:380
 msgid "Loading presets from:"
 msgstr ""
 
-#: Main.vala:378
+#: Main.vala:379
 msgid "Loading scripts from:"
 msgstr ""
 
@@ -835,7 +835,7 @@ msgstr ""
 msgid "Lossless"
 msgstr ""
 
-#: Main.vala:827 Main.vala:830
+#: Main.vala:828 Main.vala:831
 msgid "Lyrics:"
 msgstr ""
 
@@ -899,7 +899,7 @@ msgstr ""
 msgid "Missing Icon"
 msgstr ""
 
-#: Main.vala:332
+#: Main.vala:333
 msgid "Missing Utilities"
 msgstr ""
 
@@ -909,6 +909,10 @@ msgstr ""
 
 #: EncoderConfigWindow.vala:492
 msgid "Music"
+msgstr ""
+
+#: MediaPlayerWindow.vala:182
+msgid "Mute"
 msgstr ""
 
 #: MediaFile.vala:338
@@ -943,7 +947,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: Main.vala:331
+#: Main.vala:332
 msgid "Not possible to continue!"
 msgstr ""
 
@@ -996,19 +1000,24 @@ msgid "Output"
 msgstr ""
 
 #: MainWindow.vala:240 MainWindow.vala:2437 MainWindow.vala:2439
+#: MediaPlayerWindow.vala:170
 msgid "Pause"
 msgstr ""
 
-#: Main.vala:1279 Main.vala:1284
+#: Main.vala:1280 Main.vala:1285
 msgid "Paused"
 msgstr ""
 
-#: Main.vala:1282
+#: Main.vala:1283
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
 #: EncoderConfigWindow.vala:704
 msgid "Pitch (shrillness)"
+msgstr ""
+
+#: MediaPlayerWindow.vala:166
+msgid "Play"
 msgstr ""
 
 #: MainWindow.vala:946
@@ -1071,7 +1080,7 @@ msgstr ""
 msgid "Queue is Empty"
 msgstr ""
 
-#: Main.vala:735 Main.vala:794 MediaFile.vala:44
+#: Main.vala:736 Main.vala:795 MediaFile.vala:44
 msgid "Queued"
 msgstr ""
 
@@ -1215,12 +1224,12 @@ msgstr ""
 msgid "Some files could not be opened:"
 msgstr ""
 
-#: Main.vala:723
+#: Main.vala:724
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:177 Main.vala:825
+#: CropVideoSingleWindow.vala:177 Main.vala:826
 msgid "Source:"
 msgstr ""
 
@@ -1240,7 +1249,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: Main.vala:709
+#: Main.vala:710
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
@@ -1253,7 +1262,7 @@ msgstr ""
 msgid "Stopped"
 msgstr ""
 
-#: Main.vala:1106
+#: Main.vala:1107
 msgid "Stopped!"
 msgstr ""
 
@@ -1269,7 +1278,7 @@ msgstr ""
 msgid "Subtitles"
 msgstr ""
 
-#: Main.vala:827 Main.vala:830
+#: Main.vala:828 Main.vala:831
 msgid "Subtitles:"
 msgstr ""
 
@@ -1291,11 +1300,11 @@ msgstr ""
 msgid "System shutdown was cancelled by user!"
 msgstr ""
 
-#: Main.vala:221
+#: Main.vala:222
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:777 MainWindow.vala:2603
+#: Main.vala:778 MainWindow.vala:2603
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1362,11 +1371,15 @@ msgstr ""
 msgid "UltraFast"
 msgstr ""
 
-#: Main.vala:682
+#: Main.vala:683
 msgid "Unknown format:"
 msgstr ""
 
-#: Main.vala:380
+#: MediaPlayerWindow.vala:178
+msgid "Unmute"
+msgstr ""
+
+#: Main.vala:381
 msgid "Using temp folder:"
 msgstr ""
 
@@ -1438,7 +1451,7 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: Main.vala:224
+#: Main.vala:225
 msgid ""
 "Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
 msgstr ""

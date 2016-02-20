@@ -36,7 +36,7 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public Main App;
-public const string AppName = "Selene";
+public const string AppName = "Selene Media Converter";
 public const string AppShortName = "selene";
 public const string AppVersion = "16.2.3";
 public const string AppAuthor = "Tony George";
@@ -213,6 +213,7 @@ public class Main : GLib.Object{
 
 				case "--debug":
 					App.DebugMode = true;
+					LOG_DEBUG = true;
 					break;
 
 				case "--shutdown":
