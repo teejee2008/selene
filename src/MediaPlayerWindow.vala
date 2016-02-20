@@ -137,7 +137,7 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		//scaleVolume
 		scaleVolume = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 100, 1);
-		scaleVolume.adjustment.value = 100;
+		scaleVolume.adjustment.value = 70;
 		scaleVolume.has_origin = true;
 		scaleVolume.value_pos = PositionType.BOTTOM;
 		scaleVolume.hexpand = false;

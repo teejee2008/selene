@@ -16,7 +16,7 @@ public class MediaPlayer : GLib.Object{
     public bool IsPaused = false;
     public bool IsIdle = true;
 	public double Position = 0.0;
-	public int Volume = 100;
+	public int Volume = 70;
 	
 	//default state flags
     public bool MuteOnLoad = false;
