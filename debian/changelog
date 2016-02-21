@@ -1,10 +1,14 @@
-selene (16.2.3) trusty; urgency=medium
+selene (16.2.4) trusty; urgency=medium
 
   * Added new window for cropping video files
 
-  * Added option to run app in background in non-admin mode. This option
-  was available earlier only in admin mode.
+  * Added option to run app in background in non-admin mode
+
+  * Added new mplayer frontend for playing media files
+
+  * Fixed: Output file will not be overwritten if it already exists. A
+  number will be appended to the file name.
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Fri, 19 Feb 2016 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sun, 21 Feb 2016 10:00:00 +0530
