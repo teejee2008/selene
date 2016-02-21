@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-21 10:24+0530\n"
+"POT-Creation-Date: 2016-02-21 11:25+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -259,7 +259,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: MainWindow.vala:358 MainWindow.vala:2003
+#: MainWindow.vala:358 MainWindow.vala:2008
 msgid "Add File(s)"
 msgstr ""
 
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Add File(s)..."
 msgstr ""
 
-#: MainWindow.vala:2007
+#: MainWindow.vala:2012
 msgid "Add Folder(s)"
 msgstr ""
 
@@ -279,20 +279,20 @@ msgstr ""
 msgid "Add New Preset"
 msgstr ""
 
-#: MainWindow.vala:2416 MainWindow.vala:2446
+#: MainWindow.vala:2421 MainWindow.vala:2447
 msgid "Add some files to the file list"
 msgstr ""
 
-#: MainWindow.vala:2430
+#: MainWindow.vala:2435
 msgid "Add some videos to the file list"
 msgstr ""
 
-#: MainWindow.vala:2049
+#: MainWindow.vala:2054
 #, c-format
 msgid "Adding (%d/%d): '%s'"
 msgstr ""
 
-#: MainWindow.vala:2039
+#: MainWindow.vala:2044
 msgid "Adding..."
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 msgid "All files removed"
 msgstr ""
 
-#: MainWindow.vala:2326
+#: MainWindow.vala:2331
 msgid "An audio-video converter for Linux"
 msgstr ""
 
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:2637
+#: MainWindow.vala:2638
 msgid "CPU: "
 msgstr ""
 
@@ -731,7 +731,7 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:2461
+#: MainWindow.vala:2462
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -893,7 +893,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:2461
+#: MainWindow.vala:2462
 msgid "Missing Encoders"
 msgstr ""
 
@@ -913,7 +913,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: MediaPlayerWindow.vala:185
+#: MediaPlayerWindow.vala:186
 msgid "Mute"
 msgstr ""
 
@@ -937,7 +937,7 @@ msgstr ""
 msgid "No Change"
 msgstr ""
 
-#: MainWindow.vala:2415 MainWindow.vala:2445
+#: MainWindow.vala:2420 MainWindow.vala:2446
 msgid "No Files"
 msgstr ""
 
@@ -949,7 +949,7 @@ msgstr ""
 msgid "No Up-Scaling"
 msgstr ""
 
-#: MainWindow.vala:2429
+#: MainWindow.vala:2434
 msgid "No Videos"
 msgstr ""
 
@@ -1009,8 +1009,8 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:239 MainWindow.vala:2396 MainWindow.vala:2398
-#: MediaPlayerWindow.vala:173
+#: MainWindow.vala:239 MainWindow.vala:2401 MainWindow.vala:2403
+#: MediaPlayerWindow.vala:174
 msgid "Pause"
 msgstr ""
 
@@ -1026,7 +1026,7 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:169
+#: MediaPlayerWindow.vala:170
 msgid "Play"
 msgstr ""
 
@@ -1046,7 +1046,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:2461
+#: MainWindow.vala:2462
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -1062,7 +1062,7 @@ msgstr ""
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:2567
+#: MainWindow.vala:2568
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
@@ -1086,7 +1086,7 @@ msgstr ""
 msgid "Queued"
 msgstr ""
 
-#: MainWindow.vala:2037
+#: MainWindow.vala:2042
 msgid "Reading file properties..."
 msgstr ""
 
@@ -1123,7 +1123,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:2390 MainWindow.vala:2392
+#: MainWindow.vala:2395 MainWindow.vala:2397
 msgid "Resume"
 msgstr ""
 
@@ -1190,11 +1190,11 @@ msgstr ""
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:2368
+#: MainWindow.vala:2373
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:2365
+#: MainWindow.vala:2370
 msgid "Shutdown Enabled"
 msgstr ""
 
@@ -1218,7 +1218,7 @@ msgstr ""
 msgid "Slower"
 msgstr ""
 
-#: MainWindow.vala:2075
+#: MainWindow.vala:2080
 msgid "Some files could not be opened:"
 msgstr ""
 
@@ -1289,11 +1289,11 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow.vala:2569
+#: MainWindow.vala:2570
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:2576
+#: MainWindow.vala:2577
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1302,7 +1302,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:735 MainWindow.vala:2566
+#: Main.vala:735 MainWindow.vala:2567
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1373,7 +1373,7 @@ msgstr ""
 msgid "Unknown format:"
 msgstr ""
 
-#: MediaPlayerWindow.vala:181
+#: MediaPlayerWindow.vala:182
 msgid "Unmute"
 msgstr ""
 

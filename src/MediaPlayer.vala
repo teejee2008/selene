@@ -48,7 +48,7 @@ public class MediaPlayer : GLib.Object{
 	private Regex rex_av;
 	private Regex rex_audio;
 	private Regex rex_video;
-	private MatchInfo match;
+	
 
 	public MediaPlayer(){
         IsMuted = false;
@@ -179,9 +179,12 @@ public class MediaPlayer : GLib.Object{
 
 	private void read_error_line() {
 		try {
+			MatchInfo match;
+			
 			err_line = dis_err.read_line (null);
 			while (is_running && (err_line != null)) {
 				if (rex_av.match(err_line, 0, out match)){
+					log_msg(match.fetch(2));
 					Position = double.parse(match.fetch(2));
 					IsPaused = false;
 					//log_debug("Pos=%.2f".printf(Position));
@@ -196,7 +199,7 @@ public class MediaPlayer : GLib.Object{
 				}
 				else if (rex_pause.match(err_line, 0, out match)){
 					IsPaused = true;
-					log_debug("PAUSED");
+					//log_debug("PAUSED");
 				}
 				//A:   2.9 V:   2.9 A-V:  0.000 ct:  0.000   0/  0  0%  0%  0.1% 0 0
 				
@@ -205,13 +208,15 @@ public class MediaPlayer : GLib.Object{
 			}
 		}
 		catch (Error e) {
-			//log_debug("In read_error_line()");
+			log_debug("In read_error_line()");
 			log_error (e.message);
 		}
 	}
 
 	private void read_output_line() {
 		try {
+			MatchInfo match;
+			
 			out_line = dis_out.read_line (null);
 			while (is_running && (out_line != null)) {
 
@@ -252,7 +257,7 @@ public class MediaPlayer : GLib.Object{
 			is_running = false;
 		}
 		catch (Error e) {
-			//log_debug("In read_output_line()");
+			log_debug("In read_output_line()");
 			log_error (e.message);
 		}
 	}
@@ -288,7 +293,7 @@ public class MediaPlayer : GLib.Object{
 	}
 
 	public void Loop(){
-		write_to_stdin("loop 0 ");
+		write_to_stdin("loop 100 ");
 	}
 
 	public void Pause(){

@@ -1951,7 +1951,7 @@ on the toolbar will open the file in a text editor.
 			MediaFile mf = App.InputFiles[index];
 
 			var mf_output = new MediaFile(mf.OutputFilePath, App.AVEncoder);
-			var win = new MediaPlayerWindow(this, mf_output);
+			MediaPlayerWindow.PlayFile(mf_output);
 		}
     }
 
@@ -1965,7 +1965,7 @@ on the toolbar will open the file in a text editor.
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 
-			var win = new MediaPlayerWindow(this, mf);
+			MediaPlayerWindow.PlayFile(mf);
 		}
     }
 
@@ -2432,12 +2432,8 @@ on the toolbar will open the file in a text editor.
 			return;
 		}
 
-		//var dialog = new CropDialog(this);
 		var win = new CropVideoBatchWindow(this);
 		this.hide();
-		//win.show_all();
-	    //dialog.run();
-		//dialog.destroy();
 	}
 
 	private void start(){

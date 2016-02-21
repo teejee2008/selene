@@ -46,14 +46,13 @@ public class MediaPlayerWindow : Gtk.Window {
 
 	private uint tmr_status = 0;
 	
-	public MediaPlayerWindow(Gtk.Window parent, MediaFile _mFile) {
+	public MediaPlayerWindow(MediaFile _mFile) {
 		//set_transient_for(parent);
 		//set_destroy_with_parent(true);
         //set_skip_taskbar_hint(true);
-
 		//window_position = WindowPosition.CENTER_ON_PARENT;
-		icon = get_app_icon(16);
 		
+		icon = get_app_icon(16);
 		modal = false;
 		deletable = true;
 		resizable = false;
@@ -78,10 +77,12 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		set_play_icon();
 		set_mute_icon();
-		
-		show_all();
+	}
 
-		Play();
+	public static void PlayFile(MediaFile mf){
+		var win = new MediaPlayerWindow(mf);
+		win.show_all();
+		win.Play();
 	}
 
 	public void init_ui_player(){
@@ -188,11 +189,10 @@ public class MediaPlayerWindow : Gtk.Window {
 		gtk_do_events();
 	}
 
-	private void Play(){
+	protected void Play(){
 		canvas.set_size_request(mFile.SourceWidth, mFile.SourceHeight);
 		scalePos.adjustment.upper = (mFile.Duration/1000);
 		player.Open(mFile, false, false, true);
-		player.Loop();
 		title = mFile.Name + " - Selene";
 		
 		status_timer_start();
@@ -216,8 +216,8 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		scalePos_value_changed_disconnect();
 		scalePos.adjustment.value = (int) player.Position;
-		
 		scalePos_value_changed_connect();
+
 		set_play_icon();
 		set_mute_icon();
 
