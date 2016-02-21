@@ -147,10 +147,6 @@ public class MediaPlayer : GLib.Object{
 			dis_err.newline_type = DataStreamNewlineType.ANY;
 			//dos_inp.newline_type = DataStreamNewlineType.ANY;
 
-			//progress_count = 0;
-			//stdout_lines = new Gee.ArrayList<string>();
-			//stderr_lines = new Gee.ArrayList<string>();
-
 			try {
 				//start thread for reading output stream
 				Thread.create<void> (read_output_line, true);
@@ -164,10 +160,6 @@ public class MediaPlayer : GLib.Object{
 			} catch (Error e) {
 				log_error (e.message);
 			}
-
-			//while(is_running){
-			//	sleep(100);
-			//}
 
 			return true;
 		}
@@ -183,8 +175,8 @@ public class MediaPlayer : GLib.Object{
 			
 			err_line = dis_err.read_line (null);
 			while (is_running && (err_line != null)) {
+				
 				if (rex_av.match(err_line, 0, out match)){
-					log_msg(match.fetch(2));
 					Position = double.parse(match.fetch(2));
 					IsPaused = false;
 					//log_debug("Pos=%.2f".printf(Position));
@@ -201,8 +193,7 @@ public class MediaPlayer : GLib.Object{
 					IsPaused = true;
 					//log_debug("PAUSED");
 				}
-				//A:   2.9 V:   2.9 A-V:  0.000 ct:  0.000   0/  0  0%  0%  0.1% 0 0
-				
+
 				//log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
@@ -219,8 +210,6 @@ public class MediaPlayer : GLib.Object{
 			
 			out_line = dis_out.read_line (null);
 			while (is_running && (out_line != null)) {
-
-				//out:[CROP] Crop area: X: 1279..0  Y: 719..0  (-vf crop=-1264:-704:1274:714)
 
 				if (rex_crop.match (out_line, 0, out match)){
 					int w = int.parse(match.fetch(1));
@@ -249,8 +238,7 @@ public class MediaPlayer : GLib.Object{
 					}
 				}
 
-		
-				//log_debug("out:" + out_line);
+				//  log_debug("out:" + out_line);
 				out_line = dis_out.read_line (null);  //read next
 			}
 

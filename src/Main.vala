@@ -1291,18 +1291,37 @@ Notes:
 	private string get_preset_commandline (MediaFile mf, Json.Object settings, out Gee.ArrayList<string>? encoderList = null){
 		string s = "";
 
-		//this list is used for returning the list of encoders that is used by the preset
+		//this list is used for returning the list of encoders used by the preset
 		encoderList = new Gee.ArrayList<string>();
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		
+		//set output file path ----------------
+		
+		string outpath = "";
+		if (OutputDirectory.length == 0){
+      		outpath = mf.Location;
+      	} else{
+	      	outpath = OutputDirectory;
+	    }
+
+		string suffix = "";
+		int count = -1;
+		
+		do{
+			count++;
+			suffix = (count == 0) ? "" : " (%d)".printf(count);
+			mf.OutputFilePath = "%s/%s%s%s".printf(outpath, mf.Title, suffix, general.get_string_member("extension"));
+		}
+		while (file_exists(mf.OutputFilePath));
 
 		//insert temporary file names ------------
-
+		
 		s += "\n";
-		s += "outputFile=\"${outDir}/${title}" + general.get_string_member("extension") + "\"\n";
+		s += "outputFile=\"${outDir}/${title}" + suffix + general.get_string_member("extension") + "\"\n";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable"){
 			s += "tempVideo=\"${tempDir}/video" + general.get_string_member("extension") + "\"\n";
 		}
@@ -1493,15 +1512,6 @@ Notes:
 		}
 
 		s += "\n";
-
-		//set output file path
-		string outpath = "";
-		if (OutputDirectory.length == 0){
-      		outpath = mf.Location;
-      	} else{
-	      	outpath = OutputDirectory;
-	    }
-		mf.OutputFilePath = outpath + "/" + mf.Title + general.get_string_member("extension") ;
 
 		return s;
 	}

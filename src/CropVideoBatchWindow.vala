@@ -65,13 +65,7 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 		// get content area
 		vboxMain = get_content_area();
 		vboxMain.set_size_request(600,500);
-		//add(vboxMain);
 
-		//var label = new Gtk.Label(_("Edit cropping parameters"));
-		//label.xalign = (float) 1.0;
-		//label.margin_left = 18;
-		//vboxMain.add(label);
-		
 		init_ui_file_list();
 
 		// btnOk
