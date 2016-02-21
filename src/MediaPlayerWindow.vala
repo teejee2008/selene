@@ -76,6 +76,9 @@ public class MediaPlayerWindow : Gtk.Window {
 			return false;
 		});
 
+		set_play_icon();
+		set_mute_icon();
+		
 		show_all();
 
 		Play();
