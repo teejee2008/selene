@@ -77,6 +77,7 @@ public class MainWindow : Gtk.Window{
 	private ImageMenuItem miFileInfoOutput;
 	private ImageMenuItem miFileSkip;
 	private Gtk.MenuItem miFileCropAuto;
+	private Gtk.MenuItem miFileTrim;
 	private Gtk.MenuItem miFileRemove;
 	private Gtk.MenuItem miFilePlaySource;
 	private Gtk.MenuItem miFilePlayOutput;
@@ -883,17 +884,30 @@ public class MainWindow : Gtk.Window{
 		miFileCropAuto.activate.connect(miFileCropAuto_clicked);
 		menuFile.append(miFileCropAuto);
 
+		// miFileTrim
+		miFileTrim = new Gtk.MenuItem.with_label (_("Trim Duration..."));
+		miFileTrim.activate.connect(miFileTrim_clicked);
+		menuFile.append(miFileTrim);
+
 		// miFileSeparator0
 		var miFileSeparator0 = new Gtk.MenuItem();
 		miFileSeparator0.override_color (StateFlags.NORMAL, gray);
 		menuFile.append(miFileSeparator0);
-		
+
 		miFileCropAuto.show.connect(()=>{
-			miFileSeparator0.visible = miFileCropAuto.visible;
+			miFileSeparator0.visible = (miFileCropAuto.visible || miFileTrim.visible);
 		});
 
 		miFileCropAuto.hide.connect(()=>{
-			miFileSeparator0.visible = miFileCropAuto.visible;
+			miFileSeparator0.visible = (miFileCropAuto.visible || miFileTrim.visible);
+		});
+
+		miFileTrim.show.connect(()=>{
+			miFileSeparator0.visible = (miFileCropAuto.visible || miFileTrim.visible);
+		});
+
+		miFileTrim.hide.connect(()=>{
+			miFileSeparator0.visible = (miFileCropAuto.visible || miFileTrim.visible);
 		});
 		
 		// miFileRemove
@@ -1712,6 +1726,7 @@ on the toolbar will open the file in a text editor.
 				miFilePlaySource.visible = true;
 				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = true;
+				miFileTrim.visible = true;
 				miFileRemove.visible = true;
 				miFileSeparator1.visible = true;
 				miFileSeparator2.visible = false;
@@ -1761,6 +1776,7 @@ on the toolbar will open the file in a text editor.
 				miFilePlaySource.visible = false;
 				miFilePlayOutput.visible = false;
 				miFileCropAuto.visible = false;
+				miFileTrim.visible = false;
 				miFileRemove.visible = false;
 				break;
 
@@ -1785,6 +1801,7 @@ on the toolbar will open the file in a text editor.
 				miFilePlaySource.visible = true;
 				miFilePlayOutput.visible = true;
 				miFileCropAuto.visible = false;
+				miFileTrim.visible = false;
 				miFileRemove.visible = false;
 				miFileSeparator1.visible = false;
 				miFileSeparator2.visible = true;
@@ -1866,8 +1883,9 @@ on the toolbar will open the file in a text editor.
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
-			var win = new CropVideoSingleWindow(this, mf);
-			this.hide();
+
+			MediaPlayerWindow.CropVideo(mf, this);
+
 			//win.show_all();
 
 			/*
@@ -1880,7 +1898,41 @@ on the toolbar will open the file in a text editor.
 			* */
 			break;
 
-			do_events();
+			//do_events();
+		}
+
+		//set_busy (false,this);
+    }
+
+	private void miFileTrim_clicked() {
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() != 1){ return; }
+
+		TreeModel model;
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+
+		for(int k=0; k<lst.length(); k++){
+			TreePath path = lst.nth_data (k);
+			TreeIter iter;
+			model.get_iter (out iter, path);
+			int index = int.parse (path.to_string());
+			MediaFile mf = App.InputFiles[index];
+
+			MediaPlayerWindow.TrimFile(mf, this);
+
+			//win.show_all();
+
+			/*
+			if (file.crop_detect()){
+				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
+			}
+			else{
+				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
+			}
+			* */
+			break;
+
+			//do_events();
 		}
 
 		//set_busy (false,this);
@@ -1935,10 +1987,6 @@ on the toolbar will open the file in a text editor.
 		}
 	}
 
-    private void do_events(){
-		while(Gtk.events_pending())
-			Gtk.main_iteration();
-	}
 
     private void miFilePlayOutput_clicked() {
 		TreeSelection selection = tvFiles.get_selection();

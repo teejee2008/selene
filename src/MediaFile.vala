@@ -38,6 +38,9 @@ public class MediaFile : GLib.Object{
 	public int CropB = 0;
 	public bool AutoCropError = false;
 
+	public double StartPos = 0.0;
+	public double EndPos = 0.0;
+	
 	//public int Status = 0;
 	public FileStatus Status = FileStatus.PENDING;
 	public bool IsValid;

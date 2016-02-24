@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-21 13:40+0530\n"
+"POT-Creation-Date: 2016-02-24 21:36+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,23 +25,23 @@ msgid ""
 "and should start with same name."
 msgstr ""
 
-#: CropVideoSingleWindow.vala:311
+#: MediaPlayerWindow.vala:654 MediaPlayerWindow_bak.vala:170
 msgid "100%"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:313
+#: MediaPlayerWindow.vala:656 MediaPlayerWindow_bak.vala:172
 msgid "200%"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:305
+#: MediaPlayerWindow.vala:648 MediaPlayerWindow_bak.vala:164
 msgid "25%"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:307
+#: MediaPlayerWindow.vala:650 MediaPlayerWindow_bak.vala:166
 msgid "50%"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:309
+#: MediaPlayerWindow.vala:652 MediaPlayerWindow_bak.vala:168
 msgid "75%"
 msgstr ""
 
@@ -218,19 +218,19 @@ msgid ""
 "\n"
 msgstr ""
 
-#: MainWindow.vala:629
+#: MainWindow.vala:630
 msgid "A-Bitrate"
 msgstr ""
 
-#: MainWindow.vala:574
+#: MainWindow.vala:575
 msgid "A-Ch"
 msgstr ""
 
-#: MainWindow.vala:550
+#: MainWindow.vala:551
 msgid "A-Fmt"
 msgstr ""
 
-#: MainWindow.vala:593
+#: MainWindow.vala:594
 msgid "A-Sampling"
 msgstr ""
 
@@ -251,48 +251,48 @@ msgstr ""
 msgid "AC3 Audio (*.ac3)"
 msgstr ""
 
-#: MainWindow.vala:248
+#: MainWindow.vala:249
 msgid "Abort"
 msgstr ""
 
-#: MainWindow.vala:306
+#: MainWindow.vala:307
 msgid "About"
 msgstr ""
 
-#: MainWindow.vala:358 MainWindow.vala:2003
+#: MainWindow.vala:359 MainWindow.vala:2051
 msgid "Add File(s)"
 msgstr ""
 
-#: MainWindow.vala:341
+#: MainWindow.vala:342
 msgid "Add File(s)..."
 msgstr ""
 
-#: MainWindow.vala:2007
+#: MainWindow.vala:2055
 msgid "Add Folder(s)"
 msgstr ""
 
-#: MainWindow.vala:351
+#: MainWindow.vala:352
 msgid "Add Folder(s)..."
 msgstr ""
 
-#: MainWindow.vala:1131
+#: MainWindow.vala:1145
 msgid "Add New Preset"
 msgstr ""
 
-#: MainWindow.vala:2416 MainWindow.vala:2442
+#: MainWindow.vala:2464 MainWindow.vala:2490
 msgid "Add some files to the file list"
 msgstr ""
 
-#: MainWindow.vala:2430
+#: MainWindow.vala:2478
 msgid "Add some videos to the file list"
 msgstr ""
 
-#: MainWindow.vala:2049
+#: MainWindow.vala:2097
 #, c-format
 msgid "Adding (%d/%d): '%s'"
 msgstr ""
 
-#: MainWindow.vala:2039
+#: MainWindow.vala:2087
 msgid "Adding..."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Adjust Stereo for Headphones"
 msgstr ""
 
-#: MainWindow.vala:749
+#: MainWindow.vala:750
 msgid "Album"
 msgstr ""
 
@@ -308,15 +308,15 @@ msgstr ""
 msgid "All files removed"
 msgstr ""
 
-#: MainWindow.vala:2326
+#: MainWindow.vala:2374
 msgid "An audio-video converter for Linux"
 msgstr ""
 
-#: MainWindow.vala:282
+#: MainWindow.vala:283
 msgid "Application Settings"
 msgstr ""
 
-#: MainWindow.vala:737
+#: MainWindow.vala:738
 msgid "Artist"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: MainWindow.vala:255
+#: MainWindow.vala:256
 msgid "Background"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgstr ""
 msgid "Best"
 msgstr ""
 
-#: MainWindow.vala:611
+#: MainWindow.vala:612
 msgid "Bitrate"
 msgstr ""
 
@@ -391,15 +391,15 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:163
+#: MediaPlayerWindow.vala:214
 msgid "Bottom:"
 msgstr ""
 
-#: MainWindow.vala:1151
+#: MainWindow.vala:1165
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:2633
+#: MainWindow.vala:2681
 msgid "CPU: "
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Channels"
 msgstr ""
 
-#: MainWindow.vala:393
+#: MainWindow.vala:394
 msgid "Clear List"
 msgstr ""
 
@@ -430,11 +430,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: MainWindow.vala:963
+#: MainWindow.vala:977
 msgid "Columns..."
 msgstr ""
 
-#: MainWindow.vala:798
+#: MainWindow.vala:799
 msgid "Comments"
 msgstr ""
 
@@ -455,7 +455,7 @@ msgstr ""
 msgid "Converting..."
 msgstr ""
 
-#: MainWindow.vala:1680
+#: MainWindow.vala:1694
 #, c-format
 msgid "Converting: '%s'"
 msgstr ""
@@ -468,7 +468,7 @@ msgstr ""
 msgid "Credits"
 msgstr ""
 
-#: MainWindow.vala:222
+#: MainWindow.vala:223
 msgid "Crop"
 msgstr ""
 
@@ -476,15 +476,15 @@ msgstr ""
 msgid "Crop Left"
 msgstr ""
 
-#: MainWindow.vala:882
+#: MainWindow.vala:883
 msgid "Crop Video..."
 msgstr ""
 
-#: MainWindow.vala:224
+#: MainWindow.vala:225
 msgid "Crop Videos"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:182
+#: MediaPlayerWindow.vala:233
 msgid "Cropped:"
 msgstr ""
 
@@ -492,7 +492,7 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: MainWindow.vala:1138
+#: MainWindow.vala:1152
 msgid "Delete Preset"
 msgstr ""
 
@@ -504,20 +504,20 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:195
+#: MediaPlayerWindow.vala:247
 msgid "Detect Borders"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:197
+#: MediaPlayerWindow.vala:249
 msgid "Detect black borders in the video and set cropping parameters"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:394
+#: MediaPlayerWindow.vala:443
 #, c-format
 msgid "Detected Parameters: %d, %d, %d, %d"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:370
+#: MediaPlayerWindow.vala:419
 msgid "Detecting borders..."
 msgstr ""
 
@@ -556,7 +556,7 @@ msgstr ""
 msgid "Documenters"
 msgstr ""
 
-#: DonationWindow.vala:36 MainWindow.vala:295 MainWindow.vala:296
+#: DonationWindow.vala:36 MainWindow.vala:296 MainWindow.vala:297
 msgid "Donate"
 msgstr ""
 
@@ -581,15 +581,15 @@ msgstr ""
 msgid "Drag and drop to re-order"
 msgstr ""
 
-#: MainWindow.vala:1668
+#: MainWindow.vala:1682
 msgid "Drag files on this window or click the 'Add' button"
 msgstr ""
 
-#: MainWindow.vala:526
+#: MainWindow.vala:527
 msgid "Duration"
 msgstr ""
 
-#: MainWindow.vala:1224
+#: MainWindow.vala:1238
 msgid "Edit Preset"
 msgstr ""
 
@@ -605,7 +605,7 @@ msgstr ""
 msgid "Empty Preset Name"
 msgstr ""
 
-#: EncoderStatusWindow.vala:45 MainWindow.vala:288
+#: EncoderStatusWindow.vala:45 MainWindow.vala:289
 msgid "Encoders"
 msgstr ""
 
@@ -613,8 +613,12 @@ msgstr ""
 msgid "Encoding Mode"
 msgstr ""
 
-#: MainWindow.vala:1214
+#: MainWindow.vala:1228
 msgid "Encoding Script or Preset File"
+msgstr ""
+
+#: MediaPlayerWindow.vala:289
+msgid "End (sec):"
 msgstr ""
 
 #: Main.vala:736
@@ -678,15 +682,15 @@ msgid "Fast"
 msgstr ""
 
 #: ColumnSelectionDialog.vala:76 CropVideoBatchWindow.vala:103
-#: MainWindow.vala:432
+#: MainWindow.vala:433
 msgid "File"
 msgstr ""
 
-#: MainWindow.vala:952
+#: MainWindow.vala:966
 msgid "File Info (Output)"
 msgstr ""
 
-#: MainWindow.vala:946
+#: MainWindow.vala:960
 msgid "File Info (Source)"
 msgstr ""
 
@@ -715,7 +719,7 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: MainWindow.vala:266 MainWindow.vala:268
+#: MainWindow.vala:267 MainWindow.vala:269
 msgid "Finish"
 msgstr ""
 
@@ -727,11 +731,11 @@ msgstr ""
 msgid "Fixed Bitrate"
 msgstr ""
 
-#: MainWindow.vala:1189 MainWindow.vala:1199
+#: MainWindow.vala:1203 MainWindow.vala:1213
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:2457
+#: MainWindow.vala:2505
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -739,7 +743,7 @@ msgstr ""
 msgid "Following utilities are not installed on your system:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:295 MainWindow.vala:538
+#: EncoderConfigWindow.vala:295 MainWindow.vala:539
 msgid "Format"
 msgstr ""
 
@@ -759,11 +763,15 @@ msgstr ""
 msgid "Frames/sec"
 msgstr ""
 
+#: MediaPlayerWindow.vala:720 MediaPlayerWindow.vala:724
+msgid "Fullscreen"
+msgstr ""
+
 #: AppConfigWindow.vala:96 EncoderConfigWindow.vala:271
 msgid "General"
 msgstr ""
 
-#: MainWindow.vala:761
+#: MainWindow.vala:762
 msgid "Genre"
 msgstr ""
 
@@ -789,7 +797,7 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: MainWindow.vala:1166 MainWindow.vala:1168 MainWindow.vala:1624
+#: MainWindow.vala:1180 MainWindow.vala:1182 MainWindow.vala:1638
 msgid "Info"
 msgstr ""
 
@@ -809,7 +817,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:115
+#: MediaPlayerWindow.vala:175
 msgid "Left:"
 msgstr ""
 
@@ -893,7 +901,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:2457
+#: MainWindow.vala:2505
 msgid "Missing Encoders"
 msgstr ""
 
@@ -913,11 +921,12 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: MediaPlayerWindow.vala:186
+#: MediaPlayerWindow.vala:708 MediaPlayerWindow.vala:712
+#: MediaPlayerWindow_bak.vala:227
 msgid "Mute"
 msgstr ""
 
-#: MediaFile.vala:338
+#: MediaFile.vala:341
 msgid "N/A"
 msgstr ""
 
@@ -925,7 +934,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: EncoderConfigWindow.vala:359 MainWindow.vala:1129
+#: EncoderConfigWindow.vala:359 MainWindow.vala:1143
 msgid "New Preset"
 msgstr ""
 
@@ -937,7 +946,7 @@ msgstr ""
 msgid "No Change"
 msgstr ""
 
-#: MainWindow.vala:2415 MainWindow.vala:2441
+#: MainWindow.vala:2463 MainWindow.vala:2489
 msgid "No Files"
 msgstr ""
 
@@ -949,7 +958,7 @@ msgstr ""
 msgid "No Up-Scaling"
 msgstr ""
 
-#: MainWindow.vala:2429
+#: MainWindow.vala:2477
 msgid "No Videos"
 msgstr ""
 
@@ -973,27 +982,28 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:202 DonationWindow.vala:95
+#: DonationWindow.vala:95 MediaPlayerWindow.vala:255
+#: MediaPlayerWindow.vala:329
 msgid "OK"
 msgstr ""
 
-#: MainWindow.vala:1153
+#: MainWindow.vala:1167
 msgid "Open Folder"
 msgstr ""
 
-#: MainWindow.vala:923
+#: MainWindow.vala:937
 msgid "Open Log File"
 msgstr ""
 
-#: MainWindow.vala:917
+#: MainWindow.vala:931
 msgid "Open Output Folder"
 msgstr ""
 
-#: MainWindow.vala:911
+#: MainWindow.vala:925
 msgid "Open Temp Folder"
 msgstr ""
 
-#: MainWindow.vala:324
+#: MainWindow.vala:325
 msgid "Open output folder"
 msgstr ""
 
@@ -1005,12 +1015,12 @@ msgstr ""
 msgid "Opus Audio (*.opus)"
 msgstr ""
 
-#: MainWindow.vala:322
+#: MainWindow.vala:323
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:239 MainWindow.vala:2396 MainWindow.vala:2398
-#: MediaPlayerWindow.vala:174
+#: MainWindow.vala:240 MainWindow.vala:2444 MainWindow.vala:2446
+#: MediaPlayerWindow.vala:700 MediaPlayerWindow_bak.vala:215
 msgid "Pause"
 msgstr ""
 
@@ -1026,19 +1036,23 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:170
+#: MediaPlayerWindow.vala:696 MediaPlayerWindow_bak.vala:211
 msgid "Play"
 msgstr ""
 
-#: MainWindow.vala:940
+#: MainWindow.vala:954
 msgid "Play File (Output)"
 msgstr ""
 
-#: MainWindow.vala:934
+#: MainWindow.vala:948
 msgid "Play File (Source)"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:372
+#: MediaPlayerWindow.vala:323
+msgid "Play selected clip"
+msgstr ""
+
+#: MediaPlayerWindow.vala:421
 msgid "Please Wait..."
 msgstr ""
 
@@ -1046,7 +1060,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:2457
+#: MainWindow.vala:2505
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -1054,16 +1068,20 @@ msgstr ""
 msgid "Please install the 'sox' package on your system to use this feature"
 msgstr ""
 
-#: EncoderConfigWindow.vala:941 MainWindow.vala:1204
+#: EncoderConfigWindow.vala:941 MainWindow.vala:1218
 msgid "Preset"
 msgstr ""
 
-#: MainWindow.vala:1562
+#: MainWindow.vala:1576
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:2563
+#: MainWindow.vala:2611
 msgid "Press 'Cancel' to abort shutdown"
+msgstr ""
+
+#: MediaPlayerWindow.vala:321
+msgid "Preview"
 msgstr ""
 
 #: EncoderConfigWindow.vala:496 EncoderConfigWindow.vala:973
@@ -1082,11 +1100,11 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: Main.vala:693 Main.vala:752 MediaFile.vala:44
+#: Main.vala:693 Main.vala:752 MediaFile.vala:47
 msgid "Queued"
 msgstr ""
 
-#: MainWindow.vala:2037
+#: MainWindow.vala:2085
 msgid "Reading file properties..."
 msgstr ""
 
@@ -1094,7 +1112,7 @@ msgstr ""
 msgid "Realtime"
 msgstr ""
 
-#: MainWindow.vala:810
+#: MainWindow.vala:811
 msgid "Recorded Date"
 msgstr ""
 
@@ -1102,11 +1120,11 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: MainWindow.vala:400
+#: MainWindow.vala:401
 msgid "Remove File(s)"
 msgstr ""
 
-#: MainWindow.vala:381
+#: MainWindow.vala:382
 msgid "Remove Selected Items"
 msgstr ""
 
@@ -1123,7 +1141,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:2390 MainWindow.vala:2392
+#: MainWindow.vala:2438 MainWindow.vala:2440
 msgid "Resume"
 msgstr ""
 
@@ -1131,15 +1149,15 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:86 MainWindow.vala:417
+#: MainWindow.vala:418
 msgid "Right-click for more options"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:131
+#: MediaPlayerWindow.vala:188
 msgid "Right:"
 msgstr ""
 
-#: MainWindow.vala:260
+#: MainWindow.vala:261
 msgid "Run in background with lower priority"
 msgstr ""
 
@@ -1155,7 +1173,7 @@ msgstr ""
 msgid "Save files in following location"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:112
+#: MediaPlayerWindow.vala:172
 msgid "Scroll mouse wheel to adjust"
 msgstr ""
 
@@ -1167,12 +1185,24 @@ msgstr ""
 msgid "Select Path"
 msgstr ""
 
-#: MainWindow.vala:1666
+#: MainWindow.vala:1680
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
 
 #: DonationWindow.vala:81
 msgid "Send Email"
+msgstr ""
+
+#: MediaPlayerWindow.vala:303 MediaPlayerWindow.vala:312
+msgid "Set"
+msgstr ""
+
+#: MediaPlayerWindow.vala:313
+msgid "Set current playback position as ending position"
+msgstr ""
+
+#: MediaPlayerWindow.vala:304
+msgid "Set current playback position as starting position"
 msgstr ""
 
 #: EncoderConfigWindow.vala:1108
@@ -1186,27 +1216,27 @@ msgid ""
 "Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
 msgstr ""
 
-#: MainWindow.vala:311
+#: MainWindow.vala:312
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:2368
+#: MainWindow.vala:2416
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:2365
+#: MainWindow.vala:2413
 msgid "Shutdown Enabled"
 msgstr ""
 
-#: MainWindow.vala:316
+#: MainWindow.vala:317
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: MainWindow.vala:508
+#: MainWindow.vala:509
 msgid "Size"
 msgstr ""
 
-#: MainWindow.vala:877
+#: MainWindow.vala:878
 msgid "Skip File"
 msgstr ""
 
@@ -1218,7 +1248,7 @@ msgstr ""
 msgid "Slower"
 msgstr ""
 
-#: MainWindow.vala:2075
+#: MainWindow.vala:2123
 msgid "Some files could not be opened:"
 msgstr ""
 
@@ -1227,7 +1257,7 @@ msgstr ""
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:177 Main.vala:783
+#: Main.vala:783 MediaPlayerWindow.vala:227
 msgid "Source:"
 msgstr ""
 
@@ -1243,8 +1273,12 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
-#: MainWindow.vala:230 MainWindow.vala:232
+#: MainWindow.vala:231 MainWindow.vala:233
 msgid "Start"
+msgstr ""
+
+#: MediaPlayerWindow.vala:275
+msgid "Start (sec):"
 msgstr ""
 
 #: Main.vala:667
@@ -1252,7 +1286,7 @@ msgstr ""
 msgid "Starting batch of %d file(s):"
 msgstr ""
 
-#: EncoderStatusWindow.vala:98 MainWindow.vala:837
+#: EncoderStatusWindow.vala:98 MainWindow.vala:838
 msgid "Status"
 msgstr ""
 
@@ -1289,11 +1323,11 @@ msgstr ""
 msgid "Supported Formats:"
 msgstr ""
 
-#: MainWindow.vala:2565
+#: MainWindow.vala:2613
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:2572
+#: MainWindow.vala:2620
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1302,7 +1336,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:735 MainWindow.vala:2562
+#: Main.vala:735 MainWindow.vala:2610
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1332,7 +1366,7 @@ msgstr ""
 msgid "Tiles"
 msgstr ""
 
-#: MainWindow.vala:773
+#: MainWindow.vala:774
 msgid "Title"
 msgstr ""
 
@@ -1348,11 +1382,11 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: CropVideoSingleWindow.vala:147
+#: MediaPlayerWindow.vala:201
 msgid "Top:"
 msgstr ""
 
-#: MainWindow.vala:785
+#: MainWindow.vala:786
 msgid "Track #"
 msgstr ""
 
@@ -1365,6 +1399,10 @@ msgstr ""
 msgid "Treble (upper freq)"
 msgstr ""
 
+#: MainWindow.vala:888
+msgid "Trim Duration..."
+msgstr ""
+
 #: EncoderConfigWindow.vala:949
 msgid "UltraFast"
 msgstr ""
@@ -1373,7 +1411,7 @@ msgstr ""
 msgid "Unknown format:"
 msgstr ""
 
-#: MediaPlayerWindow.vala:182
+#: MediaPlayerWindow_bak.vala:223
 msgid "Unmute"
 msgstr ""
 
@@ -1381,23 +1419,23 @@ msgstr ""
 msgid "Using temp folder:"
 msgstr ""
 
-#: MainWindow.vala:662
+#: MainWindow.vala:663
 msgid "V-Bitrate"
 msgstr ""
 
-#: MainWindow.vala:562
+#: MainWindow.vala:563
 msgid "V-Fmt"
 msgstr ""
 
-#: MainWindow.vala:718
+#: MainWindow.vala:719
 msgid "V-Fps"
 msgstr ""
 
-#: MainWindow.vala:699
+#: MainWindow.vala:700
 msgid "V-Height"
 msgstr ""
 
-#: MainWindow.vala:680
+#: MainWindow.vala:681
 msgid "V-Width"
 msgstr ""
 
@@ -1466,12 +1504,12 @@ msgstr ""
 msgid "Width x Height"
 msgstr ""
 
-#: MainWindow.vala:1672
+#: MainWindow.vala:1686
 msgid ""
 "[Batch completed] Right-click for options or click 'Finish' to continue."
 msgstr ""
 
-#: MainWindow.vala:1676
+#: MainWindow.vala:1690
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
@@ -1483,10 +1521,10 @@ msgstr ""
 msgid "ffmpeg"
 msgstr ""
 
-#: MainWindow.vala:1275
+#: MainWindow.vala:1289
 msgid "presets"
 msgstr ""
 
-#: MainWindow.vala:1271
+#: MainWindow.vala:1285
 msgid "scripts"
 msgstr ""

@@ -83,7 +83,7 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 		//tvFiles
 		tvFiles = new TreeView();
 		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
-		tvFiles.set_tooltip_text (_("Right-click for more options"));
+		//tvFiles.set_tooltip_text (_("Right-click for more options"));
 		tvFiles.headers_clickable = true;
 		tvFiles.activate_on_single_click = true;
 		tvFiles.rules_hint = true;
@@ -208,7 +208,7 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 			SelectedFile = mf;
 		
 			if (column == colEdit){
-				var win = new CropVideoSingleWindow(this, mf);
+				var win = MediaPlayerWindow.CropVideo(mf, this);
 				win.destroy.connect(()=>{
 					store.set(iter, 1, mf.CropL.to_string());
 					store.set(iter, 2, mf.CropR.to_string());
