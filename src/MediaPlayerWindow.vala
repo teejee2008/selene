@@ -321,9 +321,9 @@ public class MediaPlayerWindow : Gtk.Window {
 		button = new Button.with_label(_("Preview"));
 		button.margin_left = 24;
 		button.set_tooltip_text(_("Play selected clip"));
-        grid.attach(button,3,0,1,1);
+        //grid.attach(button,3,0,1,1);
 
-		button.clicked.connect(btnDetect_clicked);
+		//button.clicked.connect(btnDetect_clicked);
 
 		//ok
 		button = new Button.with_label(_("OK"));

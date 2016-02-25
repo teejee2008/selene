@@ -45,7 +45,10 @@ public class MainWindow : Gtk.Window{
     private ToolButton btnAbout;
     private ToolButton btnDonate;
     private ToolButton btnOpenOutputFolder;
-    private ToolButton btnCrop;
+
+    private MenuToolButton btnEditFiles;
+    private Gtk.Menu menuEditFiles;
+
     private ToolButton btnStart;
     private ToolButton btnStop;
     private ToolButton btnFinish;
@@ -217,13 +220,15 @@ public class MainWindow : Gtk.Window{
 		separator1 = new Gtk.SeparatorToolItem();
 		toolbar.add(separator1);
 
-		//btnCrop
+		init_ui_main_toolbar_edit();
+		
+		/*//btnCrop
 		btnCrop = new Gtk.ToolButton.from_stock ("gtk-edit");
 		btnCrop.is_important = true;
 		btnCrop.label = _("Crop");
 		btnCrop.clicked.connect (crop_videos);
 		btnCrop.set_tooltip_text (_("Crop Videos"));
-		toolbar.add (btnCrop);
+		toolbar.add (btnCrop);*/
 		
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
@@ -338,7 +343,7 @@ public class MainWindow : Gtk.Window{
 		menuAddFiles.append(miAddFile);
 
 		var box = new Gtk.Box(Orientation.HORIZONTAL,6);
-		box.add(get_shared_icon("gtk-file","",32));
+		box.add(get_shared_icon("gtk-file","",24));
 		box.add(new Gtk.Label(_("Add File(s)...")));
 		miAddFile.add(box);
 		
@@ -348,7 +353,7 @@ public class MainWindow : Gtk.Window{
 		menuAddFiles.append(miAddFolder);
 
 		box = new Gtk.Box(Orientation.HORIZONTAL,6);
-		box.add(get_shared_icon("gtk-directory","",32));
+		box.add(get_shared_icon("gtk-directory","",24));
 		box.add(new Gtk.Label(_("Add Folder(s)...")));
 		miAddFolder.add(box);
 
@@ -378,7 +383,7 @@ public class MainWindow : Gtk.Window{
 		menuRemoveFiles.append(miRemoveFiles);
 
 		var box = new Gtk.Box(Orientation.HORIZONTAL,6);
-		box.add(get_shared_icon("gtk-remove","",32));
+		box.add(get_shared_icon("gtk-remove","",24));
 		box.add(new Gtk.Label(_("Remove Selected Items")));
 		
 		miRemoveFiles.add(box);
@@ -390,7 +395,7 @@ public class MainWindow : Gtk.Window{
 		menuRemoveFiles.append(miClearList);
 
 		box = new Gtk.Box(Orientation.HORIZONTAL,6);
-		box.add(get_shared_icon("gtk-clear","",32));
+		box.add(get_shared_icon("gtk-clear","",24));
 		box.add(new Gtk.Label(_("Clear List")));
 		miClearList.add(box);
 
@@ -407,6 +412,48 @@ public class MainWindow : Gtk.Window{
 		});
 		
 		menuRemoveFiles.show_all();
+	}
+
+	private void init_ui_main_toolbar_edit(){
+		// menuEditFiles
+		menuEditFiles = new Gtk.Menu();
+
+		// miCropVideos
+		var miCropVideos = new Gtk.MenuItem();
+		//miCropVideos.set_reserve_indicator(false);
+		miCropVideos.activate.connect (() => { btnCropVideos_clicked(); });
+		menuEditFiles.append(miCropVideos);
+
+		var box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		//box.add(get_shared_icon("gtk-edit","",32));
+		box.add(new Gtk.Label(_("Crop Videos")));
+		miCropVideos.add(box);
+
+		// miTrimDuration
+		var miTrimDuration = new Gtk.MenuItem();
+		miTrimDuration.set_reserve_indicator(false);
+		miTrimDuration.activate.connect (() => { btnTrimDuration_clicked(); });
+		menuEditFiles.append(miTrimDuration);
+
+		box = new Gtk.Box(Orientation.HORIZONTAL,6);
+		//box.add(get_shared_icon("gtk-edit","",32));
+		box.add(new Gtk.Label(_("Trim Duration")));
+		miTrimDuration.add(box);
+
+		//btnEditFiles
+		btnEditFiles = new Gtk.MenuToolButton.from_stock ("gtk-edit");
+		btnEditFiles.label = _("Crop");
+		btnEditFiles.set_menu(menuEditFiles);
+		btnEditFiles.is_important = true;
+		btnEditFiles.set_tooltip_text (_("Crop Videos"));
+		toolbar.add (btnEditFiles);
+
+		btnEditFiles.clicked.connect(()=>{
+			//menuEditFiles.popup (null, null, null, 0, Gtk.get_current_event_time());
+			btnCropVideos_clicked();
+		});
+		
+		menuEditFiles.show_all();
 	}
 
 	// file list -------------------------------------
@@ -2337,6 +2384,45 @@ on the toolbar will open the file in a text editor.
 		refresh_list_view();
 	}
 
+	private void btnCropVideos_clicked(){
+		if (App.InputFiles.size == 0){
+			string title = _("No Files");
+			string msg = _("Add some files to the file list");
+			gtk_messagebox(title, msg, this, true);
+			return;
+		}
+
+		int count = 0 ;
+		foreach(var mf in App.InputFiles){
+			if (mf.HasVideo){
+				count++;
+			}
+		}
+		
+		if (count == 0){
+			string title = _("No Videos");
+			string msg = _("Add some videos to the file list");
+			gtk_messagebox(title, msg, this, true);
+			return;
+		}
+
+		CropVideoBatchWindow.CropVideos(this);
+		this.hide();
+	}
+
+	private void btnTrimDuration_clicked(){
+		if (App.InputFiles.size == 0){
+			string title = _("No Files");
+			string msg = _("Add some files to the file list");
+			gtk_messagebox(title, msg, this, true);
+			return;
+		}
+
+		CropVideoBatchWindow.TrimFiles(this);
+		this.hide();
+	}
+
+
 	private void btnAbout_clicked(){
 		var dialog = new AboutWindow();
 		dialog.set_transient_for (this);
@@ -2458,32 +2544,6 @@ on the toolbar will open the file in a text editor.
 
 	// encoding ----------------------------------
 
-	private void crop_videos(){
-		if (App.InputFiles.size == 0){
-			string title = _("No Files");
-			string msg = _("Add some files to the file list");
-			gtk_messagebox(title, msg, this, true);
-			return;
-		}
-
-		int count = 0 ;
-		foreach(var mf in App.InputFiles){
-			if (mf.HasVideo){
-				count++;
-			}
-		}
-		
-		if (count == 0){
-			string title = _("No Videos");
-			string msg = _("Add some videos to the file list");
-			gtk_messagebox(title, msg, this, true);
-			return;
-		}
-
-		var win = new CropVideoBatchWindow(this);
-		this.hide();
-	}
-
 	private void start(){
 		if (App.InputFiles.size == 0){
 			string title = _("No Files");
@@ -2522,7 +2582,7 @@ on the toolbar will open the file in a text editor.
 		btnBackground.visible = true;
         btnOpenOutputFolder.visible = dir_exists(App.OutputDirectory);
 
-		btnCrop.visible = false;
+		btnEditFiles.visible = false;
 		btnStart.visible = false;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = false;
@@ -2567,7 +2627,7 @@ on the toolbar will open the file in a text editor.
 		//colCrop.visible = !App.TileView;
 		colProgress.visible = false;
 
-		btnCrop.visible = true;
+		btnEditFiles.visible = true;
 		btnStart.visible = true;
 		btnAddFiles.visible = true;
 		btnRemoveFiles.visible = true;
