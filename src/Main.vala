@@ -1668,6 +1668,14 @@ Notes:
 		s += "ffmpeg2theora";
 		s += " \"${inFile}\"";
 
+		if (mf.StartPos > 0){
+			s += " --starttime %.1f".printf(mf.StartPos);
+		}
+
+		if (mf.EndPos > 0){
+			s += " --endtime %.1f".printf(mf.EndPos);
+		}
+		
 		switch(video.get_string_member("mode")){
 			case "vbr":
 				s += " --videoquality " + video.get_string_member("quality");
@@ -1934,7 +1942,19 @@ Notes:
 		string format = general.get_string_member("format");
 
 		s += AVEncoder;
+
+		//seek input
+		if (mf.StartPos > 0){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+		
 		s += " -i \"${inFile}\"";
+
+		//stop output
+		if (mf.EndPos > 0){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+		
 		s += " -f " + format;
 
 		switch(vcodec){
@@ -2383,7 +2403,18 @@ Notes:
 		}
 		else{
 			s += AVEncoder;
+			
+			//seek input
+			if (mf.StartPos > 0){
+				s += " -ss %.1f".printf(mf.StartPos);
+			}
+			
 			s += " -i \"${inFile}\"";
+
+			//stop output
+			if (mf.EndPos > 0){
+				s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+			}
 		}
 
 		switch (format){
@@ -2557,9 +2588,20 @@ Notes:
 		if (silent){
 			s += " -nostats";
 		}
+
+		//seek input
+		if (mf.StartPos > 0){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+
 		//input
 		s += " -i \"${inFile}\"";
 
+		//stop output
+		if (mf.EndPos > 0){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+		
 		//format
 		s += " -copyinkf -f rawvideo -vcodec rawvideo -pix_fmt yuv420p";
 
@@ -2628,9 +2670,19 @@ Notes:
 			s += " -stats";
 		}
 
+		//seek input
+		if (mf.StartPos > 0){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+		
 		//input
 		s += " -i \"${inFile}\"";
 
+		//stop output
+		if (mf.EndPos > 0){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+		
 		//format
 		s += " -f " + ((sox_enabled) ? "aiff" : "wav");
 		s += " -acodec pcm_s16le";

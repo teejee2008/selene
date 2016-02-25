@@ -491,6 +491,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		}
 
 		btnMute.visible = mFile.HasAudio;
+		btnFullscreen.visible = mFile.HasVideo;
 		cmbZoom.visible = mFile.HasVideo;
 		
 		scalePos.adjustment.upper = (mFile.Duration/1000);
