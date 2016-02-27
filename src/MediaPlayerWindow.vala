@@ -353,7 +353,7 @@ public class MediaPlayerWindow : Gtk.Window {
         
 		//advanced -------------------------------
 		
-		button = new Button.with_label(_("Advanced"));
+		button = new Button.with_label(_("Advanced Mode"));
 		button.margin_left = 24;
 		button.set_tooltip_text(_("Select multiple segments"));
         grid.attach(button,3,0,1,1);

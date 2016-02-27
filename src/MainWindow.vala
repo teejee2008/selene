@@ -1919,8 +1919,6 @@ on the toolbar will open the file in a text editor.
 		TreeSelection selection = tvFiles.get_selection();
 		if (selection.count_selected_rows() != 1){ return; }
 
-		//set_busy (true,this);
-
 		TreeModel model;
 		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
 
@@ -1933,22 +1931,8 @@ on the toolbar will open the file in a text editor.
 
 			MediaPlayerWindow.CropVideo(mf, this);
 
-			//win.show_all();
-
-			/*
-			if (file.crop_detect()){
-				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
-			}
-			else{
-				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
-			}
-			* */
 			break;
-
-			//do_events();
 		}
-
-		//set_busy (false,this);
     }
 
 	private void miFileTrim_clicked() {
@@ -1964,25 +1948,11 @@ on the toolbar will open the file in a text editor.
 			model.get_iter (out iter, path);
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
-
+			
 			MediaPlayerWindow.TrimFile(mf, this);
 
-			//win.show_all();
-
-			/*
-			if (file.crop_detect()){
-				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, file.crop_values_info());
-			}
-			else{
-				((Gtk.ListStore)tvFiles.model).set (iter, InputField.FILE_CROPVAL, _("N/A"));
-			}
-			* */
 			break;
-
-			//do_events();
 		}
-
-		//set_busy (false,this);
     }
 
     private void miFileRemove_clicked() {
@@ -2406,7 +2376,7 @@ on the toolbar will open the file in a text editor.
 			return;
 		}
 
-		CropVideoBatchWindow.CropVideos(this);
+		BatchEditWindow.CropVideos(this);
 		this.hide();
 	}
 
@@ -2418,7 +2388,7 @@ on the toolbar will open the file in a text editor.
 			return;
 		}
 
-		CropVideoBatchWindow.TrimFiles(this);
+		BatchEditWindow.TrimFiles(this);
 		this.hide();
 	}
 

@@ -11,7 +11,7 @@ app_fullname=Selene
 
 all:
 	#build binaries
-	valac -X -D'GETTEXT_PACKAGE="${app_name}"' --Xcc="-lm" -X -Wl,-rpath,/usr/share/${app_name}/libs "Main.vala" "Utility.vala" "MainWindow.vala" "AppConfigWindow.vala" "EncoderConfigWindow.vala" "EncoderStatusWindow.vala" "FileInfoWindow.vala" "AboutWindow.vala" "DonationWindow.vala" "CustomMessageDialog.vala" "SimpleProgressWindow.vala" "ColumnSelectionDialog.vala" "CropVideoBatchWindow.vala" "MediaFile.vala" "MediaPlayer.vala" "ScriptFile.vala" "MediaPlayerWindow.vala" "XidHelper.vala" -o ${app_name} --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-0.8 --pkg json-glib-1.0 --pkg gdk-x11-3.0
+	valac -X -D'GETTEXT_PACKAGE="${app_name}"' --Xcc="-lm" -X -Wl,-rpath,/usr/share/${app_name}/libs "Main.vala" "Utility.vala" "MainWindow.vala" "AppConfigWindow.vala" "EncoderConfigWindow.vala" "EncoderStatusWindow.vala" "FileInfoWindow.vala" "AboutWindow.vala" "DonationWindow.vala" "CustomMessageDialog.vala" "SimpleProgressWindow.vala" "ColumnSelectionDialog.vala" "BatchEditWindow.vala" "MediaFile.vala" "MediaPlayer.vala" "ScriptFile.vala" "MediaPlayerWindow.vala" "XidHelper.vala" -o ${app_name} --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-0.8 --pkg json-glib-1.0 --pkg gdk-x11-3.0
 	#--pkg gdk-x11-3.0
 
 	#valac -X -D'GETTEXT_PACKAGE=ffmpeg-builder' --Xcc="-lm" -X -Wl,-rpath,/usr/share/${app_name}/libs "Main.vala" "Utility.vala" "FFmpegBuilder.vala" "CustomMessageDialog.vala" -o ${app_name} --pkg glib-2.0 --pkg gio-unix-2.0 --pkg posix --pkg gtk+-3.0 --pkg gee-0.8 --pkg json-glib-1.0 --pkg libvte

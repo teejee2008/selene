@@ -33,7 +33,7 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class CropVideoBatchWindow : Gtk.Dialog {
+public class BatchEditWindow : Gtk.Dialog {
 	private Gtk.Box vboxMain;
 	private Gtk.TreeView tvFiles;
 	private Gtk.ScrolledWindow swFiles;
@@ -56,18 +56,18 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 	private bool crop_detect_is_running = false;
 	
 	public static Gtk.Window CropVideos(Gtk.Window parent){
-		var win = new CropVideoBatchWindow(parent, "crop");
+		var win = new BatchEditWindow(parent, "crop");
 		parent.hide();
 		return win;
 	}
 
 	public static Gtk.Window TrimFiles(Gtk.Window parent){
-		var win = new CropVideoBatchWindow(parent, "trim");
+		var win = new BatchEditWindow(parent, "trim");
 		parent.hide();
 		return win;
 	}
 	
-	public CropVideoBatchWindow(Gtk.Window? parent, string _action) {
+	public BatchEditWindow(Gtk.Window? parent, string _action) {
 		set_transient_for(parent);
 		set_destroy_with_parent(true);
         //set_skip_taskbar_hint(true);
