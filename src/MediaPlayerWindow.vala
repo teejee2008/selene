@@ -626,6 +626,7 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		//btnPlay
 		btnPlay = new Gtk.Button();
+		btnPlay.always_show_image = true;
 		hboxControls.add(btnPlay);
 
 		btnPlay.clicked.connect(() => {
@@ -635,6 +636,7 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		//btnMute
 		btnMute = new Gtk.Button();
+		btnMute.always_show_image = true;
 		hboxControls.add(btnMute);
 
 		btnMute.clicked.connect(() => {
@@ -649,6 +651,7 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		//btnFullscreen
 		btnFullscreen = new Gtk.Button();
+		btnFullscreen.always_show_image = true;
 		hboxControls.add(btnFullscreen);
 
 		btnFullscreen.clicked.connect(() => {
