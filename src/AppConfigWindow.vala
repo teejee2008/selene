@@ -46,6 +46,7 @@ public class AppConfigWindow : Gtk.Dialog {
 	private Button btnCancel;
 	private ComboBox cmbFileView;
 	private ComboBox cmbSelectEncoder;
+	private ComboBox cmbSelectPlayer;
 	
 	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
@@ -274,8 +275,8 @@ public class AppConfigWindow : Gtk.Dialog {
         cmbSelectEncoder.set_tooltip_markup(tt);
 		lblSelectEncoder.set_tooltip_markup(tt);
 		
-		switch(App.AVEncoder){
-		case "Encoder":
+		switch(App.PrimaryEncoder){
+		case "ffmpeg":
 			cmbSelectEncoder.active = 0;
 			break;
 		case "avconv":
@@ -283,6 +284,51 @@ public class AppConfigWindow : Gtk.Dialog {
 			break;
 		default:
 			cmbSelectEncoder.active = 0;
+			break;
+		}
+
+		//hboxPlayer -----------------------------------------------
+		
+		var hboxPlayer = new Gtk.Box(Orientation.HORIZONTAL,6);
+		vboxTabTools.pack_start (hboxPlayer, false, true, 0);
+
+		//lblSelectPlayer
+		var lblSelectPlayer = new Label ("Use Mpv or MPlayer");
+		lblSelectPlayer.set_use_markup(true);
+		lblSelectPlayer.halign = Align.START;
+		lblSelectPlayer.hexpand = true;
+		hboxPlayer.add(lblSelectPlayer);
+		
+		//cmbSelectPlayer
+		//TreeIter iter;
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		model.append (out iter);
+		model.set (iter, 0, _("mpv"), 1, "mpv");
+		model.append (out iter);
+		model.set (iter, 0, _("mplayer"), 1, "mplayer");
+
+		cmbSelectPlayer = new ComboBox.with_model(model);
+		hboxPlayer.add(cmbSelectPlayer);
+		sizegroup.add_widget(cmbSelectPlayer);
+		
+		textCell = new CellRendererText();
+        cmbSelectPlayer.pack_start( textCell, false );
+        cmbSelectPlayer.set_attributes( textCell, "text", 0 );
+			
+        //string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
+        //tt += _("<b>Player</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
+        //cmbSelectPlayer.set_tooltip_markup(tt);
+		//lblSelectPlayer.set_tooltip_markup(tt);
+		
+		switch(App.PrimaryPlayer){
+		case "mpv":
+			cmbSelectPlayer.active = 0;
+			break;
+		case "mplayer":
+			cmbSelectPlayer.active = 1;
+			break;
+		default:
+			cmbSelectPlayer.active = 0;
 			break;
 		}
 	}
@@ -322,8 +368,9 @@ public class AppConfigWindow : Gtk.Dialog {
 
 		App.TileView = (cmbFileView.active == 1);
 
-		App.AVEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
-
+		App.PrimaryEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
+		App.PrimaryPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mpv");
+		
 		// Save settings
 		App.save_config();
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-25 21:46+0530\n"
+"POT-Creation-Date: 2016-02-27 10:37+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,23 +25,23 @@ msgid ""
 "and should start with same name."
 msgstr ""
 
-#: MediaPlayerWindow.vala:655
+#: MediaPlayerWindow.vala:715
 msgid "100%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:657
+#: MediaPlayerWindow.vala:717
 msgid "200%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:649
+#: MediaPlayerWindow.vala:709
 msgid "25%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:651
+#: MediaPlayerWindow.vala:711
 msgid "50%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:653
+#: MediaPlayerWindow.vala:713
 msgid "75%"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:149
+#: AppConfigWindow.vala:150
 msgid "<b>Backup Directory</b>"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgid ""
 "These subtitles can be switched off since they are added as a separate track"
 msgstr ""
 
-#: AppConfigWindow.vala:273
+#: AppConfigWindow.vala:274
 msgid ""
 "<b>Encoder</b>\n"
 "Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
@@ -144,7 +144,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: AppConfigWindow.vala:195
+#: AppConfigWindow.vala:196
 msgid "<b>Main Window</b>"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgstr ""
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:104
+#: AppConfigWindow.vala:105
 msgid "<b>Output Directory</b>"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgstr ""
 msgid "<b>SOX Audio Processing:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:272
+#: AppConfigWindow.vala:273
 msgid ""
 "<b>avconv</b>\n"
 "Use the 'avconv' encoding tool from the Libav project\n"
@@ -304,7 +304,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: Main.vala:655
+#: Main.vala:675
 msgid "All files removed"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: MediaPlayerWindow.vala:214
+#: MediaPlayerWindow.vala:215
 msgid "Bottom:"
 msgstr ""
 
@@ -403,7 +403,7 @@ msgstr ""
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1210 Main.vala:1224
+#: Main.vala:1230 Main.vala:1244
 msgid "Cancelled"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: Main.vala:1049 Main.vala:1059 Main.vala:1067
+#: Main.vala:1069 Main.vala:1079 Main.vala:1087
 msgid "Completed"
 msgstr ""
 
@@ -451,7 +451,7 @@ msgstr ""
 msgid "Constant Bitrate (Strict)"
 msgstr ""
 
-#: Main.vala:965 Main.vala:1258
+#: Main.vala:985 Main.vala:1278
 msgid "Converting..."
 msgstr ""
 
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Converting: '%s'"
 msgstr ""
 
-#: Main.vala:963 Main.vala:1256
+#: Main.vala:983 Main.vala:1276
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Crop Videos"
 msgstr ""
 
-#: MediaPlayerWindow.vala:233
+#: MediaPlayerWindow.vala:234
 msgid "Cropped:"
 msgstr ""
 
@@ -504,20 +504,20 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: MediaPlayerWindow.vala:247
+#: MediaPlayerWindow.vala:248
 msgid "Detect Borders"
 msgstr ""
 
-#: MediaPlayerWindow.vala:249
+#: MediaPlayerWindow.vala:250
 msgid "Detect black borders in the video and set cropping parameters"
 msgstr ""
 
-#: MediaPlayerWindow.vala:443
+#: MediaPlayerWindow.vala:491
 #, c-format
 msgid "Detected Parameters: %d, %d, %d, %d"
 msgstr ""
 
-#: MediaPlayerWindow.vala:419
+#: MediaPlayerWindow.vala:423
 msgid "Detecting borders..."
 msgstr ""
 
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: Main.vala:1044
+#: Main.vala:1064
 msgid "Done"
 msgstr ""
 
@@ -621,7 +621,7 @@ msgstr ""
 msgid "Encoding Script or Preset File"
 msgstr ""
 
-#: MediaPlayerWindow.vala:289
+#: MediaPlayerWindow.vala:290
 msgid "End (sec):"
 msgstr ""
 
@@ -629,19 +629,19 @@ msgstr ""
 msgid "EndPos"
 msgstr ""
 
-#: Main.vala:736
+#: Main.vala:756
 msgid "Enter any key to Cancel..."
 msgstr ""
 
-#: AppConfigWindow.vala:119 AppConfigWindow.vala:165
+#: AppConfigWindow.vala:120 AppConfigWindow.vala:166
 msgid "Enter path or browse for directory"
 msgstr ""
 
-#: Main.vala:1054 Utility.vala:108
+#: Main.vala:1074 Utility.vala:108
 msgid "Error"
 msgstr ""
 
-#: Main.vala:771
+#: Main.vala:791
 msgid "Error: File missing"
 msgstr ""
 
@@ -677,7 +677,7 @@ msgstr ""
 msgid "Fade Type"
 msgstr ""
 
-#: Main.vala:1070
+#: Main.vala:1090
 msgid "Failed"
 msgstr ""
 
@@ -702,24 +702,24 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:206
+#: AppConfigWindow.vala:207
 msgid "File View"
 msgstr ""
 
-#: Main.vala:635
+#: Main.vala:655
 msgid "File added:"
 msgstr ""
 
-#: Main.vala:649
+#: Main.vala:669
 msgid "File removed:"
 msgstr ""
 
-#: Main.vala:672
+#: Main.vala:692
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: Main.vala:675
+#: Main.vala:695
 msgid "Files will be saved in source directory"
 msgstr ""
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
-#: Main.vala:330
+#: Main.vala:331
 msgid "Following utilities are not installed on your system:"
 msgstr ""
 
@@ -771,11 +771,11 @@ msgstr ""
 msgid "Frames/sec"
 msgstr ""
 
-#: MediaPlayerWindow.vala:721 MediaPlayerWindow.vala:725
+#: MediaPlayerWindow.vala:799 MediaPlayerWindow.vala:803
 msgid "Fullscreen"
 msgstr ""
 
-#: AppConfigWindow.vala:96 EncoderConfigWindow.vala:271
+#: AppConfigWindow.vala:97 EncoderConfigWindow.vala:271
 msgid "General"
 msgstr ""
 
@@ -809,11 +809,11 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: Main.vala:663
+#: Main.vala:683
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
-#: Main.vala:246
+#: Main.vala:247
 msgid "Input queue is empty! Please select files to convert."
 msgstr ""
 
@@ -825,7 +825,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: MediaPlayerWindow.vala:175
+#: MediaPlayerWindow.vala:176
 msgid "Left:"
 msgstr ""
 
@@ -833,15 +833,15 @@ msgstr ""
 msgid "Linear"
 msgstr ""
 
-#: AppConfigWindow.vala:219
+#: AppConfigWindow.vala:220
 msgid "List"
 msgstr ""
 
-#: Main.vala:378
+#: Main.vala:379
 msgid "Loading presets from:"
 msgstr ""
 
-#: Main.vala:377
+#: Main.vala:378
 msgid "Loading scripts from:"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgstr ""
 msgid "Lossless"
 msgstr ""
 
-#: Main.vala:785 Main.vala:788
+#: Main.vala:805 Main.vala:808
 msgid "Lyrics:"
 msgstr ""
 
@@ -917,11 +917,11 @@ msgstr ""
 msgid "Missing Icon"
 msgstr ""
 
-#: Main.vala:331
+#: Main.vala:332
 msgid "Missing Utilities"
 msgstr ""
 
-#: AppConfigWindow.vala:156
+#: AppConfigWindow.vala:157
 msgid "Move source files after encoding is complete"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: MediaPlayerWindow.vala:709 MediaPlayerWindow.vala:713
+#: MediaPlayerWindow.vala:787 MediaPlayerWindow.vala:791
 msgid "Mute"
 msgstr ""
 
@@ -973,7 +973,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: Main.vala:330
+#: Main.vala:331
 msgid "Not possible to continue!"
 msgstr ""
 
@@ -989,8 +989,8 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: DonationWindow.vala:95 MediaPlayerWindow.vala:255
-#: MediaPlayerWindow.vala:329
+#: DonationWindow.vala:95 MediaPlayerWindow.vala:256
+#: MediaPlayerWindow.vala:330
 msgid "OK"
 msgstr ""
 
@@ -1027,15 +1027,15 @@ msgid "Output"
 msgstr ""
 
 #: MainWindow.vala:245 MainWindow.vala:2530 MainWindow.vala:2532
-#: MediaPlayerWindow.vala:701
+#: MediaPlayerWindow.vala:779
 msgid "Pause"
 msgstr ""
 
-#: Main.vala:1237 Main.vala:1242
+#: Main.vala:1257 Main.vala:1262
 msgid "Paused"
 msgstr ""
 
-#: Main.vala:1240
+#: Main.vala:1260
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
@@ -1043,7 +1043,7 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:697
+#: MediaPlayerWindow.vala:775
 msgid "Play"
 msgstr ""
 
@@ -1055,11 +1055,11 @@ msgstr ""
 msgid "Play File (Source)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:323
+#: MediaPlayerWindow.vala:324
 msgid "Play selected clip"
 msgstr ""
 
-#: MediaPlayerWindow.vala:421
+#: MediaPlayerWindow.vala:425
 msgid "Please Wait..."
 msgstr ""
 
@@ -1087,7 +1087,7 @@ msgstr ""
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
-#: MediaPlayerWindow.vala:321
+#: MediaPlayerWindow.vala:322
 msgid "Preview"
 msgstr ""
 
@@ -1107,7 +1107,7 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: Main.vala:693 Main.vala:752 MediaFile.vala:47
+#: Main.vala:713 Main.vala:772 MediaFile.vala:47
 msgid "Queued"
 msgstr ""
 
@@ -1160,7 +1160,7 @@ msgstr ""
 msgid "Right-click for more options"
 msgstr ""
 
-#: MediaPlayerWindow.vala:188
+#: MediaPlayerWindow.vala:189
 msgid "Right:"
 msgstr ""
 
@@ -1176,11 +1176,11 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:110
+#: AppConfigWindow.vala:111
 msgid "Save files in following location"
 msgstr ""
 
-#: MediaPlayerWindow.vala:172
+#: MediaPlayerWindow.vala:173
 msgid "Scroll mouse wheel to adjust"
 msgstr ""
 
@@ -1188,7 +1188,7 @@ msgstr ""
 msgid "Select Columns"
 msgstr ""
 
-#: AppConfigWindow.vala:129 AppConfigWindow.vala:175
+#: AppConfigWindow.vala:130 AppConfigWindow.vala:176
 msgid "Select Path"
 msgstr ""
 
@@ -1200,15 +1200,15 @@ msgstr ""
 msgid "Send Email"
 msgstr ""
 
-#: MediaPlayerWindow.vala:303 MediaPlayerWindow.vala:312
+#: MediaPlayerWindow.vala:304 MediaPlayerWindow.vala:313
 msgid "Set"
 msgstr ""
 
-#: MediaPlayerWindow.vala:313
+#: MediaPlayerWindow.vala:314
 msgid "Set current playback position as ending position"
 msgstr ""
 
-#: MediaPlayerWindow.vala:304
+#: MediaPlayerWindow.vala:305
 msgid "Set current playback position as starting position"
 msgstr ""
 
@@ -1259,12 +1259,12 @@ msgstr ""
 msgid "Some files could not be opened:"
 msgstr ""
 
-#: Main.vala:681
+#: Main.vala:701
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:783 MediaPlayerWindow.vala:227
+#: Main.vala:803 MediaPlayerWindow.vala:228
 msgid "Source:"
 msgstr ""
 
@@ -1284,7 +1284,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: MediaPlayerWindow.vala:275
+#: MediaPlayerWindow.vala:276
 msgid "Start (sec):"
 msgstr ""
 
@@ -1292,7 +1292,7 @@ msgstr ""
 msgid "StartPos"
 msgstr ""
 
-#: Main.vala:667
+#: Main.vala:687
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
@@ -1305,7 +1305,7 @@ msgstr ""
 msgid "Stopped"
 msgstr ""
 
-#: Main.vala:1064
+#: Main.vala:1084
 msgid "Stopped!"
 msgstr ""
 
@@ -1321,7 +1321,7 @@ msgstr ""
 msgid "Subtitles"
 msgstr ""
 
-#: Main.vala:785 Main.vala:788
+#: Main.vala:805 Main.vala:808
 msgid "Subtitles:"
 msgstr ""
 
@@ -1343,11 +1343,11 @@ msgstr ""
 msgid "System shutdown was cancelled by user!"
 msgstr ""
 
-#: Main.vala:221
+#: Main.vala:222
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:735 MainWindow.vala:2670
+#: Main.vala:755 MainWindow.vala:2670
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1373,7 +1373,7 @@ msgstr ""
 msgid "Third Party Tools &amp; Software"
 msgstr ""
 
-#: AppConfigWindow.vala:221
+#: AppConfigWindow.vala:222
 msgid "Tiles"
 msgstr ""
 
@@ -1385,7 +1385,7 @@ msgstr ""
 msgid "Tool"
 msgstr ""
 
-#: AppConfigWindow.vala:235
+#: AppConfigWindow.vala:236
 msgid "Tools"
 msgstr ""
 
@@ -1393,7 +1393,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: MediaPlayerWindow.vala:201
+#: MediaPlayerWindow.vala:202
 msgid "Top:"
 msgstr ""
 
@@ -1422,11 +1422,11 @@ msgstr ""
 msgid "UltraFast"
 msgstr ""
 
-#: Main.vala:640
+#: Main.vala:660
 msgid "Unknown format:"
 msgstr ""
 
-#: Main.vala:379
+#: Main.vala:380
 msgid "Using temp folder:"
 msgstr ""
 
@@ -1498,7 +1498,7 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: Main.vala:224
+#: Main.vala:225
 msgid ""
 "Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
 msgstr ""
@@ -1524,12 +1524,20 @@ msgstr ""
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
-#: AppConfigWindow.vala:262
+#: AppConfigWindow.vala:263
 msgid "avconv / Libav"
 msgstr ""
 
-#: AppConfigWindow.vala:260
+#: AppConfigWindow.vala:261
 msgid "ffmpeg"
+msgstr ""
+
+#: AppConfigWindow.vala:308
+msgid "mplayer"
+msgstr ""
+
+#: AppConfigWindow.vala:306
+msgid "mpv"
 msgstr ""
 
 #: MainWindow.vala:1336

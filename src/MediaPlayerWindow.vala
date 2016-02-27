@@ -64,6 +64,7 @@ public class MediaPlayerWindow : Gtk.Window {
 	//window
 	private uint tmr_init = 0;
 	private string action = "";
+	private bool crop_detect_is_running = false;
 	
 	public static Gtk.Window CropVideo(MediaFile mf, Gtk.Window parent){
 		var win = new MediaPlayerWindow(mf, parent, "crop");
@@ -98,7 +99,7 @@ public class MediaPlayerWindow : Gtk.Window {
 	
 	public MediaPlayerWindow(MediaFile _mFile, Gtk.Window? parent, string _action) {
         set_window_parent(parent);
-		window_position = WindowPosition.CENTER_ALWAYS;
+		//window_position = WindowPosition.CENTER_ALWAYS;
 		icon = get_app_icon(16);
 		
 		deletable = true;
@@ -334,7 +335,7 @@ public class MediaPlayerWindow : Gtk.Window {
 	}
 
 	//crop
-	
+
 	private void spinCrop_value_changed_connect(){
 		spinCropL.value_changed.connect(spinCropL_value_changed);
 		spinCropR.value_changed.connect(spinCropR_value_changed);
@@ -354,11 +355,13 @@ public class MediaPlayerWindow : Gtk.Window {
 		int modified = (int) spinCropL.get_value();
 		int change = modified - original;
 		mFile.CropL = modified;
-		
-		player.ChangeRectangle(2, change);
-		player.ChangeRectangle(0, -change);
-		if (player.IsPaused){
-			player.FrameStep();
+
+		if (App.PrimaryPlayer == "mplayer"){
+			player.UpdateRectangle_Left(change);
+		}
+		else{
+			player.Mpv_Crop();
+			CropCanvas(true);
 		}
 		
 		update_label_for_cropped_size();
@@ -369,11 +372,13 @@ public class MediaPlayerWindow : Gtk.Window {
 		int modified = (int) spinCropR.get_value();
 		int change = modified - original;
 		mFile.CropR = modified;
-		
-		//player.ChangeRectangle(2, change);
-		player.ChangeRectangle(0, -change);
-		if (player.IsPaused){
-			player.FrameStep();
+
+		if (App.PrimaryPlayer == "mplayer"){
+			player.UpdateRectangle_Right(change);
+		}
+		else{
+			player.Mpv_Crop();
+			CropCanvas(true);
 		}
 		
 		update_label_for_cropped_size();
@@ -384,11 +389,13 @@ public class MediaPlayerWindow : Gtk.Window {
 		int modified = (int) spinCropT.get_value();
 		int change = modified - original;
 		mFile.CropT = modified;
-		
-		player.ChangeRectangle(3, change);
-		player.ChangeRectangle(1, -change);
-		if (player.IsPaused){
-			player.FrameStep();
+
+		if (App.PrimaryPlayer == "mplayer"){
+			player.UpdateRectangle_Top(change);
+		}
+		else{
+			player.Mpv_Crop();
+			CropCanvas(true);
 		}
 		
 		update_label_for_cropped_size();
@@ -399,56 +406,101 @@ public class MediaPlayerWindow : Gtk.Window {
 		int modified = (int) spinCropB.get_value();
 		int change = modified - original;
 		mFile.CropB = modified;
-		
-		//player.ChangeRectangle(3, change);
-		player.ChangeRectangle(1, -change);
-		if (player.IsPaused){
-			player.FrameStep();
+
+		if (App.PrimaryPlayer == "mplayer"){
+			player.UpdateRectangle_Bottom(change);
+		}
+		else{
+			player.Mpv_Crop();
+			CropCanvas(true);
 		}
 		
 		update_label_for_cropped_size();
 	}
 
 	private void btnDetect_clicked(){
-		player.Exit();
-		//sleep(2000);
-		player.StartPlayerWithCropDetect();
-		player.Open(mFile, false, true, true);
 
-		
 		var status_msg = _("Detecting borders...");
 		var dlg = new SimpleProgressWindow.with_parent(this, status_msg);
 		dlg.set_title(_("Please Wait..."));
 		dlg.show_all();
 		gtk_do_events();
+	
+		if (App.PrimaryPlayer == "mplayer"){
 
-		//get total count
-		App.progress_total = 10;
-		App.progress_count = 0;
+			//get total count
+			App.progress_total = 10;
+			App.progress_count = 0;
 
-		mFile.CropL = 9999;
-		mFile.CropR = 9999;
-		mFile.CropT = 9999;
-		mFile.CropB = 9999;
+			//init values
+			mFile.CropL = 9999;
+			mFile.CropR = 9999;
+			mFile.CropT = 9999;
+			mFile.CropB = 9999;
 		
-		double duration = (mFile.Duration / 1000.0);
-		double step = duration / 10.0;
-		for(int i = 0; i < 10; i++){
-			player.Seek(step * i);
-			sleep(100);
-			App.progress_count++;
-			dlg.update_progressbar();
+			//restart mplayer with crop detect filter
+			player.Exit();
+			player.StartPlayerWithCropDetect();
+			player.Open(mFile, false, true, true);
+
+			//seek
+			double duration = (mFile.Duration / 1000.0);
+			double step = duration / 10.0;
+			for(int i = 0; i < 10; i++){
+				player.Seek(step * i);
+				sleep(100);
+				App.progress_count++;
+				dlg.update_progressbar();
+			}
+
+			//restart mplayer with crop filter
+			player.Exit();
+			player.StartPlayerWithCropFilter();
+			load_file();
+		}
+		else{
+		
+			try {
+				crop_detect_is_running = true;
+				Thread.create<void> (ffmpeg_crop_detect_thread, true);
+			} catch (ThreadError e) {
+				crop_detect_is_running = false;
+				log_error (e.message);
+			}
+
+			dlg.pulse_start();
+			while (crop_detect_is_running) {
+				dlg.update_message(status_msg);
+				dlg.sleep(200);
+			}
 		}
 
+		if ((mFile.CropL == 9999)||(mFile.CropL < 0)){
+			mFile.CropL = 0;
+		}
+		if ((mFile.CropR == 9999)||(mFile.CropR < 0)){
+			mFile.CropR = 0;
+		}
+		if ((mFile.CropT == 9999)||(mFile.CropT < 0)){
+			mFile.CropT = 0;
+		}
+		if ((mFile.CropB == 9999)||(mFile.CropB < 0)){
+			mFile.CropB = 0;
+		}
+			
 		dlg.finish(_("Detected Parameters: %d, %d, %d, %d").printf(mFile.CropL,mFile.CropR,mFile.CropT,mFile.CropB));
-		
-		//dlg.close();
-		//gtk_do_events();
 
-		player.Exit();
-		player.StartPlayerWithRectangle();
+		update_spinbutton_values();
 
-		load_file();
+		if (App.PrimaryPlayer == "mpv"){
+			player.Mpv_Crop();
+			CropCanvas(true);
+		}
+	}
+
+	private void ffmpeg_crop_detect_thread() {
+		mFile.crop_detect();
+		crop_detect_is_running = false;
 	}
 	
 	private void update_label_for_cropped_size(){
@@ -504,6 +556,14 @@ public class MediaPlayerWindow : Gtk.Window {
 		
 		player.Open(mFile, true, false, true);
 		
+		update_spinbutton_values();
+
+		if (!player.IsPaused){
+			player.PauseToggle();
+		}
+	}
+
+	private void update_spinbutton_values(){
         spinCrop_value_changed_disconnect();
         
 		spinCropL.adjustment.value = mFile.CropL;
@@ -548,7 +608,7 @@ public class MediaPlayerWindow : Gtk.Window {
         this.canvas.realize.connect(() => {
 			player.WindowID = get_widget_xid(canvas);
 			if (action == "crop"){
-				player.StartPlayerWithRectangle();
+				player.StartPlayerWithCropFilter();
 			}
 			else if (action == "trim"){
 				player.StartPlayer();
@@ -559,7 +619,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		});
 	}
 	
-	public void init_ui_player_controls(){
+	private void init_ui_player_controls(){
 		var hboxControls = new Gtk.Box(Orientation.HORIZONTAL, 6);
 		hboxControls.margin = 6;
 		vboxMain.add(hboxControls);
@@ -672,11 +732,29 @@ public class MediaPlayerWindow : Gtk.Window {
 	}
 
 	private void cmbZoom_changed(){
+		if (App.PrimaryPlayer == "mpv"){
+			CropCanvas(true);
+		}
+		else{
+			CropCanvas(false);
+		}
+	}
+
+	private void CropCanvas(bool cropCanvas){
 		double zoom = double.parse(gtk_combobox_get_value(cmbZoom,1,"1.0"));
-		int zoomWidth = (int) (mFile.SourceWidth * zoom * 1.0);
-		int zoomHeight = (int) (mFile.SourceHeight * zoom * 1.0);
+		int zoomWidth, zoomHeight;
+		
+		if (cropCanvas){
+			zoomWidth = (int) ((mFile.SourceWidth - mFile.CropL - mFile.CropR) * zoom * 1.0);
+			zoomHeight = (int) ((mFile.SourceHeight - mFile.CropT - mFile.CropB) * zoom * 1.0);
+		}
+		else{
+			zoomWidth = (int) (mFile.SourceWidth * zoom * 1.0);
+			zoomHeight = (int) (mFile.SourceHeight * zoom * 1.0);
+		}
+
 		canvas.set_size_request(zoomWidth, zoomHeight);
-		this.resize(1,1);
+		this.resize(100,50);//set a visible min size
 		gtk_do_events();
 	}
 

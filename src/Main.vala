@@ -86,7 +86,8 @@ public class Main : GLib.Object{
 	public string InputDirectory = "";
 	public bool TileView = true;
 	
-	public string AVEncoder = "ffmpeg";
+	public string PrimaryEncoder = "ffmpeg";
+	public string PrimaryPlayer = "mpv";
 
 	public string ListViewColumns = "";
 	
@@ -446,7 +447,7 @@ Notes:
 		//Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
 		Encoders["mplayer"] = new Encoder("mplayer","Media Player","Audio-Video Playback");
 		//Encoders["mplayer2"] = new Encoder("mplayer2","Media Player","Audio-Video Playback");
-		//Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
+		Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
 		//Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
 		//Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
 	}
@@ -458,7 +459,7 @@ Notes:
 	}
 
 	public void check_ffmpeg_codec_support(){
-		FFmpegCodecs = FFmpegCodec.check_codec_support(AVEncoder);
+		FFmpegCodecs = FFmpegCodec.check_codec_support(PrimaryEncoder);
 	}
 	
 	public void start_input_thread(){
@@ -519,7 +520,8 @@ Notes:
 		config.set_string_member("output-dir", OutputDirectory);
 		config.set_string_member("last-script", SelectedScript.Path);
 		config.set_string_member("tile-view", TileView.to_string());
-		config.set_string_member("av-encoder", AVEncoder);
+		config.set_string_member("av-encoder", PrimaryEncoder);
+		config.set_string_member("av-player", PrimaryPlayer);
 		config.set_string_member("list-view-columns", ListViewColumns);
 		
 		if (SelectedScript != null) {
@@ -573,9 +575,11 @@ Notes:
 		else
 			OutputDirectory = "";
 
-		AVEncoder = json_get_string(config,"av-encoder", "ffmpeg");
+		PrimaryEncoder = json_get_string(config,"av-encoder", "ffmpeg");
+		PrimaryPlayer = json_get_string(config,"av-player", "mpv");
 
 		check_and_default_av_encoder();
+		check_and_default_av_player();
 
 		val = json_get_string(config,"last-script", "");
 		if (val != null && val.length > 0) {
@@ -588,28 +592,44 @@ Notes:
 	}
 
 	public void check_and_default_av_encoder(){
-		if (Encoders.has_key(AVEncoder) && Encoders[AVEncoder].IsAvailable){
+		if (Encoders.has_key(PrimaryEncoder) && Encoders[PrimaryEncoder].IsAvailable){
 			return;
 		}
 		
 		if (Encoders["ffmpeg"].IsAvailable){
-			AVEncoder = "ffmpeg";
+			PrimaryEncoder = "ffmpeg";
 			return;
 		}
 
 		if (Encoders["avconv"].IsAvailable){
-			AVEncoder = "avconv";
+			PrimaryEncoder = "avconv";
 			return;
 		}
 	}
 
+	public void check_and_default_av_player(){
+		if (Encoders.has_key(PrimaryPlayer) && Encoders[PrimaryPlayer].IsAvailable){
+			return;
+		}
+		
+		if (Encoders["mpv"].IsAvailable){
+			PrimaryPlayer = "mpv";
+			return;
+		}
+
+		if (Encoders["mplayer"].IsAvailable){
+			PrimaryPlayer = "mplayer";
+			return;
+		}
+	}
+	
 	public void exit_app(){
 		save_config();
 		Gtk.main_quit();
 	}
 
 	public bool add_file (string filePath){
-		MediaFile mFile = new MediaFile (filePath, App.AVEncoder);
+		MediaFile mFile = new MediaFile (filePath, App.PrimaryEncoder);
 
 		if (mFile.IsValid
 			&& mFile.Extension != ".srt"
@@ -879,7 +899,7 @@ Notes:
 
 				string line = dis.read_line (null);
 				while (line != null) {
-					line = line.replace ("${audiodec}", "%s -i \"${inFile}\" -f wav -acodec pcm_s16le -vn -y -".printf(AVEncoder));
+					line = line.replace ("${audiodec}", "%s -i \"${inFile}\" -f wav -acodec pcm_s16le -vn -y -".printf(PrimaryEncoder));
 
 					if (mf.crop_enabled()){
 						if (rxCrop_libav.match (line, 0, out match)){
@@ -1365,7 +1385,7 @@ Notes:
 					case "vp8":
 					case "vp9":
 						s += encode_video_avconv(mf,settings);
-						encoderList.add(AVEncoder);
+						encoderList.add(PrimaryEncoder);
 						break;
 				}
 
@@ -1388,7 +1408,7 @@ Notes:
 							break;
 						case "aac":
 							s += encode_audio_avconv(mf,settings);
-							encoderList.add(AVEncoder);
+							encoderList.add(PrimaryEncoder);
 							if (audio.get_boolean_member("soxEnabled")){
 								encoderList.add("sox");
 							};
@@ -1416,7 +1436,7 @@ Notes:
 						switch (vcodec){
 							case "x265":
 								s += mux_avconv(mf,settings);
-								encoderList.add(AVEncoder);
+								encoderList.add(PrimaryEncoder);
 								break;
 							default:
 								s += mux_mkvmerge(mf,settings);
@@ -1432,7 +1452,7 @@ Notes:
 						switch (vcodec){
 							case "x265":
 								s += mux_avconv(mf,settings);
-								encoderList.add(AVEncoder);
+								encoderList.add(PrimaryEncoder);
 								break;
 							default:
 								s += mux_mp4box(mf,settings);
@@ -1468,7 +1488,7 @@ Notes:
 					
 				case "aac":
 					s += encode_audio_avconv(mf,settings);
-					encoderList.add(AVEncoder);
+					encoderList.add(PrimaryEncoder);
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
@@ -1504,7 +1524,7 @@ Notes:
 			case "flac":
 			case "wav":
 				s += encode_audio_avconv(mf,settings);
-				encoderList.add(AVEncoder);
+				encoderList.add(PrimaryEncoder);
 				if (audio.get_boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
@@ -1941,7 +1961,7 @@ Notes:
 		string vcodec = video.get_string_member("codec");
 		string format = general.get_string_member("format");
 
-		s += AVEncoder;
+		s += PrimaryEncoder;
 
 		//seek input
 		if (mf.StartPos > 0){
@@ -2398,11 +2418,11 @@ Notes:
 
 		if (sox_enabled){
 			s += decode_audio_avconv(mf, settings, true);
-			s += AVEncoder;
+			s += PrimaryEncoder;
 			s += " -i -";
 		}
 		else{
-			s += AVEncoder;
+			s += PrimaryEncoder;
 			
 			//seek input
 			if (mf.StartPos > 0){
@@ -2582,7 +2602,7 @@ Notes:
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
-		s += AVEncoder;
+		s += PrimaryEncoder;
 
 		//progress info
 		if (silent){
@@ -2660,7 +2680,7 @@ Notes:
 		string acodec = audio.get_string_member("codec");
 		bool sox_enabled = audio.get_boolean_member("soxEnabled");
 
-		s += AVEncoder;
+		s += PrimaryEncoder;
 
 		//progress info
 		if (silent){
@@ -2879,7 +2899,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		string format = general.get_string_member("format");
 
-		s += AVEncoder;
+		s += PrimaryEncoder;
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			s += " -i \"${tempAudio}\"";
 		}
@@ -2905,7 +2925,7 @@ Notes:
 		
 		string s = "";
 
-		s += AVEncoder;
+		s += PrimaryEncoder;
 		s += " -i %s".printf(input_file);
 		s += " -f mp4";
 		s += " -c:a copy -vn -sn";

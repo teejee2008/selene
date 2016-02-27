@@ -23,6 +23,7 @@ public class MediaPlayer : GLib.Object{
     public bool PauseOnLoad = false;
 
 	public uint WindowID = 0;
+	//public string input_pipe = "";
 	
     public string err_line;
 	public string out_line;
@@ -37,7 +38,7 @@ public class MediaPlayer : GLib.Object{
 	public int64 progress_count;
 	public int64 progress_total;
 	public bool is_running;
-
+	
 	public int CropL = 0;
 	public int CropR = 0;
 	public int CropT = 0;
@@ -48,7 +49,7 @@ public class MediaPlayer : GLib.Object{
 	private Regex rex_av;
 	private Regex rex_audio;
 	private Regex rex_video;
-	
+	private Regex rex_mpv;
 
 	public MediaPlayer(){
         IsMuted = false;
@@ -71,34 +72,99 @@ public class MediaPlayer : GLib.Object{
 			
 			//A:   1.9 V:   1.9 A-V:  0.001 ct:  0.000   0/  0  1%  1%  0.4% 0 0
 			rex_audio = new Regex("""^A:[ \t]*([0-9.]+)[ \t]*""");
-			
+
+			//1.793458 no no 50
+			rex_mpv = new Regex("""([0-9.]*) (yes|no) (yes|no) ([0-9.])""");
 		}
 		catch (Error e) {
 			log_error (e.message);
 		}
 	}
 
-	public void StartPlayerWithRectangle(){
+	public void StartPlayerWithCropFilter(){
 		if (mFile != null){
 			int x = mFile.CropL;
 			int y = mFile.CropT;
 			int w = mFile.SourceWidth - mFile.CropL - mFile.CropR;
 			int h = mFile.SourceHeight - mFile.CropT - mFile.CropB;
-			StartPlayer("-vf rectangle=%d:%d:%d:%d".printf(w,h,x,y));
+
+			if (App.PrimaryPlayer == "mpv"){
+				StartPlayer(" --vf=crop=%d:%d:%d:%d".printf(w,h,x,y));
+			}
+			else{
+				StartPlayer(" -vf rectangle=%d:%d:%d:%d".printf(w,h,x,y));
+			}
 		}
 		else{
-			StartPlayer("-vf rectangle");
+			if (App.PrimaryPlayer == "mplayer"){
+				StartPlayer("-vf rectangle"); //mplayer
+			}
 		}
 	}
 
 	public void StartPlayerWithCropDetect(){
-		StartPlayer("-vf cropdetect");
+		if (App.PrimaryPlayer == "mplayer"){
+			StartPlayer("-vf cropdetect");
+		}
+		else{
+			//StartPlayer("--vf=lavfi=cropdetect");
+		}
 	}
+
+	public void Mpv_Add_CropDetectFilter(){
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("vf add \"lavfi=cropdetect\"");
+		}
+	}
+
+	
+	public void Mpv_Remove_CropDetectFilter(){
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("vf del \"lavfi=cropdetect\"");
+		}
+	}
+
 	
 	public void StartPlayer(string ExtraOptions = ""){
-		string args = "mplayer";
-        args += " -slave -identify -idle -noquiet -osdlevel 0 -colorkey 0x101010 -msglevel all=6 -nofs";
-        args += " -wid %u".printf(WindowID);
+		string args = "";
+		if (App.PrimaryPlayer == "mpv"){
+			//input_pipe = "/tmp/selene-%s".printf(timestamp2());
+			//args += "mkfifo %s\n".printf(input_pipe);
+
+			args += App.PrimaryPlayer;
+
+			args += " --no-config --no-quiet --idle=yes --keep-open=yes --terminal --no-msg-color --input-file=/dev/stdin --no-fs --hwdec=no --sub-auto=fuzzy --vo=xv --ao=alsa --stop-screensaver --no-input-default-bindings --input-x11-keyboard=no --no-input-cursor --cursor-autohide=no --no-keepaspect --monitorpixelaspect=1 --osd-scale=1 --osd-level=0 --screenshot-format=jpg --ytdl=no";
+
+			//status line format
+			args += " --term-status-msg='${=time-pos} ${pause} ${mute} ${volume}'";
+			
+			//window id
+			args += " --wid=%u".printf(WindowID);
+			
+		}
+		else if (App.PrimaryPlayer == "mplayer"){
+			//input_pipe = "";
+			args += App.PrimaryPlayer;
+			//slave mode
+			args += " -slave";
+			//verbosity
+			args += " -noquiet -msglevel all=6";
+			//no fullscreen
+			args += " -nofs";
+			//wait after playback
+			args += " -idle";
+			//hide on-screen display
+			args += " -osdlevel 0";
+			//window color
+			args += " -colorkey 0x101010";
+			//widowid
+			args += " -wid %u".printf(WindowID);
+		}
+
+		if (mFile != null){
+			//args += " '%s'".printf(mFile.Path);
+		}
+		
 		if (ExtraOptions.length > 0){
 			args += " " + ExtraOptions.strip();
 		}
@@ -175,8 +241,13 @@ public class MediaPlayer : GLib.Object{
 			
 			err_line = dis_err.read_line (null);
 			while (is_running && (err_line != null)) {
-				
-				if (rex_av.match(err_line, 0, out match)){
+				if (rex_mpv.match(err_line, 0, out match)){
+					Position = double.parse(match.fetch(1));
+					IsPaused = (match.fetch(2) == "yes") ? true : false;
+					IsMuted = (match.fetch(3) == "yes") ? true : false;
+					Volume = int.parse(match.fetch(4));
+				}
+				else if (rex_av.match(err_line, 0, out match)){
 					Position = double.parse(match.fetch(2));
 					IsPaused = false;
 					//log_debug("Pos=%.2f".printf(Position));
@@ -194,9 +265,11 @@ public class MediaPlayer : GLib.Object{
 					//log_debug("PAUSED");
 				}
 
-				//log_debug("err:" + err_line);
+				log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
+
+			log_debug("stderr reader exited");
 		}
 		catch (Error e) {
 			log_debug("In read_error_line()");
@@ -238,11 +311,14 @@ public class MediaPlayer : GLib.Object{
 					}
 				}
 
-				//  log_debug("out:" + out_line);
+				log_debug("out:" + out_line);
 				out_line = dis_out.read_line (null);  //read next
 			}
 
-			is_running = false;
+			//is_running = false;
+
+			//input_pipe = "";
+			log_debug("stdout reader exited");
 		}
 		catch (Error e) {
 			log_debug("In read_output_line()");
@@ -266,8 +342,18 @@ public class MediaPlayer : GLib.Object{
 
 	public void Open(MediaFile _mFile, bool pause, bool mute, bool loop){
 		mFile = _mFile;
-		
-		write_to_stdin("loadfile '%s'".printf(mFile.Path.replace("'","\\'")));
+
+		string f = mFile.Path;
+		//escape: \ \n "
+        f = f.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");
+        f = "\"" + f + "\"";
+        
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("loadfile %s".printf(f));
+		}
+		else{
+			write_to_stdin("loadfile %s".printf(f));
+		}
 		
 		if (pause){
 			FrameStep(); //'frame_step' will pause the video, 'pause' will toggle
@@ -281,7 +367,12 @@ public class MediaPlayer : GLib.Object{
 	}
 
 	public void Loop(){
-		write_to_stdin("loop 100 ");
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("cycle loop 100 ");
+		}
+		else{
+			write_to_stdin("loop 100 ");
+		}
 	}
 
 	public void Pause(){
@@ -296,22 +387,42 @@ public class MediaPlayer : GLib.Object{
 	
 	public void PauseToggle(){
 		//pause/unpause
-		write_to_stdin("pause ");
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("cycle pause ");
+		}
+		else{
+			write_to_stdin("pause ");
+		}
 	}
 
 	public void Mute(){
-		write_to_stdin("mute 1");
-		IsMuted = true;
+		if (App.PrimaryPlayer == "mplayer"){
+			write_to_stdin("mute 1");
+			IsMuted = true;
+		}
+		else{
+			write_to_stdin("cycle mute 1");
+		}
 	}
 
 	public void UnMute(){
-		write_to_stdin("mute 0");
-		IsMuted = false;
+		if (App.PrimaryPlayer == "mplayer"){
+			write_to_stdin("mute 0");
+			IsMuted = false;
+		}
+		else{
+			write_to_stdin("cycle mute 0");
+		}
 	}
 
 	public void SetVolume(int percent){
 		Volume = percent;
-		write_to_stdin("volume %d 1".printf(Volume));
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("set volume %d".printf(Volume));
+		}
+		else{
+			write_to_stdin("volume %d 1".printf(Volume));
+		}
 	}
 	
 	public void Stop(){
@@ -322,10 +433,51 @@ public class MediaPlayer : GLib.Object{
 		write_to_stdin("change_rectangle %d %d ".printf(parameter, amount));
 	}
 
+	public void UpdateRectangle_Left(int change){
+		ChangeRectangle(2, change);
+		ChangeRectangle(0, -change);
+		if (IsPaused){
+			FrameStep();
+		}
+	}
+
+	public void UpdateRectangle_Right(int change){
+		//ChangeRectangle(2, change);
+		ChangeRectangle(0, -change);
+		if (IsPaused){
+			FrameStep();
+		}
+	}
+
+	public void UpdateRectangle_Top(int change){
+		ChangeRectangle(3, change);
+		ChangeRectangle(1, -change);
+		if (IsPaused){
+			FrameStep();
+		}
+	}
+
+	public void UpdateRectangle_Bottom(int change){
+		//ChangeRectangle(3, change);
+		ChangeRectangle(1, -change);
+		if (IsPaused){
+			FrameStep();
+		}
+	}
+
+	public void Mpv_Crop(){
+		int w = mFile.SourceWidth - mFile.CropL - mFile.CropR;
+		int h = mFile.SourceHeight - mFile.CropT - mFile.CropB;
+		int x = mFile.CropL;
+		int y = mFile.CropT;
+		
+		write_to_stdin("vf set \"crop=%d:%d:%d:%d\"".printf(w,h,x,y));
+	}
+	
 	public void FrameStep(){
 		write_to_stdin("frame_step ");
 	}
-	
+
 	public void SetRectangle(){
 		ChangeRectangle(0, - mFile.CropL - mFile.CropR); //0=width
 		FrameStep();

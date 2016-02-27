@@ -1906,7 +1906,7 @@ on the toolbar will open the file in a text editor.
 			MediaFile mf = App.InputFiles[index];
 
 			if (file_exists(mf.OutputFilePath)){
-				MediaFile mfOutput = new MediaFile(mf.OutputFilePath, App.AVEncoder);
+				MediaFile mfOutput = new MediaFile(mf.OutputFilePath, App.PrimaryEncoder);
 				var window = new FileInfoWindow(mfOutput);
 				window.set_transient_for(this);
 				window.show_all();
@@ -2045,7 +2045,7 @@ on the toolbar will open the file in a text editor.
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 
-			var mf_output = new MediaFile(mf.OutputFilePath, App.AVEncoder);
+			var mf_output = new MediaFile(mf.OutputFilePath, App.PrimaryEncoder);
 			MediaPlayerWindow.PlayFile(mf_output);
 		}
     }
