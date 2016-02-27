@@ -40,6 +40,7 @@ public class MediaFile : GLib.Object{
 
 	public double StartPos = 0.0;
 	public double EndPos = 0.0;
+	public Gee.ArrayList<MediaClip> clip_list;
 	
 	//public int Status = 0;
 	public FileStatus Status = FileStatus.PENDING;
@@ -72,13 +73,15 @@ public class MediaFile : GLib.Object{
 	public string OutputFilePath = "";
 	public long OutputFrameCount = 0;
 
-	public static int ThumbnailWidth = 80;
+	public static int ThumbnailWidth = 80; 
 	public static int ThumbnailHeight= 64;
 			
 	public MediaFile(string filePath, string av_encoder){
 		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
 
+		clip_list = new Gee.ArrayList<MediaClip>();
+		
 		// set file properties ------------
 
 		File f = File.new_for_path (filePath);
@@ -357,6 +360,67 @@ public class MediaFile : GLib.Object{
 			return "0,0,0,0";
 	}
 
+	public string trim_values_ffmpeg(Json.Object settings, bool keepVideo, bool keepAudio){
+		string s = "";
+		
+		if (clip_list.size == 0){
+			return s;
+		}
+
+		string af = "";
+		string audio_clips = "";
+		string vf = "";
+		string video_clips = "";
+		string map = "";
+		
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		string acodec = audio.get_string_member("codec");
+		string vcodec = video.get_string_member("codec");
+		//string format = general.get_string_member("format");
+		
+		if (keepVideo && HasVideo && (vcodec != "disable")) {
+			int index = 0;
+			foreach(MediaClip clip in clip_list){
+				index++;
+				vf += "[0:v]trim=start=%.3f:end=%.3f,setpts=PTS-STARTPTS[v%d];".printf(clip.StartPos, clip.EndPos, index);
+				video_clips += "[v%d]".printf(index);
+			}
+		}
+
+		if (keepAudio && HasAudio && (acodec != "disable")) {
+			int index = 0;
+			foreach(MediaClip clip in clip_list){
+				index++;
+				af += "[0:a]atrim=start=%.3f:end=%.3f,asetpts=PTS-STARTPTS[a%d];".printf(clip.StartPos, clip.EndPos, index);
+				audio_clips += "[a%d]".printf(index);
+			}
+		}
+
+		if ((vf.length > 0) && (af.length > 0)){
+			s += vf;
+			s += af;
+			s += "%s%sconcat=n=%d:v=%d:a=%d[vout][aout]".printf(video_clips, audio_clips, clip_list.size, 1, 1);
+			map = " -map '[vout]' -map '[aout]' -strict -2";
+		}
+		else if (vf.length > 0){
+			s += vf;
+			s += "%s%sconcat=n=%d:v=%d:a=%d[vout]".printf(video_clips, "", clip_list.size, 1, 0);
+			map = " -map '[vout]' -strict -2";
+		}
+		else if (af.length > 0){
+			s += af;
+			s += "%s%sconcat=n=%d:v=%d:a=%d[aout]".printf("", audio_clips, clip_list.size, 0, 1);
+			map = " -map '[aout]' -strict -2";
+		}
+		
+		s = " -filter_complex \"%s\"".printf(s);
+		s += map;
+		
+		return s;
+	}
+	
 	public void preview_output(string av_player){
 		//deprecated
 	}
@@ -390,5 +454,14 @@ public class MediaFile : GLib.Object{
 				log_error (e.message);
 			}
 		}
+	}
+}
+
+public class MediaClip : GLib.Object{
+	public double StartPos = 0.0;
+	public double EndPos = 0.0;
+
+	public double Duration(){
+		return (EndPos - StartPos);
 	}
 }

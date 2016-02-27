@@ -1687,6 +1687,8 @@ Notes:
 		s += "ffmpeg2theora";
 		s += " \"${inFile}\"";
 
+		//TODO: Add support for multi-trim. Use ffmpeg for encoding theora?
+		
 		if (mf.StartPos > 0){
 			s += " --starttime %.1f".printf(mf.StartPos);
 		}
@@ -1970,8 +1972,13 @@ Notes:
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if (mf.EndPos > 0){
+		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//filter_complex
+		if ((mf.clip_list.size > 0) && (mf.clip_list.size == 0)){
+			s += mf.trim_values_ffmpeg(settings, false, true);
 		}
 		
 		s += " -f " + format;
@@ -2424,15 +2431,20 @@ Notes:
 			s += PrimaryEncoder;
 			
 			//seek input
-			if (mf.StartPos > 0){
+			if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
 				s += " -ss %.1f".printf(mf.StartPos);
 			}
 			
 			s += " -i \"${inFile}\"";
 
 			//stop output
-			if (mf.EndPos > 0){
+			if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
 				s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+			}
+
+			//filter_complex
+			if ((mf.clip_list.size > 0) && (mf.clip_list.size == 0)){
+				s += mf.trim_values_ffmpeg(settings, false, true);
 			}
 		}
 
@@ -2609,7 +2621,7 @@ Notes:
 		}
 
 		//seek input
-		if (mf.StartPos > 0){
+		if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 
@@ -2617,8 +2629,13 @@ Notes:
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if (mf.EndPos > 0){
+		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//filter_complex
+		if (mf.clip_list.size > 0){
+			s += mf.trim_values_ffmpeg(settings, true, false);
 		}
 		
 		//format
@@ -2690,7 +2707,7 @@ Notes:
 		}
 
 		//seek input
-		if (mf.StartPos > 0){
+		if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 		
@@ -2698,8 +2715,13 @@ Notes:
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if (mf.EndPos > 0){
+		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//filter_complex
+		if (mf.clip_list.size > 0){
+			s += mf.trim_values_ffmpeg(settings, false, true);
 		}
 		
 		//format

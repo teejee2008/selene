@@ -1705,8 +1705,8 @@ namespace TeeJee.Misc {
 		return "%0.1f MB".printf (size / (1024.0 * 1024));
 	}
 
-	public string format_duration (long millis){
-
+	public string format_duration (long millis, bool show_millis = false){
+		
 		/* Converts time in milliseconds to format '00:00:00.0' */
 
 	    double time = millis / 1000.0; // time in seconds
@@ -1715,9 +1715,18 @@ namespace TeeJee.Misc {
 	    time = time - (hr * 60 * 60);
 	    double min = Math.floor(time / 60.0);
 	    time = time - (min * 60);
-	    double sec = Math.floor(time);
+	    double sec = time;
+	    //time = time - (sec);
+		//double ms = time;
+		
+		//log_msg("dur=%ld\tsec=%.3f".printf(millis,sec));
 
-        return "%02.0lf:%02.0lf:%02.0lf".printf (hr, min, sec);
+		if (show_millis){
+			return "%02.0f:%02.0f:%06.3f".printf (hr, min, sec);
+		}
+		else{
+			return "%02.0f:%02.0f:%02.0f".printf (hr, min, sec);
+		}
 	}
 
 	public double parse_time (string time){

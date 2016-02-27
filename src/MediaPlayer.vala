@@ -126,13 +126,11 @@ public class MediaPlayer : GLib.Object{
 
 	
 	public void StartPlayer(string ExtraOptions = ""){
-		string args = "";
+		string args = App.PrimaryPlayer;
+		
 		if (App.PrimaryPlayer == "mpv"){
-			//input_pipe = "/tmp/selene-%s".printf(timestamp2());
-			//args += "mkfifo %s\n".printf(input_pipe);
-
-			args += App.PrimaryPlayer;
-
+			
+			//options
 			args += " --no-config --no-quiet --idle=yes --keep-open=yes --terminal --no-msg-color --input-file=/dev/stdin --no-fs --hwdec=no --sub-auto=fuzzy --vo=xv --ao=alsa --stop-screensaver --no-input-default-bindings --input-x11-keyboard=no --no-input-cursor --cursor-autohide=no --no-keepaspect --monitorpixelaspect=1 --osd-scale=1 --osd-level=0 --screenshot-format=jpg --ytdl=no";
 
 			//status line format
@@ -140,31 +138,16 @@ public class MediaPlayer : GLib.Object{
 			
 			//window id
 			args += " --wid=%u".printf(WindowID);
-			
 		}
 		else if (App.PrimaryPlayer == "mplayer"){
-			//input_pipe = "";
-			args += App.PrimaryPlayer;
-			//slave mode
-			args += " -slave";
-			//verbosity
-			args += " -noquiet -msglevel all=6";
-			//no fullscreen
-			args += " -nofs";
-			//wait after playback
-			args += " -idle";
-			//hide on-screen display
-			args += " -osdlevel 0";
-			//window color
-			args += " -colorkey 0x101010";
+
+			//options
+			args += " -slave -noquiet -msglevel all=6 -nofs -idle -osdlevel 0 -colorkey 0x101010";
+			
 			//widowid
 			args += " -wid %u".printf(WindowID);
 		}
 
-		if (mFile != null){
-			//args += " '%s'".printf(mFile.Path);
-		}
-		
 		if (ExtraOptions.length > 0){
 			args += " " + ExtraOptions.strip();
 		}
@@ -265,7 +248,7 @@ public class MediaPlayer : GLib.Object{
 					//log_debug("PAUSED");
 				}
 
-				log_debug("err:" + err_line);
+				//log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
 

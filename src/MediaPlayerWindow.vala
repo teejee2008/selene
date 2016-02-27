@@ -45,11 +45,14 @@ public class MediaPlayerWindow : Gtk.Window {
 	private Gtk.Label lblCroppedSize;
 	
 	//trim
+	private Gtk.Grid grid_trim_basic;
+	private Gtk.Grid grid_trim_advanced;
 	private Gtk.SpinButton spinStartPos;
 	private Gtk.SpinButton spinEndPos;
 
 	//player
 	private Gtk.DrawingArea canvas;
+	private Gtk.DrawingArea timeline;
 	private Gtk.Scale scalePos;
 	private Gtk.Scale scaleVolume;
 	private Gtk.Button btnPlay;
@@ -58,6 +61,8 @@ public class MediaPlayerWindow : Gtk.Window {
 	private Gtk.ComboBox cmbZoom;
 	private MediaPlayer player;
 	private MediaFile mFile;
+	private MediaClip mClipSelected;
+	private MediaClip mClipNew;
 	private uint tmr_status = 0;
 	private bool IsMaximized = false;
 	
@@ -88,9 +93,10 @@ public class MediaPlayerWindow : Gtk.Window {
 			set_transient_for(parent);
 			set_destroy_with_parent(true);
 			set_modal(true);
-			this.delete_event.connect(()=>{
+			//use destroy event (delete_event will not be trigerred for Finish button)
+			this.destroy.connect(()=>{
 				parent.present();
-				return false;
+				//return false;
 			});
 		}
 		else{
@@ -131,16 +137,18 @@ public class MediaPlayerWindow : Gtk.Window {
 		}
 		else if (action == "trim"){
 			init_ui_file_trim_options();
+			init_ui_file_trim_options_advanced();
 		}
 
 		init_ui_player();
 
 		init_ui_player_controls();
 
-		this.delete_event.connect(()=>{
+		//use destroy event (delete_event will not be trigerred for Finish button)
+		this.destroy.connect(()=>{
 			status_timer_stop();
 			player.Exit();
-			return false;
+			//return false;
 		});
 		
 		show_all();
@@ -154,6 +162,21 @@ public class MediaPlayerWindow : Gtk.Window {
 		if (tmr_init > 0) {
 			Source.remove(tmr_init);
 			tmr_init = 0;
+		}
+
+		if (mFile.clip_list.size > 0){
+			grid_trim_basic.visible = false;
+
+			grid_trim_advanced.no_show_all = false;
+			grid_trim_advanced.show_all();
+			grid_trim_advanced.visible = true;
+		}
+		else{
+			grid_trim_advanced.visible = false;
+
+			grid_trim_basic.no_show_all = false;
+			grid_trim_basic.show_all();
+			grid_trim_basic.visible = true;
 		}
 
 		load_file();
@@ -174,12 +197,12 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		string tt = _("Scroll mouse wheel to adjust");
 		
-		//left
+		//left -----------------------------------------------
+		
 		label = new Gtk.Label(_("Left:"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,0,0,1,1);
-		
-		//left
+
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
@@ -187,12 +210,12 @@ public class MediaPlayerWindow : Gtk.Window {
 		grid.attach(spin,1,0,1,1);
 		spinCropL = spin;
 
-		//right
+		//right -----------------------------------------------
+		
 		label = new Gtk.Label(_("Right:"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,0,1,1,1);
 		
-		//right
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
@@ -200,12 +223,12 @@ public class MediaPlayerWindow : Gtk.Window {
 		grid.attach(spin,1,1,1,1);
 		spinCropR = spin;
 
-		//top
+		//top -----------------------------------------------
+		
 		label = new Gtk.Label(_("Top:"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,2,0,1,1);
-		
-		//top
+
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
@@ -213,12 +236,12 @@ public class MediaPlayerWindow : Gtk.Window {
 		grid.attach(spin,3,0,1,1);
 		spinCropT = spin;
 		
-		//bottom
+		//bottom -----------------------------------------------
+		
 		label = new Gtk.Label(_("Bottom:"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,2,1,1,1);
-		
-		//bottom
+
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
 		spin.xalign = (float) 0.5;
@@ -226,13 +249,15 @@ public class MediaPlayerWindow : Gtk.Window {
 		grid.attach(spin,3,1,1,1);
 		spinCropB = spin;
 
-		//source
+		//source -----------------------------------------------
+		
 		label = new Gtk.Label(_("Source:"));
 		label.xalign = (float) 1.0;
 		label.margin_left = 18;
 		grid.attach(label,4,0,1,1);
 
-		//cropped
+		//cropped -----------------------------------------------
+		
 		label = new Gtk.Label(_("Cropped:"));
 		label.xalign = (float) 1.0;
 		label.margin_left = 18;
@@ -246,7 +271,8 @@ public class MediaPlayerWindow : Gtk.Window {
 		lblCroppedSize.xalign = (float) 1.0;
 		grid.attach(lblCroppedSize,5,1,1,1);
 
-		//detect
+		//detect -----------------------------------------------'
+		
 		var button = new Button.with_label(_("Detect Borders"));
 		button.margin_left = 18;
 		button.set_tooltip_text(_("Detect black borders in the video and set cropping parameters"));
@@ -254,8 +280,9 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		button.clicked.connect(btnDetect_clicked);
 
-		//ok
-		button = new Button.with_label(_("OK"));
+		//finish -----------------------------------------------
+		
+		button = new Button.with_label(_("Finish"));
 		button.margin_left = 18;
         grid.attach(button,6,1,1,1);
 
@@ -267,42 +294,45 @@ public class MediaPlayerWindow : Gtk.Window {
 		grid.margin = 6;
 		grid.row_spacing = 3;
 		grid.column_spacing = 3;
+		grid.no_show_all = true;
 		vboxMain.add(grid);
+		grid_trim_basic = grid;
 		
 		Gtk.Adjustment adj;
 		Gtk.SpinButton spin;
 		Gtk.Label label;
 		Gtk.Button button;
 		
-		//start
+		//start -----------------------------------------
+		
 		label = new Gtk.Label(_("Start (sec):"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,0,0,1,1);
-		
-		//start  
+		 
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
-		spin.xalign = (float) 0.5;
-		spin.digits = 1;
+		spin.xalign = (float) 1.0;
+		spin.digits = 3;
 		grid.attach(spin,1,0,1,1);
 		
 		spinStartPos = spin;
 	
-		//right
+		//end ----------------
+		
 		label = new Gtk.Label(_("End (sec):"));
 		label.xalign = (float) 1.0;
 		grid.attach(label,0,1,1,1);
 		
-		//right
 		adj = new Gtk.Adjustment(0, 0, 99999, 1, 1, 0);
 		spin = new Gtk.SpinButton (adj, 1, 0);
-		spin.xalign = (float) 0.5;
-		spin.digits = 1;
+		spin.xalign = (float) 1.0;
+		spin.digits = 3;
 		grid.attach(spin,1,1,1,1);
 
 		spinEndPos = spin;
 
-		//set start
+		//set start ---------------------------
+		
 		button = new Button.with_label(_("Set"));
 		button.set_tooltip_text(_("Set current playback position as starting position"));
         grid.attach(button,2,0,1,1);
@@ -311,7 +341,8 @@ public class MediaPlayerWindow : Gtk.Window {
 			spinStartPos.adjustment.value = player.Position;
 		});
 
-		//ok
+		//set end ----------------------
+		
 		button = new Button.with_label(_("Set"));
 		button.set_tooltip_text(_("Set current playback position as ending position"));
         grid.attach(button,2,1,1,1);
@@ -320,22 +351,343 @@ public class MediaPlayerWindow : Gtk.Window {
 			spinEndPos.adjustment.value = player.Position;
 		});
         
-		//preview
-		button = new Button.with_label(_("Preview"));
+		//advanced -------------------------------
+		
+		button = new Button.with_label(_("Advanced"));
 		button.margin_left = 24;
-		button.set_tooltip_text(_("Play selected clip"));
-        //grid.attach(button,3,0,1,1);
+		button.set_tooltip_text(_("Select multiple segments"));
+        grid.attach(button,3,0,1,1);
 
-		//button.clicked.connect(btnDetect_clicked);
+		button.clicked.connect(()=>{
+			grid_trim_basic.visible = false;
 
-		//ok
-		button = new Button.with_label(_("OK"));
+			grid_trim_advanced.no_show_all = false;
+			grid_trim_advanced.show_all();
+			grid_trim_advanced.visible = true;
+		});
+
+		//finish ---------------------------------------------
+		
+		button = new Button.with_label(_("Finish"));
 		button.margin_left = 24;
         grid.attach(button,3,1,1,1);
 
         button.clicked.connect(()=>{ this.destroy(); });
 	}
 
+	private void init_ui_file_trim_options_advanced(){
+		var grid = new Gtk.Grid();
+		grid.margin = 6;
+		grid.row_spacing = 3;
+		grid.column_spacing = 3;
+		grid.column_homogeneous = true;
+		grid.no_show_all = true;
+		vboxMain.add(grid);
+		grid_trim_advanced = grid;
+		
+		Gtk.Adjustment adj;
+		Gtk.SpinButton spin;
+		Gtk.Label label;
+		Gtk.Button button;
+
+		//select the segments to be included in output file
+		label = new Gtk.Label(_("Select the segments to include in output file:"));
+		label.xalign = (float) 0.0;
+		grid.attach(label,0,0,5,1);
+
+		//timeline -----------------------------------
+		
+		timeline = new Gtk.DrawingArea();
+		timeline.set_size_request(-1, 30);
+		timeline.hexpand = true;
+		
+		timeline.draw.connect(timeline_draw);
+		
+		timeline.add_events(Gdk.EventMask.BUTTON_PRESS_MASK);
+		timeline.button_press_event.connect(timeline_button_press);
+
+		timeline.add_events(Gdk.EventMask.POINTER_MOTION_MASK);
+		timeline.motion_notify_event.connect(timeline_motion_notify_event);
+
+		var scroll = new Gtk.ScrolledWindow(null, null);
+		scroll.set_shadow_type (ShadowType.ETCHED_IN);
+		scroll.hscrollbar_policy = PolicyType.NEVER;
+		scroll.vscrollbar_policy = PolicyType.NEVER;
+		scroll.expand = true;
+		scroll.margin_bottom = 6;
+		scroll.add (timeline);
+		grid.attach(scroll,0,1,5,1);
+
+		//start segment -------------------------------------
+		
+		button = new Button.with_label(_("Start Segment"));
+        grid.attach(button,0,2,1,1);
+		
+        button.clicked.connect(()=>{
+			mClipNew = new MediaClip();
+			if (mClipNew != null){
+				mClipNew.StartPos = player.Position;
+				timeline_redraw();
+			}
+		});
+		
+		//end segment -------------------------------------
+		
+		button = new Button.with_label(_("End Segment"));
+        grid.attach(button,1,2,1,1);
+
+		button.clicked.connect(()=>{
+			if (mClipNew != null){
+				mClipNew.EndPos = player.Position;
+				mFile.clip_list.add(mClipNew);
+				timeline_redraw();
+				//log_msg("added:%.1f,%.1f".printf(mClip.StartPos,mClip.EndPos));
+			}
+		});
+
+		//delete segment -------------------------------------
+			
+        button = new Button.with_label(_("Delete Segment"));
+        grid.attach(button,2,2,1,1);
+
+		button.clicked.connect(()=>{
+			if (mClipSelected != null){
+				for(int i = 0; i < mFile.clip_list.size; i++){
+					var clip = mFile.clip_list[i];
+					if ((clip.StartPos == mClipSelected.StartPos) && (clip.EndPos == mClipSelected.EndPos)){
+						mFile.clip_list.remove(clip);
+						break;
+					}
+				}
+				timeline_redraw();
+			}
+		});
+
+		//basic mode ---------------------------------------
+		
+		button = new Button.with_label(_("Basic Mode"));
+        grid.attach(button,3,2,1,1);
+        
+        button.clicked.connect(()=>{
+			grid_trim_basic.no_show_all = false;
+			grid_trim_basic.show_all();
+			grid_trim_basic.visible = true;
+			
+			grid_trim_advanced.visible = false;
+		});
+
+		//finish ---------------------------------------------
+		
+		button = new Button.with_label(_("Finish"));
+        grid.attach(button,4,2,1,1);
+
+        button.clicked.connect(()=>{ this.destroy(); });
+	}
+
+	private bool timeline_draw(Cairo.Context context){
+		weak Gtk.StyleContext style_context = timeline.get_style_context ();
+		var color_default = style_context.get_color (0);
+
+		var color_blue_100 = Gdk.RGBA();
+		color_blue_100.parse("#BBDEFB");
+		color_blue_100.alpha = 1.0;
+
+		var color_blue_200 = Gdk.RGBA();
+		color_blue_200.parse("#90CAF9");
+		color_blue_200.alpha = 1.0;
+
+		var color_blue_300 = Gdk.RGBA();
+		color_blue_300.parse("#64B5F6");
+		color_blue_300.alpha = 1.0;
+
+		var color_white = Gdk.RGBA();
+		color_white.parse("white");
+		color_white.alpha = 1.0;
+
+		var color_black = Gdk.RGBA();
+		color_black.parse("black");
+		color_black.alpha = 1.0;
+
+		var color_grey_700 = Gdk.RGBA();
+		color_grey_700.parse("#616161");
+		color_grey_700.alpha = 1.0;
+
+		var color_grey_800 = Gdk.RGBA();
+		color_grey_800.parse("#424242");
+		color_grey_800.alpha = 1.0;
+
+		var color_red = Gdk.RGBA();
+		color_red.parse("red");
+		color_red.alpha = 1.0;
+
+		var color_blue = Gdk.RGBA();
+		color_blue.parse("blue");
+		color_blue.alpha = 1.0;
+
+		color_default = color_black;
+
+		int canvas_w = timeline.get_allocated_width();
+		int canvas_h = timeline.get_allocated_height();
+
+		int w = 0;
+		int h = 0;
+		int x = 0;
+		int y = 0;
+
+		//------ BEGIN CONTEXT -------------------------------------------------
+		//Draw white background
+		
+		context.set_line_width (1);
+		Gdk.cairo_set_source_rgba (context, color_white);
+		context.rectangle(0, 0, canvas_w, canvas_h);
+
+		context.fill();
+		//------ END CONTEXT ---------------------------------------------------
+
+		//------ BEGIN CONTEXT -------------------------------------------------
+		//Draw border
+		
+		context.set_line_width (1);
+		Gdk.cairo_set_source_rgba (context, color_black);
+		
+		context.move_to(0,0);
+		context.line_to(canvas_w,0);
+		context.line_to(canvas_w,canvas_h);
+		context.line_to(0,canvas_h);
+		context.line_to(0,0);
+		
+		context.stroke();
+		//------ END CONTEXT ---------------------------------------------------
+		
+		//------ BEGIN CONTEXT -------------------------------------------------
+		//Draw segments
+		
+		context.set_line_width (1);
+		Gdk.cairo_set_source_rgba (context, color_grey_700);
+		
+		foreach(MediaClip clip in mFile.clip_list){
+			if (clip == mClipSelected){
+				Gdk.cairo_set_source_rgba (context, color_grey_800);
+			}
+			else{
+				Gdk.cairo_set_source_rgba (context, color_grey_700);
+			}
+			
+			x = (int)((clip.StartPos / (mFile.Duration/1000.0)) * canvas_w);
+			y = 0;
+			w = (int)((clip.Duration() / (mFile.Duration/1000.0)) * canvas_w);
+			h = canvas_h;
+			
+			context.rectangle(x, y, w, h);
+			context.fill();
+
+			//log_msg("clip: %.1f x %d = %d".printf((clip.StartPos / (mFile.Duration/1000.0)),canvas_w,x));
+		}
+		
+		//------ END CONTEXT ---------------------------------------------------
+
+		//------ BEGIN CONTEXT -------------------------------------------------
+		//Draw start point of new segment
+		
+		context.set_line_width (1);
+		Gdk.cairo_set_source_rgba (context, color_black);
+
+		if ((mClipNew != null) && (mClipNew.EndPos < 0.1)){
+			x = (int)((mClipNew.StartPos / (mFile.Duration/1000.0)) * canvas_w);
+
+			context.move_to(x, 0);
+			context.line_to(x, canvas_h);
+		
+			context.stroke();
+		}
+		//------ END CONTEXT ---------------------------------------------------
+
+		//------ BEGIN CONTEXT -------------------------------------------------
+		//Draw play position
+		
+		context.set_line_width (1);
+		Gdk.cairo_set_source_rgba (context, color_red);
+
+		if ((player.Position > 0) && (player.Position < (mFile.Duration/1000.0))){
+			x = (int)((player.Position / (mFile.Duration/1000.0)) * canvas_w);
+
+			context.move_to(x, 0);
+			context.line_to(x, canvas_h);
+		
+			context.stroke();
+		}
+		
+		//------ END CONTEXT ---------------------------------------------------
+		
+		return true;
+	}
+
+	private void timeline_redraw(){
+		timeline.queue_draw_area(0, 0,timeline.get_allocated_width(),timeline.get_allocated_height());
+	}
+
+	private bool timeline_motion_notify_event(Gdk.EventMotion event){
+		//get position
+		int w = timeline.get_allocated_width();
+		double pos = ((event.x * 1.0) / w) * (mFile.Duration/1000.0);
+
+		//get clip
+		int index = 0;
+		MediaClip current_clip = null;
+		foreach(MediaClip clip in mFile.clip_list){
+			index++;
+			if ((clip.StartPos < pos) && (clip.EndPos > pos)){
+				current_clip = clip;
+				break;
+			}
+		}
+
+		string msg = "";
+		string time = "";
+			
+		if (current_clip != null){
+			msg += "<b>Clip #%d</b>\n\n".printf(index);
+			time = format_duration((long) (current_clip.StartPos * 1000.0), true);
+			msg += "Start Pos:\t%s = %.3f sec\n".printf(time,current_clip.StartPos);
+			time = format_duration((long) (current_clip.EndPos * 1000.0), true);
+			msg += "End Pos:\t%s = %.3f sec\n".printf(time,current_clip.EndPos);
+			time = format_duration((long) (current_clip.Duration() * 1000.0), true);
+			msg += "Duration:\t%s = %.3f sec".printf(time,current_clip.Duration());
+			timeline.set_tooltip_markup(msg);
+		}
+		else{
+			//time = format_duration((long) (pos * 1000.0));
+			//msg += "<b>Position:</b> %s (%0.03f)".printf(time, pos);
+			//timeline.set_tooltip_markup(msg);
+		}
+
+		return true;
+	}
+
+	private bool timeline_button_press(Gdk.EventButton event){
+		//get position
+		int w = timeline.get_allocated_width();
+		double pos = ((event.x * 1.0) / w) * (mFile.Duration/1000.0);
+
+		//get clip
+		int index = 0;
+		MediaClip current_clip = null;
+		foreach(MediaClip clip in mFile.clip_list){
+			index++;
+			if ((clip.StartPos < pos) && (clip.EndPos > pos)){
+				current_clip = clip;
+				break;
+			}
+		}
+		mClipSelected = current_clip;
+
+		//seek
+		player.Seek(pos);
+		
+		timeline_redraw();
+		
+		return true;
+	}
 	//crop
 
 	private void spinCrop_value_changed_connect(){
@@ -548,7 +900,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		btnFullscreen.visible = mFile.HasVideo;
 		cmbZoom.visible = mFile.HasVideo;
 		
-		scalePos.adjustment.upper = (mFile.Duration/1000);
+		scalePos.adjustment.upper = (mFile.Duration/1000.0);
 		
 		status_timer_start();
 	}
@@ -604,7 +956,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		canvas = new Gtk.DrawingArea();
 		canvas.set_size_request(400,300);
 		canvas.expand = true;
-		canvas.halign = Align.START;
+		canvas.halign = Align.CENTER;
 		vboxMain.pack_start (canvas, false, false, 0);
 
         this.canvas.realize.connect(() => {
@@ -675,7 +1027,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		//scalePos
 		scalePos = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1000, 1);
 		scalePos.adjustment.value = 0;
-		scalePos.has_origin = true;
+		//scalePos.has_origin = true;
 		scalePos.value_pos = PositionType.BOTTOM;
 		scalePos.hexpand = true;
 		scalePos.set_size_request(300,-1);
@@ -684,7 +1036,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		scalePos_value_changed_connect();
 		
 		scalePos.format_value.connect((val)=>{
-			return format_duration((long) (val * 1000)) + " / " + format_duration(mFile.Duration);
+			return format_duration((long) (val * 1000.0), true) + " / " + format_duration(mFile.Duration, true);
 		});
 
 		//scaleVolume
@@ -828,12 +1180,16 @@ public class MediaPlayerWindow : Gtk.Window {
 		status_timer_stop();
 
 		scalePos_value_changed_disconnect();
-		scalePos.adjustment.value = (int) player.Position;
+		scalePos.adjustment.value = (double) player.Position;
 		scalePos_value_changed_connect();
 
 		set_play_icon();
 		set_mute_icon();
 
+		if ((grid_trim_advanced != null) && grid_trim_advanced.visible){
+			timeline_redraw();
+		}
+		
 		gtk_do_events();
 
 		status_timer_start();
