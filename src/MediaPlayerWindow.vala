@@ -88,8 +88,9 @@ public class MediaPlayerWindow : Gtk.Window {
 			set_transient_for(parent);
 			set_destroy_with_parent(true);
 			set_modal(true);
-			this.destroy.connect(()=>{
+			this.delete_event.connect(()=>{
 				parent.present();
+				return false;
 			});
 		}
 		else{
@@ -136,9 +137,10 @@ public class MediaPlayerWindow : Gtk.Window {
 
 		init_ui_player_controls();
 
-		this.destroy.connect(()=>{
+		this.delete_event.connect(()=>{
+			status_timer_stop();
 			player.Exit();
-			//return false;
+			return false;
 		});
 		
 		show_all();

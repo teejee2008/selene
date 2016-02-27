@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-27 11:20+0530\n"
+"POT-Creation-Date: 2016-02-27 14:22+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,23 +25,23 @@ msgid ""
 "and should start with same name."
 msgstr ""
 
-#: MediaPlayerWindow.vala:718
+#: MediaPlayerWindow.vala:720
 msgid "100%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:720
+#: MediaPlayerWindow.vala:722
 msgid "200%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:712
+#: MediaPlayerWindow.vala:714
 msgid "25%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:714
+#: MediaPlayerWindow.vala:716
 msgid "50%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:716
+#: MediaPlayerWindow.vala:718
 msgid "75%"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: MediaPlayerWindow.vala:215
+#: MediaPlayerWindow.vala:217
 msgid "Bottom:"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Crop Videos"
 msgstr ""
 
-#: MediaPlayerWindow.vala:234
+#: MediaPlayerWindow.vala:236
 msgid "Cropped:"
 msgstr ""
 
@@ -504,20 +504,20 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: MediaPlayerWindow.vala:248
+#: MediaPlayerWindow.vala:250
 msgid "Detect Borders"
 msgstr ""
 
-#: MediaPlayerWindow.vala:250
+#: MediaPlayerWindow.vala:252
 msgid "Detect black borders in the video and set cropping parameters"
 msgstr ""
 
-#: MediaPlayerWindow.vala:491
+#: MediaPlayerWindow.vala:493
 #, c-format
 msgid "Detected Parameters: %d, %d, %d, %d"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:403 MediaPlayerWindow.vala:423
+#: CropVideoBatchWindow.vala:403 MediaPlayerWindow.vala:425
 msgid "Detecting borders..."
 msgstr ""
 
@@ -621,7 +621,7 @@ msgstr ""
 msgid "Encoding Script or Preset File"
 msgstr ""
 
-#: MediaPlayerWindow.vala:290
+#: MediaPlayerWindow.vala:292
 msgid "End (sec):"
 msgstr ""
 
@@ -771,7 +771,7 @@ msgstr ""
 msgid "Frames/sec"
 msgstr ""
 
-#: MediaPlayerWindow.vala:802 MediaPlayerWindow.vala:806
+#: MediaPlayerWindow.vala:804 MediaPlayerWindow.vala:808
 msgid "Fullscreen"
 msgstr ""
 
@@ -825,7 +825,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: MediaPlayerWindow.vala:176
+#: MediaPlayerWindow.vala:178
 msgid "Left:"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: MediaPlayerWindow.vala:790 MediaPlayerWindow.vala:794
+#: MediaPlayerWindow.vala:792 MediaPlayerWindow.vala:796
 msgid "Mute"
 msgstr ""
 
@@ -993,8 +993,8 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: DonationWindow.vala:95 MediaPlayerWindow.vala:256
-#: MediaPlayerWindow.vala:330
+#: DonationWindow.vala:95 MediaPlayerWindow.vala:258
+#: MediaPlayerWindow.vala:332
 msgid "OK"
 msgstr ""
 
@@ -1031,7 +1031,7 @@ msgid "Output"
 msgstr ""
 
 #: MainWindow.vala:245 MainWindow.vala:2530 MainWindow.vala:2532
-#: MediaPlayerWindow.vala:782
+#: MediaPlayerWindow.vala:784
 msgid "Pause"
 msgstr ""
 
@@ -1047,7 +1047,7 @@ msgstr ""
 msgid "Pitch (shrillness)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:778
+#: MediaPlayerWindow.vala:780
 msgid "Play"
 msgstr ""
 
@@ -1059,11 +1059,11 @@ msgstr ""
 msgid "Play File (Source)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:324
+#: MediaPlayerWindow.vala:326
 msgid "Play selected clip"
 msgstr ""
 
-#: MediaPlayerWindow.vala:425
+#: MediaPlayerWindow.vala:427
 msgid "Please Wait..."
 msgstr ""
 
@@ -1091,7 +1091,7 @@ msgstr ""
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
-#: MediaPlayerWindow.vala:322
+#: MediaPlayerWindow.vala:324
 msgid "Preview"
 msgstr ""
 
@@ -1164,7 +1164,7 @@ msgstr ""
 msgid "Right-click for more options"
 msgstr ""
 
-#: MediaPlayerWindow.vala:189
+#: MediaPlayerWindow.vala:191
 msgid "Right:"
 msgstr ""
 
@@ -1184,7 +1184,7 @@ msgstr ""
 msgid "Save files in following location"
 msgstr ""
 
-#: MediaPlayerWindow.vala:173
+#: MediaPlayerWindow.vala:175
 msgid "Scroll mouse wheel to adjust"
 msgstr ""
 
@@ -1208,15 +1208,15 @@ msgstr ""
 msgid "Send Email"
 msgstr ""
 
-#: MediaPlayerWindow.vala:304 MediaPlayerWindow.vala:313
+#: MediaPlayerWindow.vala:306 MediaPlayerWindow.vala:315
 msgid "Set"
 msgstr ""
 
-#: MediaPlayerWindow.vala:314
+#: MediaPlayerWindow.vala:316
 msgid "Set current playback position as ending position"
 msgstr ""
 
-#: MediaPlayerWindow.vala:305
+#: MediaPlayerWindow.vala:307
 msgid "Set current playback position as starting position"
 msgstr ""
 
@@ -1272,7 +1272,7 @@ msgstr ""
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:802 MediaPlayerWindow.vala:228
+#: Main.vala:802 MediaPlayerWindow.vala:230
 msgid "Source:"
 msgstr ""
 
@@ -1292,7 +1292,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: MediaPlayerWindow.vala:276
+#: MediaPlayerWindow.vala:278
 msgid "Start (sec):"
 msgstr ""
 
@@ -1401,7 +1401,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: MediaPlayerWindow.vala:202
+#: MediaPlayerWindow.vala:204
 msgid "Top:"
 msgstr ""
 
