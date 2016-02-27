@@ -1977,8 +1977,8 @@ Notes:
 		}
 
 		//filter_complex
-		if ((mf.clip_list.size > 0) && (mf.clip_list.size == 0)){
-			s += mf.trim_values_ffmpeg(settings, false, true);
+		if (mf.clip_list.size > 0){
+			s += mf.trim_values_ffmpeg(settings, true, false);
 		}
 		
 		s += " -f " + format;
@@ -2055,8 +2055,7 @@ Notes:
 			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
 			s = temp;
 		}
-		else
-		{
+		else{
 			s = s.replace("{outputFile}","\"${tempVideo}\"");
 		}
 
@@ -2443,7 +2442,7 @@ Notes:
 			}
 
 			//filter_complex
-			if ((mf.clip_list.size > 0) && (mf.clip_list.size == 0)){
+			if (mf.clip_list.size > 0){
 				s += mf.trim_values_ffmpeg(settings, false, true);
 			}
 		}
