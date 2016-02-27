@@ -1,14 +1,14 @@
-selene (16.2.4) trusty; urgency=medium
+selene (16.2.5) trusty; urgency=medium
 
-  * Added new window for cropping video files
+  * Added new option for trimming audio and video files
 
-  * Added option to run app in background in non-admin mode
+  * Added support for using MPV as the media player backend
 
-  * Added new mplayer frontend for playing media files
+  * Added option to auto-crop and reset cropping values for multiple
+  files on the batch edit window
 
-  * Fixed: Output file will not be overwritten if it already exists. A
-  number will be appended to the file name.
+  * Added zoom and fullscreen options to media player
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Sun, 21 Feb 2016 10:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 27 Feb 2016 10:00:00 +0530

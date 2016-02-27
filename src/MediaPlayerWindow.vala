@@ -164,19 +164,21 @@ public class MediaPlayerWindow : Gtk.Window {
 			tmr_init = 0;
 		}
 
-		if (mFile.clip_list.size > 0){
-			grid_trim_basic.visible = false;
+		if (action == "trim"){
+			if (mFile.clip_list.size > 0){
+				grid_trim_basic.visible = false;
 
-			grid_trim_advanced.no_show_all = false;
-			grid_trim_advanced.show_all();
-			grid_trim_advanced.visible = true;
-		}
-		else{
-			grid_trim_advanced.visible = false;
+				grid_trim_advanced.no_show_all = false;
+				grid_trim_advanced.show_all();
+				grid_trim_advanced.visible = true;
+			}
+			else{
+				grid_trim_advanced.visible = false;
 
-			grid_trim_basic.no_show_all = false;
-			grid_trim_basic.show_all();
-			grid_trim_basic.visible = true;
+				grid_trim_basic.no_show_all = false;
+				grid_trim_basic.show_all();
+				grid_trim_basic.visible = true;
+			}
 		}
 
 		load_file();
