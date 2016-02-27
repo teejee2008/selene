@@ -387,8 +387,8 @@ public class MediaPlayerWindow : Gtk.Window {
 		vboxMain.add(grid);
 		grid_trim_advanced = grid;
 		
-		Gtk.Adjustment adj;
-		Gtk.SpinButton spin;
+		//Gtk.Adjustment adj;
+		//Gtk.SpinButton spin;
 		Gtk.Label label;
 		Gtk.Button button;
 
@@ -441,7 +441,9 @@ public class MediaPlayerWindow : Gtk.Window {
 		button.clicked.connect(()=>{
 			if (mClipNew != null){
 				mClipNew.EndPos = player.Position;
-				mFile.clip_list.add(mClipNew);
+				if (!mFile.clip_list.contains(mClipNew)){
+					mFile.clip_list.add(mClipNew);
+				}
 				timeline_redraw();
 				//log_msg("added:%.1f,%.1f".printf(mClip.StartPos,mClip.EndPos));
 			}

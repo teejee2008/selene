@@ -866,20 +866,6 @@ public class MainWindow : Gtk.Window{
 		colRecordedDate.pack_start (cellText, false);
 		colRecordedDate.set_attributes(cellText, "text", InputField.FILE_RECORDED_DATE);
 		
-		/*
-		//colCrop
-		colCrop = new TreeViewColumn();
-		colCrop.title = _("CropVideo (L:T:R:B)");
-		colCrop.fixed_width = 100;
-		//tvFiles.append_column(colCrop);
-		
-		cellText = new CellRendererText();
-		cellText.editable = true;
-		cellText.edited.connect (tvFiles_crop_cell_edited);
-		colCrop.pack_start (cellText, false);
-		colCrop.set_attributes(cellText, "text", InputField.FILE_CROPVAL);
-		*/
-		
 		//colProgress
 		colProgress = new TreeViewColumn();
 		colProgress.title = _("Status");
@@ -2033,31 +2019,6 @@ on the toolbar will open the file in a text editor.
 			MediaPlayerWindow.PlayFile(mf);
 		}
     }
-
-	public void tvFiles_crop_cell_edited (string path, string new_text) {
-		int index = int.parse (path.to_string());
-		MediaFile mf = App.InputFiles[index];
-
-		if (new_text == null || new_text.length == 0){
-			mf.crop_reset();
-		}
-		else{
-			string[ ] arr = new_text.replace ("  "," ").split (":");
-			if (arr.length == 4){
-				mf.CropL = int.parse(arr[0]);
-				mf.CropT = int.parse(arr[1]);
-				mf.CropR = int.parse(arr[2]);
-				mf.CropB = int.parse(arr[3]);
-				mf.CropW = mf.SourceWidth  - mf.CropL - mf.CropR;
-				mf.CropH = mf.SourceHeight - mf.CropT - mf.CropB;
-			}
-		}
-
-		Gtk.ListStore model = (Gtk.ListStore) tvFiles.model;
-		TreeIter iter;
-		model.get_iter (out iter, new TreePath.from_string (path));
-		model.set (iter, InputField.FILE_CROPVAL, mf.crop_values_info());
-	}
 
 	// add files --------------------------------
 

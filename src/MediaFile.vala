@@ -30,8 +30,8 @@ public class MediaFile : GLib.Object{
 	public string RecordedDate = "";
 	public string Comment = "";
 
-	public int CropW = 0;
-	public int CropH = 0;
+	//public int CropW = 0;
+	//public int CropH = 0;
 	public int CropL = 0;
 	public int CropR = 0;
 	public int CropT = 0;
@@ -303,6 +303,8 @@ public class MediaFile : GLib.Object{
 		string params = get_file_crop_params (Path);
 		string[] arr = params.split (":");
 
+		int CropW = 0;
+		int CropH = 0;
 		if (arr.length == 4){
 			CropW = int.parse (arr[0]);
 			CropH = int.parse (arr[1]);
@@ -322,15 +324,13 @@ public class MediaFile : GLib.Object{
 	}
 
 	public bool crop_enabled(){
-		if ((CropW == 0)&&(CropH == 0)&&(CropL == 0)&&(CropT == 0))
+		if ((CropL == 0) && (CropR == 0) && (CropT == 0) && (CropB == 0))
 			return false;
 		else
 			return true;
 	}
 
 	public void crop_reset(){
-		CropW = 0;
-		CropH = 0;
 		CropL = 0;
 		CropT = 0;
 		CropR = 0;
@@ -347,10 +347,16 @@ public class MediaFile : GLib.Object{
 	}
 
 	public string crop_values_libav(){
-		if (crop_enabled())
-			return "%i:%i:%i:%i".printf(CropW,CropH,CropL,CropT);
-		else
+		if (crop_enabled()){
+			int w = SourceWidth - CropL - CropR;
+			int h = SourceHeight - CropT - CropB;
+			int x = CropL;
+			int y = CropT;
+			return "%i:%i:%i:%i".printf(w,h,x,y);
+		}
+		else{
 			return "iw:ih:0:0";
+		}
 	}
 
 	public string crop_values_x264(){
@@ -358,71 +364,6 @@ public class MediaFile : GLib.Object{
 			return "%i,%i,%i,%i".printf(CropL,CropT,CropR,CropB);
 		else
 			return "0,0,0,0";
-	}
-
-	public string trim_values_ffmpeg(Json.Object settings, bool keepVideo, bool keepAudio){
-		string s = "";
-		
-		if (clip_list.size == 0){
-			return s;
-		}
-
-		string af = "";
-		string audio_clips = "";
-		string vf = "";
-		string video_clips = "";
-		string map = "";
-		
-		//Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
-		Json.Object audio = (Json.Object) settings.get_object_member("audio");
-		string acodec = audio.get_string_member("codec");
-		string vcodec = video.get_string_member("codec");
-		//string format = general.get_string_member("format");
-		
-		if (keepVideo && HasVideo && (vcodec != "disable")) {
-			int index = 0;
-			foreach(MediaClip clip in clip_list){
-				index++;
-				vf += "[0:v]trim=start=%.3f:end=%.3f,setpts=PTS-STARTPTS[v%d];".printf(clip.StartPos, clip.EndPos, index);
-				video_clips += "[v%d]".printf(index);
-			}
-		}
-
-		if (keepAudio && HasAudio && (acodec != "disable")) {
-			int index = 0;
-			foreach(MediaClip clip in clip_list){
-				index++;
-				af += "[0:a]atrim=start=%.3f:end=%.3f,asetpts=PTS-STARTPTS[a%d];".printf(clip.StartPos, clip.EndPos, index);
-				audio_clips += "[a%d]".printf(index);
-			}
-		}
-
-		if ((vf.length > 0) && (af.length > 0)){
-			s += vf;
-			s += af;
-			s += "%s%sconcat=n=%d:v=%d:a=%d[vout][aout]".printf(video_clips, audio_clips, clip_list.size, 1, 1);
-			map = " -map '[vout]' -map '[aout]' -strict -2";
-		}
-		else if (vf.length > 0){
-			s += vf;
-			s += "%s%sconcat=n=%d:v=%d:a=%d[vout]".printf(video_clips, "", clip_list.size, 1, 0);
-			map = " -map '[vout]' -strict -2";
-		}
-		else if (af.length > 0){
-			s += af;
-			s += "%s%sconcat=n=%d:v=%d:a=%d[aout]".printf("", audio_clips, clip_list.size, 0, 1);
-			map = " -map '[aout]' -strict -2";
-		}
-		
-		s = " -filter_complex \"%s\"".printf(s);
-		s += map;
-		
-		return s;
-	}
-	
-	public void preview_output(string av_player){
-		//deprecated
 	}
 
 	public void play_source(string av_player){
