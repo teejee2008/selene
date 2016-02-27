@@ -60,7 +60,7 @@ public class FileInfoWindow : Gtk.Dialog {
 		
 		// get content area
 		vboxMain = get_content_area();
-		vboxMain.margin = 6;
+		vboxMain.margin = 3;
 
 		//tvInfo
 		tvInfo = new TreeView();

@@ -469,7 +469,7 @@ public class MainWindow : Gtk.Window{
 		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
 		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
 		swFiles.add (tvFiles);
-		//swFiles.margin = 6;
+		swFiles.margin = 3;
 		swFiles.set_size_request (-1, 300);
 		vboxMain.pack_start (swFiles, true, true, 0);
 	

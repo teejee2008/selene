@@ -66,7 +66,7 @@ public class ColumnSelectionDialog : Gtk.Dialog {
 		var swCols = new ScrolledWindow(tvCols.get_hadjustment(), tvCols.get_vadjustment());
 		swCols.set_shadow_type (ShadowType.ETCHED_IN);
 		swCols.add (tvCols);
-		swCols.margin = 6;
+		swCols.margin = 3;
 		vboxMain.pack_start (swCols, true, true, 0);
 	
 		CellRendererText cellText;
