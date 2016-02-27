@@ -311,7 +311,6 @@ Notes:
 		InputFiles = new Gee.ArrayList<MediaFile>();
 		Encoders = new Gee.HashMap<string,Encoder>();
 
-		log_msg("here");
 		//check encoders
 		init_encoder_list();
 		check_all_encoders();

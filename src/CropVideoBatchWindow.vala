@@ -48,9 +48,12 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 
 	private MediaFile SelectedFile = null;
 
+	private Gtk.Button btnCropAuto;
+	private Gtk.Button btnCropReset;
 	private Gtk.Button btnOk;
 
 	private string action = "";
+	private bool crop_detect_is_running = false;
 	
 	public static Gtk.Window CropVideos(Gtk.Window parent){
 		var win = new CropVideoBatchWindow(parent, "crop");
@@ -91,6 +94,16 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 
 		init_ui_file_list();
 
+		if (action == "crop"){
+			// btnCropAuto
+			btnCropAuto = (Button) add_button ("Auto Crop", Gtk.ResponseType.NONE);
+			btnCropAuto.clicked.connect(btnCropAuto_clicked);
+
+			// btnCropReset
+			btnCropReset = (Button) add_button ("Reset", Gtk.ResponseType.NONE);
+			btnCropReset.clicked.connect (btnCropReset_clicked);
+		}
+		
 		// btnOk
         btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btnOk.clicked.connect (btnOk_clicked);
@@ -326,7 +339,6 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 		model.set (iter, field, (new_text == "0") ? "" : new_text);
 	}  
 	
-	
 	private void refresh_list_view (){
 		var store = new Gtk.ListStore (7,  
 				typeof(MediaFile), 	//FILE_REF
@@ -379,7 +391,98 @@ public class CropVideoBatchWindow : Gtk.Dialog {
 		}
 	}
 
+	private void btnCropAuto_clicked(){
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() == 0){
+			string title = _("No Files Selected");
+			string msg = _("Select some files from the list");
+			gtk_messagebox(title,msg,this,true);
+			return;
+		}
 
+		var status_msg = _("Detecting borders...");
+		var dlg = new SimpleProgressWindow.with_parent(this, status_msg);
+		dlg.set_title(status_msg);
+		dlg.show_all();
+		gtk_do_events();
+		
+		TreeModel model;
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+
+		App.progress_total = (int) lst.length();
+		App.progress_count = 0;
+		
+		for(int k=0; k<lst.length(); k++){
+			TreePath path = lst.nth_data (k);
+			TreeIter iter;
+			model.get_iter (out iter, path);
+			MediaFile mf;
+			model.get (iter, 0, out mf, -1);
+
+			SelectedFile = mf;
+
+			try {
+				crop_detect_is_running = true;
+				Thread.create<void> (ffmpeg_crop_detect_thread, true);
+			} catch (ThreadError e) {
+				crop_detect_is_running = false;
+				log_error (e.message);
+			}
+
+			//dlg.pulse_start();
+			dlg.update_message("File: %s".printf(mf.Name));
+			while (crop_detect_is_running) {
+				dlg.update_progressbar();
+				dlg.sleep(200);
+				gtk_do_events();
+			}
+			App.progress_count++;
+
+			var store = (Gtk.ListStore) model;
+			store.set(iter, TreeColumn.CROP_LEFT, mf.CropL.to_string());
+			store.set(iter, TreeColumn.CROP_RIGHT, mf.CropR.to_string());
+			store.set(iter, TreeColumn.CROP_TOP, mf.CropT.to_string());
+			store.set(iter, TreeColumn.CROP_BOTTOM, mf.CropB.to_string());
+
+			gtk_do_events();
+		}
+
+		dlg.destroy();
+	}
+
+	private void ffmpeg_crop_detect_thread() {
+		SelectedFile.crop_detect();
+		crop_detect_is_running = false;
+	}
+
+	private void btnCropReset_clicked(){
+		TreeSelection selection = tvFiles.get_selection();
+		if (selection.count_selected_rows() == 0){
+			string title = _("No Files Selected");
+			string msg = _("Select some files from the list");
+			gtk_messagebox(title,msg,this,true);
+			return;
+		}
+
+		TreeModel model;
+		GLib.List<TreePath> lst = selection.get_selected_rows (out model);
+
+		for(int k=0; k<lst.length(); k++){
+			TreePath path = lst.nth_data (k);
+			TreeIter iter;
+			model.get_iter (out iter, path);
+			MediaFile mf;
+			model.get (iter, 0, out mf, -1);
+			mf.CropL = mf.CropR = mf.CropT = mf.CropB = 0;
+
+			var store = (Gtk.ListStore) model;
+			store.set(iter, TreeColumn.CROP_LEFT, mf.CropL.to_string());
+			store.set(iter, TreeColumn.CROP_RIGHT, mf.CropR.to_string());
+			store.set(iter, TreeColumn.CROP_TOP, mf.CropT.to_string());
+			store.set(iter, TreeColumn.CROP_BOTTOM, mf.CropB.to_string());
+		}
+	}
+	
 	private void btnOk_clicked(){
 		destroy();
 	}

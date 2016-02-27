@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-02-27 10:37+0530\n"
+"POT-Creation-Date: 2016-02-27 11:16+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,7 +304,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: Main.vala:675
+#: Main.vala:674
 msgid "All files removed"
 msgstr ""
 
@@ -387,7 +387,7 @@ msgstr ""
 msgid "Boost or cut the treble (upper) frequencies of the audio."
 msgstr ""
 
-#: CropVideoBatchWindow.vala:197
+#: CropVideoBatchWindow.vala:210
 msgid "Bottom"
 msgstr ""
 
@@ -403,7 +403,7 @@ msgstr ""
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1230 Main.vala:1244
+#: Main.vala:1229 Main.vala:1243
 msgid "Cancelled"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: Main.vala:1069 Main.vala:1079 Main.vala:1087
+#: Main.vala:1068 Main.vala:1078 Main.vala:1086
 msgid "Completed"
 msgstr ""
 
@@ -451,7 +451,7 @@ msgstr ""
 msgid "Constant Bitrate (Strict)"
 msgstr ""
 
-#: Main.vala:985 Main.vala:1278
+#: Main.vala:984 Main.vala:1277
 msgid "Converting..."
 msgstr ""
 
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Converting: '%s'"
 msgstr ""
 
-#: Main.vala:983 Main.vala:1276
+#: Main.vala:982 Main.vala:1275
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
@@ -472,7 +472,7 @@ msgstr ""
 msgid "Crop"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:146
+#: CropVideoBatchWindow.vala:159
 msgid "Crop Left"
 msgstr ""
 
@@ -517,7 +517,7 @@ msgstr ""
 msgid "Detected Parameters: %d, %d, %d, %d"
 msgstr ""
 
-#: MediaPlayerWindow.vala:423
+#: CropVideoBatchWindow.vala:403 MediaPlayerWindow.vala:423
 msgid "Detecting borders..."
 msgstr ""
 
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: Main.vala:1064
+#: Main.vala:1063
 msgid "Done"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:254
+#: CropVideoBatchWindow.vala:267
 msgid "Edit"
 msgstr ""
 
@@ -625,11 +625,11 @@ msgstr ""
 msgid "End (sec):"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:234
+#: CropVideoBatchWindow.vala:247
 msgid "EndPos"
 msgstr ""
 
-#: Main.vala:756
+#: Main.vala:755
 msgid "Enter any key to Cancel..."
 msgstr ""
 
@@ -637,11 +637,11 @@ msgstr ""
 msgid "Enter path or browse for directory"
 msgstr ""
 
-#: Main.vala:1074 Utility.vala:108
+#: Main.vala:1073 Utility.vala:108
 msgid "Error"
 msgstr ""
 
-#: Main.vala:791
+#: Main.vala:790
 msgid "Error: File missing"
 msgstr ""
 
@@ -677,7 +677,7 @@ msgstr ""
 msgid "Fade Type"
 msgstr ""
 
-#: Main.vala:1090
+#: Main.vala:1089
 msgid "Failed"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgstr ""
 msgid "Fast"
 msgstr ""
 
-#: ColumnSelectionDialog.vala:76 CropVideoBatchWindow.vala:126
+#: ColumnSelectionDialog.vala:76 CropVideoBatchWindow.vala:139
 #: MainWindow.vala:480
 msgid "File"
 msgstr ""
@@ -706,20 +706,20 @@ msgstr ""
 msgid "File View"
 msgstr ""
 
-#: Main.vala:655
+#: Main.vala:654
 msgid "File added:"
 msgstr ""
 
-#: Main.vala:669
+#: Main.vala:668
 msgid "File removed:"
 msgstr ""
 
-#: Main.vala:692
+#: Main.vala:691
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: Main.vala:695
+#: Main.vala:694
 msgid "Files will be saved in source directory"
 msgstr ""
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
-#: Main.vala:331
+#: Main.vala:330
 msgid "Following utilities are not installed on your system:"
 msgstr ""
 
@@ -809,7 +809,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: Main.vala:683
+#: Main.vala:682
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
@@ -837,11 +837,11 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: Main.vala:379
+#: Main.vala:378
 msgid "Loading presets from:"
 msgstr ""
 
-#: Main.vala:378
+#: Main.vala:377
 msgid "Loading scripts from:"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgstr ""
 msgid "Lossless"
 msgstr ""
 
-#: Main.vala:805 Main.vala:808
+#: Main.vala:804 Main.vala:807
 msgid "Lyrics:"
 msgstr ""
 
@@ -917,7 +917,7 @@ msgstr ""
 msgid "Missing Icon"
 msgstr ""
 
-#: Main.vala:332
+#: Main.vala:331
 msgid "Missing Utilities"
 msgstr ""
 
@@ -957,6 +957,10 @@ msgstr ""
 msgid "No Files"
 msgstr ""
 
+#: CropVideoBatchWindow.vala:397 CropVideoBatchWindow.vala:461
+msgid "No Files Selected"
+msgstr ""
+
 #: EncoderConfigWindow.vala:1524
 msgid "No Subtitles"
 msgstr ""
@@ -973,7 +977,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: Main.vala:331
+#: Main.vala:330
 msgid "Not possible to continue!"
 msgstr ""
 
@@ -1031,11 +1035,11 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: Main.vala:1257 Main.vala:1262
+#: Main.vala:1256 Main.vala:1261
 msgid "Paused"
 msgstr ""
 
-#: Main.vala:1260
+#: Main.vala:1259
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
@@ -1107,7 +1111,7 @@ msgstr ""
 msgid "Quarter Sine"
 msgstr ""
 
-#: Main.vala:713 Main.vala:772 MediaFile.vala:47
+#: Main.vala:712 Main.vala:771 MediaFile.vala:47
 msgid "Queued"
 msgstr ""
 
@@ -1152,7 +1156,7 @@ msgstr ""
 msgid "Resume"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:163
+#: CropVideoBatchWindow.vala:176
 msgid "Right"
 msgstr ""
 
@@ -1194,6 +1198,10 @@ msgstr ""
 
 #: MainWindow.vala:1727
 msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr ""
+
+#: CropVideoBatchWindow.vala:398 CropVideoBatchWindow.vala:462
+msgid "Select some files from the list"
 msgstr ""
 
 #: DonationWindow.vala:81
@@ -1259,12 +1267,12 @@ msgstr ""
 msgid "Some files could not be opened:"
 msgstr ""
 
-#: Main.vala:701
+#: Main.vala:700
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:803 MediaPlayerWindow.vala:228
+#: Main.vala:802 MediaPlayerWindow.vala:228
 msgid "Source:"
 msgstr ""
 
@@ -1288,11 +1296,11 @@ msgstr ""
 msgid "Start (sec):"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:215
+#: CropVideoBatchWindow.vala:228
 msgid "StartPos"
 msgstr ""
 
-#: Main.vala:687
+#: Main.vala:686
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
@@ -1305,7 +1313,7 @@ msgstr ""
 msgid "Stopped"
 msgstr ""
 
-#: Main.vala:1084
+#: Main.vala:1083
 msgid "Stopped!"
 msgstr ""
 
@@ -1321,7 +1329,7 @@ msgstr ""
 msgid "Subtitles"
 msgstr ""
 
-#: Main.vala:805 Main.vala:808
+#: Main.vala:804 Main.vala:807
 msgid "Subtitles:"
 msgstr ""
 
@@ -1347,7 +1355,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:755 MainWindow.vala:2670
+#: Main.vala:754 MainWindow.vala:2670
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1389,7 +1397,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: CropVideoBatchWindow.vala:180
+#: CropVideoBatchWindow.vala:193
 msgid "Top"
 msgstr ""
 
@@ -1422,11 +1430,11 @@ msgstr ""
 msgid "UltraFast"
 msgstr ""
 
-#: Main.vala:660
+#: Main.vala:659
 msgid "Unknown format:"
 msgstr ""
 
-#: Main.vala:380
+#: Main.vala:379
 msgid "Using temp folder:"
 msgstr ""
 
