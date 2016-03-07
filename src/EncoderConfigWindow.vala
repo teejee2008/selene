@@ -1337,12 +1337,17 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbSubtitleMode.set_tooltip_markup (tt);
         gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
 
+		tt = _("Video will not be resized if it's smaller than the given width and height");
+
         //lblSubFormatMessage
 		lblSubFormatMessage = new Gtk.Label(_("Subtitles"));
 		lblSubFormatMessage.xalign = (float) 0.0;
 		lblSubFormatMessage.hexpand = true;
 		lblSubFormatMessage.margin_top = 6;
 		lblSubFormatMessage.margin_bottom = 6;
+		lblSubFormatMessage.wrap = true;
+		lblSubFormatMessage.wrap_mode = Pango.WrapMode.WORD;
+		lblSubFormatMessage.use_markup = true;
 		lblSubFormatMessage.set_use_markup(true);
 		gridSubtitle.attach(lblSubFormatMessage,0,++row,2,1);
 	}
@@ -2647,33 +2652,42 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	}
 
 	private void cmbSubtitleMode_changed(){
-		string msg = _("\n\nSubtitle files should be present in the same folder\nand should start with same name.");
-
+		string txt = "";
+				
 		switch(subtitle_mode){
 			case "embed":
+				txt += "\n<b>Note:</b>\n\n";
+				txt += "1. Supported subtitle file formats in";
 				switch(format){
 					case "mkv":
-						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, SUB, SSA</i>" + msg;
+						txt += " MKV: <i>SRT, SUB, SSA</i>";
 						break;
 					case "mp4v":
-						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, SUB, TTXT, XML</i>" + msg;
+						txt += " MP4: <i>SRT, SUB, TTXT, XML</i>";
 						break;
 					case "ogv":
-						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT</i>" + msg;
+						txt += " OGG: <i>SRT</i>";
 						break;
 					case "ogg":
-						lblSubFormatMessage.label = _("Supported Formats:") + " <i>SRT, LRC</i>" + msg;
+						txt += " OGG: <i>SRT, LRC</i>";
 						break;
 					default:
-						lblSubFormatMessage.label = "";
+						txt += ": None";
 						break;
 				}
+				txt += "\n\n";
+
+				txt += "2. Subtitle files must be present in the same location and start with the same file name.\n\n";
+
+				txt += "3. If an external subtitle file is not found, then the first subtitle track embedded in the input file will be used.\n\n";
 				break;
 
 			default:
-				lblSubFormatMessage.label = "";
+				txt = "";
 				break;
 		}
+
+		lblSubFormatMessage.label = txt;
 	}
 
 	private void cmbAacProfile_refresh(){

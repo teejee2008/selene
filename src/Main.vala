@@ -1317,7 +1317,7 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
-		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		
 		//set output file path ----------------
 		
@@ -1432,6 +1432,10 @@ Notes:
 
 			s += "tempAudio=\"${tempDir}/audio%s\"\n".printf(tempAudioExt);
 		}
+
+		// temp subs ---------------
+
+		s += "tempSub=\"${tempDir}/subtitles.srt\"\n";
 		
 		s += "\n";
 
@@ -1440,6 +1444,7 @@ Notes:
 		string format = general.get_string_member("format");
 		string acodec = audio.get_string_member("codec");
 		string vcodec = video.get_string_member("codec");
+		string submode = subs.get_string_member("mode");
 
 		switch (format){
 		case "mkv":
@@ -1508,6 +1513,12 @@ Notes:
 				}
 			}
 
+			//encode subs
+			if (mf.HasSubs && (submode == "embed")) {
+				s += encode_sub_avconv(mf, settings);
+				encoderList.add(PrimaryEncoder);
+			}
+			
 			//mux audio, video and subs
 			switch (format){
 			case "mkv":
@@ -1750,7 +1761,7 @@ Notes:
 		return s;
 	}
 
-	//decode -----------------
+	//copy -----------------
 	
 	private string copy_video_avconv (MediaFile mf, Json.Object settings){
 		string s = "";
@@ -1893,6 +1904,59 @@ Notes:
 			//encode to outputFile
 			s += " -y \"${outputFile}\"";
 		}
+
+		s += "\n";
+		
+		return s;
+	}
+
+	private string encode_sub_avconv(MediaFile mf, Json.Object settings){
+		string s = "";
+
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+
+		s += PrimaryEncoder;
+
+		//progress info
+		//if (silent){
+		//	s += " -nostats";
+		//}
+
+		//seek input
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+
+		//input
+		s += " -i \"${inFile}\"";
+
+		//stop output
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//format
+		s += " -f srt";
+
+		//copy audio
+		s += " -scodec subrip";
+
+		s += " -vn -an";
+
+		s += " -y \"${tempSub}\""; //TODO: write SRT?
+		
+		//output
+		//if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			
+		//}
+		//else {
+		//	//encode to outputFile
+		//	//s += " -y \"${outputFile}\"";
+		//}
 
 		s += "\n";
 		
@@ -3008,8 +3072,11 @@ Notes:
 		//add subs
 		if (format != "webm") {
 			if (subs.get_string_member("mode") == "embed") {
-				if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa") {
+				if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa")) {
 					s += " --compression -1:none \"${subFile}\"";
+				}
+				else if (mf.HasSubs){
+					s += " --compression -1:none \"${tempSub}\"";
 				}
 			}
 		}
@@ -3039,8 +3106,11 @@ Notes:
 		s += " -add \"${tempVideo}\"";
 
 		if (subs.get_string_member("mode") == "embed") {
-			if (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml"){
+			if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml")){
 				s += " -add \"${subFile}\"";
+			}
+			else if (mf.HasSubs){
+				s += " -add \"${tempSub}\"";
 			}
 		}
 
@@ -3067,6 +3137,7 @@ Notes:
 		Json.Object general = (Json.Object) settings.get_object_member("general");
 		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		string format = general.get_string_member("format");
 
 		s += PrimaryEncoder;
@@ -3083,7 +3154,20 @@ Notes:
 				s += " -f matroska";
 				break;
 		}
-		s += " -c:a copy -c:v copy -sn";
+		s += " -c:a copy -c:v copy";
+
+		if (subs.get_string_member("mode") == "embed") {
+			if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml")){
+				s += " -i \"${subFile}\"";
+			}
+			else if (mf.HasSubs){
+				s += " -i \"${tempSub}\"";
+			}
+		}
+		else{
+			s += " -sn";
+		}
+
 		s += " -y \"${outputFile}\"";
 		s += "\n";
 

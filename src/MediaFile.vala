@@ -54,6 +54,7 @@ public class MediaFile : GLib.Object{
 	public bool HasAudio = false;
 	public bool HasVideo = false;
 	public bool HasSubs = false;
+	public bool HasExtSubs = false;
 
 	public string FileFormat = "";
 	public string VideoFormat = "";
@@ -122,7 +123,7 @@ public class MediaFile : GLib.Object{
 			            SubName = fileInfo.get_name();
 			            SubFile = Location + "/" + SubName;
 	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
-	                	HasSubs = true;
+	                	HasExtSubs = true;
 	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
 	                }
 	            }
@@ -405,4 +406,14 @@ public class MediaClip : GLib.Object{
 	public double Duration(){
 		return (EndPos - StartPos);
 	}
+}
+
+public class MediaStream : GLib.Object{
+    public string Format = "";
+    public int StreamIndex = -1;
+    public int StreamTypeIndex = -1;
+}
+
+public class AudioStream : MediaStream{
+
 }

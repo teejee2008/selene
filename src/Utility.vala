@@ -1152,9 +1152,6 @@ namespace TeeJee.Multimedia{
 
 		return output;
 	}
-
-
-
 }
 
 namespace TeeJee.System{
