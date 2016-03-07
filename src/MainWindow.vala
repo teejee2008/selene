@@ -1525,12 +1525,8 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void preset_create(){
-		var window = new EncoderConfigWindow();
-		window.set_transient_for(this);
-	    window.Folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
-	    window.Name = "New Preset";
-	    //window.CreateNew = true;
-	    window.show_all();
+		string folder = gtk_combobox_get_value(cmbScriptFolder,0,"");
+		var window = new EncoderConfigWindow.from_preset(this, folder, "New Preset", true);
 	    window.run();
 
 	    //App.SelectedScript will be set on click of 'Save' button
@@ -1544,12 +1540,7 @@ public class MainWindow : Gtk.Window{
 		cmbScriptFile.model.get (iter, 0, out sh, -1);
 
 		if (sh.Extension == ".json") {
-			var window = new EncoderConfigWindow();
-			window.set_transient_for(this);
-			window.Folder = sh.Folder;
-			window.Name = sh.Title;
-			window.show_all();
-			window.load_script();
+			var window = new EncoderConfigWindow.from_preset(this, sh.Folder, sh.Title, false);
 			window.run();
 			cmbScriptFolder_changed();
 		}

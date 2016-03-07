@@ -1341,28 +1341,98 @@ Notes:
 		//insert temporary file names ------------
 		
 		s += "\n";
+
+		//output file --------
+		
 		s += "outputFile=\"${outDir}/${title}" + suffix + general.get_string_member("extension") + "\"\n";
+
+		//temp video -------------
+		
+		string tempVideoExt = ".mka";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable"){
-			s += "tempVideo=\"${tempDir}/video" + general.get_string_member("extension") + "\"\n";
+			switch (video.get_string_member("codec")) {
+			case "copy":
+				switch(mf.VideoFormat.down()){
+				case "avc":
+					tempVideoExt = ".mkv";
+					break;
+				case "hevc":
+					tempVideoExt = ".m4v";
+					break;
+				case "vp8":
+				case "vp9":
+					tempVideoExt = ".webm";
+					break;
+				case "theora":
+					tempVideoExt = ".ogv";
+					break;
+				default:
+					tempVideoExt = ".mkv";
+					break;
+				}
+				break;
+			default:
+				tempVideoExt = general.get_string_member("extension");
+				break;
+			}
+
+			s += "tempVideo=\"${tempDir}/video%s\"\n".printf(tempVideoExt);
 		}
+
+		// temp audio ----------------
+		
+		string tempAudioExt = ".mka";
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable"){
 			switch (audio.get_string_member("codec")) {
-				case "mp3lame":
-					s += "tempAudio=\"${tempDir}/audio.mp3\"\n";
+			case "mp3lame":
+				tempAudioExt = ".mp3";
+				break;
+			case "aac":
+			case "neroaac":
+			case "libfdk_aac":
+				tempAudioExt = ".m4a";
+				break;
+			case "vorbis":
+				tempAudioExt = ".ogg";
+				break;
+			case "opus":
+				tempAudioExt = ".opus";
+				break;
+			case "copy":
+				//set temp file extension based on input audio format
+				switch(mf.AudioFormat.down()){
+				case "ac-3":
+					tempAudioExt = ".ac3";
+					break;
+				case "flac":
+					tempAudioExt = ".flac";
+					break;
+				case "pcm":
+					tempAudioExt = ".wav";
 					break;
 				case "aac":
-				case "neroaac":
-				case "libfdk_aac":
-					s += "tempAudio=\"${tempDir}/audio.mp4\"\n";
+					tempAudioExt = ".m4a";
 					break;
 				case "vorbis":
-					s += "tempAudio=\"${tempDir}/audio.ogg\"\n";
+					tempAudioExt = ".ogg";
 					break;
 				case "opus":
-					s += "tempAudio=\"${tempDir}/audio.opus\"\n";
+					tempAudioExt = ".opus";
 					break;
+				default:
+					tempAudioExt = ".mka";
+					break;
+				}
+				//NOTE: Use same contruct in copy_audio_avconv()
+				break;
+			default:
+				tempAudioExt = ".mka";
+				break;
 			}
+
+			s += "tempAudio=\"${tempDir}/audio%s\"\n".printf(tempAudioExt);
 		}
+		
 		s += "\n";
 
 		//create command line --------------
@@ -1372,120 +1442,44 @@ Notes:
 		string vcodec = video.get_string_member("codec");
 
 		switch (format){
-			case "mkv":
-			case "mp4v":
-			case "webm":
-				//encode video
-				switch (vcodec){
-					case "x264":
-					case "x265":
-						s += encode_video_x264(mf,settings);
-						encoderList.add(vcodec);
-						break;
-					case "vp8":
-					case "vp9":
-						s += encode_video_avconv(mf,settings);
-						encoderList.add(PrimaryEncoder);
-						break;
-				}
-
-				//encode audio
-				if (mf.HasAudio && acodec != "disable") {
-					switch (acodec) {
-						case "mp3lame":
-							s += encode_audio_mp3lame(mf,settings);
-							encoderList.add("lame");
-							if (audio.get_boolean_member("soxEnabled")){
-								encoderList.add("sox");
-							};
-							break;
-						case "neroaac":
-							s += encode_audio_neroaac(mf,settings);
-							encoderList.add("neroaacenc");
-							if (audio.get_boolean_member("soxEnabled")){
-								encoderList.add("sox");
-							};
-							break;
-						case "aac":
-							s += encode_audio_avconv(mf,settings);
-							encoderList.add(PrimaryEncoder);
-							if (audio.get_boolean_member("soxEnabled")){
-								encoderList.add("sox");
-							};
-							break;
-						case "libfdk_aac":
-							s += encode_audio_fdkaac(mf,settings);
-							encoderList.add("aacenc");
-							if (audio.get_boolean_member("soxEnabled")){
-								encoderList.add("sox");
-							};
-							break;
-						case "vorbis":
-							s += encode_audio_oggenc(mf,settings);
-							encoderList.add("oggenc");
-							if (audio.get_boolean_member("soxEnabled")){
-								encoderList.add("sox");
-							};
-							break;
-					}
-				}
-
-				//mux audio, video and subs
-				switch (format){
-					case "mkv":
-						switch (vcodec){
-							case "x265":
-								s += mux_avconv(mf,settings);
-								encoderList.add(PrimaryEncoder);
-								break;
-							default:
-								s += mux_mkvmerge(mf,settings);
-								encoderList.add("mkvmerge");
-								break;
-						}
-						break;
-					case "webm":
-						s += mux_mkvmerge(mf,settings);
-						encoderList.add("mkvmerge");
-						break;
-					case "mp4v":
-						switch (vcodec){
-							case "x265":
-								s += mux_avconv(mf,settings);
-								encoderList.add(PrimaryEncoder);
-								break;
-							default:
-								s += mux_mp4box(mf,settings);
-								encoderList.add("mp4box");
-								break;
-						}
-						break;
-				}
+		case "mkv":
+		case "mp4v":
+		case "webm":
+			//encode video
+			switch (vcodec){
+			case "x264":
+			case "x265":
+				s += encode_video_x264(mf,settings);
+				encoderList.add(vcodec);
 				break;
-
-			case "ogv":
-				s += encode_video_ffmpeg2theora(mf,settings);
-				encoderList.add("ffmpeg2theora");
+			case "vp8":
+			case "vp9":
+				s += encode_video_avconv(mf,settings);
+				encoderList.add(PrimaryEncoder);
 				break;
-
-			case "mp3":
-				s += encode_audio_mp3lame(mf,settings);
-				encoderList.add("lame");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
+			case "copy":
+				s += copy_video_avconv(mf, settings);
+				encoderList.add(PrimaryEncoder);
 				break;
+			}
 
-			case "mp4a":
+			//encode audio
+			if (mf.HasAudio && acodec != "disable") {
 				switch (acodec) {
-				case "neroaac":		
+				case "mp3lame":
+					s += encode_audio_mp3lame(mf,settings);
+					encoderList.add("lame");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+				case "neroaac":
 					s += encode_audio_neroaac(mf,settings);
 					encoderList.add("neroaacenc");
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
 					break;
-					
 				case "aac":
 					s += encode_audio_avconv(mf,settings);
 					encoderList.add(PrimaryEncoder);
@@ -1493,42 +1487,126 @@ Notes:
 						encoderList.add("sox");
 					};
 					break;
-					
-				case "libfdk_aac":	
+				case "libfdk_aac":
 					s += encode_audio_fdkaac(mf,settings);
 					encoderList.add("aacenc");
 					if (audio.get_boolean_member("soxEnabled")){
 						encoderList.add("sox");
 					};
 					break;
+				case "vorbis":
+					s += encode_audio_oggenc(mf,settings);
+					encoderList.add("oggenc");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+				case "copy":
+					s += copy_audio_avconv(mf, settings);
+					encoderList.add(PrimaryEncoder);
+					break;
+				}
+			}
+
+			//mux audio, video and subs
+			switch (format){
+			case "mkv":
+				switch (vcodec){
+					case "x265":
+						s += mux_avconv(mf,settings);
+						encoderList.add(PrimaryEncoder);
+						break;
+					default:
+						s += mux_mkvmerge(mf,settings);
+						encoderList.add("mkvmerge");
+						break;
 				}
 				break;
+			case "webm":
+				s += mux_mkvmerge(mf,settings);
+				encoderList.add("mkvmerge");
+				break;
+			case "mp4v":
+				switch (vcodec){
+				case "x265":
+					s += mux_avconv(mf,settings);
+					encoderList.add(PrimaryEncoder);
+					break;
+				default:
+					s += mux_mp4box(mf,settings);
+					encoderList.add("mp4box");
+					break;
+				}
+				break;
+			}
+			break;
+
+		case "ogv":
+			s += encode_video_ffmpeg2theora(mf,settings);
+			encoderList.add("ffmpeg2theora");
+			break;
+
+		case "mp3":
+			s += encode_audio_mp3lame(mf,settings);
+			encoderList.add("lame");
+			if (audio.get_boolean_member("soxEnabled")){
+				encoderList.add("sox");
+			};
+			break;
+
+		case "mp4a":
+			switch (acodec) {
+			case "neroaac":		
+				s += encode_audio_neroaac(mf,settings);
+				encoderList.add("neroaacenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+				break;
 				
-			case "opus":
-				s += encode_audio_opus(mf,settings);
-				encoderList.add("opusenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
-				break;
-
-			case "ogg":
-				s += encode_audio_oggenc(mf,settings);
-				encoderList.add("oggenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
-				break;
-
-			case "ac3":
-			case "flac":
-			case "wav":
+			case "aac":
 				s += encode_audio_avconv(mf,settings);
 				encoderList.add(PrimaryEncoder);
 				if (audio.get_boolean_member("soxEnabled")){
 					encoderList.add("sox");
 				};
 				break;
+				
+			case "libfdk_aac":	
+				s += encode_audio_fdkaac(mf,settings);
+				encoderList.add("aacenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+				break;
+			}
+			break;
+			
+		case "opus":
+			s += encode_audio_opus(mf,settings);
+			encoderList.add("opusenc");
+			if (audio.get_boolean_member("soxEnabled")){
+				encoderList.add("sox");
+			};
+			break;
+
+		case "ogg":
+			s += encode_audio_oggenc(mf,settings);
+			encoderList.add("oggenc");
+			if (audio.get_boolean_member("soxEnabled")){
+				encoderList.add("sox");
+			};
+			break;
+
+		case "ac3":
+		case "flac":
+		case "wav":
+			s += encode_audio_avconv(mf,settings);
+			encoderList.add(PrimaryEncoder);
+			if (audio.get_boolean_member("soxEnabled")){
+				encoderList.add("sox");
+			};
+			break;
 		}
 
 		s += "\n";
@@ -1573,7 +1651,7 @@ Notes:
 		}
 
 		//seek input
-		if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 
@@ -1581,7 +1659,7 @@ Notes:
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
 		}
 
@@ -1615,7 +1693,7 @@ Notes:
 		}
 
 		//seek input
-		if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 		
@@ -1623,7 +1701,7 @@ Notes:
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
 		}
 
@@ -1672,6 +1750,155 @@ Notes:
 		return s;
 	}
 
+	//decode -----------------
+	
+	private string copy_video_avconv (MediaFile mf, Json.Object settings){
+		string s = "";
+
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+
+		s += PrimaryEncoder;
+
+		//progress info
+		//if (silent){
+		//	s += " -nostats";
+		//}
+
+		//seek input
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+
+		//input
+		s += " -i \"${inFile}\"";
+
+		//stop output
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//format
+		s += " -copyinkf";
+
+		//format
+		switch(mf.VideoFormat.down()){
+			case "avc":
+				s += " -f matroska";
+				break;
+			case "hevc":
+				s += " -f mp4";
+				break;
+			case "vp8":
+			case "vp9":
+				s += " -f webm";
+				break;
+			case "theora":
+				s += " -f ogv";
+				break;
+			default:
+				s += " -f matroska";
+				break;
+		}
+		//NOTE: Use same contruct in get_preset_commandline()
+		
+		//copy video
+		s += " -vcodec copy";
+		
+		//output
+		s += " -an -sn";
+
+		//output
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			//encode to tempVideo
+			s += " -y \"${tempVideo}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " -y \"${outputFile}\"";
+		}
+
+		s += "\n";
+		
+		return s;
+	}
+
+	private string copy_audio_avconv(MediaFile mf, Json.Object settings){
+		string s = "";
+
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+
+		s += PrimaryEncoder;
+
+		//progress info
+		//if (silent){
+		//	s += " -nostats";
+		//}
+
+		//seek input
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+
+		//input
+		s += " -i \"${inFile}\"";
+
+		//stop output
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+
+		//format
+		switch(mf.AudioFormat.down()){
+			case "ac-3":
+				s += " -f ac3";
+				break;
+			case "flac":
+				s += " -f flac";
+				break;
+			case "pcm":
+				s += " -f wav";
+				break;
+			case "aac":
+				s += " -f mp4";
+				break;
+			case "vorbis":
+				s += " -f ogg";
+				break;
+			case "opus":
+				s += " -f opus";
+				break;
+			default:
+				s += " -f matroska";
+				break;
+		}
+		//NOTE: Use same contruct in get_preset_commandline()
+		
+		//copy audio
+		s += " -acodec copy";
+
+		s += " -vn -sn";
+
+		//output
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			//encode to tempAudio
+			s += " -y \"${tempAudio}\"";
+		}
+		else {
+			//encode to outputFile
+			s += " -y \"${outputFile}\"";
+		}
+
+		s += "\n";
+		
+		return s;
+	}
+
 	//encode video -------------------
 	
 	private string encode_video_avconv (MediaFile mf, Json.Object settings){
@@ -1686,14 +1913,14 @@ Notes:
 		s += PrimaryEncoder;
 
 		//seek input
-		if (mf.StartPos > 0){
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 		
 		s += " -i \"${inFile}\"";
 
 		//stop output
-		if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
 		}
 
@@ -2192,7 +2419,7 @@ Notes:
 		vf_trim = "";
 		map = "";
 		
-		if (mf.clip_list.size == 0){
+		if (mf.clip_list.size < 2){
 			return;
 		}
 
@@ -2267,14 +2494,14 @@ Notes:
 			s += PrimaryEncoder;
 			
 			//seek input
-			if ((mf.StartPos > 0) && (mf.clip_list.size == 0)){
+			if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
 				s += " -ss %.1f".printf(mf.StartPos);
 			}
 			
 			s += " -i \"${inFile}\"";
 
 			//stop output
-			if ((mf.EndPos > 0) && (mf.clip_list.size == 0)){
+			if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 				s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
 			}
 

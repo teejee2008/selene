@@ -149,6 +149,10 @@ public class MediaPlayerWindow : Gtk.Window {
 			status_timer_stop();
 			player.Exit();
 			//return false;
+
+			if (action == "trim"){
+				update_basic_mode_options();
+			}
 		});
 		
 		show_all();
@@ -473,6 +477,8 @@ public class MediaPlayerWindow : Gtk.Window {
         grid.attach(button,3,2,1,1);
         
         button.clicked.connect(()=>{
+			update_basic_mode_options();
+			
 			grid_trim_basic.no_show_all = false;
 			grid_trim_basic.show_all();
 			grid_trim_basic.visible = true;
@@ -692,6 +698,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		
 		return true;
 	}
+
 	//crop
 
 	private void spinCrop_value_changed_connect(){
@@ -885,6 +892,16 @@ public class MediaPlayerWindow : Gtk.Window {
 		mFile.EndPos = spinEndPos.adjustment.value;
 	}
 
+	private void update_basic_mode_options(){
+		if (action == "trim"){
+			if (mFile.clip_list.size > 0){
+				var clip = mFile.clip_list[0];
+				mFile.StartPos = clip.StartPos;
+				mFile.EndPos = clip.EndPos;
+			}
+		}
+	}
+	
 	//load file
 	
 	private void load_file(){

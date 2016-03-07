@@ -35,9 +35,9 @@ using TeeJee.Misc;
 
 public class EncoderConfigWindow : Gtk.Dialog {
 
-	public string Folder;
-	public string Name;
-	public bool CreateNew = false;
+	private string Folder = "";
+	private string Name = "";
+	private bool IsNew = true;
 
 	private Notebook tabMain;
 	private Box vboxMain;
@@ -71,6 +71,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private Label lblVCodec;
 	private ComboBox cmbVCodec;
+	private Label lblVCodecMessage;
 
 	private Label lblVideoMode;
 	private ComboBox cmbVideoMode;
@@ -123,7 +124,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private Label lblACodec;
 	private ComboBox cmbACodec;
-
+	private Label lblACodecMessage;
+	
 	private Label lblAudioMode;
 	private ComboBox cmbAudioMode;
 
@@ -155,6 +157,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private ComboBox cmbAudioChannels;
 
 	private Switch switchSox;
+	private Box vboxSoxOuter;
 	private Label lblHeaderSox;
 	private Label lblAudioBass;
 	private Scale scaleBass;
@@ -179,10 +182,23 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private Label lblSubFormatMessage;
 
+	private uint tmr_init = 0;
+	
 	private Button btnSave;
 	private Button btnCancel;
 
-	public EncoderConfigWindow() {
+	public EncoderConfigWindow.from_preset(Gtk.Window parent, string _folder, string _name, bool _is_new){
+		set_transient_for(parent);
+		set_modal(true);
+		
+		Folder = _folder;
+		Name = _name;
+		IsNew = _is_new;
+		
+		init_ui();
+	}
+	
+	private void init_ui() {
 		title = "Preset";
 		set_default_size (450, 550);
 
@@ -239,22 +255,6 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		init_ui_subtitles();
 
-		//Defaults --------------------------------
-
-		cmbFileFormat.set_active(0);
-		//cmbAudioMode.set_active(0);
-		//cmbVideoMode.set_active(0);
-		//cmbSubtitleMode.set_active(0);
-		cmbOpusOptimize.set_active(0);
-		cmbX264Preset.set_active(3);
-		//cmbX264Profile.set_active(2);
-		cmbVpxSpeed.set_active (1);
-		cmbFPS.set_active (0);
-		cmbFrameSize.set_active (0);
-		cmbFadeType.set_active (0);
-		//cmbResizingMethod.set_active (2);
-		//cmbFileExtension.set_active (0);
-
 		// Actions ----------------------------------------------
 
         //btnSave
@@ -264,6 +264,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
         //btnCancel
         btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
         btnCancel.clicked.connect (() => { destroy(); });
+
+		show_all();
+
+        tmr_init = Timeout.add(100, init_delayed);
 	}
 
 	private void init_ui_general(){
@@ -432,6 +436,15 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbACodec.hexpand = true;
         gridAudio.attach(cmbACodec,1,row,1,1);
 
+		//lblACodecMessage
+		lblACodecMessage = new Gtk.Label("");
+		lblACodecMessage.xalign = (float) 0.0;
+		lblACodecMessage.no_show_all = true;
+		lblACodecMessage.wrap = true;
+		lblACodecMessage.wrap_mode = Pango.WrapMode.WORD;
+		lblACodecMessage.use_markup = true;
+		gridAudio.attach(lblACodecMessage,0,++row,2,1);
+		
 		//lblAudioMode
 		lblAudioMode = new Gtk.Label(_("Encoding Mode"));
 		lblAudioMode.xalign = (float) 0.0;
@@ -594,7 +607,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		Label lblAudioSox = new Label ("" + _("SOX") + "");
 
         //vboxSox
-        Box vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
+        vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
 		vboxSoxOuter.margin = 12;
         tabMain.append_page (vboxSoxOuter, lblAudioSox);
 
@@ -895,6 +908,19 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbVCodec.hexpand = true;
         gridVideo.attach(cmbVCodec,1,row,1,1);
 
+		cmbVCodec.notify["visible"].connect(()=>{
+			lblVCodec.visible = cmbVCodec.visible;
+		});
+
+		//lblVCodecMessage
+		lblVCodecMessage = new Gtk.Label("");
+		lblVCodecMessage.xalign = (float) 0.0;
+		lblVCodecMessage.no_show_all = true;
+		lblVCodecMessage.wrap = true;
+		lblVCodecMessage.wrap_mode = Pango.WrapMode.WORD;
+		lblVCodecMessage.use_markup = true;
+		gridVideo.attach(lblVCodecMessage,0,++row,2,1);
+		
         //lblVideoMode
 		lblVideoMode = new Gtk.Label(_("Encoding Mode"));
 		lblVideoMode.xalign = (float) 0.0;
@@ -908,6 +934,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbVideoMode.changed.connect(cmbVideoMode_changed);
         gridVideo.attach(cmbVideoMode,1,row,1,1);
 
+		cmbVideoMode.notify["visible"].connect(()=>{
+			lblVideoMode.visible = cmbVideoMode.visible;
+		});
+		
         //lblVideoBitrate
 		lblVideoBitrate = new Gtk.Label(_("Bitrate (kbps)"));
 		lblVideoBitrate.xalign = (float) 0.0;
@@ -920,6 +950,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		spinVideoBitrate.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoBitrate,1,row,1,1);
 
+		spinVideoBitrate.notify["visible"].connect(()=>{
+			lblVideoBitrate.visible = spinVideoBitrate.visible;
+		});
+		
 		tt = _("<b>Compression Vs Quality</b>\nSmaller values give better quality video and larger files");
 
         //lblVideoQuality
@@ -935,6 +969,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		spinVideoQuality.xalign = (float) 0.5;
 		gridVideo.attach(spinVideoQuality,1,row,1,1);
 
+		spinVideoQuality.notify["visible"].connect(()=>{
+			lblVideoQuality.visible = spinVideoQuality.visible;
+		});
+		
 		tt = _("<b>Compression Vs Encoding Speed</b>\nSlower presets give better compression and smaller files\nbut take more time to encode.");
 
         //lblPreset
@@ -967,6 +1005,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbX264Preset.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Preset,1,row,1,1);
 
+		cmbX264Preset.notify["visible"].connect(()=>{
+			lblX264Preset.visible = cmbX264Preset.visible;
+		});
+		
 		tt = _("<b>Compression Vs Device Compatibility</b>\n'High' profile gives the best compression.\nChange this to 'Baseline' or 'Main' only if you are encoding\nfor a particular device (mobiles,PMPs,etc) which does not\nsupport the 'High' profile");
 
 		//lblProfile
@@ -983,6 +1025,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbX264Profile.set_tooltip_markup(tt);
         gridVideo.attach(cmbX264Profile,1,row,1,1);
 
+		cmbX264Profile.notify["visible"].connect(()=>{
+			lblX264Profile.visible = cmbX264Profile.visible;
+		});
+		
 		//lblVpxSpeed
 		lblVpxSpeed = new Gtk.Label(_("Speed"));
 		lblVpxSpeed.xalign = (float) 0.0;
@@ -1009,6 +1055,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
         cmbVpxSpeed.changed.connect(cmbVpxSpeed_changed);
 
+		cmbVpxSpeed.notify["visible"].connect(()=>{
+			lblVpxSpeed.visible = cmbVpxSpeed.visible;
+		});
+		
         Label lblSpacer = new Gtk.Label("    ");
         hboxVpxSpeed.add(lblSpacer);
 
@@ -1040,12 +1090,20 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		txtVCodecOptions.set_tooltip_markup(tt);
 		txtVCodecOptions.set_wrap_mode (Gtk.WrapMode.WORD);
 
+		txtVCodecOptions.notify["visible"].connect(()=>{
+			lblVCodecOptions.visible = txtVCodecOptions.visible;
+		});
+		
 		Gtk.ScrolledWindow scrollWin = new Gtk.ScrolledWindow (null, null);
 		scrollWin.set_shadow_type (ShadowType.ETCHED_IN);
 		scrollWin.add (txtVCodecOptions);
 		//scrollWin.set_size_request(-1,100);
 		gridVideo.attach(scrollWin,0,++row,2,1);
 
+		txtVCodecOptions.notify["visible"].connect(()=>{
+			scrollWin.visible = txtVCodecOptions.visible;
+		});
+		
 		//imgVideoCodec
 		imgVideoCodec = new Gtk.Image();
 		imgVideoCodec.margin_top = 6;
@@ -1295,7 +1353,36 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		return false;
 	}
 
+	private bool init_delayed() {
+		/* any actions that need to run after window has been displayed */
+		if (tmr_init > 0) {
+			Source.remove(tmr_init);
+			tmr_init = 0;
+		}
 
+		//Defaults --------------------------------
+
+		cmbFileFormat.set_active(0);
+		//cmbAudioMode.set_active(0);
+		//cmbVideoMode.set_active(0);
+		//cmbSubtitleMode.set_active(0);
+		cmbOpusOptimize.set_active(0);
+		cmbX264Preset.set_active(3);
+		//cmbX264Profile.set_active(2);
+		cmbVpxSpeed.set_active (1);
+		cmbFPS.set_active (0);
+		cmbFrameSize.set_active (0);
+		cmbFadeType.set_active (0);
+		//cmbResizingMethod.set_active (2);
+		//cmbFileExtension.set_active (0);
+
+		if (!IsNew){
+			load_script();
+		}
+		
+		return false;
+	}
+	
 	private void cmbFileFormat_changed(){
 		Gtk.ListStore model;
 		TreeIter iter;
@@ -1345,37 +1432,47 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbVCodec.set_model(model);
-
+		
 		switch (format) {
 			case "mkv":
+				model.append (out iter);
+				model.set (iter,0,_("Copy Video"),1,"copy");
 				model.append (out iter);
 				model.set (iter,0,"H.264 / MPEG-4 AVC (x264)",1,"x264");
 				//model.append (out iter);
 				//model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265"); //not yet supported
-				cmbVCodec.set_active(0);
+				cmbVCodec.set_active(1);
 				break;
 			case "mp4v":
+				model.append (out iter);
+				model.set (iter,0,_("Copy Video"),1,"copy");
 				model.append (out iter);
 				model.set (iter,0,"H.264 / MPEG-4 AVC (x264)",1,"x264");
 				model.append (out iter);
 				model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265");
-				cmbVCodec.set_active(0);
+				cmbVCodec.set_active(1);
 				break;
 			case "ogv":
 				model.append (out iter);
+				model.set (iter,0,_("Copy Video"),1,"copy");
+				model.append (out iter);
 				model.set (iter,0,"Theora",1,"theora");
-				cmbVCodec.set_active(0);
+				cmbVCodec.set_active(1);
 				break;
 			case "webm":
+				model.append (out iter);
+				model.set (iter,0,_("Copy Video"),1,"copy");
 				model.append (out iter);
 				model.set (iter,0,"VP8",1,"vp8");
 				model.append (out iter);
 				model.set (iter,0,"VP9",1,"vp9");
-				cmbVCodec.set_active(0);
+				cmbVCodec.set_active(1);
 				break;
 			default:
 				model.append (out iter);
 				model.set (iter,0,_("Disable Video"),1,"disable");
+				model.append (out iter);
+				model.set (iter,0,_("Copy Video"),1,"copy");
 				cmbVCodec.set_active(0);
 				break;
 		}
@@ -1404,6 +1501,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
+				model.set (iter,0,_("Copy Audio"),1,"copy");
+				model.append (out iter);
 				model.set (iter,0,"MP3 / LAME",1,"mp3lame");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Libav",1,"aac");
@@ -1411,19 +1510,21 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
-				cmbACodec.set_active(1);
+				cmbACodec.set_active(3);
 				break;
 
 			case "mp4v":
 				model.append (out iter);
 				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
+				model.set (iter,0,_("Copy Audio"),1,"copy");
+				model.append (out iter);
 				model.set (iter,0,"AAC / Libav",1,"aac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
-				cmbACodec.set_active(1);
+				cmbACodec.set_active(2);
 				break;
 
 			case "ogv":
@@ -1431,8 +1532,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Disable Audio"),1,"disable");
 				model.append (out iter);
+				model.set (iter,0,_("Copy Audio"),1,"copy");
+				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
-				cmbACodec.set_active(1);
+				cmbACodec.set_active(2);
 				break;
 
 			case "ogg":
@@ -1582,6 +1685,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		Gtk.ListStore model;
 		TreeIter iter;
 
+		lblAudioMode.visible = false;
+		cmbAudioMode.visible = false;
 		lblAudioBitrate.visible = false;
 		spinAudioBitrate.visible = false;
 		lblAudioQuality.visible = false;
@@ -1590,12 +1695,28 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		cmbOpusOptimize.visible = false;
 		lblAacProfile.visible = false;
 		cmbAacProfile.visible = false;
+
+		//show message
+		switch (acodec){
+			case "copy":
+				lblACodecMessage.visible = true;
+				lblACodecMessage.label = "\n<b>Note:</b>\n\n1. Audio track will be copied directly to the output file without changes.\n\n2. Format of the audio track must be compatible with the selected file format. For example, if the input file contains AAC audio and the selected file format is WEBM, then encoding will fail - since WEBM does not support AAC audio.\n\n3. Input file can be trimmed only in basic mode (single segment). Selecting multiple segments using advanced mode will not work.";
+				break;
+			default:
+				lblACodecMessage.visible = false;
+				break;
+		}
 		
 		//show & hide options
 		switch (acodec){
 			case "opus":
+				//All modes require bitrate as input
+				lblAudioMode.visible = true;
+				cmbAudioMode.visible = true;
 				lblAudioBitrate.visible = true;
 				spinAudioBitrate.visible = true;
+				//lblAudioQuality.visible = true;
+				//spinAudioQuality.visible = true;
 				lblOpusOptimize.visible = true;
 				cmbOpusOptimize.visible = true;
 				break;
@@ -1617,12 +1738,16 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				//show nothing
 				break;
 			case "ac3":
+				lblAudioMode.visible = true;
+				cmbAudioMode.visible = true;
 				lblAudioBitrate.visible = true;
 				spinAudioBitrate.visible = true;
 				break;
 			case "aac":
 			case "neroaac":
 			case "libfdk_aac":
+				lblAudioMode.visible = true;
+				cmbAudioMode.visible = true;
 				lblAudioBitrate.visible = true;
 				spinAudioBitrate.visible = true;
 				lblAudioQuality.visible = true;
@@ -1632,6 +1757,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				break;
 			case "mp3lame":
 			case "vorbis":
+				lblAudioMode.visible = true;
+				cmbAudioMode.visible = true;
 				lblAudioBitrate.visible = true;
 				spinAudioBitrate.visible = true;
 				lblAudioQuality.visible = true;
@@ -1642,10 +1769,13 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		//disable options when audio is disabled
 		switch (acodec){
 			case "disable":
+			case "copy":
 				gridAudioFilters.sensitive = false;
+				vboxSoxOuter.sensitive = false;
 				break;
 			default:
 				gridAudioFilters.sensitive = true;
+				vboxSoxOuter.sensitive = true;
 				break;
 		}
 
@@ -1826,9 +1956,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				break;
 
 			default: //disable
-				cmbAudioMode.sensitive = false;
-				spinAudioBitrate.sensitive = false;
-				spinAudioQuality.sensitive = false;
+				cmbAudioMode.visible = false;
+				spinAudioBitrate.visible = false;
+				spinAudioQuality.visible = false;
 				break;
 		}
 
@@ -2059,19 +2189,37 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		Gtk.ListStore model;
 		TreeIter iter;
 
+		//show message
+		switch (vcodec){
+			case "copy":
+				lblVCodecMessage.visible = true;
+				lblVCodecMessage.label = "\n<b>Note:</b>\n\n1. Video track will be copied directly to the output file without changes.\n\n2. Format of the video track must be compatible with the selected file format. For example, if the input file contains H264 video and the selected file format is WEBM, then encoding will fail - since WEBM does not support H264 video.\n\n3. Input file can be trimmed only in basic mode (single segment). Selecting multiple segments using advanced mode will not work.";
+				break;
+			default:
+				lblVCodecMessage.visible = false;
+				break;
+		}
+
+		//disable options when video is disabled
+		switch (vcodec){
+			case "disable":
+			case "copy":
+				gridVideoFilters.sensitive = false;
+				break;
+			default:
+				gridVideoFilters.sensitive = true;
+				break;
+		}
+		
 		//show x264 options
 		switch (vcodec){
 			case "x264":
 			case "x265":
-				lblX264Preset.visible = true;
 				cmbX264Preset.visible = true;
-				lblX264Profile.visible = true;
 				cmbX264Profile.visible = true;
 				break;
 			default:
-				lblX264Preset.visible = false;
 				cmbX264Preset.visible = false;
-				lblX264Profile.visible = false;
 				cmbX264Profile.visible = false;
 				break;
 		}
@@ -2112,8 +2260,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		switch (vcodec){
 			case "vp8":
 			case "vp9":
-				lblVpxSpeed.visible = true;
-        cmbVpxSpeed.visible = true;
+				cmbVpxSpeed.visible = true;
 				scaleVpxSpeed.visible = true;
 				scaleVpxSpeed.adjustment.value = 1;
 
@@ -2125,8 +2272,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				break;
 
 			default:
-				lblVpxSpeed.visible = false;
-        cmbVpxSpeed.visible = false;
+				cmbVpxSpeed.visible = false;
 				scaleVpxSpeed.visible = false;
 
 				string tt = _("<b>Quality Vs Encoding Speed</b>\nHigher values speed-up encoding at the expense of quality.\nLower values improve quality at the expense of encoding speed.");
@@ -2137,8 +2283,6 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		//populate encoding modes
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		cmbVideoMode.set_model(model);
-		lblVideoQuality.visible = true;
-		spinVideoQuality.visible = true;
 
 		switch (vcodec){
 			case "x264":
@@ -2158,9 +2302,11 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
 
-				cmbVideoMode.sensitive = true;
-				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = true;
+				cmbVideoMode.visible = true;
+				spinVideoBitrate.visible = true;
+				spinVideoQuality.visible = true;
+				txtVCodecOptions.visible = true;
+				
 				cmbVideoMode_changed();
 				break;
 
@@ -2181,9 +2327,11 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
 
-				cmbVideoMode.sensitive = true;
-				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = true;
+				cmbVideoMode.visible = true;
+				spinVideoBitrate.visible = true;
+				spinVideoQuality.visible = true;
+				txtVCodecOptions.visible = true;
+				
 				cmbVideoMode_changed();
 				break;
 
@@ -2204,9 +2352,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 1;
 
-				cmbVideoMode.sensitive = true;
-				spinVideoBitrate.sensitive = true;
-				spinVideoQuality.sensitive = true;
+				cmbVideoMode.visible = true;
+				spinVideoBitrate.visible = true;
+				spinVideoQuality.visible = true;
+				txtVCodecOptions.visible = true;
 				cmbVideoMode_changed();
 				break;
 
@@ -2230,18 +2379,18 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				spinVideoQuality.set_tooltip_text ("");
 				spinVideoQuality.digits = 0;*/
 
-				cmbVideoMode.sensitive = true;
-				spinVideoBitrate.sensitive = true;
-				//spinVideoQuality.sensitive = true;
-				lblVideoQuality.visible = false;
+				cmbVideoMode.visible = true;
+				spinVideoBitrate.visible = true;
 				spinVideoQuality.visible = false;
+				txtVCodecOptions.visible = true;
 				cmbVideoMode_changed();
 				break;
 
 			default: //disable
-				cmbVideoMode.sensitive = false;
-				spinVideoBitrate.sensitive = false;
-				spinVideoQuality.sensitive = false;
+				cmbVideoMode.visible = false;
+				spinVideoBitrate.visible = false;
+				spinVideoQuality.visible = false;
+				txtVCodecOptions.visible = false;
 				break;
 		}
 
