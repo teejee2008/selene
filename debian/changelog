@@ -1,14 +1,10 @@
-selene (16.2.7) trusty; urgency=medium
+selene (16.3) trusty; urgency=medium
 
-  * Added new option for trimming audio and video files
+  * Added options for copying audio and video track without re-encoding
 
-  * Added support for using MPV as the media player backend
-
-  * Added option to auto-crop and reset cropping values for multiple
-  files on the batch edit window
-
-  * Added zoom and fullscreen options to media player
+  * Use the first embedded subtitle track if an external subtitle file
+  is not found
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Sat, 27 Feb 2016 14:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Mon, 07 Mar 2016 14:00:00 +0530

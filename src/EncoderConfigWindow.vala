@@ -1337,8 +1337,6 @@ public class EncoderConfigWindow : Gtk.Dialog {
         cmbSubtitleMode.set_tooltip_markup (tt);
         gridSubtitle.attach(cmbSubtitleMode,1,row,1,1);
 
-		tt = _("Video will not be resized if it's smaller than the given width and height");
-
         //lblSubFormatMessage
 		lblSubFormatMessage = new Gtk.Label(_("Subtitles"));
 		lblSubFormatMessage.xalign = (float) 0.0;
@@ -2657,29 +2655,29 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		switch(subtitle_mode){
 			case "embed":
 				txt += "\n<b>Note:</b>\n\n";
-				txt += "1. Supported subtitle file formats in";
+				txt += "1. Supported subtitle file formats";
 				switch(format){
 					case "mkv":
-						txt += " MKV: <i>SRT, SUB, SSA</i>";
+						txt += " - <i>SRT, SUB, SSA</i>";
 						break;
 					case "mp4v":
-						txt += " MP4: <i>SRT, SUB, TTXT, XML</i>";
+						txt += " - <i>SRT, SUB, TTXT, XML</i>";
 						break;
 					case "ogv":
-						txt += " OGG: <i>SRT</i>";
+						txt += " - <i>SRT</i>";
 						break;
 					case "ogg":
-						txt += " OGG: <i>SRT, LRC</i>";
+						txt += " - <i>SRT, LRC</i>";
 						break;
 					default:
-						txt += ": None";
+						txt += " - None";
 						break;
 				}
 				txt += "\n\n";
 
 				txt += "2. Subtitle files must be present in the same location and start with the same file name.\n\n";
 
-				txt += "3. If an external subtitle file is not found, then the first subtitle track embedded in the input file will be used.\n\n";
+				txt += "3. If an external subtitle file is not found, then the first embedded track in the input file will be used.\n\n";
 				break;
 
 			default:
