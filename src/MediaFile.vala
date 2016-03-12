@@ -18,10 +18,6 @@ public class MediaFile : GLib.Object{
 	public long Duration = 0; //in milliseconds
 	public string ThumbnailImagePath = "";
 
-	public string SubFile = "";
-	public string SubName = "";
-	public string SubExt = "";
-
 	public string TrackName = "";
 	public string TrackNumber = "";
 	public string Album = "";
@@ -30,8 +26,6 @@ public class MediaFile : GLib.Object{
 	public string RecordedDate = "";
 	public string Comment = "";
 
-	//public int CropW = 0;
-	//public int CropH = 0;
 	public int CropL = 0;
 	public int CropR = 0;
 	public int CropT = 0;
@@ -47,7 +41,6 @@ public class MediaFile : GLib.Object{
 	public Gee.ArrayList<VideoStream> video_list;
 	public Gee.ArrayList<TextStream> text_list;
 	
-	//public int Status = 0;
 	public FileStatus Status = FileStatus.PENDING;
 	public bool IsValid;
 	public string ProgressText = _("Queued");
@@ -56,11 +49,6 @@ public class MediaFile : GLib.Object{
 	public string InfoText = "";
 	public string InfoTextFormatted = "";
 	
-	//public bool HasAudio = false;
-	//public bool HasVideo = false;
-	//public bool HasSubs = false;
-	//public bool HasExtSubs = false;
-
 	public string FileFormat = "";
 	public string VideoFormat = "";
 	public string AudioFormat = "";
@@ -130,25 +118,20 @@ public class MediaFile : GLib.Object{
 
 		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
 		            {
-			            SubName = fileInfo.get_name();
-			            SubFile = Location + "/" + SubName;
-	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
-	                	//HasExtSubs = true;
-
 						var stream = new TextStream();
 						stream_list.add(stream);
 	                	text_list.add(stream);
 	                	stream.TypeIndex = text_list.index_of(stream);
 
 	                	stream.SubName = fileInfo.get_name();
-						stream.SubFile = Location + "/" + SubName;
-	                	stream.SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
+						stream.SubFile = Location + "/" + stream.SubName;
+	                	stream.SubExt = stream.SubFile[stream.SubFile.last_index_of(".",0):stream.SubFile.length].down();
 	                	stream.StreamSize = fileInfo.get_size();
 	                	stream.get_character_encoding();
 					
 	                	// try to parse language info from subtitle file name
 
-	                	var SubtitleTitle = SubName[0: SubName.last_index_of(".",0)];
+	                	var SubtitleTitle = stream.SubName[0: stream.SubName.last_index_of(".",0)];
 	                	log_msg("sub=%s".printf(SubtitleTitle));
 	                	
 	                	if (SubtitleTitle.length > Title.length){
@@ -453,87 +436,6 @@ public class MediaFile : GLib.Object{
 		else{
 			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.svg");
 		}
-	}
-
-	public void ffmpeg_parse_info(string output){
-
-/*
-Input #0, matroska,webm, from '/media/teejee/dump/tv/Season 1/Seinfeld Season 01 Episode 05 - The Stock Tip.mkv':
-  Metadata:
-    encoder         : libebml v0.7.7 + libmatroska v0.8.1
-    creation_time   : 2007-11-17 09:35:48
-  Duration: 00:22:05.06, start: 0.000000, bitrate: 1472 kb/s
-    Stream #0:0: Audio: aac (LC), 48000 Hz, stereo, fltp (default)
-    Stream #0:1(eng): Video: h264 (High), yuv420p, 704x528, SAR 1:1 DAR 4:3, 25 fps, 25 tbr, 1k tbn, 50 tbc (default)
-    Metadata:
-      title           : AAC 128 Kbps
-    Stream #0:2(nor): Subtitle: subrip (default)
-    Metadata:
-      title           : Norsk
-    Stream #0:3(swe): Subtitle: subrip
-    Metadata:
-      title           : Svensk
-    Stream #0:4(dan): Subtitle: subrip
-    Metadata:
-      title           : Dansk
-    Stream #0:5(eng): Subtitle: subrip
-    Metadata:
-      title           : Engelsk
-Output #0, image2, to '/tmp/selene/14573660971176541890.png':
-  Metadata:
-    encoder         : Lavf57.24.101
-    Stream #0:0(eng): Video: png, rgb24, 80x64 [SAR 16:15 DAR 4:3], q=2-31, 200 kb/s, 1 fps, 1 tbn, 1 tbc (default)
-    Metadata:
-      title           : AAC 128 Kbps
-      encoder         : Lavc57.24.101 png
-Stream mapping:
-  Stream #0:1 -> #0:0 (h264 (native) -> png (native))
-*/
-
-/*
-avconv version 12_dev0-6:12~~git20150809.1542ec9~ubuntu15.04.1, Copyright (c) 2000-2015 the Libav developers
-  built on Aug  9 2015 17:41:47 with gcc 4.9.2 (Ubuntu 4.9.2-10ubuntu13)
-Input #0, matroska,webm, from './Seinfeld Season 01 Episode 05 - The Stock Tip.mkv':
-  Duration: 00:22:05.05, start: 0.000000, bitrate: N/A
-    Stream #0:0: Audio: aac
-      48000 Hz, stereo, fltp (default)
-    Stream #0:1(eng): Video: h264 (High)
-      yuv420p, 704x528, PAR 1:1 DAR 4:3
-      25 fps, 1k tbn, 50 tbc (default)
-    Metadata:
-      title           : AAC 128 Kbps
-    Stream #0:2(nor): Subtitle: [0][0][0][0] / 0x0000 (default)
-    Metadata:
-      title           : Norsk
-    Stream #0:3(swe): Subtitle: [0][0][0][0] / 0x0000
-    Metadata:
-      title           : Svensk
-    Stream #0:4(dan): Subtitle: [0][0][0][0] / 0x0000
-    Metadata:
-      title           : Dansk
-    Stream #0:5(eng): Subtitle: [0][0][0][0] / 0x0000
-    Metadata:
-      title           : Engelsk
-At least one output file must be specified
-*/
-		try{
-
-			var rex_a = new Regex("""Stream #0:([0-9]*)\(*([a-zA-Z]*)\)*: (Audio|Video|Subtitle): aac (LC), 48000 Hz, stereo, fltp (default)""");
-			var rex_v = new Regex("""Stream #0:1(eng): Video: h264 (High), yuv420p, 704x528, SAR 1:1 DAR 4:3, 25 fps, 25 tbr, 1k tbn, 50 tbc (default)""");
-			var rex_s = new Regex("""Stream #0:2(nor): Subtitle: subrip (default)""");
-			MatchInfo match;
-			
-			foreach(string line in output.split("\n")){
-				if (rex_a.match(line, 0, out match)){
-					//Position = double.parse(match.fetch(1));
-
-				}
-			}
-		}
-		catch (Error e) {
-			log_error (e.message);
-		}
-
 	}
 
 	//properties ---------------------------

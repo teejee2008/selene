@@ -204,43 +204,11 @@ public class MainWindow : Gtk.Window{
 
 		init_ui_main_toolbar_remove();
 		
-		/*
-		//btnAddFiles
-		btnAddFiles = new Gtk.ToolButton.from_stock ("gtk-add");
-		btnAddFiles.label = _("Add Files");
-		btnAddFiles.is_important = true;
-		btnAddFiles.clicked.connect (btnAddFiles_clicked);
-		btnAddFiles.set_tooltip_text (_("Add file(s)"));
-		toolbar.add (btnAddFiles);
-
-		//btnRemoveFiles
-		btnRemoveFiles = new Gtk.ToolButton.from_stock ("gtk-remove");
-		btnRemoveFiles.is_important = true;
-		btnRemoveFiles.clicked.connect (btnRemoveFiles_clicked);
-		btnRemoveFiles.set_tooltip_text (_("Remove selected file(s)"));
-		toolbar.add (btnRemoveFiles);
-
-		//btnClearFiles
-		btnClearFiles = new Gtk.ToolButton.from_stock ("gtk-clear");
-		btnClearFiles.is_important = true;
-		btnClearFiles.clicked.connect (btnClearFiles_clicked);
-		btnClearFiles.set_tooltip_text (_("Remove all file(s)"));
-		toolbar.add (btnClearFiles);
-		*/
-		
 		//separator
 		separator1 = new Gtk.SeparatorToolItem();
 		toolbar.add(separator1);
 
 		init_ui_main_toolbar_edit();
-		
-		/*//btnCrop
-		btnCrop = new Gtk.ToolButton.from_stock ("gtk-edit");
-		btnCrop.is_important = true;
-		btnCrop.label = _("Crop");
-		btnCrop.clicked.connect (crop_videos);
-		btnCrop.set_tooltip_text (_("Crop Videos"));
-		toolbar.add (btnCrop);*/
 		
 		//btnStart
 		btnStart = new Gtk.ToolButton.from_stock ("gtk-media-play");
@@ -1796,13 +1764,6 @@ public class MainWindow : Gtk.Window{
 		btnRemovePreset.set_tooltip_text (_("Delete Preset"));
 		toolbar2.add (btnRemovePreset);
 
-		/*//btnEditPreset
-		btnEditPreset = new Gtk.ToolButton.from_stock ("gtk-edit");
-		btnEditPreset.is_important = true;
-		btnEditPreset.clicked.connect (btnEditPreset_clicked);
-		btnEditPreset.set_tooltip_text (_("Edit Preset"));
-		toolbar2.add (btnEditPreset);*/
-
 		//btnBrowsePresetFolder
 		btnBrowsePresetFolder = new Gtk.ToolButton.from_stock ("gtk-directory");
 		btnBrowsePresetFolder.is_important = true;
@@ -1810,12 +1771,6 @@ public class MainWindow : Gtk.Window{
 		btnBrowsePresetFolder.clicked.connect (btnBrowsePresetFolder_clicked);
 		btnBrowsePresetFolder.set_tooltip_text (_("Open Folder"));
 		toolbar2.add (btnBrowsePresetFolder);
-
-		/*//separator
-		var separator1 = new Gtk.SeparatorToolItem();
-		separator1.set_draw (false);
-		separator1.set_expand (true);
-		toolbar2.add (separator1);*/
 
 		//btnPresetInfo
 		btnPresetInfo = new Gtk.ToolButton.from_stock ("gtk-info");

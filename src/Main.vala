@@ -811,12 +811,6 @@ Notes:
 		CurrentFile.ProgressPercent = 0;
 
 		log_msg (_("Source:") + " '%s'".printf(CurrentFile.Path), true);
-		if ((CurrentFile.SubFile != null) && (CurrentFile.SubFile.length > 0)){
-			log_msg ((mf.HasVideo) ? _("Subtitles:") : _("Lyrics:") + " '%s'".printf(CurrentFile.SubName));
-		}
-		else{
-			log_msg ((mf.HasVideo) ? _("Subtitles:") : _("Lyrics:") + " None");
-		}
 
 		Progress = 0;
 		StatusLine = "";
@@ -831,8 +825,11 @@ Notes:
 		//move files to backup location on success
 		if ((is_success == true) && (BackupDirectory.length > 0) && (dir_exists (BackupDirectory))){
 			move_file (CurrentFile.Path, BackupDirectory + "/" + CurrentFile.Name);
-			if (CurrentFile.SubFile != null){
-				move_file (CurrentFile.SubFile, BackupDirectory + "/" + CurrentFile.SubName);
+
+			foreach(TextStream stream in mf.text_list){
+				if (stream.IsExternal){
+					move_file (stream.SubFile, BackupDirectory + "/" + stream.SubName);
+				}
 			}
 		}
 
@@ -875,16 +872,6 @@ Notes:
 			script.append ("\n");
 		}
 
-	    if (mf.SubFile != null){
-			script.append ("subFile='" + escape (mf.SubFile) + "'\n");
-			script.append ("subName='" + escape (mf.SubName) + "'\n");
-			script.append ("subExt='" + escape (mf.SubExt.down()) + "'\n");
-		}
-		else {
-			script.append ("subFile=''\n");
-			script.append ("subName=''\n");
-			script.append ("subExt=''\n");
-		}
 		script.append ("\n");
 		script.append ("""scriptDir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"""");
 		script.append ("\n");
@@ -898,42 +885,9 @@ Notes:
 				var fileScript = File.parse_name (SelectedScript.Path);
 				var dis = new DataInputStream (fileScript.read());
 
-				/*MatchInfo match;
-				Regex rxCrop_libav = new Regex ("""(avconv|ffmpeg).*-vf.*(crop=[^, ]+)""");
-				Regex rxCrop_x264 = new Regex ("""x264.*(--vf|--video-filter).*(crop:[^/ ]+)""");
-				Regex rxCrop_f2t = new Regex ("""ffmpeg2theora.*""");
-				Regex rxCrop_f2t_left = new Regex ("""ffmpeg2theora.*(--cropleft [0-9]+) """);
-				Regex rxCrop_f2t_right = new Regex ("""ffmpeg2theora.*(--cropright [0-9]+) """);
-				Regex rxCrop_f2t_top = new Regex ("""ffmpeg2theora.*(--croptop [0-9]+) """);
-				Regex rxCrop_f2t_bottom = new Regex ("""ffmpeg2theora.*(--cropbottom [0-9]+) """);*/
-
 				string line = dis.read_line (null);
 				while (line != null) {
 					line = line.replace ("${audiodec}", "%s -i \"${inFile}\" -f wav -acodec pcm_s16le -vn -y -".printf(PrimaryEncoder));
-
-					/*if (mf.crop_enabled()){
-						if (rxCrop_libav.match (line, 0, out match)){
-							line = line.replace (match.fetch(2), "crop=" + mf.crop_values_libav());
-						}
-						else if (rxCrop_x264.match (line, 0, out match)){
-							line = line.replace (match.fetch(2), "crop:" + mf.crop_values_x264());
-						}
-						else if (rxCrop_f2t.match (line, 0, out match)){
-							if (rxCrop_f2t_left.match (line, 0, out match)){
-								line = line.replace (match.fetch(1), "--cropleft " + mf.CropL.to_string());
-							}
-							if (rxCrop_f2t_right.match (line, 0, out match)){
-								line = line.replace (match.fetch(1), "--cropright " + mf.CropR.to_string());
-							}
-							if (rxCrop_f2t_top.match (line, 0, out match)){
-								line = line.replace (match.fetch(1), "--croptop " + mf.CropT.to_string());
-							}
-							if (rxCrop_f2t_bottom.match (line, 0, out match)){
-								line = line.replace (match.fetch(1), "--cropbottom " + mf.CropB.to_string());
-							}
-						}
-					}
-					* */
 
 					script.append (line + "\n");
 					line = dis.read_line (null);
