@@ -88,7 +88,8 @@ public class Main : GLib.Object{
 	
 	public string PrimaryEncoder = "ffmpeg";
 	public string PrimaryPlayer = "mpv";
-	public string DefaultLanguage = "";
+	public string DefaultLanguage = "en";
+	public bool DeleteTempFiles = true;
 	
 	public string ListViewColumns = "";
 	
@@ -527,6 +528,7 @@ Notes:
 		config.set_string_member("av-encoder", PrimaryEncoder);
 		config.set_string_member("av-player", PrimaryPlayer);
 		config.set_string_member("default-lang", DefaultLanguage);
+		config.set_string_member("delete-temp-files", DeleteTempFiles.to_string());
 		config.set_string_member("list-view-columns", ListViewColumns);
 		
 		if (SelectedScript != null) {
@@ -583,6 +585,8 @@ Notes:
 		PrimaryEncoder = json_get_string(config,"av-encoder", "ffmpeg");
 		PrimaryPlayer = json_get_string(config,"av-player", "mpv");
 		DefaultLanguage = json_get_string(config,"default-lang", "en");
+
+		DeleteTempFiles = json_get_bool(config,"delete-temp-files",true);
 
 		check_and_default_av_encoder();
 		check_and_default_av_player();
@@ -956,6 +960,15 @@ Notes:
 
 		script.append ("exitCode=$?\n");
 		script.append ("echo ${exitCode} > ${exitCode}\n");
+
+		if (App.DeleteTempFiles){
+			script.append ("\nif [ ${exitCode} -eq 0 ]; then\n");
+			script.append ("\trm -rf video*\n");
+			script.append ("\trm -rf audio*\n");
+			script.append ("\trm -rf subs*\n");
+			script.append ("fi\n\n");
+		}
+
 		return script.str;
 	}
 
@@ -1387,7 +1400,7 @@ Notes:
 				if (!stream.IsSelected){
 					continue;
 				}
-				s += "temp_video_%d=\"${tempDir}/video-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempVideoExt);
+				s += "temp_video_%d=\"video-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempVideoExt);
 			}
 		}
 
@@ -1446,7 +1459,7 @@ Notes:
 				if (!stream.IsSelected){
 					continue;
 				}
-				s += "temp_audio_%d=\"${tempDir}/audio-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempAudioExt);
+				s += "temp_audio_%d=\"audio-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempAudioExt);
 			}
 		}
 
@@ -1458,7 +1471,7 @@ Notes:
 					//log_msg("%d:not-selected".printf(stream.TypeIndex));
 					continue;
 				}
-				s += "temp_subs_%d=\"${tempDir}/subs-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,".srt");
+				s += "temp_subs_%d=\"subs-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,".srt");
 			}
 		}
 		

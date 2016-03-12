@@ -48,6 +48,7 @@ public class AppConfigWindow : Gtk.Dialog {
 	private ComboBox cmbSelectEncoder;
 	private ComboBox cmbSelectPlayer;
 	private ComboBox cmbDefaultLanguage;
+	private CheckButton chkDeleteTempFiles;
 	
 	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
@@ -242,6 +243,15 @@ public class AppConfigWindow : Gtk.Dialog {
         notebook.append_page (vboxTabTools, lblTabTools);
 		
 		Gtk.SizeGroup sizegroup = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
+
+		Gtk.Label lbl;
+		
+		// header
+		lbl = new Label (_("<b>Preferred Tools</b>"));
+		lbl.set_use_markup(true);
+		lbl.halign = Align.START;
+		//lbl.margin_top = 12;
+		vboxTabTools.pack_start (lbl, false, true, 0);
 		
 		//hboxEncoder -----------------------------------------------
 		
@@ -333,16 +343,21 @@ public class AppConfigWindow : Gtk.Dialog {
 			break;
 		}
 
-		//cmbDefaultLanguage
+		// header
+		lbl = new Label (_("<b>Default Language</b>"));
+		lbl.set_use_markup(true);
+		lbl.halign = Align.START;
+		lbl.margin_top = 12;
+		vboxTabTools.pack_start (lbl, false, true, 0);
+		
+		//Default Language ---------------------------------------------
 
 		var hbox = new Gtk.Box(Orientation.HORIZONTAL,6);
 		vboxTabTools.pack_start (hbox, false, true, 0);
-
-		//Default Language ---------------------------------------------
-
+		
 		//lbl ------------
 		
-		var lbl = new Label ("Default Language");
+		lbl = new Label ("Default Language");
 		lbl.set_use_markup(true);
 		lbl.halign = Align.START;
 		lbl.hexpand = true;
@@ -376,6 +391,21 @@ public class AppConfigWindow : Gtk.Dialog {
 		textCell.max_width_chars = 20;
         cmbDefaultLanguage.pack_start( textCell, false );
         cmbDefaultLanguage.set_attributes( textCell, "text", 0 );
+
+		// header
+		lbl = new Label (_("<b>File Handling</b>"));
+		lbl.set_use_markup(true);
+		lbl.halign = Align.START;
+		lbl.margin_top = 12;
+		vboxTabTools.pack_start (lbl, false, true, 0);
+		
+        //chkDeleteTempFiles
+		chkDeleteTempFiles = new CheckButton.with_label(_("Delete temporary files after successful encode"));
+		chkDeleteTempFiles.active = App.DeleteTempFiles;
+		chkDeleteTempFiles.set_tooltip_markup(tt);
+		tt = "If un-checked, the temporary/intermediate files will remain in the temporary folder till the next reboot.\nKeep this un-checked if you want to copy the temp files.";
+		chkDeleteTempFiles.set_tooltip_text(tt);
+		vboxTabTools.pack_start (chkDeleteTempFiles, false, true, 0);
 	}
 	
 	private void chkOutput_clicked(){
@@ -413,6 +443,8 @@ public class AppConfigWindow : Gtk.Dialog {
 
 		App.TileView = (cmbFileView.active == 1);
 
+		App.DeleteTempFiles = chkDeleteTempFiles.active;
+		
 		App.PrimaryEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
 		App.PrimaryPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mpv");
 		App.DefaultLanguage = gtk_combobox_get_value(cmbDefaultLanguage,1,"en");
