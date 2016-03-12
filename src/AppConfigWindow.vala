@@ -47,6 +47,7 @@ public class AppConfigWindow : Gtk.Dialog {
 	private ComboBox cmbFileView;
 	private ComboBox cmbSelectEncoder;
 	private ComboBox cmbSelectPlayer;
+	private ComboBox cmbDefaultLanguage;
 	
 	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
@@ -331,6 +332,50 @@ public class AppConfigWindow : Gtk.Dialog {
 			cmbSelectPlayer.active = 0;
 			break;
 		}
+
+		//cmbDefaultLanguage
+
+		var hbox = new Gtk.Box(Orientation.HORIZONTAL,6);
+		vboxTabTools.pack_start (hbox, false, true, 0);
+
+		//Default Language ---------------------------------------------
+
+		//lbl ------------
+		
+		var lbl = new Label ("Default Language");
+		lbl.set_use_markup(true);
+		lbl.halign = Align.START;
+		lbl.hexpand = true;
+		tt = "Will be used for setting the default track when encoding files with multiple audio and subtitle tracks";
+		lbl.set_tooltip_text(tt);
+		hbox.add(lbl);
+
+		//combo -------------
+		
+		int index = -1;
+		int selectedIndex = 0;
+		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		foreach(var lang in LanguageCodes.lang_list){
+			model.append (out iter);
+			model.set (iter, 0, lang.Name, 1, lang.Code2);
+			index++;
+
+			if (lang.Code2 == App.DefaultLanguage){
+				selectedIndex = index;
+			}
+		}
+	
+		cmbDefaultLanguage = new ComboBox.with_model(model);
+		cmbDefaultLanguage.active = selectedIndex;
+		cmbDefaultLanguage.set_tooltip_text(tt);
+		hbox.add(cmbDefaultLanguage);
+		//sizegroup.add_widget(cmbDefaultLanguage);
+		
+		textCell = new CellRendererText();
+		textCell.ellipsize = Pango.EllipsizeMode.END;
+		textCell.max_width_chars = 20;
+        cmbDefaultLanguage.pack_start( textCell, false );
+        cmbDefaultLanguage.set_attributes( textCell, "text", 0 );
 	}
 	
 	private void chkOutput_clicked(){
@@ -370,6 +415,7 @@ public class AppConfigWindow : Gtk.Dialog {
 
 		App.PrimaryEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
 		App.PrimaryPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mpv");
+		App.DefaultLanguage = gtk_combobox_get_value(cmbDefaultLanguage,1,"en");
 		
 		// Save settings
 		App.save_config();

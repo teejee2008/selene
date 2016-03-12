@@ -88,7 +88,8 @@ public class Main : GLib.Object{
 	
 	public string PrimaryEncoder = "ffmpeg";
 	public string PrimaryPlayer = "mpv";
-
+	public string DefaultLanguage = "";
+	
 	public string ListViewColumns = "";
 	
 	public ScriptFile SelectedScript;
@@ -443,6 +444,8 @@ Notes:
 		Encoders["vpxenc"] = new Encoder("vpxenc","VP8 Video Encoder","VP8/WebM Output");
 		Encoders["x264"] = new Encoder("x264","H.264 / MPEG-4 AVC Video Encoder","H264 Output");
 		Encoders["x265"] = new Encoder("x265","H.265 / MPEG-H HEVC Video Encoder","H265 Output");
+		Encoders["kateenc"] = new Encoder("kateenc","Kate Subtitle Encoder for OGG Files","Subtitles in OGG");
+		Encoders["oggz"] = new Encoder("oggz","OGG Merge Tool","Merging OGG Files");
 
 		//Encoders["ffplay"] = new Encoder("ffplay","FFmpeg's Audio Video Player","Audio-Video Playback");
 		//Encoders["avplay"] = new Encoder("avplay","Libav's Audio Video Player","Audio-Video Playback");
@@ -523,6 +526,7 @@ Notes:
 		config.set_string_member("tile-view", TileView.to_string());
 		config.set_string_member("av-encoder", PrimaryEncoder);
 		config.set_string_member("av-player", PrimaryPlayer);
+		config.set_string_member("default-lang", DefaultLanguage);
 		config.set_string_member("list-view-columns", ListViewColumns);
 		
 		if (SelectedScript != null) {
@@ -578,6 +582,7 @@ Notes:
 
 		PrimaryEncoder = json_get_string(config,"av-encoder", "ffmpeg");
 		PrimaryPlayer = json_get_string(config,"av-player", "mpv");
+		DefaultLanguage = json_get_string(config,"default-lang", "en");
 
 		check_and_default_av_encoder();
 		check_and_default_av_player();
@@ -1470,7 +1475,7 @@ Notes:
 		case "mkv":
 		case "mp4v":
 		case "webm":
-
+		case "ogv":
 			foreach(VideoStream stream in mf.video_list){
 				if (!stream.IsSelected){
 					continue;
@@ -1485,6 +1490,7 @@ Notes:
 					break;
 				case "vp8":
 				case "vp9":
+				case "theora":
 					s += encode_video_avconv(mf,stream,settings);
 					encoderList.add(PrimaryEncoder);
 					break;
@@ -1557,6 +1563,12 @@ Notes:
 					encoderList.add(PrimaryEncoder);
 				}
 			}
+
+			//merge the subs encoded in previous step
+			if (format == "ogv"){
+				s += encode_sub_kateenc(mf,settings);
+				encoderList.add("kateenc");
+			}
 			
 			//mux audio, video and subs
 			switch (format){
@@ -1577,13 +1589,17 @@ Notes:
 					break;
 				}
 				break;
+			case "ogv":
+				s += mux_oggz(mf,settings);
+				encoderList.add("oggz");
+				break;
 			}
 			break;
 
-		case "ogv":
-			s += encode_video_ffmpeg2theora(mf,settings);
-			encoderList.add("ffmpeg2theora");
-			break;
+		//case "ogv":
+		//	s += encode_video_ffmpeg2theora(mf,settings);
+		//	encoderList.add("ffmpeg2theora");
+		//	break;
 
 		case "mp3":
 			foreach(AudioStream stream in mf.audio_list){
@@ -2041,6 +2057,39 @@ Notes:
 		return s;
 	}
 
+	private string encode_sub_kateenc(MediaFile mf, Json.Object settings){
+		string s = "";
+
+		//Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
+
+		if (mf.HasSubs && subs.get_string_member("mode") == "embed"){
+			foreach(TextStream stream in mf.text_list){
+				if (stream.IsSelected){
+					s += "kateenc -t srt ";
+
+					if (mf.HasVideo && video.get_string_member("codec") != "disable"){
+						s += " -c SUB";
+					}
+					else if (mf.HasAudio && audio.get_string_member("codec") != "disable"){
+						s += " -c LRC";
+					}
+					
+					s += " -o \"subs_kate_%d.ogg\"".printf(stream.TypeIndex);
+					if (stream.LangCode.length > 0){
+						s += " -l %s".printf(stream.LangCode);
+					}
+					s += " \"${temp_subs_%d}\"".printf(stream.TypeIndex);
+					s += "\n";
+				}
+			}
+		}
+
+		return s;
+	}
+
 	//encode video -------------------
 	
 	private string encode_video_avconv (MediaFile mf, VideoStream stream, Json.Object settings){
@@ -2069,7 +2118,12 @@ Notes:
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
 		}
 
-		s += " -f " + format;
+		if (format == "ogv"){
+			s += " -f ogg";
+		}
+		else{
+			s += " -f " + format;
+		}
 
 		switch(vcodec){
 			case "vp8":
@@ -2078,28 +2132,51 @@ Notes:
 			case "vp9":
 				s += " -c:v libvpx-" + vcodec;
 				break;
+			case "theora":
+				s += " -c:v lib" + vcodec;
+				break;
 		}
 
 		if (video.get_string_member("mode") == "2pass"){
 			s += " -pass {passNumber}";
 		}
 
-		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
-		switch(video.get_string_member("mode")){
+		switch(vcodec){
+		case "vp8":
+		case "vp9":
+			switch(video.get_string_member("mode")){
 			case "vbr":
 			case "2pass":
-				s += " -b:v " + video.get_string_member("bitrate") + "k";
+				string bitrate = video.get_string_member("bitrate");
+				s += " -b:v " + bitrate + "k";
 				break;
 			case "cbr":
-				s += " -b:v " + video.get_string_member("bitrate") + "k";
-				s += " -minrate " + video.get_string_member("bitrate") + "k";
-				s += " -maxrate " + video.get_string_member("bitrate") + "k";
+				string bitrate = video.get_string_member("bitrate");
+				s += " -b:v " + bitrate + "k";
+				s += " -minrate " + bitrate + "k";
+				s += " -maxrate " + bitrate + "k";
 				break;
 			case "cq":
+				string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
 				s += " -crf " + vquality;
 				s += " -qmin " + vquality;
 				s += " -qmax " + vquality;
 				break;
+			}
+			break;
+		case "theora":
+			switch(video.get_string_member("mode")){
+			case "abr":
+			case "2pass":
+				string bitrate = video.get_string_member("bitrate");
+				s += " -b:v " + bitrate + "k";
+				break;
+			case "vbr":
+				string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
+				s += " -q:v " + vquality;
+				break;
+			}
+			break;
 		}
 
 		switch(vcodec){
@@ -2272,7 +2349,7 @@ Notes:
 		return s;
 	}
 
-	private string encode_video_ffmpeg2theora (MediaFile mf, Json.Object settings){
+	/*private string encode_video_ffmpeg2theora (MediaFile mf, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2373,7 +2450,7 @@ Notes:
 		s += "\n";
 
 		return s;
-	}
+	}*/
 
 	//video functions -----------------------
 	
@@ -3174,6 +3251,9 @@ Notes:
 					s += " --compression -1:none";
 					if (stream.LangCode.length > 0){
 						s += " --language -1:%s".printf(stream.LangCode);
+						if (stream.LangCode == DefaultLanguage){
+							s += " --default-track -1:yes";
+						}
 					}
 					s += " \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 				}
@@ -3191,6 +3271,9 @@ Notes:
 							s += " --compression -1:none";
 							if (stm.LangCode.length > 0){
 								s += " --language -1:%s".printf(stm.LangCode);
+								if (stm.LangCode == DefaultLanguage){
+									s += " --default-track -1:yes";
+								}
 							}
 							s += " \"${temp_subs_%d}\"".printf(stm.TypeIndex);
 						}
@@ -3198,6 +3281,9 @@ Notes:
 							s += " --compression -1:none";
 							if (stm.LangCode.length > 0){
 								s += " --language -1:%s".printf(stm.LangCode);
+								if (stm.LangCode == DefaultLanguage){
+									s += " --default-track -1:yes";
+								}
 							}
 							s += " \"${temp_subs_%d}\"".printf(stm.TypeIndex);
 						}
@@ -3385,194 +3471,49 @@ Notes:
 		return s;
 	}
 
-	/*
-	private string mux_avconv_aac_to_mp4 (string input_file, string output_file){
-		//Warning: Produces MP4 audio that cannot be read by MKVMerge
-		
-		string s = "";
-
-		s += PrimaryEncoder;
-		s += " -i %s".printf(input_file);
-		s += " -f mp4";
-		s += " -c:a copy -vn -sn";
-		s += " -y %s".printf(output_file);
-		s += "\n";
-		
-		return s;
-	}
-
-
-	private string encode_video_avconv (MediaFile mf, Json.Object settings)
-	{
-		string s = "";
-
-		Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
-		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
-
-		s += AVEncoder;
-		s += " -i \"${inFile}\"";
-		s += " -f " + general.get_string_member("format");
-		s += " -an -sn -c:v libvpx";
-
-		if (video.get_string_member("mode") == "2pass"){
-			s += " -pass {passNumber}";
-		}
-
-		string kbps = video.get_string_member("bitrate");
-		switch(video.get_string_member("mode")){
-			case "vbr":
-			case "2pass":
-				s += " -b:v %sk".printf(kbps);
-				break;
-			case "cbr":
-				s += " -minrate %sk -maxrate %sk -b:v %sk".printf(kbps,kbps,kbps);
-				break;
-			case "cq":
-				s += " -crf %s".printf(video.get_string_member("quality"));
-				break;
-		}
-
-		s += " -deadline " + video.get_string_member("speed");
-
-		// filters ----------
-
-		//fps
-		if (video.get_string_member("fpsNum") != "0" && video.get_string_member("fpsDenom") != "0") {
-			s += " -r " + video.get_string_member("fpsNum") + "/" + video.get_string_member("fpsDenom");
-		}
-
-		string vf = "";
-
-		//cropping
-		if (mf.crop_enabled()) {
-			vf += ",crop=%s".printf(mf.crop_values_libav());
-		}
-
-		//resizing
-		int w,h;
-		bool rescale = calculate_video_resolution(mf, settings, out w, out h);
-		if (rescale) {
-			vf += ",scale=%d:%d".printf(w,h);
-		}
-
-		if (vf.length > 0){
-			s += " -vf " + vf[1:vf.length];
-		}
-
-		//---------------
-
-		//other options
-		if (video.get_string_member("options").strip() != "") {
-			s += " " +  video.get_string_member("options").strip();
-		}
-
-		//add output file path placeholder
-		s += " -y {outputFile}";
-
-		s += "\n";
-
-		if (video.get_string_member("mode") == "2pass"){
-			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
-			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
-			s = temp;
-		}
-		else
-		{
-			s = s.replace("{outputFile}","\"${tempVideo}\"");
-		}
-
-		return s;
-	}
-
-	private string encode_video_vpxenc (MediaFile mf, Json.Object settings){
+	private string mux_oggz(MediaFile mf, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
-		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
-		string vcodec = video.get_string_member("codec");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
-		s += decode_video_avconv(mf,settings,true);
-		s += "vpxenc";
-		s += " --codec=" + vcodec;
+		s += "oggz merge";
 
-		if (video.get_string_member("mode") == "2pass"){
-			s += " --passes=2 --pass={passNumber} --fpf=stats";
-		}
-		else{
-			s += " --passes=1";
-		}
+		s += " -o \"${outputFile}\"";
 
-		string vquality = "%.0f".printf(double.parse(video.get_string_member("quality")));
-		switch(video.get_string_member("mode")){
-			case "vbr":
-			case "2pass":
-				s += " --end-usage=vbr --target-bitrate=" + video.get_string_member("bitrate");
-				break;
-			case "cbr":
-				s += " --end-usage=cbr --target-bitrate=" + video.get_string_member("bitrate");
-				break;
-			case "cq":
-				s += " --end-usage=cq --cq-level=" + vquality;
-				break;
+		//add video tracks
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			foreach(VideoStream stream in mf.video_list){
+				if (stream.IsSelected){
+					s += " \"${temp_video_%d}\"".printf(stream.TypeIndex);
+				}
+			}
 		}
 
-		s += " --good";
-		switch(video.get_string_member("speed")){
-			case "good_0":
-				s += " --cpu-used=0";
-				break;
-			case "good_1":
-				s += " --cpu-used=1";
-				break;
-			case "good_2":
-				s += " --cpu-used=2";
-				break;
-			case "good_3":
-				s += " --cpu-used=3";
-				break;
-			case "good_4":
-				s += " --cpu-used=4";
-				break;
-			case "good_5":
-				s += " --cpu-used=5";
-				break;
+		//add audio tracks
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			foreach(AudioStream stream in mf.audio_list){
+				if (stream.IsSelected){
+					s += " \"${temp_audio_%d}\"".printf(stream.TypeIndex);
+				}
+			}
 		}
 
-		//---------------
-
-		//other options
-		if (video.get_string_member("options").strip() != "") {
-			s += " " +  video.get_string_member("options").strip();
+		//add subtitle tracks
+		if (mf.HasSubs && subs.get_string_member("mode") == "embed") {
+			foreach(TextStream stream in mf.text_list){
+				if (stream.IsSelected){
+					s += " \"subs_kate_%d.ogg\"".printf(stream.TypeIndex);
+				}
+			}
 		}
-
-		//specify input dimensions (required)
-		int w,h;
-		calculate_video_resolution(mf, settings, out w, out h);
-		s += " --width=%d --height=%d".printf(w,h);
-
-		//output
-		s += " -o {outputFile}";
-
-		//input
-		s += " -";
-
+		
 		s += "\n";
-
-		if (video.get_string_member("mode") == "2pass"){
-			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
-			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
-			s = temp;
-		}
-		else
-		{
-			s = s.replace("{outputFile}","\"${tempVideo}\"");
-		}
-
+		
 		return s;
-	}*/
-
+	}
 }
 
 public class Encoder : GLib.Object{

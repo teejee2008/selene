@@ -354,7 +354,7 @@ public class MediaFile : GLib.Object{
 							audio.BitRate = AudioBitRate;
 							break;
 						case "language/string":
-							audio.LangCode = val.split(" ")[0].strip();
+							audio.LangCode = val.split(" ")[0].strip().down();
 							break;
 						case "streamsize/string":
 							double d = double.parse(val.split(" ")[0].strip());
@@ -378,7 +378,7 @@ public class MediaFile : GLib.Object{
 							text.Format = val;
 							break;
 						case "language/string":
-							text.LangCode = val;
+							text.LangCode = val.down();
 							break;
 						case "title":
 							text.Title = val;
@@ -908,7 +908,10 @@ public class LanguageCodes : GLib.Object{
 	public static Gee.HashMap<string,string> map_2_to_Name;
 	public static Gee.HashMap<string,string> map_3_to_Name;
 
+	public static Gee.ArrayList<Language> lang_list;
+	
 	private static void initialize(){
+		lang_list = new Gee.ArrayList<Language>();
 		map_2_to_3 = new Gee.HashMap<string,string>();
 		map_3_to_2 = new Gee.HashMap<string,string>();
 		map_2_to_Name = new Gee.HashMap<string,string>();
@@ -929,6 +932,7 @@ public class LanguageCodes : GLib.Object{
 			map_3_to_2[Code3] = Code2;
 			map_2_to_Name[Code2] = Name;
 			map_3_to_Name[Code3] = Name;
+			lang_list.add(this);
 		}
 	}
 
@@ -940,12 +944,18 @@ public class LanguageCodes : GLib.Object{
 		foreach(string line in stdout.split("\n")){
 			string[] parts = line.split("|");
 			if (parts.length == 3){
-				string name = parts[0].split(";")[0].strip();
-				string code3 = parts[1].strip();
-				string code2 = parts[2].strip();
+				string name = parts[0].split(";")[0].split("(")[0].strip();
+				string code3 = parts[1].strip().down();
+				string code2 = parts[2].strip().down();
 				new Language(name,code2,code3);
 			}
 		}
+
+		//sort languages by name
+		CompareDataFunc<Language> func = (a, b) => {
+			return strcmp(a.Name, b.Name);
+		};
+		lang_list.sort((owned)func);
 	}
 }
 
