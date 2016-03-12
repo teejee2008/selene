@@ -1698,8 +1698,14 @@ namespace TeeJee.Misc {
 	public string format_file_size (int64 size){
 
 		/* Format file size in MB */
-
-		return "%0.1f MB".printf (size / (1024.0 * 1024));
+		
+		if (size > (1024.0 * 1024)){
+			return "%0.1f MB".printf (size / (1024.0 * 1024));
+		}
+		else{
+			return "%0.1f KB".printf (size / (1024.0));
+		}
+		
 	}
 
 	public string format_duration (long millis, bool show_millis = false){

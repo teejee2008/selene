@@ -484,55 +484,114 @@ public class MainWindow : Gtk.Window{
 		colName.reorderable = true;
 		colName.min_width = 200;
 		colName.sort_column_id = InputField.FILE_PATH;
+		tvFiles.append_column(colName);
 		
+		//icon
 		CellRendererPixbuf cellThumb = new CellRendererPixbuf ();
 		colName.pack_start (cellThumb, false);
-
+		colName.set_attributes(cellThumb, "height", InputField.ROW_HEIGHT);
+		
+		//toggle
+		var cell_select = new CellRendererToggle ();
+		cell_select.activatable = true;
+		colName.pack_start (cell_select, false);
+		colName.set_attributes(cell_select, "height", InputField.ROW_HEIGHT);
+		
+		//spacer
 		cellText = new CellRendererText();
 		colName.pack_start (cellText, false);
-
+		colName.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		
+		//name
 		cellText = new CellRendererText();
 		cellText.ellipsize = Pango.EllipsizeMode.END;
 		colName.pack_start (cellText, false);
+		colName.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		
+		//set toggle
+		colName.set_cell_data_func (cell_select, (cell_layout, cell, model, iter) => {
+			bool selected, isChild;
+			model.get (iter, InputField.IS_CHILD, out isChild, InputField.IS_SELECTED, out selected, -1);
+			if (isChild){
+				(cell as Gtk.CellRendererToggle).visible = true;
+				(cell as Gtk.CellRendererToggle).active = selected;
+			}
+			else{
+				(cell as Gtk.CellRendererToggle).visible = false;
+			}
+		});
 
+		//toggle handler
+		cell_select.toggled.connect((path) => {
+			var store = (Gtk.TreeStore) tvFiles.model;
+			bool selected, isChild;
+			//MediaFile mf;
+			MediaStream stream;
+			
+			TreeIter iter;
+			store.get_iter_from_string (out iter, path);
+			store.get (iter, InputField.STREAM_REF, out stream, -1);
+			store.get (iter, InputField.IS_CHILD, out isChild, -1);
+			store.get (iter, InputField.IS_SELECTED, out selected, -1);
+
+			stream.IsSelected = !selected;
+
+			store.set(iter, InputField.IS_SELECTED, stream.IsSelected, -1);
+		});
+
+		//set icon
 		colName.set_cell_data_func (cellThumb, (cell_layout, cell, model, iter)=>{
 			string imagePath;
-			bool hasVideo;
-			model.get (iter, InputField.FILE_THUMB, out imagePath, InputField.FILE_HAS_VIDEO, out hasVideo, -1);
+			bool hasVideo, isChild;
+			model.get (iter, InputField.FILE_THUMB, out imagePath, InputField.FILE_HAS_VIDEO, out hasVideo, InputField.IS_CHILD, out isChild, -1);
 
 			Gdk.Pixbuf pixThumb = null;
 
 			try{
-				if (App.TileView){
-					pixThumb = new Gdk.Pixbuf.from_file_at_scale(imagePath,MediaFile.ThumbnailWidth,MediaFile.ThumbnailHeight,true);
+				if (isChild){
+					cell.visible = false;
 				}
 				else{
-					if (hasVideo){
-						var img = get_shared_icon("video-x-generic","video.svg",16);
-						pixThumb = (img == null) ? null : img.pixbuf;
+					if (App.TileView){
+						pixThumb = new Gdk.Pixbuf.from_file_at_scale(imagePath,MediaFile.ThumbnailWidth,MediaFile.ThumbnailHeight,true);
 					}
 					else{
-						var img = get_shared_icon("audio-x-generic","audio.svg",16);
-						pixThumb = (img == null) ? null : img.pixbuf;
+						if (hasVideo){
+							var img = get_shared_icon("video-x-generic","video.svg",16);
+							pixThumb = (img == null) ? null : img.pixbuf;
+						}
+						else{
+							var img = get_shared_icon("audio-x-generic","audio.svg",16);
+							pixThumb = (img == null) ? null : img.pixbuf;
+						}
 					}
+
+					cell.visible = true;
+					(cell as Gtk.CellRendererPixbuf).pixbuf = pixThumb;
 				}
 			}
 			catch(Error e){
 				log_error (e.message);
 			}
 
-			(cell as Gtk.CellRendererPixbuf).pixbuf = pixThumb;
+			
 		});
 
+		//set name
 		colName.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			string fileName, duration, formatInfo, spanStart, spanEnd;
 			int64 fileSize;
-			MediaFile mf;
-			model.get (iter, InputField.FILE_REF, out mf, -1);
 			model.get (iter, InputField.FILE_NAME, out fileName, -1);
 			model.get (iter, InputField.FILE_SIZE, out fileSize, -1);
 			model.get (iter, InputField.FILE_DURATION, out duration, -1);
 
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+			
 			spanStart = "<span foreground='#606060'>";
 			spanEnd = "</span>";
 			fileName = fileName.replace("&","&amp;");
@@ -541,16 +600,19 @@ public class MainWindow : Gtk.Window{
 				+ ((mf.VideoFormat.length > 0) ? (" - " + mf.VideoFormat) : "")
 				+ ((mf.AudioFormat.length > 0) ? (" - " + mf.AudioFormat) : "");
 
-			if (App.TileView){
-				(cell as Gtk.CellRendererText).markup = "%s\n%s%s | %s\n%s%s".printf(fileName, spanStart, duration, format_file_size(fileSize), formatInfo, spanEnd);
+			if (isChild){
+				(cell as Gtk.CellRendererText).markup = fileName;
 			}
 			else{
-				(cell as Gtk.CellRendererText).text = fileName;
+				if (App.TileView){
+					(cell as Gtk.CellRendererText).markup = "%s\n%s%s | %s\n%s%s".printf(fileName, spanStart, duration, format_file_size(fileSize), formatInfo, spanEnd);
+				}
+				else{
+					(cell as Gtk.CellRendererText).text = fileName;
+				}
 			}
 		});
 
-		tvFiles.append_column(colName);
-		
 		//colSize
 		colSize = new TreeViewColumn();
 		colSize.title = _("Size");
@@ -562,11 +624,43 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colSize.pack_start (cellText, false);
+		//colSize.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		//colSize.set_attributes(cellText, "text", InputField.FILE_SIZE);
 		colSize.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
-			int64 val;
-			model.get (iter, InputField.FILE_SIZE, out val, -1);
-			(cell as Gtk.CellRendererText).text = format_file_size(val);
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.StreamSize > 0){
+						txt = format_file_size(video.StreamSize);
+					}
+				}
+				else if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.StreamSize > 0){
+						txt = format_file_size(audio.StreamSize);
+					}
+				}
+				else if (stream is TextStream){
+					var text = stream as TextStream;
+					if (text.StreamSize > 0){
+						txt = format_file_size(text.StreamSize);
+					}
+				}
+			}
+			else{
+				txt = format_file_size(mf.Size);
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colDuration
@@ -579,8 +673,39 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colDuration.pack_start (cellText, false);
-		colDuration.set_attributes(cellText, "text", InputField.FILE_DURATION);
+		//colDuration.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colDuration.set_attributes(cellText, "text", InputField.FILE_DURATION);
+		colDuration.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.Duration > 0){
+						txt = format_duration(video.Duration);
+					}
+				}
+				else if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.Duration > 0){
+						txt = format_duration(audio.Duration);
+					}
+				}
+			}
+			else{
+				txt = format_duration(mf.Duration);
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colFileFormat
 		colFileFormat = new TreeViewColumn();
 		colFileFormat.title = _("Format");
@@ -591,7 +716,46 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colFileFormat.pack_start (cellText, false);
-		colFileFormat.set_attributes(cellText, "text", InputField.FILE_FFORMAT);
+		//colFileFormat.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colFileFormat.set_attributes(cellText, "text", InputField.FILE_FFORMAT);
+		colFileFormat.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.Format.length > 0){
+						txt = "%s".printf(video.Format);
+					}
+				}
+				else if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.Format.length > 0){
+						txt = "%s".printf(audio.Format);
+					}
+				}
+				else if (stream is TextStream){
+					var text = stream as TextStream;
+					if (text.Format.length > 0){
+						txt = "%s".printf(text.Format);
+					}
+				}
+			}
+			else{
+				if (mf.FileFormat.length > 0){
+					txt = "%s".printf(mf.FileFormat);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
 		
 		//colAFormat
 		colAFormat = new TreeViewColumn();
@@ -603,7 +767,34 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colAFormat.pack_start (cellText, false);
-		colAFormat.set_attributes(cellText, "text", InputField.FILE_AFORMAT);
+		//colAFormat.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colAFormat.set_attributes(cellText, "text", InputField.FILE_AFORMAT);
+		colAFormat.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.Format.length > 0){
+						txt = "%s".printf(audio.Format);
+					}
+				}
+			}
+			else{
+				if (mf.AudioFormat.length > 0){
+					txt = "%s".printf(mf.AudioFormat);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
 		
 		//colVFormat
 		colVFormat = new TreeViewColumn();
@@ -615,7 +806,34 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colVFormat.pack_start (cellText, false);
-		colVFormat.set_attributes(cellText, "text", InputField.FILE_VFORMAT);
+		//colVFormat.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colVFormat.set_attributes(cellText, "text", InputField.FILE_VFORMAT);
+		colVFormat.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.Format.length > 0){
+						txt = "%s".printf(video.Format);
+					}
+				}
+			}
+			else{
+				if (mf.VideoFormat.length > 0){
+					txt = "%s".printf(mf.VideoFormat);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
 		
 		//colAChannels
 		colAChannels = new TreeViewColumn();
@@ -628,12 +846,33 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colAChannels.pack_start (cellText, false);
+		//colAChannels.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		//colAChannels.set_attributes(cellText, "text", InputField.FILE_ACHANNELS);
 		colAChannels.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_ACHANNELS, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasAudio ? "%d".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.Channels > 0){
+						txt = "%d".printf(audio.Channels);
+					}
+				}
+			}
+			else{
+				if (mf.AudioChannels > 0){
+					txt = "%d".printf(mf.AudioChannels);
+				}
+			}
+
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colARate
@@ -647,11 +886,32 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colARate.pack_start (cellText, false);
+		//colARate.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		colARate.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_ARATE, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasAudio ? "%d Hz".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.SampleRate > 0){
+						txt = "%d hz".printf(audio.SampleRate);
+					}
+				}
+			}
+			else{
+				if (mf.AudioSampleRate > 0){
+					txt = "%d hz".printf(mf.AudioSampleRate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 
 		//colBitrate
@@ -665,11 +925,38 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colBitrate.pack_start (cellText, false);
+		//colBitrate.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		colBitrate.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_BITRATE, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasAudio ? "%d kb/s".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.BitRate > 0){
+						txt = "%d k".printf(video.BitRate);
+					}
+				}
+				else if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.BitRate > 0){
+						txt = "%d k".printf(audio.BitRate);
+					}
+				}
+			}
+			else{
+				if (mf.BitRate > 0){
+					txt = "%d k".printf(mf.BitRate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colABitrate
@@ -683,11 +970,32 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colABitrate.pack_start (cellText, false);
+		//colABitrate.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		colABitrate.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_ABITRATE, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasAudio ? "%d kb/s".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is AudioStream){
+					var audio = stream as AudioStream;
+					if (audio.BitRate > 0){
+						txt = "%d k".printf(audio.BitRate);
+					}
+				}
+			}
+			else{
+				if (mf.AudioBitRate > 0){
+					txt = "%d k".printf(mf.AudioBitRate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 
 /*
@@ -716,11 +1024,32 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colVBitrate.pack_start (cellText, false);
+		//colVBitrate.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		colVBitrate.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_VBITRATE, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasVideo ? "%d kb/s".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.BitRate > 0){
+						txt = "%d k".printf(video.BitRate);
+					}
+				}
+			}
+			else{
+				if (mf.VideoBitRate > 0){
+					txt = "%d k".printf(mf.VideoBitRate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colVWidth
@@ -734,12 +1063,33 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colVWidth.pack_start (cellText, false);
+		//colVWidth.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		//colVWidth.set_attributes(cellText, "text", InputField.FILE_VWIDTH);
 		colVWidth.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_VWIDTH, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasVideo ? "%d px".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.Width > 0){
+						txt = "%d".printf(video.Width);
+					}
+				}
+			}
+			else{
+				if (mf.SourceWidth > 0){
+					txt = "%d".printf(mf.SourceWidth);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colVHeight
@@ -753,12 +1103,33 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colVHeight.pack_start (cellText, false);
+		//colVHeight.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		//colVHeight.set_attributes(cellText, "text", InputField.FILE_VHEIGHT);
 		colVHeight.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			int val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_VHEIGHT, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasVideo ? "%d px".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.Height > 0){
+						txt = "%d".printf(video.Height);
+					}
+				}
+			}
+			else{
+				if (mf.SourceHeight > 0){
+					txt = "%d".printf(mf.SourceHeight);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 		
 		//colVFps
@@ -772,12 +1143,33 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colVFps.pack_start (cellText, false);
+		//colVFps.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
 		//colVFps.set_attributes(cellText, "text", InputField.FILE_VRATE);
 		colVFps.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
-			double val;
-			model.get (iter, InputField.FILE_REF, out mf, InputField.FILE_VRATE, out val, -1);
-			(cell as Gtk.CellRendererText).text = mf.HasVideo ? "%.3f".printf(val) : "";
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (isChild){
+				if (stream is VideoStream){
+					var video = stream as VideoStream;
+					if (video.FrameRate > 0){
+						txt = "%.3f".printf(video.FrameRate);
+					}
+				}
+			}
+			else{
+				if (mf.SourceFrameRate > 0){
+					txt = "%.3f".printf(mf.SourceFrameRate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
 		});
 
 		//colArtist
@@ -790,7 +1182,26 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colArtist.pack_start (cellText, false);
-		colArtist.set_attributes(cellText, "text", InputField.FILE_ARTIST);
+		//colArtist.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colArtist.set_attributes(cellText, "text", InputField.FILE_ARTIST);
+		colArtist.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.Artist.length > 0){
+					txt = "%s".printf(mf.Artist);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
 
 		//colAlbum
 		colAlbum = new TreeViewColumn();
@@ -802,8 +1213,27 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colAlbum.pack_start (cellText, false);
-		colAlbum.set_attributes(cellText, "text", InputField.FILE_ALBUM);
+		//colAlbum.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colAlbum.set_attributes(cellText, "text", InputField.FILE_ALBUM);
+		colAlbum.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.Album.length > 0){
+					txt = "%s".printf(mf.Album);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colGenre
 		colGenre = new TreeViewColumn();
 		colGenre.title = _("Genre");
@@ -814,8 +1244,27 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colGenre.pack_start (cellText, false);
-		colGenre.set_attributes(cellText, "text", InputField.FILE_GENRE);
+		//colGenre.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colGenre.set_attributes(cellText, "text", InputField.FILE_GENRE);
+		colGenre.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.Genre.length > 0){
+					txt = "%s".printf(mf.Genre);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colTrackName
 		colTrackName = new TreeViewColumn();
 		colTrackName.title = _("Title");
@@ -826,8 +1275,27 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colTrackName.pack_start (cellText, false);
-		colTrackName.set_attributes(cellText, "text", InputField.FILE_TRACK_NAME);
+		//colTrackName.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colTrackName.set_attributes(cellText, "text", InputField.FILE_TRACK_NAME);
+		colTrackName.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.TrackName.length > 0){
+					txt = "%s".printf(mf.TrackName);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colTrackNum
 		colTrackNum = new TreeViewColumn();
 		colTrackNum.title = _("Track #");
@@ -839,8 +1307,27 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colTrackNum.pack_start (cellText, false);
-		colTrackNum.set_attributes(cellText, "text", InputField.FILE_TRACK_NUM);
+		//colTrackNum.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colTrackNum.set_attributes(cellText, "text", InputField.FILE_TRACK_NUM);
+		colTrackNum.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.TrackNumber.length > 0){
+					txt = "%s".printf(mf.TrackNumber);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colComments
 		colComments = new TreeViewColumn();
 		colComments.title = _("Comments");
@@ -851,8 +1338,27 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colComments.pack_start (cellText, false);
-		colComments.set_attributes(cellText, "text", InputField.FILE_COMMENTS);
+		//colComments.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colComments.set_attributes(cellText, "text", InputField.FILE_COMMENTS);
+		colComments.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
 
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.Comment.length > 0){
+					txt = "%s".printf(mf.Comment);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
+		
 		//colRecordedDate
 		colRecordedDate = new TreeViewColumn();
 		colRecordedDate.title = _("Recorded Date");
@@ -864,7 +1370,26 @@ public class MainWindow : Gtk.Window{
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 1.0;
 		colRecordedDate.pack_start (cellText, false);
-		colRecordedDate.set_attributes(cellText, "text", InputField.FILE_RECORDED_DATE);
+		//colRecordedDate.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		//colRecordedDate.set_attributes(cellText, "text", InputField.FILE_RECORDED_DATE);
+		colRecordedDate.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+			MediaFile mf;
+			MediaStream stream;
+			bool isChild;
+			model.get (iter, InputField.FILE_REF, out mf, -1);
+			model.get (iter, InputField.STREAM_REF, out stream, -1);
+			model.get (iter, InputField.IS_CHILD, out isChild, -1);
+
+			string txt = "";
+			
+			if (!isChild){
+				if (mf.RecordedDate.length > 0){
+					txt = "%s".printf(mf.RecordedDate);
+				}
+			}
+			
+			(cell as Gtk.CellRendererText).text = txt;
+		});
 		
 		//colProgress
 		colProgress = new TreeViewColumn();
@@ -876,6 +1401,7 @@ public class MainWindow : Gtk.Window{
 		cellProgress.height = 15;
 		cellProgress.width = 150;
 		colProgress.pack_start (cellProgress, false);
+		//colProgress.set_attributes(cellProgress, "height", InputField.ROW_HEIGHT);
 		colProgress.set_attributes(cellProgress, "value", InputField.FILE_PROGRESS, "text", InputField.FILE_PROGRESS_TEXT);
 		
 		//colSpacer
@@ -886,7 +1412,8 @@ public class MainWindow : Gtk.Window{
 		
 		cellText = new CellRendererText();
 		colSpacer.pack_start (cellText, false);
-
+		//colSpacer.set_attributes(cellText, "height", InputField.ROW_HEIGHT);
+		
 		tvFiles_init_columns();
 
 		startupTimer = Timeout.add (100,() => {
@@ -1041,14 +1568,16 @@ public class MainWindow : Gtk.Window{
 
 	private void refresh_list_view (bool refresh_model = true){
 		if (refresh_model){
-			Gtk.ListStore inputStore = new Gtk.ListStore (29,  
+			var inputStore = new Gtk.TreeStore (32,  
 				typeof(MediaFile), 	//FILE_REF
+				typeof(MediaStream),//STREAM_REF
+				typeof(bool), 		//IS_CHILD
+				typeof(bool), 		//IS_SELECTED
 				typeof(string), 	//FILE_PATH
 				typeof(string), 	//FILE_NAME
 				typeof(int64), 		//FILE_SIZE
 				typeof(string),		//FILE_DURATION
 				typeof(string),		//FILE_STATUS
-				typeof(string),		//FILE_CROPVAL
 				typeof(int), 		//FILE_PROGRESS
 				typeof(string), 	//FILE_PROGRESS_TEXT
 				typeof(string), 	//FILE_THUMB
@@ -1070,19 +1599,22 @@ public class MainWindow : Gtk.Window{
 				typeof(string),		//FILE_TRACK_NAME
 				typeof(string),		//FILE_TRACK_NUM
 				typeof(string),		//FILE_COMMENTS
-				typeof(string)		//FILE_RECORDED_DATE
+				typeof(string),		//FILE_RECORDED_DATE
+				typeof(int)         //ROW_HEIGHT
 				);
 
-			TreeIter iter;
+			TreeIter iter, iter2;
 			foreach(MediaFile mFile in App.InputFiles) {
-				inputStore.append (out iter);
+				inputStore.append (out iter, null);
 				inputStore.set (iter, InputField.FILE_REF, 			mFile);
+				inputStore.set (iter, InputField.STREAM_REF,		null);
+				inputStore.set (iter, InputField.IS_CHILD, 			false);
+				inputStore.set (iter, InputField.IS_SELECTED, 		false);
 				inputStore.set (iter, InputField.FILE_PATH, 		mFile.Path);
 				inputStore.set (iter, InputField.FILE_NAME, 		mFile.Name);
 				inputStore.set (iter, InputField.FILE_SIZE, 		mFile.Size);
 				inputStore.set (iter, InputField.FILE_DURATION, 	format_duration(mFile.Duration));
 				inputStore.set (iter, InputField.FILE_STATUS, 		"gtk-media-pause");
-				inputStore.set (iter, InputField.FILE_CROPVAL, 		mFile.crop_values_info());
 				inputStore.set (iter, InputField.FILE_PROGRESS, 	mFile.ProgressPercent);
 				inputStore.set (iter, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
 				inputStore.set (iter, InputField.FILE_THUMB, 		mFile.ThumbnailImagePath);
@@ -1105,6 +1637,70 @@ public class MainWindow : Gtk.Window{
 				inputStore.set (iter, InputField.FILE_TRACK_NUM, 	mFile.TrackNumber);
 				inputStore.set (iter, InputField.FILE_COMMENTS, 	mFile.Comment);
 				inputStore.set (iter, InputField.FILE_RECORDED_DATE, 	mFile.RecordedDate);
+
+				if (App.TileView){
+					inputStore.set (iter, InputField.ROW_HEIGHT, MediaFile.ThumbnailHeight + 2);
+				}
+				else{
+					inputStore.set (iter, InputField.ROW_HEIGHT, 2);
+				}
+				
+				//if ((mFile.video_list.size < 2) && (mFile.audio_list.size < 2) && (mFile.text_list.size < 2)){
+					//continue;
+				//}
+
+				if (App.Status == AppStatus.NOTSTARTED){
+					foreach(MediaStream stream in mFile.stream_list) {
+						if (!((stream is AudioStream)||(stream is VideoStream)||(stream is TextStream))){
+							continue;
+						}
+						
+						string desc = "";
+						if (stream is VideoStream){
+							desc = "Video #%d : %s".printf(stream.TypeIndex, stream.description);
+						}
+						else if (stream is AudioStream){
+							desc = "Audio #%d : %s".printf(stream.TypeIndex, stream.description);
+						}
+						else if (stream is TextStream){
+							desc = "Subtitle #%d : %s".printf(stream.TypeIndex, stream.description);
+						}
+						
+						inputStore.append (out iter2, iter);
+						inputStore.set (iter2, InputField.FILE_REF, 		mFile);
+						inputStore.set (iter2, InputField.STREAM_REF,		stream);
+						inputStore.set (iter2, InputField.IS_CHILD, 		true);
+						inputStore.set (iter2, InputField.IS_SELECTED, 		stream.IsSelected);
+						inputStore.set (iter2, InputField.FILE_PATH, 		mFile.Path);
+						inputStore.set (iter2, InputField.FILE_NAME, 		desc);
+						inputStore.set (iter2, InputField.FILE_SIZE, 		mFile.Size);
+						inputStore.set (iter2, InputField.FILE_DURATION, 	format_duration(mFile.Duration));
+						inputStore.set (iter2, InputField.FILE_STATUS, 		"gtk-media-pause");
+						inputStore.set (iter2, InputField.FILE_PROGRESS, 	mFile.ProgressPercent);
+						inputStore.set (iter2, InputField.FILE_PROGRESS_TEXT, mFile.ProgressText);
+						inputStore.set (iter2, InputField.FILE_THUMB, 		mFile.ThumbnailImagePath);
+						inputStore.set (iter2, InputField.FILE_HAS_VIDEO, 	mFile.HasVideo);
+						inputStore.set (iter2, InputField.FILE_FFORMAT, 	mFile.FileFormat);
+						inputStore.set (iter2, InputField.FILE_AFORMAT, 	mFile.AudioFormat);
+						inputStore.set (iter2, InputField.FILE_VFORMAT, 	mFile.VideoFormat);
+						inputStore.set (iter2, InputField.FILE_ACHANNELS, 	mFile.AudioChannels);
+						inputStore.set (iter2, InputField.FILE_ARATE, 		mFile.AudioSampleRate);
+						inputStore.set (iter2, InputField.FILE_ABITRATE, 	mFile.AudioBitRate);
+						inputStore.set (iter2, InputField.FILE_VWIDTH, 		mFile.SourceWidth);
+						inputStore.set (iter2, InputField.FILE_VHEIGHT, 	mFile.SourceHeight);
+						inputStore.set (iter2, InputField.FILE_VRATE, 		mFile.SourceFrameRate);
+						inputStore.set (iter2, InputField.FILE_VBITRATE, 	mFile.VideoBitRate);
+						inputStore.set (iter2, InputField.FILE_BITRATE, 	mFile.BitRate);
+						inputStore.set (iter2, InputField.FILE_ARTIST, 		mFile.Artist);
+						inputStore.set (iter2, InputField.FILE_ALBUM, 		mFile.Album);
+						inputStore.set (iter2, InputField.FILE_GENRE, 		mFile.Genre);
+						inputStore.set (iter2, InputField.FILE_TRACK_NAME, 	mFile.TrackName);
+						inputStore.set (iter2, InputField.FILE_TRACK_NUM, 	mFile.TrackNumber);
+						inputStore.set (iter2, InputField.FILE_COMMENTS, 	mFile.Comment);
+						inputStore.set (iter2, InputField.FILE_RECORDED_DATE, 	mFile.RecordedDate);
+						inputStore.set (iter2, InputField.ROW_HEIGHT, 	2);
+					}
+				}
 			}
 
 			tvFiles.set_model (inputStore);
@@ -1127,12 +1723,14 @@ public class MainWindow : Gtk.Window{
 
 	private enum InputField{
 		FILE_REF,
+		STREAM_REF,
+		IS_CHILD,
+		IS_SELECTED,
 		FILE_PATH,
 		FILE_NAME,
 		FILE_SIZE,
 		FILE_DURATION,
 		FILE_STATUS,
-		FILE_CROPVAL,
 		FILE_PROGRESS,
 		FILE_PROGRESS_TEXT,
 		FILE_THUMB,
@@ -1154,7 +1752,8 @@ public class MainWindow : Gtk.Window{
 		FILE_TRACK_NAME,
 		FILE_TRACK_NUM,
 		FILE_COMMENTS,
-		FILE_RECORDED_DATE
+		FILE_RECORDED_DATE,
+		ROW_HEIGHT
 	}
 	
 	// presets -------------------------------------
@@ -1349,7 +1948,7 @@ public class MainWindow : Gtk.Window{
 
 	private void cmbScriptFolder_changed(){
 		//create empty model
-		Gtk.ListStore model = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
+		var model = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
 		cmbScriptFile.set_model(model);
 
 		string path = gtk_combobox_get_value(cmbScriptFolder,0,"");
@@ -1438,7 +2037,7 @@ public class MainWindow : Gtk.Window{
 			cmbScriptFolder.set_active(-1);
 
 			//add the selected file
-			Gtk.ListStore model1 = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
+			var model1 = new Gtk.ListStore(2, typeof(ScriptFile), typeof(string));
 			cmbScriptFile.set_model(model1);
 			ScriptFile sh = new ScriptFile(filePath);
 			model1.append(out iter);
@@ -1449,7 +2048,7 @@ public class MainWindow : Gtk.Window{
 		}
 
 		//select file
-		Gtk.ListStore model1 = (Gtk.ListStore) cmbScriptFile.model;
+		var model1 = (Gtk.ListStore) cmbScriptFile.model;
 		for (bool next = model1.get_iter_first (out iter); next; next = model1.iter_next (ref iter)) {
 			ScriptFile sh = new ScriptFile(filePath);
 			model1.get (iter, 0, out sh);
@@ -2089,7 +2688,7 @@ on the toolbar will open the file in a text editor.
 		//log_msg("%f".printf(tvFiles.vadjustment.get_value()));
 
 	 	if (msg_add.length > 0){
-			msg_add = _("Some files could not be opened:") + "\n\n" + msg_add;
+			msg_add = _("Some files could not be added:") + "\n\n" + msg_add;
 			gtk_messagebox("Unknown Format",msg_add,this,true);
 			msg_add = "";
 		}
@@ -2153,9 +2752,23 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void add_file(string file_path){
-		bool added = App.add_file (file_path);
-		if (added == false){
-			msg_add += "%s\n".printf(file_basename(file_path));
+		var mFile = App.add_file (file_path);
+		if (mFile == null){
+			bool found = false;
+			foreach(MediaFile mf in App.InputFiles){
+				foreach(MediaStream stream in mf.text_list){
+					if ((stream as TextStream).SubFile == file_path){
+						found = true;
+						break;
+					}
+				}
+				if (found){
+					break;
+				}
+			}
+			if (!found){
+				msg_add += "%s\n".printf(file_basename(file_path));
+			}
 		}
 	}
 
@@ -2411,7 +3024,7 @@ on the toolbar will open the file in a text editor.
 	    dialog.run();
 		dialog.destroy();
 		
-	    refresh_list_view(false);
+	    refresh_list_view();
 	}
 
 	private void btnShutdown_clicked(){
@@ -2496,6 +3109,9 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void convert_prepare(){
+		App.Status = AppStatus.RUNNING;
+		refresh_list_view();
+		
 		toolbar2.visible = false;
 		gridConfig.visible = false;
 		btnShutdown.active = App.Shutdown;
@@ -2569,12 +3185,14 @@ on the toolbar will open the file in a text editor.
 
 		App.convert_finish();
 
+		refresh_list_view();
+		
 		statusbar_default_message();
 	}
 
 	private bool update_status(){
 		TreeIter iter;
-		Gtk.ListStore model = (Gtk.ListStore)tvFiles.model;
+		var model = (Gtk.TreeStore)tvFiles.model;
 
 		switch (App.Status) {
 			case AppStatus.PAUSED:
@@ -2672,7 +3290,7 @@ on the toolbar will open the file in a text editor.
 	}
 
 	private void update_status_all(){
-		Gtk.ListStore model = (Gtk.ListStore)tvFiles.model;
+		var model = (Gtk.TreeStore)tvFiles.model;
 		MediaFile mf;
 		int index = -1;
 		TreeIter iter;

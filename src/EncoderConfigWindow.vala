@@ -1442,8 +1442,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,_("Copy Video"),1,"copy");
 				model.append (out iter);
 				model.set (iter,0,"H.264 / MPEG-4 AVC (x264)",1,"x264");
-				//model.append (out iter);
-				//model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265"); //not yet supported
+				model.append (out iter);
+				model.set (iter,0,"H.265 / MPEG-H HEVC (x265)",1,"x265"); //not yet supported
 				cmbVCodec.set_active(1);
 				break;
 			case "mp4v":

@@ -42,6 +42,11 @@ public class MediaFile : GLib.Object{
 	public double EndPos = 0.0;
 	public Gee.ArrayList<MediaClip> clip_list;
 	
+	public Gee.ArrayList<MediaStream> stream_list;
+	public Gee.ArrayList<AudioStream> audio_list;
+	public Gee.ArrayList<VideoStream> video_list;
+	public Gee.ArrayList<TextStream> text_list;
+	
 	//public int Status = 0;
 	public FileStatus Status = FileStatus.PENDING;
 	public bool IsValid;
@@ -51,10 +56,10 @@ public class MediaFile : GLib.Object{
 	public string InfoText = "";
 	public string InfoTextFormatted = "";
 	
-	public bool HasAudio = false;
-	public bool HasVideo = false;
-	public bool HasSubs = false;
-	public bool HasExtSubs = false;
+	//public bool HasAudio = false;
+	//public bool HasVideo = false;
+	//public bool HasSubs = false;
+	//public bool HasExtSubs = false;
 
 	public string FileFormat = "";
 	public string VideoFormat = "";
@@ -82,6 +87,10 @@ public class MediaFile : GLib.Object{
 		if (file_exists (filePath) == false) { return; }
 
 		clip_list = new Gee.ArrayList<MediaClip>();
+		stream_list = new Gee.ArrayList<MediaStream>();
+		audio_list = new Gee.ArrayList<AudioStream>();
+		video_list = new Gee.ArrayList<VideoStream>();
+		text_list = new Gee.ArrayList<TextStream>();
 		
 		// set file properties ------------
 
@@ -113,17 +122,55 @@ public class MediaFile : GLib.Object{
 		// search for subtitle files ---------------
 
 		try{
-	        var enumerator = fp.enumerate_children ("%s,%s".printf(FileAttribute.STANDARD_NAME,FileAttribute.STANDARD_TYPE), 0);
+	        var enumerator = fp.enumerate_children ("%s,%s,%s".printf(FileAttribute.STANDARD_NAME,FileAttribute.STANDARD_TYPE,FileAttribute.STANDARD_SIZE), 0);
 			var fileInfo = enumerator.next_file();
 	        while (fileInfo != null) {
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
 		            string fname = fileInfo.get_name().down();
+
 		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
 		            {
 			            SubName = fileInfo.get_name();
 			            SubFile = Location + "/" + SubName;
 	                	SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
-	                	HasExtSubs = true;
+	                	//HasExtSubs = true;
+
+						var stream = new TextStream();
+						stream_list.add(stream);
+	                	text_list.add(stream);
+	                	stream.TypeIndex = text_list.index_of(stream);
+
+	                	stream.SubName = fileInfo.get_name();
+						stream.SubFile = Location + "/" + SubName;
+	                	stream.SubExt = SubFile[SubFile.last_index_of(".",0):SubFile.length].down();
+	                	stream.StreamSize = fileInfo.get_size();
+	                	stream.get_character_encoding();
+					
+	                	// try to parse language info from subtitle file name
+
+	                	var SubtitleTitle = SubName[0: SubName.last_index_of(".",0)];
+	                	log_msg("sub=%s".printf(SubtitleTitle));
+	                	
+	                	if (SubtitleTitle.length > Title.length){
+							string lang = SubtitleTitle.down();
+							lang = lang[Title.length:SubtitleTitle.length];
+							lang = lang.replace("_","").replace("-","").strip();
+
+							log_msg("lang='%s',length=%d".printf(lang,lang.length));
+							
+							if (lang.length == 2){
+								if (LanguageCodes.map_2_to_3.has_key(lang)){
+									stream.LangCode = lang;
+									stream.Title = LanguageCodes.map_2_to_Name[lang];
+								}
+							}
+							else if (lang.length == 3){
+								if (LanguageCodes.map_3_to_2.has_key(lang)){
+									stream.LangCode = LanguageCodes.map_3_to_2[lang];
+									stream.Title = LanguageCodes.map_3_to_Name[lang];
+								}
+							}
+						}
 	                	//log ("file=%s, name=%s, ext=%s\n".printf(SubFile, SubName, SubExt));
 	                }
 	            }
@@ -150,26 +197,53 @@ public class MediaFile : GLib.Object{
 		}
 
 		string sectionType = "";
-
+		MediaStream stream = null;
+		
 		foreach (string line in InfoText.split ("\n")){
 			if (line == null || line.length == 0) { continue; }
 
-			if (line.contains (":") == false)
-			{
+			if (line.contains (":") == false){
 				if (line.contains ("Audio")){
+					stream = new AudioStream();
+					stream_list.add(stream);
+					stream.Index = stream_list.index_of(stream) - 1; //-1 to ignore GeneralStream
+
+					var audio = stream as AudioStream;
+					audio_list.add(audio);
+					audio.TypeIndex = audio_list.index_of(audio);
+					
 					sectionType = "audio";
-					HasAudio = true;
+					//HasAudio = true;
 				}
 				else if (line.contains ("Video")){
+					stream = new VideoStream();
+					stream_list.add(stream);
+					stream.Index = stream_list.index_of(stream) - 1; //-1 to ignore GeneralStream
+
+					var video = stream as VideoStream;
+					video_list.add(video);
+					video.TypeIndex = video_list.index_of(video);
+
 					sectionType = "video";
-					HasVideo = true;
+					//HasVideo = true;
 				}
 				else if (line.contains ("General")){
+					stream = new GeneralStream();
+					stream_list.add(stream);
+
 					sectionType = "general";
 				}
 				else if (line.contains ("Text")){
+					stream = new TextStream();
+					stream_list.add(stream);
+					stream.Index = stream_list.index_of(stream) - 1; //-1 to ignore GeneralStream
+
+					var text = stream as TextStream;
+					text_list.add(text);
+					text.TypeIndex = text_list.index_of(text);
+					
 					sectionType = "text";
-					HasSubs = true;
+					//HasSubs = true;
 				}
 			}
 			else{
@@ -182,18 +256,7 @@ public class MediaFile : GLib.Object{
 				if (sectionType	== "general"){
 					switch (key.down()) {
 						case "duration/string":
-							Duration = 0;
-							foreach(string p in val.split(" ")){
-								string part = p.strip().down();
-								if (part.contains ("h") || part.contains ("hr"))
-									Duration += long.parse(part.replace ("hr","").replace ("h","")) * 60 * 60 * 1000;
-								else if (part.contains ("mn") || part.contains ("min"))
-									Duration += long.parse(part.replace ("min","").replace ("mn","")) * 60 * 1000;
-								else if (part.contains ("ms"))
-									Duration += long.parse(part.replace ("ms",""));
-								else if (part.contains ("s"))
-									Duration += long.parse(part.replace ("s","")) * 1000;
-							}
+							Duration = parse_duration(val);
 							break;
 						case "track":
 							TrackName = val;
@@ -225,40 +288,119 @@ public class MediaFile : GLib.Object{
 					}
 				}
 				else if (sectionType == "video"){
+					var video = stream as VideoStream;
 					switch (key.down()) {
+						case "duration/string":
+							video.Duration = parse_duration(val);
+							break;
 						case "width/string":
 							SourceWidth = int.parse(val.split(" ")[0].strip());
+							video.Width = SourceWidth;
 							break;
 						case "height/string":
 							SourceHeight = int.parse(val.split(" ")[0].strip());
+							video.Height = SourceHeight;
 							break;
 						case "framerate/string":
 						case "framerate_original/string":
 							SourceFrameRate = double.parse(val.split(" ")[0].strip());
+							video.FrameRate = SourceFrameRate;
 							break;
 						case "format":
 							VideoFormat = val;
+							video.Format = VideoFormat;
 							break;
 						case "bitrate/string":
+						case "bitrate_nominal/string":
 							VideoBitRate = int.parse(val.split(" ")[0].strip());
+							video.BitRate = VideoBitRate;
+							break;
+						case "streamsize/string":
+							double d = double.parse(val.split(" ")[0].strip());
+							if (val.contains("GiB")){
+								d = d * 1024 * 1024 * 1024;
+							}
+							else if (val.contains("MiB")){
+								d = d * 1024 * 1024;
+							}
+							else if (val.contains("KiB")){
+								d = d * 1024 ;
+							}
+							video.StreamSize = (int64) d;
 							break;
 					}
 				}
 				else if (sectionType == "audio"){
+					var audio = stream as AudioStream;
 					switch (key.down()) {
+						case "duration/string":
+							audio.Duration = parse_duration(val);
+							break;
 						case "channel(s)/string":
 							AudioChannels = int.parse(val.split(" ")[0].strip());
+							audio.Channels = AudioChannels;
 							break;
 						case "samplingrate/string":
 							AudioSampleRate = (int)(double.parse(val.split(" ")[0].strip()) * 1000);
+							audio.SampleRate = AudioSampleRate;
 							break;
 						case "format":
 							AudioFormat = val;
+							audio.Format = AudioFormat;
 							break;
 						case "bitrate/string":
+						case "bitrate_nominal/string":
 							AudioBitRate = int.parse(val.split(" ")[0].strip());
+							audio.BitRate = AudioBitRate;
+							break;
+						case "language/string":
+							audio.LangCode = val.split(" ")[0].strip();
+							break;
+						case "streamsize/string":
+							double d = double.parse(val.split(" ")[0].strip());
+							if (val.contains("GiB")){
+								d = d * 1024 * 1024 * 1024;
+							}
+							else if (val.contains("MiB")){
+								d = d * 1024 * 1024;
+							}
+							else if (val.contains("KiB")){
+								d = d * 1024 ;
+							}
+							audio.StreamSize = (int64) d;
 							break;
 					}
+				}
+				else if (sectionType == "text"){
+					var text = stream as TextStream;
+					switch (key.down()) {
+						case "format":
+							text.Format = val;
+							break;
+						case "language/string":
+							text.LangCode = val;
+							break;
+						case "title":
+							text.Title = val;
+							break;
+					}
+				}
+			}
+		}
+
+		//set derived properties
+		foreach(var st in stream_list){
+			if (st is VideoStream){				
+				var video = st as VideoStream;
+				if ((video.StreamSize == 0) && (video.Duration > 0) && (video.BitRate > 0)){
+					video.StreamSize = (int64) ((video.Duration / 1000.0) * video.BitRate * 1000.0 / 8);
+				}
+				//log_msg("dur=%ld".printf(video.Duration));
+			}
+			else if (st is AudioStream){
+				var audio = st as AudioStream;
+				if ((audio.StreamSize == 0) && (audio.Duration > 0) && (audio.BitRate > 0)){
+					audio.StreamSize = (int64) ((audio.Duration / 1000.0) * audio.BitRate * 1000.0 / 8);
 				}
 			}
 		}
@@ -268,8 +410,24 @@ public class MediaFile : GLib.Object{
 		InfoTextFormatted = get_mediainfo (Path, false);
 	}
 
+	public long parse_duration(string txt){
+		long dur = 0;
+		foreach(string p in txt.split(" ")){
+			string part = p.strip().down();
+			if (part.contains ("h") || part.contains ("hr"))
+				dur += long.parse(part.replace ("hr","").replace ("h","")) * 60 * 60 * 1000;
+			else if (part.contains ("mn") || part.contains ("min"))
+				dur += long.parse(part.replace ("min","").replace ("mn","")) * 60 * 1000;
+			else if (part.contains ("ms"))
+				dur += long.parse(part.replace ("ms",""));
+			else if (part.contains ("s"))
+				dur += long.parse(part.replace ("s","")) * 1000;
+		}
+		return dur;
+	}
+	
 	public void prepare (string baseTempDir){
-		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Name;
+		TempDirectory = baseTempDir + "/" + timestamp2() + " - " + Title;
 		LogFile = TempDirectory + "/" + "log.txt";
 		TempScriptFile = TempDirectory + "/convert.sh";
 		OutputFilePath = "";
@@ -289,12 +447,138 @@ public class MediaFile : GLib.Object{
 			ThumbnailImagePath = get_temp_file_path() + ".png";
 			string std_out, std_err;
 			execute_command_script_sync("%s -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(av_encoder,Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
+
+			//log_msg(std_err);
 		}
 		else{
 			ThumbnailImagePath = "/usr/share/%s/images/%s".printf(AppShortName, "audio.svg");
 		}
 	}
 
+	public void ffmpeg_parse_info(string output){
+
+/*
+Input #0, matroska,webm, from '/media/teejee/dump/tv/Season 1/Seinfeld Season 01 Episode 05 - The Stock Tip.mkv':
+  Metadata:
+    encoder         : libebml v0.7.7 + libmatroska v0.8.1
+    creation_time   : 2007-11-17 09:35:48
+  Duration: 00:22:05.06, start: 0.000000, bitrate: 1472 kb/s
+    Stream #0:0: Audio: aac (LC), 48000 Hz, stereo, fltp (default)
+    Stream #0:1(eng): Video: h264 (High), yuv420p, 704x528, SAR 1:1 DAR 4:3, 25 fps, 25 tbr, 1k tbn, 50 tbc (default)
+    Metadata:
+      title           : AAC 128 Kbps
+    Stream #0:2(nor): Subtitle: subrip (default)
+    Metadata:
+      title           : Norsk
+    Stream #0:3(swe): Subtitle: subrip
+    Metadata:
+      title           : Svensk
+    Stream #0:4(dan): Subtitle: subrip
+    Metadata:
+      title           : Dansk
+    Stream #0:5(eng): Subtitle: subrip
+    Metadata:
+      title           : Engelsk
+Output #0, image2, to '/tmp/selene/14573660971176541890.png':
+  Metadata:
+    encoder         : Lavf57.24.101
+    Stream #0:0(eng): Video: png, rgb24, 80x64 [SAR 16:15 DAR 4:3], q=2-31, 200 kb/s, 1 fps, 1 tbn, 1 tbc (default)
+    Metadata:
+      title           : AAC 128 Kbps
+      encoder         : Lavc57.24.101 png
+Stream mapping:
+  Stream #0:1 -> #0:0 (h264 (native) -> png (native))
+*/
+
+/*
+avconv version 12_dev0-6:12~~git20150809.1542ec9~ubuntu15.04.1, Copyright (c) 2000-2015 the Libav developers
+  built on Aug  9 2015 17:41:47 with gcc 4.9.2 (Ubuntu 4.9.2-10ubuntu13)
+Input #0, matroska,webm, from './Seinfeld Season 01 Episode 05 - The Stock Tip.mkv':
+  Duration: 00:22:05.05, start: 0.000000, bitrate: N/A
+    Stream #0:0: Audio: aac
+      48000 Hz, stereo, fltp (default)
+    Stream #0:1(eng): Video: h264 (High)
+      yuv420p, 704x528, PAR 1:1 DAR 4:3
+      25 fps, 1k tbn, 50 tbc (default)
+    Metadata:
+      title           : AAC 128 Kbps
+    Stream #0:2(nor): Subtitle: [0][0][0][0] / 0x0000 (default)
+    Metadata:
+      title           : Norsk
+    Stream #0:3(swe): Subtitle: [0][0][0][0] / 0x0000
+    Metadata:
+      title           : Svensk
+    Stream #0:4(dan): Subtitle: [0][0][0][0] / 0x0000
+    Metadata:
+      title           : Dansk
+    Stream #0:5(eng): Subtitle: [0][0][0][0] / 0x0000
+    Metadata:
+      title           : Engelsk
+At least one output file must be specified
+*/
+		try{
+
+			var rex_a = new Regex("""Stream #0:([0-9]*)\(*([a-zA-Z]*)\)*: (Audio|Video|Subtitle): aac (LC), 48000 Hz, stereo, fltp (default)""");
+			var rex_v = new Regex("""Stream #0:1(eng): Video: h264 (High), yuv420p, 704x528, SAR 1:1 DAR 4:3, 25 fps, 25 tbr, 1k tbn, 50 tbc (default)""");
+			var rex_s = new Regex("""Stream #0:2(nor): Subtitle: subrip (default)""");
+			MatchInfo match;
+			
+			foreach(string line in output.split("\n")){
+				if (rex_a.match(line, 0, out match)){
+					//Position = double.parse(match.fetch(1));
+
+				}
+			}
+		}
+		catch (Error e) {
+			log_error (e.message);
+		}
+
+	}
+
+	//properties ---------------------------
+
+	public bool HasVideo{
+		get {
+			bool has = false;
+			foreach(MediaStream stream in video_list){
+				if (stream.IsSelected){
+					has = true;
+					break;
+				}
+			}
+			return has;
+		}
+	}
+
+	public bool HasAudio{
+		get {
+			bool has = false;
+			foreach(MediaStream stream in audio_list){
+				if (stream.IsSelected){
+					has = true;
+					break;
+				}
+			}
+			return has;
+		}
+	}
+
+	public bool HasSubs{
+		get {
+			bool has = false;
+			foreach(MediaStream stream in text_list){
+				if (stream.IsSelected){
+					has = true;
+					break;
+				}
+			}
+			return has;
+		}
+	}
+	
+	//cropping --------------------
+	
 	public bool crop_detect(){
 		if (HasVideo == false) {
 			AutoCropError = true;
@@ -367,6 +651,8 @@ public class MediaFile : GLib.Object{
 			return "0,0,0,0";
 	}
 
+	//playback ----------------------
+	
 	public void play_source(string av_player){
 		play_file(Path, av_player);
 	}
@@ -408,12 +694,259 @@ public class MediaClip : GLib.Object{
 	}
 }
 
-public class MediaStream : GLib.Object{
-    public string Format = "";
-    public int StreamIndex = -1;
-    public int StreamTypeIndex = -1;
+public abstract class MediaStream : GLib.Object{
+    public MediaStreamType Type = MediaStreamType.UNKNOWN;
+    public int Index = -1;
+    public int TypeIndex = -1;
+    public string Description = "";
+	public bool IsSelected = true;
+	
+	public MediaStream(MediaStreamType _type){
+		Type = _type;
+	}
+	
+    public enum MediaStreamType{
+		UNKNOWN,
+		GENERAL,
+		AUDIO,
+		VIDEO,
+		TEXT
+	}
+
+	public abstract string description{
+        owned get;
+    }
 }
 
-public class AudioStream : MediaStream{
+public class GeneralStream : MediaStream {
+	public string Format = "";
 
+	public GeneralStream(){
+		base(MediaStreamType.GENERAL);
+	}
+
+	public override string description{
+        owned get {
+			return "%s".printf(Format);
+		}
+    }
 }
+
+public class VideoStream : MediaStream {
+	public string Format = "";
+	public int Width = 0;
+	public int Height = 0;
+	public double FrameRate = 0;
+	public int BitRate = 0;
+	public int64 StreamSize = 0;
+	public long Duration = 0;
+	
+	public VideoStream(){
+		base(MediaStreamType.VIDEO);
+	}
+
+	public override string description{
+        owned get {
+			string s = "";
+			if (Format.length > 0){
+				s += "%s".printf(Format);
+			}
+			if ((Width > 0) && (Height > 0)){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%dx%d".printf(Width, Height);
+			}
+			if (FrameRate > 0){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%.3f fps".printf(FrameRate);
+			}
+			if (BitRate > 0){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%d k".printf(BitRate);
+			}
+			return s;
+		}
+    }
+}
+
+public class AudioStream : MediaStream {
+	public string Format = "";
+	public string LangCode = "";
+	public int Channels = 0;
+	public int SampleRate = 0;
+	public int BitRate = 0;
+	public int64 StreamSize = 0;
+	public long Duration = 0;
+	
+	public AudioStream(){
+		base(MediaStreamType.AUDIO);
+	}
+
+	public override string description{
+        owned get {
+			string s = "";
+			if (Format.length > 0){
+				s += "%s".printf(Format);
+			}
+			if (Channels > 0){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%d ch".printf(Channels);
+			}
+			if (SampleRate > 0){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%d hz".printf(SampleRate);
+			}
+			if (BitRate > 0){
+				if (s.length > 0){
+					s += ", ";
+				}
+				s += "%d k".printf(BitRate);
+			}
+			if (LangCode.length > 0){
+				if (s.length > 0){
+					s += " ";
+				}
+				s += "(%s)".printf(LangCode);
+			}
+			return s;
+		}
+    }
+}
+
+public class TextStream : MediaStream {
+	public string Format = "";
+	public string LangCode = "";
+	public string Title = "";
+	public int64 StreamSize = 0;
+	
+	public string SubName = "";
+	public string SubExt = "";
+	public string SubFile = "";
+	public string CharacterEncoding = "";
+	
+	public TextStream(){
+		base(MediaStreamType.TEXT);
+	}
+
+	public override string description{
+        owned get {
+			string s = "";
+
+			if (IsExternal){
+				s += "%s".printf("External");
+				if (CharacterEncoding.length > 0){
+					s += ", %s".printf(CharacterEncoding);
+				}
+				if (Title.length > 0){
+					if (s.length > 0){
+						s += ", ";
+					}
+					s += "%s".printf(Title);
+				}
+				if (LangCode.length > 0){
+					if (s.length > 0){
+						s += " ";
+					}
+					s += "(%s)".printf(LangCode);
+				}
+				s += ", '%s'".printf(SubName);
+			}	
+			else{
+				if (Format.length > 0){
+					s += "%s".printf(Format);
+				}
+				if (Title.length > 0){
+					if (s.length > 0){
+						s += ", ";
+					}
+					s += "%s".printf(Title);
+				}
+				if (LangCode.length > 0){
+					if (s.length > 0){
+						s += " ";
+					}
+					s += "(%s)".printf(LangCode);
+				}
+			}
+			
+			return s;
+		}
+    }
+
+	public bool IsExternal{
+		get {
+			return (SubFile.length > 0);
+		}
+	}
+
+	public void get_character_encoding(){
+		string stdout, stderr;
+		execute_command_script_sync("LC_ALL=C file -i \"%s\"".printf(SubFile), out stdout, out stderr);
+		//log_msg("LC_ALL=C file -i \"%s\"".printf(SubFile));
+		//log_msg("out=%s".printf(stdout));
+		foreach(string line in stdout.split("\n")){
+			if (line.contains("charset=")){
+				CharacterEncoding = line.split("charset=")[1].up();
+				break;
+			}
+		}
+	}
+}
+
+public class LanguageCodes : GLib.Object{
+	public static Gee.HashMap<string,string> map_2_to_3;
+	public static Gee.HashMap<string,string> map_3_to_2;
+	public static Gee.HashMap<string,string> map_2_to_Name;
+	public static Gee.HashMap<string,string> map_3_to_Name;
+
+	private static void initialize(){
+		map_2_to_3 = new Gee.HashMap<string,string>();
+		map_3_to_2 = new Gee.HashMap<string,string>();
+		map_2_to_Name = new Gee.HashMap<string,string>();
+		map_3_to_Name = new Gee.HashMap<string,string>();
+	}
+	
+	public class Language : GLib.Object{
+		public string Name = "";
+		public string Code2 = "";
+		public string Code3 = "";
+
+		public Language(string _Name, string _Code2, string _Code3){
+			Name = _Name;
+			Code2 = _Code2;
+			Code3 = _Code3;
+
+			map_2_to_3[Code2] = Code3;
+			map_3_to_2[Code3] = Code2;
+			map_2_to_Name[Code2] = Name;
+			map_3_to_Name[Code3] = Name;
+		}
+	}
+
+	public static void build_maps(){
+		initialize();
+		
+		string stdout, stderr;
+		execute_command_script_sync("LC_ALL=C mkvmerge --list-languages", out stdout, out stderr);
+		foreach(string line in stdout.split("\n")){
+			string[] parts = line.split("|");
+			if (parts.length == 3){
+				string name = parts[0].split(";")[0].strip();
+				string code3 = parts[1].strip();
+				string code2 = parts[2].strip();
+				new Language(name,code2,code3);
+			}
+		}
+	}
+}
+
+

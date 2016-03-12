@@ -103,7 +103,7 @@ public class BatchEditWindow : Gtk.Dialog {
 			btnCropReset = (Button) add_button ("Reset", Gtk.ResponseType.NONE);
 			btnCropReset.clicked.connect (btnCropReset_clicked);
 		}
-		
+
 		// btnOk
         btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btnOk.clicked.connect (btnOk_clicked);

@@ -241,6 +241,8 @@ public class Main : GLib.Object{
 		if ((App.SelectedScript == null)||(App.InputFiles.size == 0))
 			App.ConsoleMode = false;
 
+		LanguageCodes.build_maps();
+		
 		//show window
 		if (App.ConsoleMode){
 			if (App.InputFiles.size == 0){
@@ -255,7 +257,7 @@ public class Main : GLib.Object{
 			window.destroy.connect (App.exit_app);
 			window.show_all();
 		}
-
+		
 	    Gtk.main();
 
 	    return 0;
@@ -627,7 +629,7 @@ Notes:
 		Gtk.main_quit();
 	}
 
-	public bool add_file (string filePath){
+	public MediaFile? add_file (string filePath){
 		MediaFile mFile = new MediaFile (filePath, App.PrimaryEncoder);
 
 		if (mFile.IsValid
@@ -647,19 +649,19 @@ Notes:
 
 			if (duplicate)
 			{
-				return true; //not an error since file is already added
+				return mFile; //not an error since file is already added
 			}
 			else{
 				InputFiles.add(mFile);
 				log_msg (_("File added:") + " '%s'".printf (mFile.Path));
-				return true;
+				return mFile;
 			}
 		}
 		else{
 			log_error (_("Unknown format:") + " '%s'".printf (mFile.Path));
 		}
 
-		return false;
+		return null;
 	}
 
 	public void remove_files (Gee.ArrayList<MediaFile> file_list){
@@ -1348,7 +1350,7 @@ Notes:
 
 		//temp video -------------
 		
-		string tempVideoExt = ".mka";
+		string tempVideoExt = ".mkv";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable"){
 			switch (video.get_string_member("codec")) {
 			case "copy":
@@ -1376,7 +1378,12 @@ Notes:
 				break;
 			}
 
-			s += "tempVideo=\"${tempDir}/video%s\"\n".printf(tempVideoExt);
+			foreach(VideoStream stream in mf.video_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += "temp_video_%d=\"${tempDir}/video-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempVideoExt);
+			}
 		}
 
 		// temp audio ----------------
@@ -1430,12 +1437,25 @@ Notes:
 				break;
 			}
 
-			s += "tempAudio=\"${tempDir}/audio%s\"\n".printf(tempAudioExt);
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += "temp_audio_%d=\"${tempDir}/audio-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,tempAudioExt);
+			}
 		}
 
 		// temp subs ---------------
 
-		s += "tempSub=\"${tempDir}/subtitles.srt\"\n";
+		if (mf.HasSubs && subs.get_string_member("mode") == "embed"){
+			foreach(TextStream stream in mf.text_list){
+				if (!stream.IsSelected){
+					//log_msg("%d:not-selected".printf(stream.TypeIndex));
+					continue;
+				}
+				s += "temp_subs_%d=\"${tempDir}/subs-%d%s\"\n".printf(stream.TypeIndex,stream.TypeIndex,".srt");
+			}
+		}
 		
 		s += "\n";
 
@@ -1450,89 +1470,97 @@ Notes:
 		case "mkv":
 		case "mp4v":
 		case "webm":
-			//encode video
-			switch (vcodec){
-			case "x264":
-			case "x265":
-				s += encode_video_x264(mf,settings);
-				encoderList.add(vcodec);
-				break;
-			case "vp8":
-			case "vp9":
-				s += encode_video_avconv(mf,settings);
-				encoderList.add(PrimaryEncoder);
-				break;
-			case "copy":
-				s += copy_video_avconv(mf, settings);
-				encoderList.add(PrimaryEncoder);
-				break;
-			}
 
-			//encode audio
-			if (mf.HasAudio && acodec != "disable") {
-				switch (acodec) {
-				case "mp3lame":
-					s += encode_audio_mp3lame(mf,settings);
-					encoderList.add("lame");
-					if (audio.get_boolean_member("soxEnabled")){
-						encoderList.add("sox");
-					};
+			foreach(VideoStream stream in mf.video_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				
+				//encode video
+				switch (vcodec){
+				case "x264":
+				case "x265":
+					s += encode_video_x264(mf,stream,settings);
+					encoderList.add(vcodec);
 					break;
-				case "neroaac":
-					s += encode_audio_neroaac(mf,settings);
-					encoderList.add("neroaacenc");
-					if (audio.get_boolean_member("soxEnabled")){
-						encoderList.add("sox");
-					};
-					break;
-				case "aac":
-					s += encode_audio_avconv(mf,settings);
+				case "vp8":
+				case "vp9":
+					s += encode_video_avconv(mf,stream,settings);
 					encoderList.add(PrimaryEncoder);
-					if (audio.get_boolean_member("soxEnabled")){
-						encoderList.add("sox");
-					};
-					break;
-				case "libfdk_aac":
-					s += encode_audio_fdkaac(mf,settings);
-					encoderList.add("aacenc");
-					if (audio.get_boolean_member("soxEnabled")){
-						encoderList.add("sox");
-					};
-					break;
-				case "vorbis":
-					s += encode_audio_oggenc(mf,settings);
-					encoderList.add("oggenc");
-					if (audio.get_boolean_member("soxEnabled")){
-						encoderList.add("sox");
-					};
 					break;
 				case "copy":
-					s += copy_audio_avconv(mf, settings);
+					s += copy_video_avconv(mf,stream,settings);
 					encoderList.add(PrimaryEncoder);
 					break;
 				}
 			}
 
-			//encode subs
-			if (mf.HasSubs && (submode == "embed")) {
-				s += encode_sub_avconv(mf, settings);
-				encoderList.add(PrimaryEncoder);
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				
+				//encode audio
+				if (mf.HasAudio && acodec != "disable") {
+					switch (acodec) {
+					case "mp3lame":
+						s += encode_audio_mp3lame(mf,stream,settings);
+						encoderList.add("lame");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "neroaac":
+						s += encode_audio_neroaac(mf,stream,settings);
+						encoderList.add("neroaacenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "aac":
+						s += encode_audio_avconv(mf,stream,settings);
+						encoderList.add(PrimaryEncoder);
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "libfdk_aac":
+						s += encode_audio_fdkaac(mf,stream,settings);
+						encoderList.add("aacenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "vorbis":
+						s += encode_audio_oggenc(mf,stream,settings);
+						encoderList.add("oggenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "copy":
+						s += copy_audio_avconv(mf,stream,settings);
+						encoderList.add(PrimaryEncoder);
+						break;
+					}
+				}
+			}
+
+			foreach(TextStream stream in mf.text_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				
+				//encode subs
+				if (mf.HasSubs && (submode == "embed")) {
+					s += encode_sub_avconv(mf,stream,settings);
+					encoderList.add(PrimaryEncoder);
+				}
 			}
 			
 			//mux audio, video and subs
 			switch (format){
 			case "mkv":
-				switch (vcodec){
-					case "x265":
-						s += mux_avconv(mf,settings);
-						encoderList.add(PrimaryEncoder);
-						break;
-					default:
-						s += mux_mkvmerge(mf,settings);
-						encoderList.add("mkvmerge");
-						break;
-				}
-				break;
 			case "webm":
 				s += mux_mkvmerge(mf,settings);
 				encoderList.add("mkvmerge");
@@ -1558,65 +1586,91 @@ Notes:
 			break;
 
 		case "mp3":
-			s += encode_audio_mp3lame(mf,settings);
-			encoderList.add("lame");
-			if (audio.get_boolean_member("soxEnabled")){
-				encoderList.add("sox");
-			};
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += encode_audio_mp3lame(mf,stream,settings);
+				encoderList.add("lame");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+			}
 			break;
 
 		case "mp4a":
-			switch (acodec) {
-			case "neroaac":		
-				s += encode_audio_neroaac(mf,settings);
-				encoderList.add("neroaacenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
-				break;
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
 				
-			case "aac":
-				s += encode_audio_avconv(mf,settings);
-				encoderList.add(PrimaryEncoder);
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
-				break;
-				
-			case "libfdk_aac":	
-				s += encode_audio_fdkaac(mf,settings);
-				encoderList.add("aacenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
-				break;
+				switch (acodec) {
+				case "neroaac":		
+					s += encode_audio_neroaac(mf,stream,settings);
+					encoderList.add("neroaacenc");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+					
+				case "aac":
+					s += encode_audio_avconv(mf,stream,settings);
+					encoderList.add(PrimaryEncoder);
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+					
+				case "libfdk_aac":	
+					s += encode_audio_fdkaac(mf,stream,settings);
+					encoderList.add("aacenc");
+					if (audio.get_boolean_member("soxEnabled")){
+						encoderList.add("sox");
+					};
+					break;
+				}
 			}
 			break;
 			
 		case "opus":
-			s += encode_audio_opus(mf,settings);
-			encoderList.add("opusenc");
-			if (audio.get_boolean_member("soxEnabled")){
-				encoderList.add("sox");
-			};
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += encode_audio_opus(mf,stream,settings);
+				encoderList.add("opusenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+			}
 			break;
 
 		case "ogg":
-			s += encode_audio_oggenc(mf,settings);
-			encoderList.add("oggenc");
-			if (audio.get_boolean_member("soxEnabled")){
-				encoderList.add("sox");
-			};
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += encode_audio_oggenc(mf,stream,settings);
+				encoderList.add("oggenc");
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+			}
 			break;
 
 		case "ac3":
 		case "flac":
 		case "wav":
-			s += encode_audio_avconv(mf,settings);
-			encoderList.add(PrimaryEncoder);
-			if (audio.get_boolean_member("soxEnabled")){
-				encoderList.add("sox");
-			};
+			foreach(AudioStream stream in mf.audio_list){
+				if (!stream.IsSelected){
+					continue;
+				}
+				s += encode_audio_avconv(mf,stream,settings);
+				encoderList.add(PrimaryEncoder);
+				if (audio.get_boolean_member("soxEnabled")){
+					encoderList.add("sox");
+				};
+			}
 			break;
 		}
 
@@ -1646,7 +1700,7 @@ Notes:
 
 	//decode -----------------
 	
-	private string decode_video_avconv (MediaFile mf, Json.Object settings, bool silent, bool resample = true, bool crop = true, bool scale = true){
+	private string decode_video_avconv (MediaFile mf, VideoStream stream, Json.Object settings, bool silent, bool resample = true, bool crop = true, bool scale = true){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1669,6 +1723,9 @@ Notes:
 		//input
 		s += " -i \"${inFile}\"";
 
+		//map stream
+		s += " -map 0:v:%d".printf(stream.TypeIndex);
+		
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
@@ -1686,7 +1743,7 @@ Notes:
 		return s;
 	}
 
-	private string decode_audio_avconv(MediaFile mf, Json.Object settings, bool silent, string temp_file_name = ""){
+	private string decode_audio_avconv(MediaFile mf, AudioStream stream, Json.Object settings, bool silent, string temp_file_name = ""){
 		string s = "";
 
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
@@ -1710,6 +1767,9 @@ Notes:
 		
 		//input
 		s += " -i \"${inFile}\"";
+
+		//map stream
+		s += " -map 0:a:%d".printf(stream.TypeIndex);
 
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
@@ -1763,7 +1823,7 @@ Notes:
 
 	//copy -----------------
 	
-	private string copy_video_avconv (MediaFile mf, Json.Object settings){
+	private string copy_video_avconv (MediaFile mf, VideoStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1785,6 +1845,9 @@ Notes:
 
 		//input
 		s += " -i \"${inFile}\"";
+
+		//map stream
+		s += " -map 0:v:%d".printf(stream.TypeIndex);
 
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
@@ -1824,7 +1887,7 @@ Notes:
 		//output
 		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
 			//encode to tempVideo
-			s += " -y \"${tempVideo}\"";
+			s += " -y \"${temp_video_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
 			//encode to outputFile
@@ -1836,7 +1899,7 @@ Notes:
 		return s;
 	}
 
-	private string copy_audio_avconv(MediaFile mf, Json.Object settings){
+	private string copy_audio_avconv(MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1858,6 +1921,9 @@ Notes:
 
 		//input
 		s += " -i \"${inFile}\"";
+
+		//map stream
+		s += " -map 0:a:%d".printf(stream.TypeIndex);
 
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
@@ -1898,7 +1964,7 @@ Notes:
 		//output
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " -y \"${tempAudio}\"";
+			s += " -y \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
 			//encode to outputFile
@@ -1910,7 +1976,7 @@ Notes:
 		return s;
 	}
 
-	private string encode_sub_avconv(MediaFile mf, Json.Object settings){
+	private string encode_sub_avconv(MediaFile mf, TextStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1930,9 +1996,21 @@ Notes:
 			s += " -ss %.1f".printf(mf.StartPos);
 		}
 
-		//input
-		s += " -i \"${inFile}\"";
+		if (stream.IsExternal){
+			//character encoding - required for SRT files
+			s += " -sub_charenc \"%s\"".printf(stream.CharacterEncoding.up());
 
+			//input
+			s += " -i \"%s\"".printf(stream.SubFile);
+		}
+		else{
+			//input
+			s += " -i \"${inFile}\"";
+
+			//map stream
+			s += " -map 0:s:%d".printf(stream.TypeIndex);
+		}
+		
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
 			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
@@ -1946,7 +2024,7 @@ Notes:
 
 		s += " -vn -an";
 
-		s += " -y \"${tempSub}\""; //TODO: write SRT?
+		s += " -y \"${temp_subs_%d}\"".printf(stream.TypeIndex); 
 		
 		//output
 		//if (mf.HasVideo && video.get_string_member("codec") != "disable") {
@@ -1965,7 +2043,7 @@ Notes:
 
 	//encode video -------------------
 	
-	private string encode_video_avconv (MediaFile mf, Json.Object settings){
+	private string encode_video_avconv (MediaFile mf, VideoStream stream, Json.Object settings){
 		string s = "";
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -1982,6 +2060,9 @@ Notes:
 		}
 		
 		s += " -i \"${inFile}\"";
+
+		//map stream
+		s += " -map 0:v:%d".printf(stream.TypeIndex);
 
 		//stop output
 		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
@@ -2059,17 +2140,17 @@ Notes:
 
 		if (video.get_string_member("mode") == "2pass"){
 			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
-			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${temp_video_%d}\"".printf(stream.TypeIndex));
 			s = temp;
 		}
 		else{
-			s = s.replace("{outputFile}","\"${tempVideo}\"");
+			s = s.replace("{outputFile}","\"${temp_video_%d}\"".printf(stream.TypeIndex));
 		}
 
 		return s;
 	}
 
-	private string encode_video_x264 (MediaFile mf, Json.Object settings){
+	private string encode_video_x264 (MediaFile mf, VideoStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2085,7 +2166,7 @@ Notes:
 		 * */
 
 		if (usePiping) {
-			s += decode_video_avconv(mf,settings,true,true,false,false);
+			s += decode_video_avconv(mf,stream,settings,true,true,false,false);
 
 			/* Note:
 			 * Resampling with be done by ffmpeg since x264 does not provide this option.
@@ -2181,11 +2262,11 @@ Notes:
 
 		if (video.get_string_member("mode") == "2pass"){
 			string temp = s.replace("{passNumber}","1").replace("{outputFile}","/dev/null");
-			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${tempVideo}\"");
+			temp += s.replace("{passNumber}","2").replace("{outputFile}","\"${temp_video_%d}\"".printf(stream.TypeIndex));
 			s = temp;
 		}
 		else{
-			s = s.replace("{outputFile}","\"${tempVideo}\"");
+			s = s.replace("{outputFile}","\"${temp_video_%d}\"".printf(stream.TypeIndex));
 		}
 
 		return s;
@@ -2539,7 +2620,7 @@ Notes:
 
 	//encode audio ------------------------
 	
-	private string encode_audio_avconv (MediaFile mf, Json.Object settings){
+	private string encode_audio_avconv (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2550,7 +2631,7 @@ Notes:
 		bool sox_enabled = audio.get_boolean_member("soxEnabled");
 
 		if (sox_enabled){
-			s += decode_audio_avconv(mf, settings, true);
+			s += decode_audio_avconv(mf, stream, settings, true);
 			s += PrimaryEncoder;
 			s += " -i -";
 		}
@@ -2563,6 +2644,9 @@ Notes:
 			}
 			
 			s += " -i \"${inFile}\"";
+
+			//map stream
+			s += " -map 0:a:%d".printf(stream.TypeIndex);
 
 			//stop output
 			if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
@@ -2663,7 +2747,7 @@ Notes:
 		//output
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " -y \"${tempAudio}\"";
+			s += " -y \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
 			//encode to outputFile
@@ -2675,14 +2759,14 @@ Notes:
 		return s;
 	}
 
-	private string encode_audio_mp3lame (MediaFile mf, Json.Object settings){
+	private string encode_audio_mp3lame (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
-		s += decode_audio_avconv(mf, settings, false);
+		s += decode_audio_avconv(mf, stream, settings, false);
 		s += "lame --nohist --brief -q 5 --replaygain-fast";
 		switch (audio.get_string_member("mode")){
 			case "vbr":
@@ -2709,7 +2793,7 @@ Notes:
 		s += " -";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " \"${tempAudio}\"";
+			s += " \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
 			//encode to outputFile
@@ -2720,15 +2804,17 @@ Notes:
 		return s;
 	}
 
-	private string encode_audio_neroaac (MediaFile mf, Json.Object settings){
+	private string encode_audio_neroaac (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
-		s += decode_audio_avconv(mf, settings, false);
+		s += decode_audio_avconv(mf, stream, settings, false);
+		
 		s += "neroAacEnc -ignorelength";
+		
 		switch (audio.get_string_member("mode")){
 			case "vbr":
 				s += " -q " + audio.get_string_member("quality");
@@ -2740,6 +2826,7 @@ Notes:
 				s += " -cbr " + audio.get_string_member("bitrate");
 				break;
 		}
+
 		if (audio.has_member("aacProfile")){
 			switch(audio.get_string_member("aacProfile")){
 			case "auto":
@@ -2756,40 +2843,43 @@ Notes:
 				break;
 			}
 		}
+		
 		s += " -if -";
+		
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " -of \"${tempAudio}\"";
+			s += " -of \"${temp_audio_%d}\"".printf(stream.TypeIndex);
+			s += "\n";
 		}
 		else {
 			//encode to outputFile
 			s += " -of \"${outputFile}\"";
-		}
-		s += "\n";
-
-		//add tags
-		string tags = "";
-		string path = get_cmd_path ("neroAacTag");
-		if ((path != null) && (path.length > 0)){
-			tags += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
-			tags += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
-			tags += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
-			tags += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
-			tags += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
-			tags += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
-			tags += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
-			if (tags.length > 0){
-				s += "neroAacTag";
-				s += " \"${outputFile}\"";
-				s += tags;
-				s += "\n";
-			}
+			s += "\n";
+			
+			//add tags
+			string tags = "";
+			string path = get_cmd_path ("neroAacTag");
+			if ((path != null) && (path.length > 0)){
+				tags += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
+				tags += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
+				tags += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
+				tags += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
+				tags += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
+				tags += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
+				tags += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
+				if (tags.length > 0){
+					s += "neroAacTag";
+					s += " \"${outputFile}\"";
+					s += tags;
+					s += "\n";
+				}
+			}			
 		}
 
 		return s;
 	}
 
-	private string encode_audio_fdkaac (MediaFile mf, Json.Object settings){
+	private string encode_audio_fdkaac (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2797,7 +2887,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
 		//decode to WAV file with avconv
-		s += decode_audio_avconv(mf, settings, false, "audio.wav");
+		s += decode_audio_avconv(mf, stream, settings, false, "audio.wav");
 
 		//encode with aac-enc
 		s += "aac-enc";
@@ -2846,7 +2936,7 @@ Notes:
 		
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += mux_mp4box_aac_to_mp4("audio.aac","\"${tempAudio}\"");
+			s += mux_mp4box_aac_to_mp4("audio.aac","\"${temp_audio_%d}\"".printf(stream.TypeIndex));
 		}
 		else {
 			//encode to outputFile
@@ -2858,14 +2948,14 @@ Notes:
 		return s;
 	}
 
-	private string encode_audio_opus (MediaFile mf, Json.Object settings){
+	private string encode_audio_opus (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
 		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 
-		s += decode_audio_avconv(mf, settings, true);
+		s += decode_audio_avconv(mf, stream, settings, true);
 		s += "opusenc";
 
 		//tags
@@ -2909,7 +2999,7 @@ Notes:
 		//output
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " \"${tempAudio}\"";
+			s += " \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
 			//encode to outputFile
@@ -2920,7 +3010,7 @@ Notes:
 		return s;
 	}
 
-	private string encode_audio_oggenc (MediaFile mf, Json.Object settings){
+	private string encode_audio_oggenc (MediaFile mf, AudioStream stream, Json.Object settings){
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
@@ -2928,7 +3018,7 @@ Notes:
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
-		s += decode_audio_avconv(mf, settings, false);
+		s += decode_audio_avconv(mf, stream, settings, false);
 		s += "oggenc --quiet";
 
 		//mode
@@ -2950,19 +3040,26 @@ Notes:
 		s += (mf.RecordedDate.length > 0) ? " --date \"${tagYear}\"" : "";
 		s += (mf.Comment.length > 0) ? " --comment='comment=${tagComment}'" : "";
 
-		//subs
-		if (subs.get_string_member("mode") == "embed") {
-			if (mf.SubExt == ".srt" || mf.SubExt == ".lrc") {
-				s += " --lyrics \"${subFile}\"";
-			}
-		}
-
 		//output
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += " --output \"${tempAudio}\"";
+			s += " --output \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 		}
 		else {
+
+			//encode to output file -- add subs
+			
+			foreach(TextStream stm in mf.text_list){
+				if (!stm.IsSelected){
+					continue;
+				}
+				
+				//encode subs
+				if (mf.HasSubs && (subs.get_string_member("mode") == "embed")) {
+					s += " --lyrics \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+				}
+			}
+		
 			//encode to outputFile
 			s += " --output \"${outputFile}\"";
 		}
@@ -3045,7 +3142,7 @@ Notes:
 		string s = "";
 
 		Json.Object general = (Json.Object) settings.get_object_member("general");
-		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
@@ -3061,22 +3158,50 @@ Notes:
 		//output
 		s += " --output \"${outputFile}\"";
 
-		//add video
-		s += " --compression -1:none \"${tempVideo}\"";
-
-		//add audio
-		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
-			s += " --compression -1:none \"${tempAudio}\"";
+		//add video tracks
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			foreach(VideoStream stream in mf.video_list){
+				if (stream.IsSelected){
+					s += " --compression -1:none \"${temp_video_%d}\"".printf(stream.TypeIndex);
+				}
+			}
 		}
 
-		//add subs
-		if (format != "webm") {
-			if (subs.get_string_member("mode") == "embed") {
-				if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ssa")) {
-					s += " --compression -1:none \"${subFile}\"";
+		//add audio tracks
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			foreach(AudioStream stream in mf.audio_list){
+				if (stream.IsSelected){
+					s += " --compression -1:none";
+					if (stream.LangCode.length > 0){
+						s += " --language -1:%s".printf(stream.LangCode);
+					}
+					s += " \"${temp_audio_%d}\"".printf(stream.TypeIndex);
 				}
-				else if (mf.HasSubs){
-					s += " --compression -1:none \"${tempSub}\"";
+			}
+		}
+
+		//TODO: Add option to specify default subtitle track
+
+		//add subtitle tracks
+		if (format != "webm") {
+			if (mf.HasSubs && (subs.get_string_member("mode") == "embed")) {
+				foreach(TextStream stm in mf.text_list){
+					if (stm.IsSelected){
+						if (!stm.IsExternal){
+							s += " --compression -1:none";
+							if (stm.LangCode.length > 0){
+								s += " --language -1:%s".printf(stm.LangCode);
+							}
+							s += " \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+						}
+						else if (stm.IsExternal && (stm.SubExt == ".srt" || stm.SubExt == ".sub" || stm.SubExt == ".ssa")){
+							s += " --compression -1:none";
+							if (stm.LangCode.length > 0){
+								s += " --language -1:%s".printf(stm.LangCode);
+							}
+							s += " \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+						}
+					}
 				}
 			}
 		}
@@ -3093,24 +3218,41 @@ Notes:
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
-		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
 		s += "MP4Box -new";
 
-		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
-			s += " -add \"${tempAudio}\"";
+		//add video tracks
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			foreach(VideoStream stream in mf.video_list){
+				if (stream.IsSelected){
+					s += " -add \"${temp_video_%d}\"".printf(stream.TypeIndex);
+				}
+			}
 		}
 
-		s += " -add \"${tempVideo}\"";
-
-		if (subs.get_string_member("mode") == "embed") {
-			if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml")){
-				s += " -add \"${subFile}\"";
+		//add audio tracks
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			foreach(AudioStream stream in mf.audio_list){
+				if (stream.IsSelected){
+					s += " -add \"${temp_audio_%d}\"".printf(stream.TypeIndex);
+				}
 			}
-			else if (mf.HasSubs){
-				s += " -add \"${tempSub}\"";
+		}
+
+		//add subtitle tracks
+		if (mf.HasSubs && (subs.get_string_member("mode") == "embed")) {
+			foreach(TextStream stm in mf.text_list){
+				if (stm.IsSelected){
+					if (!stm.IsExternal){
+						s += " -add \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+					}
+					else if (stm.IsExternal && (stm.SubExt == ".srt" || stm.SubExt == ".sub" || stm.SubExt == ".ttxt" || stm.SubExt == ".xml")){
+						s += " -add \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+					}
+				}
 			}
 		}
 
@@ -3133,18 +3275,84 @@ Notes:
 
 	private string mux_avconv (MediaFile mf, Json.Object settings){
 		string s = "";
-
+		string map = "";
+		string metadata = "";
+		int inputIndex = -1;
+		int outTypeIndex = -1;
+		
 		Json.Object general = (Json.Object) settings.get_object_member("general");
-		//Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
 		Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 		string format = general.get_string_member("format");
 
 		s += PrimaryEncoder;
-		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
-			s += " -i \"${tempAudio}\"";
+
+		//add video tracks
+		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
+			foreach(VideoStream stream in mf.video_list){
+				if (stream.IsSelected){
+					s += " -i \"${temp_video_%d}\"".printf(stream.TypeIndex);
+					map += " -map %d:0".printf(++inputIndex);
+				}
+			}
 		}
-		s += " -i \"${tempVideo}\"";
+
+		//add audio tracks ---------------
+
+		outTypeIndex = -1;
+		
+		if (mf.HasAudio && audio.get_string_member("codec") != "disable") {
+			foreach(AudioStream stream in mf.audio_list){
+				if (stream.IsSelected){
+					outTypeIndex++;
+					
+					s += " -i \"${temp_audio_%d}\"".printf(stream.TypeIndex);
+					map += " -map %d:0".printf(++inputIndex);
+
+					if ((stream.LangCode.length > 0) && (LanguageCodes.map_2_to_3.has_key(stream.LangCode))){
+						metadata += " -metadata:s:a:%d language=%s".printf(outTypeIndex, LanguageCodes.map_2_to_3[stream.LangCode]);
+					}
+				}
+			}
+		}
+
+		//add subtitle tracks ------------------
+		
+		outTypeIndex = -1;
+		
+		if (mf.HasSubs && (subs.get_string_member("mode") == "embed")) {
+			foreach(TextStream stm in mf.text_list){
+				if (stm.IsSelected){
+					outTypeIndex++;
+					
+					if (!stm.IsExternal){
+						s += " -i \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+						map += " -map %d:0".printf(++inputIndex);
+						
+						if ((stm.LangCode.length > 0) && (LanguageCodes.map_2_to_3.has_key(stm.LangCode))){
+							metadata += " -metadata:s:s:%d language=%s".printf(outTypeIndex, LanguageCodes.map_2_to_3[stm.LangCode]);
+						}
+					}
+					else if (stm.IsExternal && (stm.SubExt == ".srt" || stm.SubExt == ".sub" || stm.SubExt == ".ttxt" || stm.SubExt == ".xml")){
+						s += " -i \"${temp_subs_%d}\"".printf(stm.TypeIndex);
+						map += " -map %d:0".printf(++inputIndex);
+
+						if ((stm.LangCode.length > 0) && (LanguageCodes.map_2_to_3.has_key(stm.LangCode))){
+							metadata += " -metadata:s:s:%d language=%s".printf(outTypeIndex, LanguageCodes.map_2_to_3[stm.LangCode]);
+						}
+					}
+				}
+			}
+		}
+
+		//set output mappings
+
+		s += map;
+
+		//set language metadata
+		
+		s += metadata;
 
 		switch(format){
 			case "mp4v":
@@ -3154,14 +3362,17 @@ Notes:
 				s += " -f matroska";
 				break;
 		}
+		
 		s += " -c:a copy -c:v copy";
 
 		if (subs.get_string_member("mode") == "embed") {
-			if (mf.HasExtSubs && (mf.SubExt == ".srt" || mf.SubExt == ".sub" || mf.SubExt == ".ttxt" || mf.SubExt == ".xml")){
-				s += " -i \"${subFile}\"";
-			}
-			else if (mf.HasSubs){
-				s += " -i \"${tempSub}\"";
+			switch(format){
+			case "mp4v":
+				s += " -c:s mov_text";
+				break;
+			case "mkv":
+				s += " -c:s ass";
+				break;
 			}
 		}
 		else{
