@@ -146,7 +146,6 @@ public class MainWindow : Gtk.Window{
 	public MainWindow() {
 		set_window_title();
         window_position = WindowPosition.CENTER;
-        destroy.connect (Gtk.main_quit);
         set_default_size (650, 20);
         icon = get_app_icon(16);
 
@@ -177,6 +176,19 @@ public class MainWindow : Gtk.Window{
 
 		//regex
 		init_regular_expressions();
+
+		//destroy handler
+		this.delete_event.connect (()=>{
+			if (App.Status == AppStatus.IDLE){
+				convert_finish();
+				return true;
+			}
+			else{
+				return false;
+			}
+		});
+
+		this.destroy.connect(Gtk.main_quit);
 	}
 
 	// toolbar -------------------------------------
