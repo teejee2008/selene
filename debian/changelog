@@ -1,10 +1,28 @@
-selene (16.3) trusty; urgency=medium
+selene (16.3.1) trusty; urgency=medium
 
-  * Added options for copying audio and video track without re-encoding
+  * Added support for encoding files with multiple audio/subtitle tracks
 
-  * Use the first embedded subtitle track if an external subtitle file
-  is not found
+  * Added support for encoding HEVC video in MKV
+
+  * Added libkate-tools as a dependency for encoding subtitles in OGG
+  files
+
+  * Removed dependency on ffmpeg2theora tool which is unmaintained
+
+  * Theora video will be encoded with ffmpeg/avconv
+
+  * Added option to set default language for files with multiple tracks
+
+  * Added option to keep or delete temporary files after successful encode
+
+  * Closing the progress window after a batch is finished will take
+  user to main window instead of quitting the application
+
+  * Fixed: Encoding mode was not set correctly for Vobis
+
+  * Fixed: Decimal numbers were not loaded correctly from preset file
+  on German/non-English systems;
 
   * Various minor changes
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 07 Mar 2016 14:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 12 Mar 2016 14:00:00 +0530

@@ -38,7 +38,7 @@ using TeeJee.Misc;
 public Main App;
 public const string AppName = "Selene Media Converter";
 public const string AppShortName = "selene";
-public const string AppVersion = "16.3";
+public const string AppVersion = "16.3.1";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejeetech@gmail.com";
 
@@ -440,7 +440,7 @@ Notes:
 	public void init_encoder_list(){
 		Encoders["avconv"] = new Encoder("avconv","Libav Encoder","Audio-Video Decoding");
 		Encoders["ffmpeg"] = new Encoder("ffmpeg","FFmpeg Encoder","Audio-Video Decoding");
-		Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
+		//Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
 		Encoders["lame"] = new Encoder("lame","LAME MP3 Encoder", "MP3 Output");
 		Encoders["mediainfo"] = new Encoder("mediainfo","Media Information Utility","Reading Audio Video Properties");
 		Encoders["mkvmerge"] = new Encoder("mkvmerge","Matroska Muxer","MKV Output");
