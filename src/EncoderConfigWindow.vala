@@ -2675,9 +2675,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				}
 				txt += "\n\n";
 
-				txt += "2. Subtitle files must be present in the same location and start with the same file name.\n\n";
+				txt += "2. External subtitle files must be present in the same location and start with the same file name.\n\n";
 
-				txt += "3. If an external subtitle file is not found, then the first embedded track in the input file will be used.\n\n";
 				break;
 
 			default:

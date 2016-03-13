@@ -123,6 +123,25 @@ public class MediaFile : GLib.Object{
 	                	text_list.add(stream);
 	                	stream.TypeIndex = text_list.index_of(stream);
 
+						if (fname.has_suffix (".srt")){
+							stream.Format = "SRT";
+						}
+						else if (fname.has_suffix (".ssa")){
+							stream.Format = "SSA";
+						}
+						else if (fname.has_suffix (".sub")){
+							stream.Format = "SUB";
+						}
+						else if (fname.has_suffix (".ttxt")){
+							stream.Format = "TTXT";
+						}
+						else if (fname.has_suffix (".lrc")){
+							stream.Format = "LRC";
+						}
+						else if (fname.has_suffix (".xml")){
+							stream.Format = "XML";
+						}
+
 	                	stream.SubName = fileInfo.get_name();
 						stream.SubFile = Location + "/" + stream.SubName;
 	                	stream.SubExt = stream.SubFile[stream.SubFile.last_index_of(".",0):stream.SubFile.length].down();
@@ -132,14 +151,14 @@ public class MediaFile : GLib.Object{
 	                	// try to parse language info from subtitle file name
 
 	                	var SubtitleTitle = stream.SubName[0: stream.SubName.last_index_of(".",0)];
-	                	log_msg("sub=%s".printf(SubtitleTitle));
+	                	//log_msg("sub=%s".printf(SubtitleTitle));
 	                	
 	                	if (SubtitleTitle.length > Title.length){
 							string lang = SubtitleTitle.down();
 							lang = lang[Title.length:SubtitleTitle.length];
 							lang = lang.replace("_","").replace("-","").strip();
 
-							log_msg("lang='%s',length=%d".printf(lang,lang.length));
+							//log_msg("lang='%s',length=%d".printf(lang,lang.length));
 							
 							if (lang.length == 2){
 								if (LanguageCodes.map_2_to_3.has_key(lang)){

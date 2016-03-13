@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-03-13 12:05+0530\n"
+"POT-Creation-Date: 2016-03-13 12:43+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,16 +238,16 @@ msgstr ""
 msgid "A-Sampling"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2717 EncoderConfigWindow.vala:2736
+#: EncoderConfigWindow.vala:2716 EncoderConfigWindow.vala:2735
 msgid "AAC-ELD"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2700 EncoderConfigWindow.vala:2709
-#: EncoderConfigWindow.vala:2728
+#: EncoderConfigWindow.vala:2699 EncoderConfigWindow.vala:2708
+#: EncoderConfigWindow.vala:2727
 msgid "AAC-LC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2715 EncoderConfigWindow.vala:2734
+#: EncoderConfigWindow.vala:2714 EncoderConfigWindow.vala:2733
 msgid "AAC-LD"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2695
+#: EncoderConfigWindow.vala:2694
 msgid "Auto"
 msgstr ""
 
@@ -636,7 +636,7 @@ msgstr ""
 msgid "Embed / Soft Subs"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2757
+#: EncoderConfigWindow.vala:2756
 msgid "Empty Preset Name"
 msgstr ""
 
@@ -822,13 +822,13 @@ msgstr ""
 msgid "Good"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2702 EncoderConfigWindow.vala:2711
-#: EncoderConfigWindow.vala:2730
+#: EncoderConfigWindow.vala:2701 EncoderConfigWindow.vala:2710
+#: EncoderConfigWindow.vala:2729
 msgid "HE-AAC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2704 EncoderConfigWindow.vala:2713
-#: EncoderConfigWindow.vala:2732
+#: EncoderConfigWindow.vala:2703 EncoderConfigWindow.vala:2712
+#: EncoderConfigWindow.vala:2731
 msgid "HE-AAC v2"
 msgstr ""
 
@@ -896,15 +896,15 @@ msgstr ""
 msgid "MP4 Audio (*.mp4)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2719 EncoderConfigWindow.vala:2738
+#: EncoderConfigWindow.vala:2718 EncoderConfigWindow.vala:2737
 msgid "MPEG-2 AAC-LC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2721 EncoderConfigWindow.vala:2740
+#: EncoderConfigWindow.vala:2720 EncoderConfigWindow.vala:2739
 msgid "MPEG-2 HE-AAC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2742
+#: EncoderConfigWindow.vala:2741
 msgid "MPEG-2 HE-AAC v2"
 msgstr ""
 
@@ -964,7 +964,7 @@ msgstr ""
 msgid "Mute"
 msgstr ""
 
-#: MediaFile.vala:531
+#: MediaFile.vala:550
 msgid "N/A"
 msgstr ""
 
@@ -1093,7 +1093,7 @@ msgstr ""
 msgid "Please Wait..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:2755
+#: EncoderConfigWindow.vala:2754
 msgid "Please enter a name for this preset"
 msgstr ""
 
