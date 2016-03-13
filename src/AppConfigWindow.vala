@@ -372,7 +372,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		foreach(var lang in LanguageCodes.lang_list){
 			model.append (out iter);
-			model.set (iter, 0, lang.Name, 1, lang.Code2);
+			model.set (iter, 0, "%s (%s)".printf(lang.Name, (lang.Code2 == "") ? lang.Code3 : lang.Code2), 1, lang.Code2);
 			index++;
 
 			if (lang.Code2 == App.DefaultLanguage){
