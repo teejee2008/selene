@@ -146,7 +146,8 @@ public class Main : GLib.Object{
 
 	public static int main (string[] args) {
 		//set locale
-		Intl.setlocale(GLib.LocaleCategory.MESSAGES, "");
+		//set_locale("");
+		Intl.setlocale(GLib.LocaleCategory.ALL, "");
 		Intl.textdomain(GETTEXT_PACKAGE);
 		Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "utf-8");
 		Intl.bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
@@ -310,6 +311,13 @@ Notes:
 		return msg;
 	}
 
+	public static void set_numeric_locale(string type){
+		Intl.setlocale(GLib.LocaleCategory.NUMERIC, type);
+	    Intl.setlocale(GLib.LocaleCategory.COLLATE, type);
+	    Intl.setlocale(GLib.LocaleCategory.TIME, type);
+	}
+	
+	
 	public Main(string arg0){
 		
 		InputFiles = new Gee.ArrayList<MediaFile>();
@@ -3068,10 +3076,10 @@ Notes:
 		//mode
 		switch (audio.get_string_member("mode")){
 			case "vbr":
-				s += " --bitrate " + audio.get_string_member("bitrate");
+				s += " --quality " + audio.get_string_member("quality");
 				break;
 			case "abr":
-				s += " --quality " + audio.get_string_member("quality");
+				s += " --bitrate " + audio.get_string_member("bitrate");
 				break;
 		}
 

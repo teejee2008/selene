@@ -2768,6 +2768,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	}
 
 	private void save_script(){
+		Main.set_numeric_locale("C");
+		
 		var config = new Json.Object();
 		var general = new Json.Object();
 		var video = new Json.Object();
@@ -2858,9 +2860,13 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	    //Set the newly saved file as the active script
 	    App.SelectedScript = new ScriptFile(filePath);
+
+		Main.set_numeric_locale("");
 	}
 
 	public void load_script(){
+		Main.set_numeric_locale("C");
+		
 		var filePath = Folder + "/" + Name + ".json";
 		if(file_exists(filePath) == false){ return; }
 
@@ -2976,6 +2982,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		//subtitles --------------
 
 		subtitle_mode = subs.get_string_member("mode");
+
+		Main.set_numeric_locale("");
 	}
 
 

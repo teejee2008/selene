@@ -1695,6 +1695,10 @@ namespace TeeJee.Misc {
 		return t.format ("%Y-%d-%m_%H-%M-%S");
 	}
 
+	public string to_en_us_string(double d){
+		return d.to_string().replace(",",".").replace(" ","");
+	}
+	
 	public string format_file_size (int64 size){
 
 		/* Format file size in MB */
