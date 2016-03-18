@@ -1041,6 +1041,20 @@ namespace TeeJee.GtkHelper{
 
 		return img_icon;
 	}
+
+	public static int CSS_AUTO_CLASS_INDEX = 0;
+	public static void apply_css(Gtk.Widget widget, string css_style){
+		var css_provider = new Gtk.CssProvider();
+		var css = ".style_%d { %s }".printf(++CSS_AUTO_CLASS_INDEX, css_style);
+		try {
+			css_provider.load_from_data(css,-1);
+		} catch (GLib.Error e) {
+            warning(e.message);
+        }
+        
+        widget.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+		widget.get_style_context().add_class("style_%d".printf(CSS_AUTO_CLASS_INDEX));
+	}
 }
 
 namespace TeeJee.Multimedia{

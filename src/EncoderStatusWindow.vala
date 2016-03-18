@@ -34,10 +34,10 @@ using TeeJee.Misc;
 
 public class EncoderStatusWindow : Gtk.Dialog {
 
-	private Gtk.Box vboxMain;
+	private Gtk.Box vbox_main;
 	private Gtk.Box vbox_actions;
-	private Gtk.Button btnOk;
-	private Gtk.Button btnRefesh;
+	private Gtk.Button btn_ok;
+	private Gtk.Button btn_refresh;
 	private Gtk.TreeView tv;
 	private Gtk.ScrolledWindow sw;
 
@@ -55,8 +55,8 @@ public class EncoderStatusWindow : Gtk.Dialog {
 		icon = get_app_icon(16);
 
 		// get content area
-		vboxMain = get_content_area();
-		vboxMain.set_size_request (500, 450);
+		vbox_main = get_content_area();
+		vbox_main.set_size_request (500, 450);
 
 		// get action area
 		vbox_actions = (Box) get_action_area();
@@ -70,7 +70,7 @@ public class EncoderStatusWindow : Gtk.Dialog {
 		sw.set_shadow_type (ShadowType.ETCHED_IN);
 		sw.add (tv);
 		sw.expand = true;
-		vboxMain.add(sw);
+		vbox_main.add(sw);
 
 		TreeViewColumn col_name = new TreeViewColumn();
 		col_name.title = " " + _("Tool") + " ";
@@ -104,19 +104,19 @@ public class EncoderStatusWindow : Gtk.Dialog {
 
 		tv_refresh();
 
-		//btnRefesh
-        btnRefesh = new Button.with_label("   " + _("Refresh") + "   ");
-		vbox_actions.add(btnRefesh);
-		btnRefesh.clicked.connect(()=>{
+		//btn_refresh
+        btn_refresh = new Button.with_label("   " + _("Refresh") + "   ");
+		vbox_actions.add(btn_refresh);
+		btn_refresh.clicked.connect(()=>{
 			gtk_set_busy(true,this);
 			App.check_all_encoders();
 			tv_refresh();
 			gtk_set_busy(false,this);
 		});
 
-        //btnOk
-        btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
-        btnOk.clicked.connect (() => {  destroy();  });
+        //btn_ok
+        btn_ok = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
+        btn_ok.clicked.connect (() => {  destroy();  });
 
 		show_all();
 	}

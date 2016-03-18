@@ -34,11 +34,11 @@ using TeeJee.Misc;
 
 public class FileInfoWindow : Gtk.Dialog {
 
-	private Box vboxMain;
-	private Button btnOk;
+	private Box vbox_main;
+	private Button btn_ok;
 	public MediaFile file;
-	private TreeView tvInfo;
-	private ScrolledWindow swInfo;
+	private TreeView tv_info;
+	private ScrolledWindow sw_info;
 
 	public FileInfoWindow (MediaFile _file) {
 		title = _("Properties");
@@ -59,28 +59,29 @@ public class FileInfoWindow : Gtk.Dialog {
 		}
 		
 		// get content area
-		vboxMain = get_content_area();
-		vboxMain.margin = 3;
+		vbox_main = get_content_area();
+		vbox_main.margin = 3;
 
-		//tvInfo
-		tvInfo = new TreeView();
-		tvInfo.get_selection().mode = SelectionMode.MULTIPLE;
-		tvInfo.headers_visible = false;
-		tvInfo.insert_column_with_attributes (-1, _("Key"), new CellRendererText(), "text", 0);
-		tvInfo.insert_column_with_attributes (-1, _("Value"), new CellRendererText(), "text", 1);
-		swInfo = new ScrolledWindow(tvInfo.get_hadjustment(), tvInfo.get_vadjustment());
-		swInfo.set_shadow_type (ShadowType.ETCHED_IN);
-		swInfo.add (tvInfo);
-		swInfo.set_size_request (-1, 200);
-		vboxMain.pack_start (swInfo, true, true, 0);
+		//tv_info
+		tv_info = new TreeView();
+		tv_info.get_selection().mode = SelectionMode.MULTIPLE;
+		tv_info.headers_visible = false;
+		tv_info.insert_column_with_attributes (-1, _("Key"), new CellRendererText(), "text", 0);
+		tv_info.insert_column_with_attributes (-1, _("Value"), new CellRendererText(), "text", 1);
+		
+		sw_info = new ScrolledWindow(tv_info.get_hadjustment(), tv_info.get_vadjustment());
+		sw_info.set_shadow_type (ShadowType.ETCHED_IN);
+		sw_info.add (tv_info);
+		sw_info.set_size_request (-1, 200);
+		vbox_main.pack_start (sw_info, true, true, 0);
 
-		TreeStore infoStore = new TreeStore (2, typeof (string), typeof (string));
+		var store = new TreeStore (2, typeof (string), typeof (string));
 
 		TreeIter iter0;
 		TreeIter iter1;
 		int index = -1;
-		infoStore.append (out iter0, null);
-		//infoStore.remove (ref iter0);
+		store.append (out iter0, null);
+		//store.remove (ref iter0);
 
 		foreach (string line in file.InfoTextFormatted.split ("\n")){
 			if (line.strip() == "") { continue; }
@@ -88,20 +89,20 @@ public class FileInfoWindow : Gtk.Dialog {
 			index = line.index_of (":");
 
 			if (index == -1){
-				infoStore.append (out iter0, null);
-				infoStore.set (iter0, 0, line.strip());
+				store.append (out iter0, null);
+				store.set (iter0, 0, line.strip());
 			}
 			else{
-				infoStore.append (out iter1, iter0);
-				infoStore.set (iter1, 0, line[0:index-1].strip());
-				infoStore.set (iter1, 1, line[index+1:line.length].strip());
+				store.append (out iter1, iter0);
+				store.set (iter1, 0, line[0:index-1].strip());
+				store.set (iter1, 1, line[index+1:line.length].strip());
 			}
 		}
-		tvInfo.set_model (infoStore);
-		tvInfo.expand_all();
+		tv_info.set_model (store);
+		tv_info.expand_all();
 
-        // btnOk
-        btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
-        btnOk.clicked.connect (() => {  destroy();  });
+        // btn_ok
+        btn_ok = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
+        btn_ok.clicked.connect (() => {  destroy();  });
 	}
 }

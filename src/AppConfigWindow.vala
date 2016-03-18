@@ -33,22 +33,19 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public class AppConfigWindow : Gtk.Dialog {
-	private Box vboxMain;
+	private Box vbox_main;
 	private Gtk.Notebook notebook;
-	private Label lblView;
-	private Label lblOutput;
-	private CheckButton chkOutput;
-	private Entry txtBackup;
-	private CheckButton chkBackup;
-	private Label lblBackup;
-	private Entry txtOutput;
-	private Button btnSave;
-	private Button btnCancel;
-	private ComboBox cmbFileView;
-	private ComboBox cmbSelectEncoder;
-	private ComboBox cmbSelectPlayer;
-	private ComboBox cmbDefaultLanguage;
-	private CheckButton chkDeleteTempFiles;
+	private CheckButton chk_output_dir;
+	private Entry txt_backup_dir;
+	private CheckButton chk_backup_dir;
+	private Entry txt_output_dir;
+	private Button btn_save;
+	private Button btn_cancel;
+	private ComboBox cmb_file_view;
+	private ComboBox cmb_select_encoder;
+	private ComboBox cmb_select_player;
+	private ComboBox cmb_def_lang;
+	private CheckButton chk_delete_temp;
 	
 	public AppConfigWindow(Gtk.Window parent) {
 		title = "Settings";
@@ -65,8 +62,8 @@ public class AppConfigWindow : Gtk.Dialog {
 		icon = get_app_icon(16);
 
 		// get content area
-		vboxMain = get_content_area();
-		vboxMain.set_size_request(400,500);
+		vbox_main = get_content_area();
+		vbox_main.set_size_request(400,500);
 
 		//notebook
 		notebook = new Notebook();
@@ -74,59 +71,67 @@ public class AppConfigWindow : Gtk.Dialog {
 		notebook.show_border = true;
 		notebook.scrollable = true;
 		notebook.margin = 6;
-		vboxMain.pack_start (notebook, true, true, 0);
+		vbox_main.pack_start (notebook, true, true, 0);
 		
 		init_ui_tab_general();
 
 		init_ui_tab_tools();
 		
-        // btnSave
-        btnSave = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
-        btnSave.clicked.connect (btnSave_clicked);
+        // btn_save
+        btn_save = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
+        btn_save.clicked.connect (btn_save_clicked);
 
-        // btnCancel
-        btnCancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
-        btnCancel.clicked.connect (btnCancel_clicked);
+        // btn_cancel
+        btn_cancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
+        btn_cancel.clicked.connect (btn_cancel_clicked);
 
-        chkOutput_clicked();
-        chkBackup_clicked();
+        chk_output_dir_clicked();
+        chk_backup_dir_clicked();
 
         show_all();
 	}
 
 	private void init_ui_tab_general(){
-		//lblTabGeneral
-		var lblTabGeneral = new Label (_("General"));
-
-        //vboxTabGeneral
-        var vboxTabGeneral = new Box(Orientation.VERTICAL,6);
-        vboxTabGeneral.margin = 12;
-        notebook.append_page (vboxTabGeneral, lblTabGeneral);
-
-		// lblOutput
-		lblOutput = new Label (_("<b>Output Directory</b>"));
-		lblOutput.set_use_markup(true);
-		lblOutput.halign = Align.START;
-		vboxTabGeneral.pack_start (lblOutput, false, true, 0);
-
-		// chkOutput
-		chkOutput = new CheckButton.with_label (_("Save files in following location"));
-		chkOutput.active = (App.OutputDirectory.length > 0);
-		chkOutput.clicked.connect (chkOutput_clicked);
-		vboxTabGeneral.pack_start (chkOutput, false, true, 0);
 		
-		// txtOutput
-		txtOutput = new Gtk.Entry();
-		txtOutput.hexpand = true;
-		txtOutput.secondary_icon_stock = "gtk-open";
-		txtOutput.placeholder_text = _("Enter path or browse for directory");
-		vboxTabGeneral.add (txtOutput);
+		// add tab ------------------------------
+		
+		var label = new Label (_("General"));
 
+        var vbox = new Box(Orientation.VERTICAL,6);
+        vbox.margin = 12;
+        notebook.append_page (vbox, label);
+
+		// output dir --------------------------------------------
+		
+		label = new Label (_("<b>Output Directory</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		//label.margin_top = 12;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
+
+		// chk_output_dir
+		var chk = new CheckButton.with_label (_("Save files in following location"));
+		chk.margin_left = 6;
+		chk.active = (App.OutputDirectory.length > 0);
+		chk.clicked.connect (chk_output_dir_clicked);
+		vbox.pack_start (chk, false, true, 0);
+		chk_output_dir = chk;
+		
+		// txt_output_dir
+		var txt = new Gtk.Entry();
+		txt.hexpand = true;
+		txt.margin_left = 6;
+		txt.secondary_icon_stock = "gtk-open";
+		txt.placeholder_text = _("Enter path or browse for directory");
+		vbox.add (txt);
+		txt_output_dir = txt;
+		
 		if ((App.OutputDirectory != null) && dir_exists (App.OutputDirectory)){
-			txtOutput.text = App.OutputDirectory;
+			txt_output_dir.text = App.OutputDirectory;
 		}
 
-		txtOutput.icon_release.connect((p0, p1) => {
+		txt_output_dir.icon_release.connect((p0, p1) => {
 			//chooser
 			var chooser = new Gtk.FileChooserDialog(
 			    _("Select Path"),
@@ -142,37 +147,43 @@ public class AppConfigWindow : Gtk.Dialog {
 			chooser.set_filename(App.OutputDirectory);
 
 			if (chooser.run() == Gtk.ResponseType.ACCEPT) {
-				txtOutput.text = chooser.get_filename();
+				txt_output_dir.text = chooser.get_filename();
 			}
 
 			chooser.destroy();
 		});
 
-		// lblBackup
-		lblBackup = new Label (_("<b>Backup Directory</b>"));
-		lblBackup.set_use_markup(true);
-		lblBackup.halign = Align.START;
-		lblBackup.margin_top = 12;
-		vboxTabGeneral.pack_start (lblBackup, false, true, 0);
-
-		// chkBackup
-		chkBackup = new CheckButton.with_label (_("Move source files after encoding is complete"));
-		chkBackup.active = (App.BackupDirectory.length > 0);
-		chkBackup.clicked.connect (chkBackup_clicked);
-		vboxTabGeneral.pack_start (chkBackup, false, true, 0);
+		// backup dir -----------------------------------------------
 		
-		// txtBackup
-		txtBackup = new Gtk.Entry();
-		txtBackup.hexpand = true;
-		txtBackup.secondary_icon_stock = "gtk-open";
-		txtBackup.placeholder_text = _("Enter path or browse for directory");
-		vboxTabGeneral.add (txtBackup);
+		label = new Label (_("<b>Backup Directory</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_top = 12;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
 
+		// chk_backup_dir
+		chk = new CheckButton.with_label (_("Move source files after encoding is complete"));
+		chk.margin_left = 6;
+		chk.active = (App.BackupDirectory.length > 0);
+		chk.clicked.connect (chk_backup_dir_clicked);
+		vbox.pack_start (chk, false, true, 0);
+		chk_backup_dir = chk;
+		
+		// txt_backup_dir
+		txt = new Gtk.Entry();
+		txt.hexpand = true;
+		txt.margin_left = 6;
+		txt.secondary_icon_stock = "gtk-open";
+		txt.placeholder_text = _("Enter path or browse for directory");
+		vbox.add (txt);
+		txt_backup_dir = txt;
+		
 		if ((App.BackupDirectory != null) && dir_exists (App.BackupDirectory)){
-			txtBackup.text = App.BackupDirectory;
+			txt.text = App.BackupDirectory;
 		}
 
-		txtBackup.icon_release.connect((p0, p1) => {
+		txt.icon_release.connect((p0, p1) => {
 			//chooser
 			var chooser = new Gtk.FileChooserDialog(
 			    _("Select Path"),
@@ -188,84 +199,95 @@ public class AppConfigWindow : Gtk.Dialog {
 			chooser.set_filename(App.BackupDirectory);
 
 			if (chooser.run() == Gtk.ResponseType.ACCEPT) {
-				txtBackup.text = chooser.get_filename();
+				txt_backup_dir.text = chooser.get_filename();
 			}
 
 			chooser.destroy();
 		});
 
-		// lblView
-		lblView = new Label (_("<b>Main Window</b>"));
-		lblView.set_use_markup(true);
-		lblView.halign = Align.START;
-		//lblView.margin_bottom = 12;
-		lblView.margin_top = 12;
-		vboxTabGeneral.pack_start (lblView, false, true, 0);
+		// header ---------------------------------------------
 		
-		//hboxFileView
-		Box hboxFileView = new Box(Orientation.HORIZONTAL,6);
-        vboxTabGeneral.add(hboxFileView);
+		label = new Label (_("<b>Main Window</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_top = 12;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
 
-		Label lblFileView = new Gtk.Label(_("File View"));
-		lblFileView.xalign = (float) 0.0;
-		hboxFileView.pack_start(lblFileView,false,false,0);
+		// file view -------------------------------------
+		
+		var hbox = new Box(Orientation.HORIZONTAL,12);
+        vbox.add(hbox);
 
-		cmbFileView = new ComboBox();
+		label = new Gtk.Label(_("File View"));
+		label.xalign = (float) 0.0;
+		label.margin_left = 6;
+		hbox.pack_start(label,false,false,0);
+
+		// cmb_file_view
+		var combo = new ComboBox();
 		var textCell = new CellRendererText();
-        cmbFileView.pack_start(textCell, false);
-        cmbFileView.set_attributes(textCell, "text", 0);
-		hboxFileView.pack_start(cmbFileView,false,false,0);
-
+        combo.pack_start(textCell, false);
+        combo.set_attributes(textCell, "text", 0);
+		hbox.pack_start(combo,false,false,0);
+		cmb_file_view = combo;
+		
 		Gtk.TreeIter iter;
 		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter, 0, _("List"), 1, "list");
 		model.append (out iter);
 		model.set (iter, 0, _("Tiles"), 1, "tiles");
-		cmbFileView.set_model(model);
+		combo.set_model(model);
 
 		if (App.TileView){
-			cmbFileView.set_active(1);
+			combo.set_active(1);
 		}
 		else{
-			cmbFileView.set_active(0);
+			combo.set_active(0);
 		}
-
 	}
 
 	private void init_ui_tab_tools(){
-		//lblTabTools
-		var lblTabTools = new Label (_("Tools"));
-
-        //vboxTabTools
-        var vboxTabTools = new Box(Orientation.VERTICAL,6);
-        vboxTabTools.margin = 12;
-        notebook.append_page (vboxTabTools, lblTabTools);
 		
-		Gtk.SizeGroup sizegroup = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
+		// add tab ---------------------------------------
+		
+		var label = new Label (_("Tools"));
 
-		Gtk.Label lbl;
+        var vbox = new Box(Orientation.VERTICAL,6);
+        vbox.margin = 12;
+        notebook.append_page (vbox, label);
+		
+		var sizegroup_lbl = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
+		var sizegroup_cmb = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
 		
 		// header
-		lbl = new Label (_("<b>Preferred Tools</b>"));
-		lbl.set_use_markup(true);
-		lbl.halign = Align.START;
-		//lbl.margin_top = 12;
-		vboxTabTools.pack_start (lbl, false, true, 0);
+		label = new Label (_("<b>Preferred Tools</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		//label.margin_top = 6;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
 		
-		//hboxEncoder -----------------------------------------------
+		// select encoder -----------------------------------------------
 		
-		var hboxEncoder = new Gtk.Box(Orientation.HORIZONTAL,6);
-		vboxTabTools.pack_start (hboxEncoder, false, true, 0);
+		var hbox = new Gtk.Box(Orientation.HORIZONTAL,12);
+		vbox.pack_start (hbox, false, true, 0);
 
-		//lblSelectEncoder
-		var lblSelectEncoder = new Label ("Use FFmpeg or Libav encoder");
-		lblSelectEncoder.set_use_markup(true);
-		lblSelectEncoder.halign = Align.START;
-		lblSelectEncoder.hexpand = true;
-		hboxEncoder.add(lblSelectEncoder);
+		string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
+        tt += _("<b>Encoder</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
+        
+		label = new Label (_("Encoder"));
+		label.xalign = (float) 1.0;
+		label.set_use_markup(true);
+		label.set_tooltip_markup(tt);
+		label.halign = Align.START;
+		label.margin_left = 6;
+		hbox.add(label);
+
+		sizegroup_lbl.add_widget(label);
 		
-		//cmbSelectEncoder
+		//cmb_select_encoder
 		TreeIter iter;
 		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
@@ -273,100 +295,99 @@ public class AppConfigWindow : Gtk.Dialog {
 		model.append (out iter);
 		model.set (iter, 0, _("avconv / Libav"), 1, "avconv");
 
-		cmbSelectEncoder = new ComboBox.with_model(model);
-		hboxEncoder.add(cmbSelectEncoder);
-		sizegroup.add_widget(cmbSelectEncoder);
+		var combo = new ComboBox.with_model(model);
+		combo.set_tooltip_markup(tt);
+		hbox.add(combo);
+		cmb_select_encoder = combo;
+		
+		sizegroup_cmb.add_widget(combo);
 		
 		var textCell = new CellRendererText();
-        cmbSelectEncoder.pack_start( textCell, false );
-        cmbSelectEncoder.set_attributes( textCell, "text", 0 );
-			
-        string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
-        tt += _("<b>Encoder</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
-        cmbSelectEncoder.set_tooltip_markup(tt);
-		lblSelectEncoder.set_tooltip_markup(tt);
-		
+        combo.pack_start( textCell, false );
+        combo.set_attributes( textCell, "text", 0 );
+
 		switch(App.PrimaryEncoder){
 		case "ffmpeg":
-			cmbSelectEncoder.active = 0;
+			combo.active = 0;
 			break;
 		case "avconv":
-			cmbSelectEncoder.active = 1;
+			combo.active = 1;
 			break;
 		default:
-			cmbSelectEncoder.active = 0;
+			combo.active = 0;
 			break;
 		}
 
-		//hboxPlayer -----------------------------------------------
+		// selected player ------------------------------------
 		
-		var hboxPlayer = new Gtk.Box(Orientation.HORIZONTAL,6);
-		vboxTabTools.pack_start (hboxPlayer, false, true, 0);
+		hbox = new Gtk.Box(Orientation.HORIZONTAL,12);
+		vbox.pack_start (hbox, false, true, 0);
 
-		//lblSelectPlayer
-		var lblSelectPlayer = new Label ("Use Mpv or MPlayer");
-		lblSelectPlayer.set_use_markup(true);
-		lblSelectPlayer.halign = Align.START;
-		lblSelectPlayer.hexpand = true;
-		hboxPlayer.add(lblSelectPlayer);
+		label = new Label(_("Player"));
+		label.xalign = (float) 1.0;
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_left = 6;
+		hbox.add(label);
+
+		sizegroup_lbl.add_widget(label);
 		
-		//cmbSelectPlayer
-		//TreeIter iter;
+		//cmb_select_player
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter, 0, _("mpv"), 1, "mpv");
 		model.append (out iter);
 		model.set (iter, 0, _("mplayer"), 1, "mplayer");
 
-		cmbSelectPlayer = new ComboBox.with_model(model);
-		hboxPlayer.add(cmbSelectPlayer);
-		sizegroup.add_widget(cmbSelectPlayer);
+		combo = new ComboBox.with_model(model);
+		hbox.add(combo);
+		cmb_select_player = combo;
+		
+		sizegroup_cmb.add_widget(combo);
 		
 		textCell = new CellRendererText();
-        cmbSelectPlayer.pack_start( textCell, false );
-        cmbSelectPlayer.set_attributes( textCell, "text", 0 );
+        combo.pack_start( textCell, false );
+        combo.set_attributes( textCell, "text", 0 );
 			
-        //string tt = _("<b>avconv</b>\nUse the 'avconv' encoding tool from the Libav project\n\n");
-        //tt += _("<b>Player</b>\nUse the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n\n");
-        //cmbSelectPlayer.set_tooltip_markup(tt);
-		//lblSelectPlayer.set_tooltip_markup(tt);
-		
 		switch(App.PrimaryPlayer){
 		case "mpv":
-			cmbSelectPlayer.active = 0;
+			combo.active = 0;
 			break;
 		case "mplayer":
-			cmbSelectPlayer.active = 1;
+			combo.active = 1;
 			break;
 		default:
-			cmbSelectPlayer.active = 0;
+			combo.active = 0;
 			break;
 		}
 
-		// header
-		lbl = new Label (_("<b>Default Language</b>"));
-		lbl.set_use_markup(true);
-		lbl.halign = Align.START;
-		lbl.margin_top = 12;
-		vboxTabTools.pack_start (lbl, false, true, 0);
+		// header ---------------
 		
-		//Default Language ---------------------------------------------
+		label = new Label (_("<b>Default Language</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_top = 12;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
 
-		var hbox = new Gtk.Box(Orientation.HORIZONTAL,6);
-		vboxTabTools.pack_start (hbox, false, true, 0);
-		
-		//lbl ------------
-		
-		lbl = new Label ("Default Language");
-		lbl.set_use_markup(true);
-		lbl.halign = Align.START;
-		lbl.hexpand = true;
-		tt = "Will be used for setting the default track when encoding files with multiple audio and subtitle tracks";
-		lbl.set_tooltip_text(tt);
-		hbox.add(lbl);
+		// default language --------------------------------------
 
-		//combo -------------
+		hbox = new Gtk.Box(Orientation.HORIZONTAL,12);
+		vbox.pack_start (hbox, false, true, 0);
+
+		tt = _("Will be used for setting the default track when encoding files with multiple audio and subtitle tracks");
 		
+		label = new Label (_("Language"));
+		label.xalign = (float) 1.0;
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_left = 6;
+		label.set_tooltip_text(tt);
+		hbox.add(label);
+
+		sizegroup_lbl.add_widget(label);
+		
+		// cmb_def_lang
 		int index = -1;
 		int selectedIndex = 0;
 		model = new Gtk.ListStore (2, typeof (string), typeof (string));
@@ -380,46 +401,52 @@ public class AppConfigWindow : Gtk.Dialog {
 			}
 		}
 	
-		cmbDefaultLanguage = new ComboBox.with_model(model);
-		cmbDefaultLanguage.active = selectedIndex;
-		cmbDefaultLanguage.set_tooltip_text(tt);
-		hbox.add(cmbDefaultLanguage);
-		//sizegroup.add_widget(cmbDefaultLanguage);
+		combo = new ComboBox.with_model(model);
+		combo.active = selectedIndex;
+		combo.set_tooltip_text(tt);
+		hbox.add(combo);
+		cmb_def_lang = combo;
+
+		//sizegroup_cmb.add_widget(combo);
 		
 		textCell = new CellRendererText();
 		textCell.ellipsize = Pango.EllipsizeMode.END;
 		textCell.max_width_chars = 20;
-        cmbDefaultLanguage.pack_start( textCell, false );
-        cmbDefaultLanguage.set_attributes( textCell, "text", 0 );
+        combo.pack_start( textCell, false );
+        combo.set_attributes( textCell, "text", 0 );
 
-		// header
-		lbl = new Label (_("<b>File Handling</b>"));
-		lbl.set_use_markup(true);
-		lbl.halign = Align.START;
-		lbl.margin_top = 12;
-		vboxTabTools.pack_start (lbl, false, true, 0);
+		// header ------------------------------------------
 		
-        //chkDeleteTempFiles
-		chkDeleteTempFiles = new CheckButton.with_label(_("Delete temporary files after successful encode"));
-		chkDeleteTempFiles.active = App.DeleteTempFiles;
-		chkDeleteTempFiles.set_tooltip_markup(tt);
-		tt = "If un-checked, the temporary/intermediate files will remain in the temporary folder till the next reboot.\nKeep this un-checked if you want to copy the temp files.";
-		chkDeleteTempFiles.set_tooltip_text(tt);
-		vboxTabTools.pack_start (chkDeleteTempFiles, false, true, 0);
+		label = new Label (_("<b>File Handling</b>"));
+		label.set_use_markup(true);
+		label.halign = Align.START;
+		label.margin_top = 12;
+		label.margin_bottom = 6;
+		vbox.pack_start (label, false, true, 0);
+
+		tt = _("If un-checked, the temporary/intermediate files will remain in the temporary folder till the next reboot.\nKeep this un-checked if you want to copy the temp files.");
+		
+        //chk_delete_temp
+		var chk = new CheckButton.with_label(_("Delete temporary files after successful encode"));
+		chk.active = App.DeleteTempFiles;
+		chk.set_tooltip_text(tt);
+		chk.margin_left = 6;
+		vbox.pack_start (chk, false, true, 0);
+		chk_delete_temp = chk;
 	}
 	
-	private void chkOutput_clicked(){
-		txtOutput.set_sensitive(chkOutput.active);
+	private void chk_output_dir_clicked(){
+		txt_output_dir.set_sensitive(chk_output_dir.active);
 	}
 
-	private void chkBackup_clicked(){
-		txtBackup.set_sensitive(chkBackup.active);
+	private void chk_backup_dir_clicked(){
+		txt_backup_dir.set_sensitive(chk_backup_dir.active);
 	}
 
-	private void btnSave_clicked(){
-		if (chkOutput.active){
-			if (dir_exists(txtOutput.text)){
-				App.OutputDirectory = txtOutput.text;
+	private void btn_save_clicked(){
+		if (chk_output_dir.active){
+			if (dir_exists(txt_output_dir.text)){
+				App.OutputDirectory = txt_output_dir.text;
 			}
 			else{
 				App.OutputDirectory = "";
@@ -429,9 +456,9 @@ public class AppConfigWindow : Gtk.Dialog {
 			App.OutputDirectory = "";
 		}
 
-		if (chkBackup.active){
-			if (dir_exists(txtBackup.text)){
-				App.BackupDirectory = txtBackup.text;
+		if (chk_backup_dir.active){
+			if (dir_exists(txt_backup_dir.text)){
+				App.BackupDirectory = txt_backup_dir.text;
 			}
 			else{
 				App.BackupDirectory = "";
@@ -441,13 +468,13 @@ public class AppConfigWindow : Gtk.Dialog {
 			App.BackupDirectory = "";
 		}
 
-		App.TileView = (cmbFileView.active == 1);
+		App.TileView = (cmb_file_view.active == 1);
 
-		App.DeleteTempFiles = chkDeleteTempFiles.active;
+		App.DeleteTempFiles = chk_delete_temp.active;
 		
-		App.PrimaryEncoder = gtk_combobox_get_value(cmbSelectEncoder,1,"ffmpeg");
-		App.PrimaryPlayer = gtk_combobox_get_value(cmbSelectPlayer,1,"mpv");
-		App.DefaultLanguage = gtk_combobox_get_value(cmbDefaultLanguage,1,"en");
+		App.PrimaryEncoder = gtk_combobox_get_value(cmb_select_encoder,1,"ffmpeg");
+		App.PrimaryPlayer = gtk_combobox_get_value(cmb_select_player,1,"mpv");
+		App.DefaultLanguage = gtk_combobox_get_value(cmb_def_lang,1,"en");
 		
 		// Save settings
 		App.save_config();
@@ -455,7 +482,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		destroy();
 	}
 
-	private void btnCancel_clicked(){
+	private void btn_cancel_clicked(){
 		destroy();
 	}
 }

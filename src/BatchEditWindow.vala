@@ -34,23 +34,23 @@ using TeeJee.System;
 using TeeJee.Misc;
 
 public class BatchEditWindow : Gtk.Dialog {
-	private Gtk.Box vboxMain;
-	private Gtk.TreeView tvFiles;
-	private Gtk.ScrolledWindow swFiles;
+	private Gtk.Box vbox_main;
+	private Gtk.TreeView tv_files;
+	private Gtk.ScrolledWindow sw_files;
 	
-	private Gtk.TreeViewColumn colCropL;
-	private Gtk.TreeViewColumn colCropR;
-	private Gtk.TreeViewColumn colCropT;
-	private Gtk.TreeViewColumn colCropB;
-	private Gtk.TreeViewColumn colStartPos;
-	private Gtk.TreeViewColumn colEndPos;
-	private Gtk.TreeViewColumn colEdit;
+	private Gtk.TreeViewColumn col_crop_l;
+	private Gtk.TreeViewColumn col_crop_r;
+	private Gtk.TreeViewColumn col_crop_t;
+	private Gtk.TreeViewColumn col_crop_b;
+	private Gtk.TreeViewColumn col_start_pos;
+	private Gtk.TreeViewColumn col_end_pos;
+	private Gtk.TreeViewColumn col_edit;
 
 	private MediaFile SelectedFile = null;
 
-	private Gtk.Button btnCropAuto;
-	private Gtk.Button btnCropReset;
-	private Gtk.Button btnOk;
+	private Gtk.Button btn_crop_auto;
+	private Gtk.Button btn_crop_reset;
+	private Gtk.Button btn_ok;
 
 	private string action = "";
 	private bool crop_detect_is_running = false;
@@ -89,24 +89,24 @@ public class BatchEditWindow : Gtk.Dialog {
 		}
 		
 		// get content area
-		vboxMain = get_content_area();
-		vboxMain.set_size_request(600,500);
+		vbox_main = get_content_area();
+		vbox_main.set_size_request(600,500);
 
 		init_ui_file_list();
 
 		if (action == "crop"){
-			// btnCropAuto
-			btnCropAuto = (Button) add_button ("Auto Crop", Gtk.ResponseType.NONE);
-			btnCropAuto.clicked.connect(btnCropAuto_clicked);
+			// btn_crop_auto
+			btn_crop_auto = (Button) add_button ("Auto Crop", Gtk.ResponseType.NONE);
+			btn_crop_auto.clicked.connect(btn_crop_auto_clicked);
 
-			// btnCropReset
-			btnCropReset = (Button) add_button ("Reset", Gtk.ResponseType.NONE);
-			btnCropReset.clicked.connect (btnCropReset_clicked);
+			// btn_crop_reset
+			btn_crop_reset = (Button) add_button ("Reset", Gtk.ResponseType.NONE);
+			btn_crop_reset.clicked.connect (btn_crop_reset_clicked);
 		}
 
-		// btnOk
-        btnOk = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
-        btnOk.clicked.connect (btnOk_clicked);
+		// btn_ok
+        btn_ok = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
+        btn_ok.clicked.connect (btn_ok_clicked);
         
         refresh_list_view();
 
@@ -116,49 +116,52 @@ public class BatchEditWindow : Gtk.Dialog {
 	}
 
 	private void init_ui_file_list(){
-		//tvFiles
-		tvFiles = new TreeView();
-		tvFiles.get_selection().mode = SelectionMode.MULTIPLE;
-		//tvFiles.set_tooltip_text (_("Right-click for more options"));
-		tvFiles.headers_clickable = true;
-		tvFiles.activate_on_single_click = true;
-		tvFiles.rules_hint = true;
+		//tv_files
+		tv_files = new TreeView();
+		tv_files.get_selection().mode = SelectionMode.MULTIPLE;
+		//tv_files.set_tooltip_text (_("Right-click for more options"));
+		tv_files.headers_clickable = true;
+		tv_files.activate_on_single_click = true;
+		tv_files.rules_hint = true;
 		
-		swFiles = new ScrolledWindow(tvFiles.get_hadjustment(), tvFiles.get_vadjustment());
-		swFiles.set_shadow_type (ShadowType.ETCHED_IN);
-		swFiles.add (tvFiles);
-		swFiles.margin = 3;
-		swFiles.set_size_request (-1, 150);
-		vboxMain.pack_start (swFiles, true, true, 0);
+		sw_files = new ScrolledWindow(tv_files.get_hadjustment(), tv_files.get_vadjustment());
+		sw_files.set_shadow_type (ShadowType.ETCHED_IN);
+		sw_files.add (tv_files);
+		sw_files.margin = 3;
+		sw_files.set_size_request (-1, 150);
+		vbox_main.pack_start (sw_files, true, true, 0);
 	
 		CellRendererText cellText;
 		CellRendererSpin cellSpin;
 
-		//colName
-		var colName = new TreeViewColumn();
-		colName.title = _("File");
-		colName.expand = true;
-		colName.resizable = true;
-		colName.clickable = true;
-		colName.min_width = 100;
-		tvFiles.append_column(colName);
+		// file name -----------------------------
+		
+		var col = new TreeViewColumn();
+		col.title = _("File");
+		col.expand = true;
+		col.resizable = true;
+		col.clickable = true;
+		col.min_width = 100;
+		tv_files.append_column(col);
 		
 		cellText = new CellRendererText();
 		cellText.xalign = (float) 0.0;
 		cellText.ellipsize = Pango.EllipsizeMode.END;
-		colName.pack_start (cellText, false);
-		colName.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
+		col.pack_start (cellText, false);
+		col.set_cell_data_func (cellText, (cell_layout, cell, model, iter)=>{
 			MediaFile mf;
 			model.get (iter, 0, out mf, -1);
 			(cell as Gtk.CellRendererText).text = mf.Name;
 		});
 
 		
-		//colCropL
-		colCropL = new TreeViewColumn();
-		colCropL.title = _("Crop Left");
-		colCropL.fixed_width = 80;
-		tvFiles.append_column(colCropL);
+		// crop left -------------------------------------------
+		
+		col = new TreeViewColumn();
+		col.title = _("Crop Left");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_crop_l = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -168,14 +171,17 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.CROP_LEFT);
 		});
 		
-		colCropL.pack_start (cellSpin, false);
-		colCropL.set_attributes(cellSpin, "text",  TreeColumn.CROP_LEFT);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text",  TreeColumn.CROP_LEFT);
 
-		//colCropR
-		colCropR = new TreeViewColumn();
-		colCropR.title = _("Right");
-		colCropR.fixed_width = 80;
-		tvFiles.append_column(colCropR);
+		// crop right -------------------------------------------
+		
+		//col_crop_r
+		col = new TreeViewColumn();
+		col.title = _("Right");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_crop_r = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -185,14 +191,17 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.CROP_RIGHT);
 		});
 		
-		colCropR.pack_start (cellSpin, false);
-		colCropR.set_attributes(cellSpin, "text", TreeColumn.CROP_RIGHT);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text", TreeColumn.CROP_RIGHT);
 
-		//colCropT
-		colCropT = new TreeViewColumn();
-		colCropT.title = _("Top");
-		colCropT.fixed_width = 80;
-		tvFiles.append_column(colCropT);
+		// crop top -------------------------------------------
+		
+		//col_crop_t
+		col = new TreeViewColumn();
+		col.title = _("Top");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_crop_t = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -202,14 +211,17 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.CROP_TOP);
 		});
 		
-		colCropT.pack_start (cellSpin, false);
-		colCropT.set_attributes(cellSpin, "text", TreeColumn.CROP_TOP);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text", TreeColumn.CROP_TOP);
 
-		//colCropB
-		colCropB = new TreeViewColumn();
-		colCropB.title = _("Bottom");
-		colCropB.fixed_width = 80;
-		tvFiles.append_column(colCropB);
+		// crop bottom -------------------------------------------
+		
+		//col_crop_b
+		col = new TreeViewColumn();
+		col.title = _("Bottom");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_crop_b = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -219,15 +231,17 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.CROP_BOTTOM);
 		});
 		
-		colCropB.pack_start (cellSpin, false);
-		colCropB.set_attributes(cellSpin, "text", TreeColumn.CROP_BOTTOM);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text", TreeColumn.CROP_BOTTOM);
 
-		//colStartPos --------------------------------------------
-		
-		colStartPos = new TreeViewColumn();
-		colStartPos.title = _("StartPos");
-		colStartPos.fixed_width = 80;
-		tvFiles.append_column(colStartPos);
+		// start pos --------------------------------------------
+
+		//col_start_pos
+		col = new TreeViewColumn();
+		col.title = _("StartPos");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_start_pos = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -238,15 +252,17 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.START_POS);
 		});
 		
-		colStartPos.pack_start (cellSpin, false);
-		colStartPos.set_attributes(cellSpin, "text", TreeColumn.START_POS);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text", TreeColumn.START_POS);
 
-		//colEndPos ----------------------------------------------
-		
-		colEndPos = new TreeViewColumn();
-		colEndPos.title = _("EndPos");
-		colEndPos.fixed_width = 80;
-		tvFiles.append_column(colEndPos);
+		// end pos --------------------------------------------
+			
+		//col_end_pos
+		col = new TreeViewColumn();
+		col.title = _("EndPos");
+		col.fixed_width = 80;
+		tv_files.append_column(col);
+		col_end_pos = col;
 		
 		cellSpin = new CellRendererSpin();
 		//cellSpin.xalign = (float) 0.5;
@@ -257,25 +273,32 @@ public class BatchEditWindow : Gtk.Dialog {
 			colCrop_cell_edited(path, new_text, TreeColumn.END_POS);
 		});
 		
-		colEndPos.pack_start (cellSpin, false);
-		colEndPos.set_attributes(cellSpin, "text", TreeColumn.END_POS);
+		col.pack_start (cellSpin, false);
+		col.set_attributes(cellSpin, "text", TreeColumn.END_POS);
 
-		//colEdit
+		// edit -----------------------------------------
+		
+		//col_edit
+		col = new Gtk.TreeViewColumn();
+		col.title = _("Edit");
+		tv_files.append_column(col);
+		col_edit = col;
+
 		var pixbuf = new Gtk.CellRendererPixbuf();
 		pixbuf.icon_name = "gtk-edit";
-		colEdit = new Gtk.TreeViewColumn();
-		colEdit.title = _("Edit");
-		colEdit.pack_start (pixbuf, false);
-		tvFiles.append_column(colEdit);
-
-		//colSpacer
-		var colSpacer = new TreeViewColumn();
-		colSpacer.expand = false;
-		colSpacer.fixed_width = 10;
-		tvFiles.append_column(colSpacer);
+		col.pack_start (pixbuf, false);
 		
-		tvFiles.row_activated.connect((path, column)=>{
-			var store = (Gtk.ListStore) tvFiles.model;
+		// spacer -------------------------------
+		
+		col = new TreeViewColumn();
+		col.expand = false;
+		col.fixed_width = 10;
+		tv_files.append_column(col);
+
+		// handlers ------------------------------
+		
+		tv_files.row_activated.connect((path, column)=>{
+			var store = (Gtk.ListStore) tv_files.model;
 			MediaFile mf;
 			TreeIter iter;
 			store.get_iter_from_string (out iter, path.to_string());
@@ -283,7 +306,7 @@ public class BatchEditWindow : Gtk.Dialog {
 
 			SelectedFile = mf;
 		
-			if (column == colEdit){
+			if (column == col_edit){
 				if (action == "crop"){
 					var win = MediaPlayerWindow.CropVideo(mf, this);
 					win.destroy.connect(()=>{
@@ -306,7 +329,7 @@ public class BatchEditWindow : Gtk.Dialog {
 
 	private void colCrop_cell_edited(string path, string new_text, TreeColumn field){
 		TreeIter iter;
-		var model = (Gtk.ListStore) tvFiles.model;
+		var model = (Gtk.ListStore) tv_files.model;
 		MediaFile mf = null;
 		if (model.get_iter_from_string (out iter, path)){
 			model.get (iter, 0, out mf, -1);
@@ -369,30 +392,30 @@ public class BatchEditWindow : Gtk.Dialog {
 			store.set(iter, TreeColumn.END_POS, "%.1f".printf(mf.EndPos));
 		}
 
-		tvFiles.set_model (store);
+		tv_files.set_model (store);
 		
-		tvFiles.columns_autosize();
+		tv_files.columns_autosize();
 
 		if (action == "crop"){
-			colCropL.visible = true;
-			colCropR.visible = true;
-			colCropT.visible = true;
-			colCropB.visible = true;
-			colStartPos.visible = false;
-			colEndPos.visible = false;
+			col_crop_l.visible = true;
+			col_crop_r.visible = true;
+			col_crop_t.visible = true;
+			col_crop_b.visible = true;
+			col_start_pos.visible = false;
+			col_end_pos.visible = false;
 		}
 		else if (action == "trim"){
-			colCropL.visible = false;
-			colCropR.visible = false;
-			colCropT.visible = false;
-			colCropB.visible = false;
-			colStartPos.visible = true;
-			colEndPos.visible = true;
+			col_crop_l.visible = false;
+			col_crop_r.visible = false;
+			col_crop_t.visible = false;
+			col_crop_b.visible = false;
+			col_start_pos.visible = true;
+			col_end_pos.visible = true;
 		}
 	}
 
-	private void btnCropAuto_clicked(){
-		TreeSelection selection = tvFiles.get_selection();
+	private void btn_crop_auto_clicked(){
+		TreeSelection selection = tv_files.get_selection();
 		if (selection.count_selected_rows() == 0){
 			string title = _("No Files Selected");
 			string msg = _("Select some files from the list");
@@ -455,8 +478,8 @@ public class BatchEditWindow : Gtk.Dialog {
 		crop_detect_is_running = false;
 	}
 
-	private void btnCropReset_clicked(){
-		TreeSelection selection = tvFiles.get_selection();
+	private void btn_crop_reset_clicked(){
+		TreeSelection selection = tv_files.get_selection();
 		if (selection.count_selected_rows() == 0){
 			string title = _("No Files Selected");
 			string msg = _("Select some files from the list");
@@ -483,7 +506,7 @@ public class BatchEditWindow : Gtk.Dialog {
 		}
 	}
 	
-	private void btnOk_clicked(){
+	private void btn_ok_clicked(){
 		destroy();
 	}
 
