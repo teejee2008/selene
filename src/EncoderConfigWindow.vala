@@ -403,7 +403,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		grid.set_column_spacing (12);
 		grid.set_row_spacing (6);
 		grid.margin = 12;
-		grid.margin_right = 48;
+		grid.margin_right = 24;
 		notebook.append_page (grid, lbl_general);
 
 		int row = -1;
@@ -744,10 +744,6 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	}
 
 	private void init_ui_sox(){
-		string tt = "";
-		Gtk.ListStore model;
-		TreeIter iter;
-
 		int scaleWidth = 200;
 		int sliderMarginBottom = 3;
 		int spacing = 6;
@@ -815,7 +811,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		hbox = new Box(Orientation.HORIZONTAL,spacing);
         vboxSox.add(hbox);
 
-		tt = _("Boost or cut the bass (lower) frequencies of the audio.");
+		var tt = _("Boost or cut the bass (lower) frequencies of the audio.");
 
 		label = new Gtk.Label(_("Bass") + ": ");
 		label.xalign = (float) 1.0;
@@ -997,8 +993,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
         combo.set_attributes(textCell, "text", 0);
 		hbox.pack_start(combo,false,false,0);
 		cmb_fade_type = combo;
-		
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+
+		TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter,0,_("Quarter Sine"),1,"q");
 		model.append (out iter);
@@ -1060,6 +1057,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		var label = new Label(_("Video"));
 
+		//grid_video
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
@@ -1069,8 +1067,6 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		int row = -1;
 		string tt = "";
-		Gtk.ListStore model;
-		TreeIter iter;
 
 		// header ------------------------
 		
@@ -1196,7 +1192,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
         grid.attach(combo,1,row,1,1);
 		cmb_x264_preset = combo;
 
-		model = new Gtk.ListStore (2, typeof (string), typeof (string));
+		TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (string));
 		model.append (out iter);
 		model.set (iter, 0, _("UltraFast"), 1, "ultrafast");
 		model.append (out iter);
@@ -1333,6 +1330,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		var label = new Label (_("Filters"));
 
+		// grid_vf
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
@@ -1538,62 +1536,66 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	}
 
 	private void init_ui_subtitles(){
-		int row = 0;
-        //Gtk.ListStore model;
-        Gtk.CellRendererText textCell;
-        //Gtk.TreeIter iter;
-        string tt;
-        
-		//lblSubtitle
+		
+		// add tab ---------------------------------------------
+		
 		var label = new Label ("" + _("Subs") + "");
 
-        //gridSubtitle
+        // grid_subs
         var grid = new Grid();
         grid.set_column_spacing (6);
         grid.set_row_spacing (6);
         grid.margin = 12;
         notebook.append_page (grid, label);
 		grid_subs = grid;
-		
-		row = -1;
 
+		int row = -1;
+		
+		// header ----------------------------------------------
+		
 		label = new Gtk.Label(_("<b>Subtitles</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_bottom = 6;
-		grid.attach(label,0,++row,2,1);
+		grid.attach(label,0,++row,1,1);
 		
-		tt = _("<b>Embed</b> - Subtitle files will be combined with the output file.\nThese subtitles can be switched off since they are added as a separate track");
+		var tt = _("<b>Embed</b> - Subtitle files will be combined with the output file.\nThese subtitles can be switched off since they are added as a separate track");
 		tt += "\n\n";
 		tt += _("<b>Render</b> - Subtitles are rendered/burned on the video.\nThese subtitles cannot be switched off since they become a part of the video");
+
+		// sub mode -----------------------------------------------
+		
+		var hbox = new Box(Orientation.HORIZONTAL,6);
+		grid.attach(hbox,0,++row,2,1);
 		
 		//lbl_sub_mode
-		lbl_sub_mode = new Gtk.Label(_("Mode"));
-		lbl_sub_mode.xalign = (float) 1.0;
-		lbl_sub_mode.margin_left = 12;
-		lbl_sub_mode.set_tooltip_markup (tt);
-		grid.attach(lbl_sub_mode,0,++row,1,1);
-
+		label = new Gtk.Label(_("Mode"));
+		label.xalign = (float) 1.0;
+		label.margin_left = 12;
+		label.set_tooltip_markup (tt);
+		hbox.add(label);
+		lbl_sub_mode = label;
+		
 		//cmb_sub_mode
-		cmb_sub_mode = new ComboBox();
-		textCell = new CellRendererText();
-        cmb_sub_mode.pack_start( textCell, false );
-        cmb_sub_mode.set_attributes( textCell, "text", 0 );
-        cmb_sub_mode.changed.connect(cmb_sub_mode_changed);
-        //cmb_sub_mode.hexpand = true;
-        cmb_sub_mode.set_tooltip_markup (tt);
-        grid.attach(cmb_sub_mode,1,row,1,1);
-
+		var combo = new ComboBox();
+		var textCell = new CellRendererText();
+        combo.pack_start( textCell, false );
+        combo.set_attributes( textCell, "text", 0 );
+        combo.changed.connect(cmb_sub_mode_changed);
+        combo.set_tooltip_markup (tt);
+        hbox.add(combo);
+		cmb_sub_mode = combo;
+		
         //lbl_scodec_msg
-		lbl_scodec_msg = new Gtk.Label(_("Subtitles"));
-		lbl_scodec_msg.xalign = (float) 0.0;
-		//lbl_scodec_msg.hexpand = true;
-		lbl_scodec_msg.margin_top = 6;
-		lbl_scodec_msg.margin_bottom = 6;
-		lbl_scodec_msg.wrap = true;
-		lbl_scodec_msg.wrap_mode = Pango.WrapMode.WORD;
-		lbl_scodec_msg.use_markup = true;
-		grid.attach(lbl_scodec_msg,0,++row,3,1);
+		label = new Gtk.Label(_("Subtitles"));
+		label.xalign = (float) 0.0;
+		label.margin_top = 6;
+		label.margin_bottom = 6;
+		label.wrap = true;
+		label.wrap_mode = Pango.WrapMode.WORD;
+		label.use_markup = true;
+		grid.attach(label,0,++row,3,1);
+		lbl_scodec_msg = label;
 	}
 	
 	private bool on_delete_event(Gdk.EventAny event){
