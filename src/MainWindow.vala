@@ -1439,12 +1439,12 @@ public class MainWindow : Gtk.Window{
 		menu_file.append(mi_file_skip);
 
 		// mi_file_crop
-		mi_file_crop = new Gtk.MenuItem.with_label (_("Crop Video..."));
+		mi_file_crop = new Gtk.MenuItem.with_label (_("Crop Video") + "...");
 		mi_file_crop.activate.connect(mi_file_crop_clicked);
 		menu_file.append(mi_file_crop);
 
 		// mi_file_trim
-		mi_file_trim = new Gtk.MenuItem.with_label (_("Trim Duration..."));
+		mi_file_trim = new Gtk.MenuItem.with_label (_("Trim Duration") + "...");
 		mi_file_trim.activate.connect(mi_file_trim_clicked);
 		menu_file.append(mi_file_trim);
 
@@ -1656,13 +1656,13 @@ public class MainWindow : Gtk.Window{
 						
 						string desc = "";
 						if (stream is VideoStream){
-							desc = "Video #%d : %s".printf(stream.TypeIndex, stream.description);
+							desc = _("Video") + " #%d : %s".printf(stream.TypeIndex, stream.description);
 						}
 						else if (stream is AudioStream){
-							desc = "Audio #%d : %s".printf(stream.TypeIndex, stream.description);
+							desc = _("Audio") + " #%d : %s".printf(stream.TypeIndex, stream.description);
 						}
 						else if (stream is TextStream){
-							desc = "Subtitle #%d : %s".printf(stream.TypeIndex, stream.description);
+							desc = _("Subtitle") + " #%d : %s".printf(stream.TypeIndex, stream.description);
 						}
 						
 						inputStore.append (out iter2, iter);
@@ -2218,36 +2218,9 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void btn_preset_info_clicked(){
-		string msg = """Selene supports 2 types of presets:
+		string msg = _("Selene supports 2 types of presets:\n\n1) JSON presets with a '.json' file extension. Clicking the Edit button on the toolbar will display a GUI for configuring the preset.\n\n2) Bash scripts with a '.sh' file extension. Clicking the Edit button will open the script file in a text editor. Bash scripts are useful if you need complete control over the encoding process. The script can use any set of commands for encoding the input files. Selene will try to parse the output and display the progress during encoding. See the sample scripts in '$HOME/.config/selene/scripts' for the syntax.");
 
-1) JSON Presets
-
-Ø These are files with a ".json" extension.
-
-Ø Files are present in $HOME/.config/selene/presets.
-
-Ø Clicking the "Edit" button on the toolbar will display a GUI for
-configuring the preset file.
-
-2) Bash Scripts
-
-Ø These are bash scripts with a ".sh" extension.
-
-Ø Files are present in $HOME/.config/selene/scripts.
-
-Ø Bash scripts can be used for converting files using any command line
-utility (even those tools which are not directly supported by Selene)
-
-Ø These files have to be edited manually. Clicking the "Edit" button
-on the toolbar will open the file in a text editor.
-""";
-
-		var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, msg);
-		dlg.set_title(_("Info"));
-		dlg.set_modal(true);
-		dlg.set_transient_for(this);
-		dlg.run();
-		dlg.destroy();
+		gtk_messagebox(_("Info"), msg, this, false);
 	}
 
 	// statusbar -------------------
@@ -2299,7 +2272,7 @@ on the toolbar will open the file in a text editor.
 				break;
 
 			case AppStatus.RUNNING:
-				statusbar_show_message(_("Converting: '%s'").printf (App.CurrentFile.Path), false, false);
+				statusbar_show_message(_("Converting") + ": '%s'".printf(App.CurrentFile.Path), false, false);
 				break;
 		}
 	}
@@ -2778,24 +2751,24 @@ on the toolbar will open the file in a text editor.
 		//col_list[col_name] = new TreeViewListColumn("name",col_name);
 		//col_list[col_size] = new TreeViewListColumn("size",col_size);
 		//col_list[col_duration] = new TreeViewListColumn("duration",col_duration);
-		col_list[col_file_format] = new TreeViewListColumn("format","File Format",col_file_format);
-		col_list[col_aformat] = new TreeViewListColumn("aformat","Audio Format",col_aformat);
-		col_list[col_vformat] = new TreeViewListColumn("vformat","Video Format",col_vformat);
-		col_list[col_channels] = new TreeViewListColumn("channels","Audio Channels",col_channels);
-		col_list[col_sampling] = new TreeViewListColumn("samplingrate","Audio Sampling Rate",col_sampling);
-		col_list[col_width] = new TreeViewListColumn("width","Video Width",col_width);
-		col_list[col_height] = new TreeViewListColumn("height","Video Height",col_height);
-		col_list[col_fps] = new TreeViewListColumn("framerate","Video Framerate",col_fps);
-		col_list[col_bitrate] = new TreeViewListColumn("bitrate","Bitrate",col_bitrate);
-		col_list[col_abitrate] = new TreeViewListColumn("abitrate","Audio Bitrate",col_abitrate);
-		col_list[col_vbitrate] = new TreeViewListColumn("vbitrate","Video Bitrate",col_vbitrate);
-		col_list[col_artist] = new TreeViewListColumn("artist","Artist",col_artist);
-		col_list[col_album] = new TreeViewListColumn("album","Album",col_album);
-		col_list[col_genre] = new TreeViewListColumn("genre","Genre",col_genre);
-		col_list[col_track_name] = new TreeViewListColumn("title","Title",col_track_name);
-		col_list[col_track_num] = new TreeViewListColumn("tracknum","Track No.",col_track_num);
-		col_list[col_comments] = new TreeViewListColumn("comments","Comments",col_comments);
-		col_list[col_recorded_date] = new TreeViewListColumn("recordeddate","RecordedDate",col_recorded_date);
+		col_list[col_file_format] = new TreeViewListColumn("format",_("Format"),col_file_format);
+		col_list[col_aformat] = new TreeViewListColumn("aformat",_("Audio Format"),col_aformat);
+		col_list[col_vformat] = new TreeViewListColumn("vformat",_("Video Format"),col_vformat);
+		col_list[col_channels] = new TreeViewListColumn("channels",_("Audio Channels"),col_channels);
+		col_list[col_sampling] = new TreeViewListColumn("samplingrate",_("Audio Sampling Rate"),col_sampling);
+		col_list[col_width] = new TreeViewListColumn("width",_("Video Width"),col_width);
+		col_list[col_height] = new TreeViewListColumn("height",_("Video Height"),col_height);
+		col_list[col_fps] = new TreeViewListColumn("framerate",_("Video Framerate"),col_fps);
+		col_list[col_bitrate] = new TreeViewListColumn("bitrate",_("Bitrate"),col_bitrate);
+		col_list[col_abitrate] = new TreeViewListColumn("abitrate",_("Audio Bitrate"),col_abitrate);
+		col_list[col_vbitrate] = new TreeViewListColumn("vbitrate",_("Video Bitrate"),col_vbitrate);
+		col_list[col_artist] = new TreeViewListColumn("artist",_("Artist"),col_artist);
+		col_list[col_album] = new TreeViewListColumn("album",_("Album"),col_album);
+		col_list[col_genre] = new TreeViewListColumn("genre",_("Genre"),col_genre);
+		col_list[col_track_name] = new TreeViewListColumn("title",_("Title"),col_track_name);
+		col_list[col_track_num] = new TreeViewListColumn("tracknum",_("Track Number"),col_track_num);
+		col_list[col_comments] = new TreeViewListColumn("comments",_("Comments"),col_comments);
+		col_list[col_recorded_date] = new TreeViewListColumn("recordeddate",_("Recorded Date"),col_recorded_date);
 		//col_list[col_progress] = new TreeViewListColumn("status",col_progress);
 		//col_list[col_spacer] = new TreeViewListColumn("spacer",col_spacer);
 	
@@ -2954,7 +2927,8 @@ on the toolbar will open the file in a text editor.
 		dialog.translators = {
 			"abuyop (Malay):launchpad.net/~abuyop",
 			"B. W. Knight (Korean):launchpad.net/~kbd0651",
-			"Felix Moreno (Spanish):launchpad.net/~felix-justdust"
+			"Felix Moreno (Spanish):launchpad.net/~felix-justdust",
+			"Radek Otáhal (Czech):radek.otahal@email.cz"
 		};
 
 		dialog.third_party = {

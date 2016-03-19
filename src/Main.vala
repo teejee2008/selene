@@ -964,7 +964,7 @@ Notes:
 		if (ConsoleMode)
 			log_msg (_("Converting: Enter (q) to quit or (p) to pause..."));
 		else
-			log_msg (_("Converting..."));
+			log_msg (_("Converting"));
 
 		string[] argv = new string[1];
 		argv[0] = scriptFile;
@@ -1257,7 +1257,7 @@ Notes:
 	    if (ConsoleMode)
 			log_msg (_("Converting: Enter (q) to quit or (p) to pause..."));
 		else
-			log_msg (_("Converting..."));
+			log_msg (_("Converting") + "...");
 	}
 
 	public void set_priority(){

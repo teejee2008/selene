@@ -375,7 +375,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		hbox = new Gtk.Box(Orientation.HORIZONTAL,12);
 		vbox.pack_start (hbox, false, true, 0);
 
-		tt = _("Will be used for setting the default track when encoding files with multiple audio and subtitle tracks");
+		tt = _("Selected language will be used for setting the default flag on the audio/subtitle track");
 		
 		label = new Label (_("Language"));
 		label.xalign = (float) 1.0;
@@ -424,7 +424,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		label.margin_bottom = 6;
 		vbox.pack_start (label, false, true, 0);
 
-		tt = _("If un-checked, the temporary/intermediate files will remain in the temporary folder till the next reboot.\nKeep this un-checked if you want to copy the temp files.");
+		tt = _("The temporary folder contains files which may be useful for advanced users. Keep this un-checked if you want to keep the temp files till the next reboot.");
 		
         //chk_delete_temp
 		var chk = new CheckButton.with_label(_("Delete temporary files after successful encode"));

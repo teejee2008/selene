@@ -82,10 +82,10 @@ public class BatchEditWindow : Gtk.Dialog {
 		action = _action;
 
 		if (action == "crop"){
-			title = "Crop Videos (Batch)";
+			title = _("Crop Video") + " " + _("(Batch)");
 		}
 		else if (action == "trim"){
-			title = "Trim Duration (Batch)";
+			title = _("Trim Duration") + " " + _("(Batch)");
 		}
 		
 		// get content area
@@ -96,11 +96,11 @@ public class BatchEditWindow : Gtk.Dialog {
 
 		if (action == "crop"){
 			// btn_crop_auto
-			btn_crop_auto = (Button) add_button ("Auto Crop", Gtk.ResponseType.NONE);
+			btn_crop_auto = (Button) add_button (_("Auto Crop"), Gtk.ResponseType.NONE);
 			btn_crop_auto.clicked.connect(btn_crop_auto_clicked);
 
 			// btn_crop_reset
-			btn_crop_reset = (Button) add_button ("Reset", Gtk.ResponseType.NONE);
+			btn_crop_reset = (Button) add_button (_("Reset"), Gtk.ResponseType.NONE);
 			btn_crop_reset.clicked.connect (btn_crop_reset_clicked);
 		}
 

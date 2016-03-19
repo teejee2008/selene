@@ -119,10 +119,10 @@ public class MediaPlayerWindow : Gtk.Window {
 		mFile = _mFile;
 
 		if (action == "crop"){
-			title = "Crop Video";
+			title = _("Crop Video");
 		}
 		else if (action == "trim"){
-			title = "Trim";
+			title = _("Trim");
 		}
 		else if (action == "play"){
 			title = mFile.Name + " - Selene";
@@ -656,13 +656,13 @@ public class MediaPlayerWindow : Gtk.Window {
 		string time = "";
 			
 		if (current_clip != null){
-			msg += "<b>Clip #%d</b>\n\n".printf(index);
+			msg += "<b>" + _("Clip") + "#%d</b>\n\n".printf(index);
 			time = format_duration((long) (current_clip.StartPos * 1000.0), true);
-			msg += "Start Pos:\t%s = %.3f sec\n".printf(time,current_clip.StartPos);
+			msg += _("Start Pos") + ":\t%s = %.3f sec\n".printf(time,current_clip.StartPos);
 			time = format_duration((long) (current_clip.EndPos * 1000.0), true);
-			msg += "End Pos:\t%s = %.3f sec\n".printf(time,current_clip.EndPos);
+			msg += _("End Pos") + ":\t%s = %.3f sec\n".printf(time,current_clip.EndPos);
 			time = format_duration((long) (current_clip.Duration() * 1000.0), true);
-			msg += "Duration:\t%s = %.3f sec".printf(time,current_clip.Duration());
+			msg += _("Duration") + ":\t%s = %.3f sec".printf(time,current_clip.Duration());
 			timeline.set_tooltip_markup(msg);
 		}
 		else{

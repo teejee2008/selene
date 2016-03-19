@@ -159,7 +159,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	}
 	
 	private void init_ui() {
-		title = "Preset";
+		title = _("Preset");
 		//set_default_size (450, 550);
 
 		window_position = WindowPosition.CENTER_ON_PARENT;
@@ -356,37 +356,37 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		TreeIter iter;
 
 		model.append(out iter);
-		model.set (iter, 0, "General");
+		model.set (iter, 0, _("General"));
 		model.set (iter, 1, "general");
 		model.set (iter, 2, pix_general);
 
 		model.append(out iter);
-		model.set (iter, 0, "Video");
+		model.set (iter, 0, _("Video Encoder"));
 		model.set (iter, 1, "video");
 		model.set (iter, 2, pix_video);
 
 		model.append(out iter);
-		model.set (iter, 0, "Video Filters");
+		model.set (iter, 0, _("Video Filters"));
 		model.set (iter, 1, "vf");
 		model.set (iter, 2, pix_video);
 
 		model.append(out iter);
-		model.set (iter, 0, "Audio");
+		model.set (iter, 0, _("Audio Encoder"));
 		model.set (iter, 1, "audio");
 		model.set (iter, 2, pix_audio);
 
 		model.append(out iter);
-		model.set (iter, 0, "Audio Filters");
+		model.set (iter, 0, _("Audio Filters"));
 		model.set (iter, 1, "af");
 		model.set (iter, 2, pix_audio);
 
 		model.append(out iter);
-		model.set (iter, 0, "SOX");
+		model.set (iter, 0, _("SOX"));
 		model.set (iter, 1, "sox");
 		model.set (iter, 2, pix_audio);
 
 		model.append(out iter);
-		model.set (iter, 0, "Subtitles");
+		model.set (iter, 0, _("Subtitles"));
 		model.set (iter, 1, "subs");
 		model.set (iter, 2, pix_subs);
 		
@@ -1949,7 +1949,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		switch (acodec){
 			case "copy":
 				lbl_acodec_msg.visible = true;
-				lbl_acodec_msg.label = "\n<b>Note:</b>\n\n1. Audio track will be copied directly to the output file without changes.\n\n2. Format of the audio track must be compatible with the selected file format. For example, if the input file contains AAC audio and the selected file format is WEBM, then encoding will fail - since WEBM does not support AAC audio.\n\n3. Input file can be trimmed only in basic mode (single segment). Selecting multiple segments using advanced mode will not work.";
+				lbl_acodec_msg.label = _("\n<b>Note:</b>\n\n1. Audio track will be copied directly to the output file without changes.\n\n2. Format of the audio track must be compatible with the selected file format. For example, if the input file contains AAC audio and the selected file format is WEBM, then encoding will fail - since WEBM does not support AAC audio.\n\n3. Input file can be trimmed only in basic mode (single segment). Selecting multiple segments using advanced mode will not work.");
 				break;
 			default:
 				lbl_acodec_msg.visible = false;
@@ -2442,7 +2442,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		switch (vcodec){
 			case "copy":
 				lbl_vmessage.visible = true;
-				lbl_vmessage.label = "\n<b>Note:</b>\n\n1. Video track will be copied directly to the output file without changes.\n\n2. Format of the video track must be compatible with the selected file format. For example, if the input file contains H264 video and the selected file format is WEBM, then encoding will fail - since WEBM does not support H264 video.\n\n3. Input file can be trimmed only in basic mode (single segment). Selecting multiple segments using advanced mode will not work.";
+				lbl_vmessage.label = _("\n<b>Note:</b>\n\n1. Video track will be copied to the output file without re-encoding.\n\n2. Format of the video track must be compatible with the selected container. For example, if the input file contains H264 video and the selected file format is WEBM, then encoding will fail (since WEBM does not support H264).\n\n3. If you are trimming the input file then select the basic mode (single segment). Selecting multiple segments in advanced mode will not work.");
 				break;
 			default:
 				lbl_vmessage.visible = false;
@@ -2867,8 +2867,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				
 		switch(subtitle_mode){
 			case "embed":
-				txt += "\n<b>Note:</b>\n\n";
-				txt += "1. Supported subtitle file formats";
+				txt += _("\n<b>Note:</b>\n\n1. Supported subtitle file formats:");
 				switch(format){
 					case "mkv":
 						txt += " - <i>SRT, SUB, SSA</i>";
@@ -2888,7 +2887,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				}
 				txt += "\n\n";
 
-				txt += "2. External subtitle files must be present in the same location and start with the same file name.\n\n";
+				txt += _("2. External subtitle files must be present in the same location and start with the same file name.") + "\n\n";
 
 				break;
 
