@@ -411,7 +411,7 @@ public class AppConfigWindow : Gtk.Dialog {
 		
 		textCell = new CellRendererText();
 		textCell.ellipsize = Pango.EllipsizeMode.END;
-		textCell.max_width_chars = 20;
+		textCell.max_width_chars = 30;
         combo.pack_start( textCell, false );
         combo.set_attributes( textCell, "text", 0 );
 

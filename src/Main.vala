@@ -1971,7 +1971,7 @@ Notes:
 		string s = "";
 
 		//Json.Object general = (Json.Object) settings.get_object_member("general");
-		Json.Object video = (Json.Object) settings.get_object_member("video");
+		//Json.Object video = (Json.Object) settings.get_object_member("video");
 		//Json.Object audio = (Json.Object) settings.get_object_member("audio");
 		//Json.Object subs = (Json.Object) settings.get_object_member("subtitle");
 
@@ -2427,6 +2427,116 @@ Notes:
 		return s;
 	}*/
 
+	//playback ------------------------------
+
+	public void play_video(MediaFile mf, VideoStream stream, Json.Object settings){
+		if (file_exists(mf.Path)){
+			
+			string output = "";
+			string error = "";
+
+			string cmd = play_video_command(mf, stream, settings);
+			cmd = "nohup %s".printf(cmd);
+
+			try {
+				Process.spawn_command_line_sync(cmd, out output, out error);
+			}
+			catch(Error e){
+				log_error (e.message);
+			}
+		}
+	}
+	 
+	private string play_video_command (MediaFile mf, VideoStream stream, Json.Object settings){
+		string s = "";
+
+		Json.Object general = (Json.Object) settings.get_object_member("general");
+		Json.Object video = (Json.Object) settings.get_object_member("video");
+		Json.Object audio = (Json.Object) settings.get_object_member("audio");
+
+		s += PrimaryPlayer;
+
+		//seek input
+		if ((mf.StartPos > 0) && (mf.clip_list.size < 2)){
+			s += " -ss %.1f".printf(mf.StartPos);
+		}
+		
+		s += " -i \"%s\"".printf(mf.Path);
+
+		//stop output
+		if ((mf.EndPos > 0) && (mf.clip_list.size < 2)){
+			s += " -to %.1f".printf(mf.EndPos - mf.StartPos);
+		}
+		
+		//avconv_filters (resample, crop, resize, trim)
+		s += avconv_filters(mf,settings,true,false);
+
+		//disable audio and subs
+		s += " -an -sn";
+
+		s += "\n";
+		
+		return s;
+	}
+
+	public void play_audio(MediaFile mf, string sox_options){
+		if (file_exists(mf.Path)){
+			
+			string output = "";
+			string error = "";
+
+			string cmd = play_audio_command(mf, sox_options);
+			cmd = "%s".printf(cmd);
+
+			log_debug(cmd);
+			
+			execute_command_script_sync(cmd, out output, out error);
+		}
+	}
+	
+	private string play_audio_command (MediaFile mf, string sox_options){
+		string s = "";
+
+		// decode audio -------------------------
+
+		s += PrimaryEncoder;
+		s += " -nostats";
+		s += " -i \"%s\"".printf(mf.Path);
+		s += " -f aiff";
+		s += " -acodec pcm_s16le";
+		s += " -vn -sn";
+		s += " -y - | ";
+		
+		// process with SOX -----------------------
+		
+		s += "sox";
+		s += " -t aiff -";
+		s += " -t wav -";
+		s += " -q";
+		s += " %s".printf(sox_options.strip());
+		s += " | ";
+
+		// pass to ffplay -------------------------
+		
+		s += ff_player;
+		s += " -i -";
+		s += " -x 500 -y 100";
+		s += "\n";
+		
+		return s;
+	}
+
+	public string ff_player{
+		owned get{
+			if (PrimaryEncoder == "ffmpeg"){
+				return "ffplay";
+			}
+			else{
+				return "avplay";
+			}
+		}
+	}
+	
 	//video functions -----------------------
 	
 	private bool calculate_video_resolution (MediaFile mf, Json.Object settings, out int OutputWidth, out int OutputHeight){

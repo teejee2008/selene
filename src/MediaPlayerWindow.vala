@@ -70,7 +70,7 @@ public class MediaPlayerWindow : Gtk.Window {
 	private uint tmr_init = 0;
 	private string action = "";
 	private bool crop_detect_is_running = false;
-	
+
 	public static Gtk.Window CropVideo(MediaFile mf, Gtk.Window parent){
 		var win = new MediaPlayerWindow(mf, parent, "crop");
 		parent.hide();
@@ -113,7 +113,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		resizable = false;
 
 		action = _action;
-		
+
 		player = new MediaPlayer();
 		player.mFile = _mFile;
 		mFile = _mFile;

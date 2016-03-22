@@ -69,11 +69,23 @@ public class MediaFile : GLib.Object{
 
 	public static int ThumbnailWidth = 80; 
 	public static int ThumbnailHeight= 64;
-			
-	public MediaFile(string filePath, string av_encoder){
+
+	private string ff_encoder = "";
+	private string ff_player = "";
+	
+	public MediaFile(string filePath, string ff_encoder){
 		IsValid = false;
 		if (file_exists (filePath) == false) { return; }
 
+		this.ff_encoder = ff_encoder;
+
+		if (ff_encoder == "ffmpeg"){
+			this.ff_player = "ffplay";
+		}
+		else{
+			this.ff_player = "avplay";
+		}
+		
 		clip_list = new Gee.ArrayList<MediaClip>();
 		stream_list = new Gee.ArrayList<MediaStream>();
 		audio_list = new Gee.ArrayList<AudioStream>();
@@ -183,10 +195,10 @@ public class MediaFile : GLib.Object{
 	        log_error (e.message);
 	    }
 
-
+		
 	    // get thumbnail ---------
 
-	    generate_thumbnail(av_encoder);
+	    generate_thumbnail();
 
 		IsValid = true;
 	}
@@ -444,11 +456,11 @@ public class MediaFile : GLib.Object{
 		}
 	}
 
-	public void generate_thumbnail(string av_encoder){
+	public void generate_thumbnail(){
 		if (HasVideo){
 			ThumbnailImagePath = get_temp_file_path() + ".png";
 			string std_out, std_err;
-			execute_command_script_sync("%s -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(av_encoder,Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
+			execute_command_script_sync("%s -ss 1 -i \"%s\" -y -f image2 -vframes 1 -r 1 -s %dx%d \"%s\"".printf(ff_encoder,Path,ThumbnailWidth,ThumbnailHeight,ThumbnailImagePath), out std_out, out std_err);
 
 			//log_msg(std_err);
 		}
@@ -574,28 +586,24 @@ public class MediaFile : GLib.Object{
 
 	//playback ----------------------
 	
-	public void play_source(string av_player){
-		play_file(Path, av_player);
-	}
-
-	//TODO: Remove
-	private void play_file(string file_path, string av_player){
-		if (file_exists(file_path)){
+	public void play_file(bool play_audio = true, bool play_video = true){
+		if (file_exists(Path)){
 			
 			string output = "";
 			string error = "";
 
 			string cmd = "";
-			switch(av_player){
-				case "avplay":
-				case "ffplay":
-					cmd = "nohup %s -i \"%s\"".printf(av_player, file_path);
-					break;
-				default:
-					cmd = "nohup %s \"%s\"".printf(av_player, file_path);
-					break;
+			cmd = "nohup %s -i \"%s\"".printf(ff_player, Path);
+			if (!play_audio){
+				cmd += " -an";
 			}
-		
+			if (!play_video){
+				cmd += " -vn";
+				cmd += " -x 500 -y 100";
+			}
+			
+			log_debug(cmd);
+			
 			try {
 				Process.spawn_command_line_sync(cmd, out output, out error);
 			}

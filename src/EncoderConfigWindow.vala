@@ -135,6 +135,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private Gtk.ComboBox cmb_fade_type;
 	private Gtk.CheckButton chk_normalize;
 	private Gtk.CheckButton chk_earwax;
+	private string sox_options = "";
 	
 	// subs
 	private Gtk.Label lbl_sub_mode;
@@ -836,6 +837,14 @@ public class EncoderConfigWindow : Gtk.Dialog {
 			return "%.0f ".printf(val);
 		});
 
+		// add sox preview image ---------------
+		
+		/*var s = "";
+		if (sox_bass != "0"){
+			s += " bass " + sox_bass;
+		}
+		add_sox_preview_image(hbox, s);*/
+		
 		// Treble ---------------------------------------------------
 		
 		hbox = new Box(Orientation.HORIZONTAL,spacing);
@@ -862,8 +871,18 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		sizegroup.add_widget(lbl_treble);
 		
-		scale_treble.format_value.connect((val)=>{ return "%.0f ".printf(val); });
+		scale_treble.format_value.connect((val)=>{
+			return "%.0f ".printf(val);
+		});
 
+		// add sox preview image ---------------------
+		
+		/*s = "";
+		if (sox_treble != "0"){
+			s += " treble " + sox_treble;
+		}
+		add_sox_preview_image(hbox, s);*/
+		
 		// Pitch --------------------------------------------------
 		
 		hbox = new Box(Orientation.HORIZONTAL,spacing);
@@ -890,8 +909,18 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		sizegroup.add_widget(lbl_pitch);
 		
-		scale_pitch.format_value.connect((val)=>{ return "%.0f%% ".printf(val); });
+		scale_pitch.format_value.connect((val)=>{
+			return "%.0f%% ".printf(val);
+		});
 
+		// add sox preview image ---------------------
+		
+		/*s = "";
+		if (sox_pitch != "1.0"){
+			s += " pitch " + sox_pitch;
+		}
+		add_sox_preview_image(hbox, s);*/
+		
 		// Tempo --------------------------------------------------
 		
 		hbox = new Box(Orientation.HORIZONTAL,spacing);
@@ -922,6 +951,14 @@ public class EncoderConfigWindow : Gtk.Dialog {
 			return "%.0f%% ".printf(val);
 		});
 
+		// add sox preview image ---------------------
+		
+		/*s = "";
+		if (sox_tempo != "1.0"){
+			s += " tempo " + sox_tempo;
+		}
+		add_sox_preview_image(hbox, s);*/
+		
 		// fade header ---------------------------------------------
 		
 		label = new Gtk.Label(_("<b>Fade:</b>"));
@@ -1008,6 +1045,14 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		model.set (iter,0,_("Inverted Parabola"),1,"p");
 		combo.set_model(model);
 
+		// add sox preview image ---------------------
+		
+		/*s = "";
+		if ((sox_fade_in != "0") || (sox_fade_out != "0")){
+			s += " fade " + sox_fade_type + " " + sox_fade_in;
+		}
+		add_sox_preview_image(hbox, s);*/
+		
 		// header other ----------------------------------------
 		
 		label = new Gtk.Label(_("<b>Other Effects:</b>"));
@@ -1019,7 +1064,10 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		vboxSox.add(label);
 
 		// Normalize -------------------------------------------------
-		
+
+		hbox = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hbox);
+        
 		tt = _("Maximize the volume level (loudness)");
 
 		//chk_normalize
@@ -1027,11 +1075,20 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		chk.active = false;
 		chk.margin_left = 6;
 		chk.set_tooltip_text(tt);
-		vboxSox.add(chk);
+		hbox.add(chk);
 		chk_normalize = chk;
+
+		// add sox preview image --------
+		
+		/*s = "";
+		s += " norm";
+		add_sox_preview_image(hbox, s);*/
 		
 		// ear wax --------------------------------------------------
-		
+
+		hbox = new Box(Orientation.HORIZONTAL,spacing);
+        vboxSox.add(hbox);
+        
 		tt = _("Makes audio easier to listen to on headphones. Adds 'cues' to the audio so that when listened to on headphones the stereo image is moved from inside your head (standard for headphones) to outside and in front of the listener (standard for speakers).");
 
 		//chk_earwax
@@ -1039,9 +1096,15 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		chk.active = false;
 		chk.margin_left = 6;
 		chk.set_tooltip_text(tt);
-		vboxSox.add(chk);
+		hbox.add(chk);
 		chk_earwax = chk;
-	
+
+		// add sox preview image --------
+		
+		/*s = "";
+		s += " earwax";
+		add_sox_preview_image(hbox, s);*/
+		
 		// link ---------------------------------------
 		
 		var link = new LinkButton.with_label ("http://sox.sourceforge.net/", "SOund eXchange - http://sox.sourceforge.net/");
@@ -1049,6 +1112,82 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		link.valign = Align.END;
 		link.activate_link.connect(()=>{ return exo_open_url(link.uri); });
         vboxSoxOuter.pack_end(link,true,true,0);
+	}
+
+	private void show_popover_audio(Gtk.Image img, string sox_options){
+		var pop = new Gtk.Popover(img);
+		pop.modal = true;
+	
+		var vbox = new Box(Orientation.VERTICAL,6);
+		vbox.margin = 6;
+		pop.add(vbox);
+
+		var label = new Gtk.Label(_("File to preview:"));
+		label.xalign = (float) 0.0;
+		vbox.add(label);
+
+		var combo = new ComboBox();
+		var textCell = new CellRendererText();
+		textCell.ellipsize = Pango.EllipsizeMode.END;
+		textCell.max_width_chars = 40;
+		combo.pack_start( textCell, false );
+		combo.set_attributes( textCell, "text", 0 );
+		vbox.add(combo);
+
+		TreeIter iter;
+		var model = new Gtk.ListStore (2, typeof (string), typeof (MediaFile));
+		foreach(MediaFile mf in App.InputFiles){
+			model.append (out iter);
+			model.set (iter, 0, mf.Name, 1, mf);
+		}
+
+		combo.model = model;
+		combo.active = 0;
+		
+		var hbox = new Box(Orientation.HORIZONTAL,6);
+		hbox.homogeneous = true;
+		hbox.hexpand = true;
+		vbox.add(hbox);
+		
+		var btn = new Gtk.Button.with_label("Preview Audio");
+		btn.sensitive = (App.InputFiles.size > 0);
+		hbox.add(btn);
+
+		btn.clicked.connect(()=>{
+			var mf = App.InputFiles[combo.active];
+			App.play_audio(mf, sox_options);
+		});
+		
+		btn = new Gtk.Button.with_label("Play Original");
+		btn.sensitive = (App.InputFiles.size > 0);
+		hbox.add(btn);
+		
+		btn.clicked.connect(()=>{
+			var mf = App.InputFiles[combo.active];
+			mf.play_file(true, false);
+		});
+		
+		pop.show_all();
+	}
+
+	private void add_sox_preview_image(Gtk.Box hbox, string sox_options){
+		var img = new Gtk.Image();
+		img.set_from_file(App.SharedImagesFolder + "/media-playback-start.png");
+		img.icon_size = 16;
+
+		var eventbox = new Gtk.EventBox();
+		eventbox.add(img);
+		hbox.pack_start(eventbox,false,false,0);
+			
+		eventbox.button_press_event.connect((w, event) => {
+			if (event.type == Gdk.EventType.BUTTON_PRESS){
+				this.sox_options = sox_options;
+				//log_msg("sox:" + this.sox_options);
+				show_popover_audio(img, sox_options);
+			}
+			return true;
+		});
+		
 	}
 	
 	private void init_ui_video(){
