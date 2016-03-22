@@ -1114,7 +1114,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
         vboxSoxOuter.pack_end(link,true,true,0);
 	}
 
-	private void show_popover_audio(Gtk.Image img, string sox_options){
+	/*private void show_popover_audio(Gtk.Image img, string sox_options){
 		var pop = new Gtk.Popover(img);
 		pop.modal = true;
 	
@@ -1189,6 +1189,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		});
 		
 	}
+	*/
 	
 	private void init_ui_video(){
 		
