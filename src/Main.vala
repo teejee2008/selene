@@ -142,6 +142,11 @@ public class Main : GLib.Object{
 	private DataInputStream disErr;
 	private DataOutputStream dsLog;
 
+	Pid child_pid;
+	int input_fd;
+	int output_fd;
+	int error_fd;
+		
 	private string blankLine = "";
 
 	public static int main (string[] args) {
@@ -966,22 +971,19 @@ Notes:
 		else
 			log_msg (_("Converting"));
 
-		string[] argv = new string[1];
-		argv[0] = scriptFile;
-
-		Pid child_pid;
-		int input_fd;
-		int output_fd;
-		int error_fd;
-
+		string[] spawn_args = new string[1];
+		spawn_args[0] = scriptFile;
+		
+		string[] spawn_env = Environ.get ();
+		
 		try {
 
 			//execute script file ---------------------
 
 			Process.spawn_async_with_pipes(
-			    null, //working dir
-			    argv, //argv
-			    null, //environment
+			    TempDirectory, //working dir
+			    spawn_args, //argv
+			    spawn_env,  //environment
 			    SpawnFlags.SEARCH_PATH,
 			    null,   // child_setup
 			    out child_pid,
@@ -1022,11 +1024,20 @@ Notes:
         	}
 
         	Thread.usleep ((ulong) 0.1 * 1000000);
-        	dsLog.close();
 
+        	dsLog.close();
+			dsLog = null;
+			
+			GLib.FileUtils.close(output_fd);
+			GLib.FileUtils.close(input_fd);
+			
+			disOut.close();
+			disOut = null;
+
+			Process.close_pid(child_pid); //required on Windows, doesn't do anything on Unix
 		}
 		catch (Error e) {
-			log_error (e.message);
+			log_error(e.message);
 			retVal = false;
 		}
 
@@ -1082,6 +1093,10 @@ Notes:
 		        update_progress (errLine.strip());
 		        errLine = disErr.read_line (null);
 			}
+
+			disErr.close();
+			disErr = null;
+			GLib.FileUtils.close(error_fd);
 		}
 		catch (Error e) {
 			log_error (e.message);
