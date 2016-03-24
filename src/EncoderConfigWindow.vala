@@ -226,7 +226,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		var sw_pages = new ScrolledWindow(tv_pages.get_hadjustment(), tv_pages.get_vadjustment());
 		sw_pages.set_shadow_type (ShadowType.ETCHED_IN);
 		sw_pages.add (tv_pages);
-		sw_pages.margin_right = 3;
+		//sw_pages.margin_right = 3;
 		sw_pages.set_size_request (150, -1);
 		pane.pack1(sw_pages, false, false); //resize, shrink
 

@@ -1,5 +1,5 @@
-selene (16.3.2) trusty; urgency=medium
+selene (16.3.3) trusty; urgency=medium
 
-  * Code cleanup and minor changes
+  * Fixed: 'Too many open files' error on converting many files
 
- -- Tony George <tony.george.kol@gmail.com>  Mon, 21 Mar 2016 14:00:00 +0530
+ -- Tony George <tony.george.kol@gmail.com>  Wed, 23 Mar 2016 10:00:00 +0530
