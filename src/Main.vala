@@ -1027,13 +1027,13 @@ Notes:
 
         	dsLog.close();
 			dsLog = null;
-			
-			GLib.FileUtils.close(output_fd);
-			GLib.FileUtils.close(input_fd);
-			
+	
 			disOut.close();
 			disOut = null;
+			GLib.FileUtils.close(output_fd);
 
+			GLib.FileUtils.close(input_fd);
+			
 			Process.close_pid(child_pid); //required on Windows, doesn't do anything on Unix
 		}
 		catch (Error e) {

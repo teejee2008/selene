@@ -473,7 +473,12 @@ public class MediaPlayer : GLib.Object{
 	}
 	
 	public void Seek(double seconds){
-		write_to_stdin("seek %.1f 2".printf(seconds));
+		if (App.PrimaryPlayer == "mpv"){
+			write_to_stdin("seek %.1f absolute".printf(seconds));
+		}
+		else{
+			write_to_stdin("seek %.1f 2".printf(seconds));
+		}
 	}
 
 	public void Exit(){
