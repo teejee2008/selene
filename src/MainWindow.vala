@@ -2079,7 +2079,9 @@ public class MainWindow : Gtk.Window{
 		(cell as Gtk.CellRendererText).text = sh.Title;
 	}
 
-	private void cellScriptFolder_render (CellLayout cell_layout, CellRenderer cell, TreeModel model, TreeIter iter){
+	private void cellScriptFolder_render (CellLayout cell_layout, CellRenderer cell,
+		TreeModel model, TreeIter iter){
+			
 		string name;
 		model.get (iter, 1, out name, -1);
 		(cell as Gtk.CellRendererText).text = name;
@@ -2225,7 +2227,9 @@ public class MainWindow : Gtk.Window{
 
 	// statusbar -------------------
 
-    private void statusbar_show_message (string message, bool is_error = false, bool timeout = true){
+    private void statusbar_show_message (string message, bool is_error = false,
+		bool timeout = true){
+			
 		Gdk.RGBA red = Gdk.RGBA();
 		Gdk.RGBA white = Gdk.RGBA();
 		red.parse ("rgba(255,0,0,1)");
@@ -2317,6 +2321,7 @@ public class MainWindow : Gtk.Window{
 				mi_file_info.sensitive = (selection.count_selected_rows() == 1);
 				mi_file_play_src.sensitive = (selection.count_selected_rows() == 1);
 				mi_file_crop.sensitive = (mFile != null) && (mFile.HasVideo);
+				mi_file_trim.sensitive = (selection.count_selected_rows() == 1);
 				mi_file_remove.sensitive = (selection.count_selected_rows() > 0);
 				break;
 
