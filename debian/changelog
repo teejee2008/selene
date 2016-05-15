@@ -1,5 +1,10 @@
-selene (16.3.3) trusty; urgency=medium
+selene (16.5.0) trusty; urgency=medium
 
-  * Fixed: 'Too many open files' error on converting many files
+  * Fixed: Seeking in media player was broken with mpv
 
- -- Tony George <tony.george.kol@gmail.com>  Wed, 23 Mar 2016 10:00:00 +0530
+  * Fixed: Enable the 'Trim Duration' menu item only when a single
+  file is selected
+  
+  * Some minor changes
+
+ -- Tony George <tony.george.kol@gmail.com>  Sun, 15 May 2016 10:00:00 +0530
