@@ -1,7 +1,7 @@
 /*
  * Main.vala
  *
- * Copyright 2012 Tony George <teejee2008@gmail.com>
+ * Copyright 2016 Tony George <teejee2008@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1982,6 +1982,8 @@ Notes:
 		return s;
 	}
 
+	// encode subs ---------------------
+	
 	private string encode_sub_avconv(MediaFile mf, TextStream stream, Json.Object settings){
 		string s = "";
 
@@ -2004,7 +2006,10 @@ Notes:
 
 		if (stream.IsExternal){
 			//character encoding - required for SRT files
-			s += " -sub_charenc \"%s\"".printf(stream.CharacterEncoding.up());
+			if (!stream.CharacterEncoding.up().contains("UNKNOWN")){
+				s += " -sub_charenc \"%s\"".printf(stream.CharacterEncoding.up());
+			}
+			
 
 			//input
 			s += " -i \"%s\"".printf(stream.SubFile);
