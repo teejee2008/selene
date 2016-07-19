@@ -2009,7 +2009,6 @@ Notes:
 			if (!stream.CharacterEncoding.up().contains("UNKNOWN")){
 				s += " -sub_charenc \"%s\"".printf(stream.CharacterEncoding.up());
 			}
-			
 
 			//input
 			s += " -i \"%s\"".printf(stream.SubFile);
