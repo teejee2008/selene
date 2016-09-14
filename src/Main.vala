@@ -2915,14 +2915,25 @@ Notes:
 		}
 
 		//tags
-		s += (mf.TrackName.length > 0) ? " -metadata 'title'=\"${tagTitle}\"" : "";
-		s += (mf.TrackNumber.length > 0) ? " -metadata 'track'=\"${tagTrackNum}\"" : "";
-		s += (mf.Artist.length > 0) ? " -metadata 'artist'=\"${tagArtist}\"" : "";
-		s += (mf.Album.length > 0) ? " -metadata 'album'=\"${tagAlbum}\"" : "";
-		s += (mf.Genre.length > 0) ? " -metadata 'genre'=\"${tagGenre}\"" : "";
-		s += (mf.RecordedDate.length > 0) ? " -metadata 'year'=\"${tagYear}\"" : "";
-		s += (mf.Comment.length > 0) ? " -metadata 'comment'=\"${tagComment}\"" : "";
+		bool copy_tags = true;
+		if (settings.has_member("tags")){
+			Json.Object tags = (Json.Object) settings.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
 
+		if (copy_tags){
+			s += (mf.TrackName.length > 0) ? " -metadata 'title'=\"${tagTitle}\"" : "";
+			s += (mf.TrackNumber.length > 0) ? " -metadata 'track'=\"${tagTrackNum}\"" : "";
+			s += (mf.Artist.length > 0) ? " -metadata 'artist'=\"${tagArtist}\"" : "";
+			s += (mf.Album.length > 0) ? " -metadata 'album'=\"${tagAlbum}\"" : "";
+			s += (mf.Genre.length > 0) ? " -metadata 'genre'=\"${tagGenre}\"" : "";
+			s += (mf.RecordedDate.length > 0) ? " -metadata 'year'=\"${tagYear}\"" : "";
+			s += (mf.Comment.length > 0) ? " -metadata 'comment'=\"${tagComment}\"" : "";
+		}
+		else{
+			s += " -map_metadata -1";
+		}
+		
 		s += " -vn -sn";
 
 		//output
@@ -2963,13 +2974,23 @@ Notes:
 				s += " -b " + audio.get_string_member("bitrate") + " --cbr";
 				break;
 		}
-		s += (mf.TrackName.length > 0) ? " --tt \"${tagTitle}\"" : "";
-		s += (mf.TrackNumber.length > 0) ? " --tn \"${tagTrackNum}\"" : "";
-		s += (mf.Artist.length > 0) ? " --ta \"${tagArtist}\"" : "";
-		s += (mf.Album.length > 0) ? " --tl \"${tagAlbum}\"" : "";
-		s += (mf.Genre.length > 0) ? " --tg \"${tagGenre}\"" : "";
-		s += (mf.RecordedDate.length > 0) ? " --ty \"${tagYear}\"" : "";
-		s += (mf.Comment.length > 0) ? " --tc \"${tagComment}\"" : "";
+
+		//tags
+		bool copy_tags = true;
+		if (settings.has_member("tags")){
+			Json.Object tags = (Json.Object) settings.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
+
+		if (copy_tags){
+			s += (mf.TrackName.length > 0) ? " --tt \"${tagTitle}\"" : "";
+			s += (mf.TrackNumber.length > 0) ? " --tn \"${tagTrackNum}\"" : "";
+			s += (mf.Artist.length > 0) ? " --ta \"${tagArtist}\"" : "";
+			s += (mf.Album.length > 0) ? " --tl \"${tagAlbum}\"" : "";
+			s += (mf.Genre.length > 0) ? " --tg \"${tagGenre}\"" : "";
+			s += (mf.RecordedDate.length > 0) ? " --ty \"${tagYear}\"" : "";
+			s += (mf.Comment.length > 0) ? " --tc \"${tagComment}\"" : "";
+		}
 
 		s += " -";
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
@@ -3038,21 +3059,32 @@ Notes:
 			s += "\n";
 			
 			//add tags
-			string tags = "";
+			string alltags = "";
 			string path = get_cmd_path ("neroAacTag");
 			if ((path != null) && (path.length > 0)){
-				tags += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
-				tags += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
-				tags += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
-				tags += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
-				tags += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
-				tags += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
-				tags += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
-				if (tags.length > 0){
-					s += "neroAacTag";
-					s += " \"${outputFile}\"";
-					s += tags;
-					s += "\n";
+
+				//tags
+				bool copy_tags = true;
+				if (settings.has_member("tags")){
+					Json.Object tags = (Json.Object) settings.get_object_member("tags");
+					copy_tags = tags.get_boolean_member("copyTags");
+				}
+
+				if (copy_tags){
+					alltags += (mf.TrackName.length > 0) ? " -meta:title=\"${tagTitle}\"" : "";
+					alltags += (mf.TrackNumber.length > 0) ? " -meta:track=\"${tagTrackNum}\"" : "";
+					alltags += (mf.Artist.length > 0) ? " -meta:artist=\"${tagArtist}\"" : "";
+					alltags += (mf.Album.length > 0) ? " -meta:album=\"${tagAlbum}\"" : "";
+					alltags += (mf.Genre.length > 0) ? " -meta:genre=\"${tagGenre}\"" : "";
+					alltags += (mf.RecordedDate.length > 0) ? " -meta:year=\"${tagYear}\"" : "";
+					alltags += (mf.Comment.length > 0) ? " -meta:comment=\"${tagComment}\"" : "";
+					
+					if (alltags.length > 0){
+						s += "neroAacTag";
+						s += " \"${outputFile}\"";
+						s += alltags;
+						s += "\n";
+					}
 				}
 			}			
 		}
@@ -3140,13 +3172,21 @@ Notes:
 		s += "opusenc";
 
 		//tags
-		s += (mf.TrackName.length > 0) ? " --title \"${tagTitle}\"" : "";
-		s += (mf.TrackNumber.length > 0) ? " --comment=\"track=${tagTrackNum}\"" : "";
-		s += (mf.Artist.length > 0) ? " --artist \"${tagArtist}\"" : "";
-		s += (mf.Album.length > 0) ? " --comment=\"album=${tagAlbum}\"" : "";
-		s += (mf.Genre.length > 0) ? " --comment=\"genre=${tagGenre}\"" : "";
-		s += (mf.RecordedDate.length > 0) ? " --comment=\"year=${tagYear}\"" : "";
-		s += (mf.Comment.length > 0) ? " --comment=\"comment=${tagComment}\"" : "";
+		bool copy_tags = true;
+		if (settings.has_member("tags")){
+			Json.Object tags = (Json.Object) settings.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
+
+		if (copy_tags){
+			s += (mf.TrackName.length > 0) ? " --title \"${tagTitle}\"" : "";
+			s += (mf.TrackNumber.length > 0) ? " --comment=\"track=${tagTrackNum}\"" : "";
+			s += (mf.Artist.length > 0) ? " --artist \"${tagArtist}\"" : "";
+			s += (mf.Album.length > 0) ? " --comment=\"album=${tagAlbum}\"" : "";
+			s += (mf.Genre.length > 0) ? " --comment=\"genre=${tagGenre}\"" : "";
+			s += (mf.RecordedDate.length > 0) ? " --comment=\"year=${tagYear}\"" : "";
+			s += (mf.Comment.length > 0) ? " --comment=\"comment=${tagComment}\"" : "";
+		}
 
 		//options
 		s += " --bitrate " + audio.get_string_member("bitrate");
@@ -3213,13 +3253,21 @@ Notes:
 		}
 
 		//tags
-		s += (mf.TrackName.length > 0) ? " --title \"${tagTitle}\"" : "";
-		s += (mf.TrackNumber.length > 0) ? " --comment=\"track=${tagTrackNum}\"" : "";
-		s += (mf.Artist.length > 0) ? " --artist \"${tagArtist}\"" : "";
-		s += (mf.Album.length > 0) ? " --album \"${tagAlbum}\"" : "";
-		s += (mf.Genre.length > 0) ? " --genre \"${tagGenre}\"" : "";
-		s += (mf.RecordedDate.length > 0) ? " --date \"${tagYear}\"" : "";
-		s += (mf.Comment.length > 0) ? " --comment='comment=${tagComment}'" : "";
+		bool copy_tags = true;
+		if (settings.has_member("tags")){
+			Json.Object tags = (Json.Object) settings.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
+
+		if (copy_tags){
+			s += (mf.TrackName.length > 0) ? " --title \"${tagTitle}\"" : "";
+			s += (mf.TrackNumber.length > 0) ? " --comment=\"track=${tagTrackNum}\"" : "";
+			s += (mf.Artist.length > 0) ? " --artist \"${tagArtist}\"" : "";
+			s += (mf.Album.length > 0) ? " --album \"${tagAlbum}\"" : "";
+			s += (mf.Genre.length > 0) ? " --genre \"${tagGenre}\"" : "";
+			s += (mf.RecordedDate.length > 0) ? " --date \"${tagYear}\"" : "";
+			s += (mf.Comment.length > 0) ? " --comment='comment=${tagComment}'" : "";
+		}
 
 		//output
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {

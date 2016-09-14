@@ -50,6 +50,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private Gtk.Grid grid_subs;
 	private Gtk.Grid grid_vf;
 	private Gtk.Grid grid_af;
+	private Gtk.Grid grid_tags;
 
 	//preset
 	private Gtk.Entry txt_preset_name;
@@ -142,6 +143,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private Gtk.ComboBox cmb_sub_mode;
 	private Gtk.Label lbl_scodec_msg;
 
+	// tags
+	private Gtk.CheckButton chk_copy_tags;
+
 	private uint tmr_init = 0;
 
 	// actions
@@ -193,6 +197,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		init_ui_sox();
 		
 		init_ui_subtitles();
+
+		init_ui_tags();
 
 		// Actions ----------------------------------------------
 
@@ -324,6 +330,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		case "subs":
 			notebook.set_current_page(6);
 			break;
+		case "tags":
+			notebook.set_current_page(7);
+			break;
 		}
 	}
 	
@@ -389,6 +398,11 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		model.append(out iter);
 		model.set (iter, 0, _("Subtitles"));
 		model.set (iter, 1, "subs");
+		model.set (iter, 2, pix_subs);
+
+		model.append(out iter);
+		model.set (iter, 0, _("Tags"));
+		model.set (iter, 1, "tags");
 		model.set (iter, 2, pix_subs);
 		
 		tv_pages.set_model(model);
@@ -1113,7 +1127,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		link.activate_link.connect(()=>{ return exo_open_url(link.uri); });
         vboxSoxOuter.pack_end(link,true,true,0);
 	}
-
+	
 	/*private void show_popover_audio(Gtk.Image img, string sox_options){
 		var pop = new Gtk.Popover(img);
 		pop.modal = true;
@@ -1736,6 +1750,45 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		label.use_markup = true;
 		grid.attach(label,0,++row,3,1);
 		lbl_scodec_msg = label;
+	}
+
+	private void init_ui_tags(){
+		
+		// add tab page -------------------------
+		
+		var label = new Label (_("Tags"));
+
+		var grid = new Grid();
+		grid.set_column_spacing (12);
+		grid.set_row_spacing (6);
+		grid.margin = 12;
+		grid.visible = false;
+		notebook.append_page (grid, label);
+		grid_tags = grid;
+		
+		int row = -1;
+		int col;
+
+		// resample -----------------------------------------
+		
+		label = new Gtk.Label(_("<b>Tags</b>"));
+		label.set_use_markup(true);
+		label.xalign = (float) 0.0;
+		label.margin_top = 6;
+		label.margin_bottom = 6;
+		grid.attach(label,col=0,++row,2,1);
+
+		// chk_box_fit ---------------------------
+
+		var tt = _("Copy tags (artist, album, etc) from the source file to output file");
+
+		var chk = new CheckButton.with_label(_("Copy tags from source file"));
+		chk.active = true;
+		chk.margin_left = 12;
+		chk.margin_top = 6;
+		chk.set_tooltip_markup(tt);
+		grid.attach(chk,0,++row,3,1);
+		chk_copy_tags = chk;
 	}
 	
 	private bool on_delete_event(Gdk.EventAny event){
@@ -3128,6 +3181,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		var video = new Json.Object();
 		var audio = new Json.Object();
 		var subs = new Json.Object();
+		var tags = new Json.Object();
 
 		config.set_object_member("general",general);
 		general.set_string_member("format",format);
@@ -3196,6 +3250,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 		config.set_object_member("subtitle",subs);
 		subs.set_string_member("mode",subtitle_mode);
+
+		config.set_object_member("tags",tags);
+		tags.set_boolean_member("copyTags",copy_tags);
 
 		var filePath = Folder + "/" + txt_preset_name.text + ".json";
 		var json = new Json.Generator();
@@ -3335,6 +3392,13 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		//subtitles --------------
 
 		subtitle_mode = subs.get_string_member("mode");
+
+		// tags -----------------------
+
+		if (config.has_member("tags")){
+			Json.Object tags = (Json.Object) config.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
 
 		Main.set_numeric_locale("");
 	}
@@ -3724,6 +3788,15 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		}
         set {
 			gtk_combobox_set_value(cmb_sub_mode, 1, value);
+		}
+    }
+
+    public bool copy_tags{
+		get {
+			return chk_copy_tags.active;
+		}
+        set {
+			chk_copy_tags.set_active((bool)value);
 		}
     }
 }
