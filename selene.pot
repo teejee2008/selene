@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2016-09-14 20:42+0530\n"
+"POT-Creation-Date: 2016-09-19 20:01+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "<b>Audio Encoder</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:158
+#: AppConfigWindow.vala:166
 msgid "<b>Backup Directory</b>"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgid ""
 "Smaller values give better quality video and larger files"
 msgstr ""
 
-#: AppConfigWindow.vala:366
+#: AppConfigWindow.vala:374
 msgid "<b>Default Language</b>"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgid ""
 "These subtitles can be switched off since they are added as a separate track"
 msgstr ""
 
-#: AppConfigWindow.vala:278
+#: AppConfigWindow.vala:286
 msgid ""
 "<b>Encoder</b>\n"
 "Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
@@ -179,7 +179,7 @@ msgstr ""
 msgid "<b>File Format</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:420
+#: AppConfigWindow.vala:428
 msgid "<b>File Handling</b>"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: AppConfigWindow.vala:210
+#: AppConfigWindow.vala:218
 msgid "<b>Main Window</b>"
 msgstr ""
 
@@ -214,11 +214,11 @@ msgstr ""
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:106
+#: AppConfigWindow.vala:114
 msgid "<b>Output Directory</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:265
+#: AppConfigWindow.vala:273
 msgid "<b>Preferred Tools</b>"
 msgstr ""
 
@@ -280,7 +280,7 @@ msgstr ""
 msgid "<b>Video Encoder</b>"
 msgstr ""
 
-#: AppConfigWindow.vala:277
+#: AppConfigWindow.vala:285
 msgid ""
 "<b>avconv</b>\n"
 "Use the 'avconv' encoding tool from the Libav project\n"
@@ -623,7 +623,7 @@ msgstr ""
 msgid "Delete Segment"
 msgstr ""
 
-#: AppConfigWindow.vala:430
+#: AppConfigWindow.vala:438
 msgid "Delete temporary files after successful encode"
 msgstr ""
 
@@ -740,7 +740,7 @@ msgstr ""
 msgid "Empty Preset Name"
 msgstr ""
 
-#: AppConfigWindow.vala:280
+#: AppConfigWindow.vala:288
 msgid "Encoder"
 msgstr ""
 
@@ -776,7 +776,7 @@ msgstr ""
 msgid "Enter any key to Cancel..."
 msgstr ""
 
-#: AppConfigWindow.vala:126 AppConfigWindow.vala:178
+#: AppConfigWindow.vala:134 AppConfigWindow.vala:186
 msgid "Enter path or browse for directory"
 msgstr ""
 
@@ -836,7 +836,7 @@ msgstr ""
 msgid "File Info (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:222
+#: AppConfigWindow.vala:230
 msgid "File View"
 msgstr ""
 
@@ -918,7 +918,7 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
-#: AppConfigWindow.vala:98 EncoderConfigWindow.vala:369
+#: AppConfigWindow.vala:106 EncoderConfigWindow.vala:369
 #: EncoderConfigWindow.vala:415
 msgid "General"
 msgstr ""
@@ -969,7 +969,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: AppConfigWindow.vala:380
+#: AppConfigWindow.vala:388
 msgid "Language"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 msgid "Linear"
 msgstr ""
 
-#: AppConfigWindow.vala:238
+#: AppConfigWindow.vala:246
 msgid "List"
 msgstr ""
 
@@ -1073,7 +1073,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: AppConfigWindow.vala:166
+#: AppConfigWindow.vala:174
 msgid "Move source files after encoding is complete"
 msgstr ""
 
@@ -1209,7 +1209,7 @@ msgstr ""
 msgid "Play File (Source)"
 msgstr ""
 
-#: AppConfigWindow.vala:326
+#: AppConfigWindow.vala:334
 msgid "Player"
 msgstr ""
 
@@ -1322,7 +1322,7 @@ msgstr ""
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
-#: AppConfigWindow.vala:114
+#: AppConfigWindow.vala:122
 msgid "Save files in following location"
 msgstr ""
 
@@ -1334,7 +1334,7 @@ msgstr ""
 msgid "Select Columns"
 msgstr ""
 
-#: AppConfigWindow.vala:137 AppConfigWindow.vala:189
+#: AppConfigWindow.vala:145 AppConfigWindow.vala:197
 msgid "Select Path"
 msgstr ""
 
@@ -1354,7 +1354,7 @@ msgstr ""
 msgid "Select the segments to include in output file:"
 msgstr ""
 
-#: AppConfigWindow.vala:378
+#: AppConfigWindow.vala:386
 msgid ""
 "Selected language will be used for setting the default flag on the audio/"
 "subtitle track"
@@ -1550,7 +1550,7 @@ msgid ""
 "The 'Bilinear' filter gives smoother video (less detail) and smaller files."
 msgstr ""
 
-#: AppConfigWindow.vala:427
+#: AppConfigWindow.vala:435
 msgid ""
 "The temporary folder contains files which may be useful for advanced users. "
 "Keep this un-checked if you want to keep the temp files till the next reboot."
@@ -1561,7 +1561,7 @@ msgstr ""
 msgid "Third Party Tools &amp; Software"
 msgstr ""
 
-#: AppConfigWindow.vala:240
+#: AppConfigWindow.vala:248
 msgid "Tiles"
 msgstr ""
 
@@ -1573,7 +1573,7 @@ msgstr ""
 msgid "Tool"
 msgstr ""
 
-#: AppConfigWindow.vala:255
+#: AppConfigWindow.vala:263
 msgid "Tools"
 msgstr ""
 
@@ -1740,19 +1740,19 @@ msgstr ""
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
-#: AppConfigWindow.vala:296
+#: AppConfigWindow.vala:304
 msgid "avconv / Libav"
 msgstr ""
 
-#: AppConfigWindow.vala:294
+#: AppConfigWindow.vala:302
 msgid "ffmpeg"
 msgstr ""
 
-#: AppConfigWindow.vala:340
+#: AppConfigWindow.vala:348
 msgid "mplayer"
 msgstr ""
 
-#: AppConfigWindow.vala:338
+#: AppConfigWindow.vala:346
 msgid "mpv"
 msgstr ""
 

@@ -61,10 +61,16 @@ public class AppConfigWindow : Gtk.Dialog {
 		resizable = false;
 		icon = get_app_icon(16);
 
+		this.delete_event.connect(()=>{
+			btn_save_clicked();
+			return true;
+		});
+
 		// get content area
 		vbox_main = get_content_area();
 		vbox_main.set_size_request(400,500);
-
+		
+		
 		//notebook
 		notebook = new Notebook();
 		notebook.tab_pos = PositionType.TOP;
@@ -76,15 +82,17 @@ public class AppConfigWindow : Gtk.Dialog {
 		init_ui_tab_general();
 
 		init_ui_tab_tools();
-		
+
+		// TODO: add only OK button instead of Save/Cancel - it is confusing
+
+		// get action area
+		var vbox_action = get_action_area();
+		vbox_action.margin = 6;
+
         // btn_save
-        btn_save = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
+        btn_save = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
         btn_save.clicked.connect (btn_save_clicked);
-
-        // btn_cancel
-        btn_cancel = (Button) add_button ("gtk-cancel", Gtk.ResponseType.CANCEL);
-        btn_cancel.clicked.connect (btn_cancel_clicked);
-
+        
         chk_output_dir_clicked();
         chk_backup_dir_clicked();
 
@@ -479,10 +487,6 @@ public class AppConfigWindow : Gtk.Dialog {
 		// Save settings
 		App.save_config();
 
-		destroy();
-	}
-
-	private void btn_cancel_clicked(){
 		destroy();
 	}
 }
