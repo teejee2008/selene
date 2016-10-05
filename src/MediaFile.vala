@@ -128,7 +128,7 @@ public class MediaFile : GLib.Object{
 	            if (fileInfo.get_file_type() == FileType.REGULAR) {
 		            string fname = fileInfo.get_name().down();
 
-		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
+		            if (fname.has_prefix(Title.down()) && (fname.has_suffix (".srt")||fname.has_suffix (".sub")||fname.has_suffix (".ssa")||fname.has_suffix (".ass")||fname.has_suffix (".ttxt")||fname.has_suffix (".xml")||fname.has_suffix (".lrc")))
 		            {
 						var stream = new TextStream();
 						stream_list.add(stream);
@@ -140,6 +140,9 @@ public class MediaFile : GLib.Object{
 						}
 						else if (fname.has_suffix (".ssa")){
 							stream.Format = "SSA";
+						}
+						else if (fname.has_suffix (".ass")){
+							stream.Format = "ASS";
 						}
 						else if (fname.has_suffix (".sub")){
 							stream.Format = "SUB";

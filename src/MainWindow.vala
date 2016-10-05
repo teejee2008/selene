@@ -2733,6 +2733,8 @@ public class MainWindow : Gtk.Window{
 				msg_add += "%s\n".printf(file_basename(file_path));
 			}
 		}
+
+		// TODO: high: easy: remove the "some files could not be added" message from subtitles files that have been added
 	}
 
 	private void on_drag_data_received (Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) {

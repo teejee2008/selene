@@ -3429,7 +3429,7 @@ Notes:
 							}
 							s += " \"${temp_subs_%d}\"".printf(stm.TypeIndex);
 						}
-						else if (stm.IsExternal && (stm.SubExt == ".srt" || stm.SubExt == ".sub" || stm.SubExt == ".ssa")){
+						else if (stm.IsExternal && (stm.SubExt == ".srt" || stm.SubExt == ".sub" || stm.SubExt == ".ssa") || (stm.SubExt == ".ass")){
 							s += " --compression -1:none";
 							if (stm.LangCode.length > 0){
 								s += " --language -1:%s".printf(stm.LangCode);
