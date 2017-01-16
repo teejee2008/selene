@@ -2986,11 +2986,10 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void btn_app_settings_clicked(){
-	    var dialog = new AppConfigWindow(this);
-	    dialog.run();
-		dialog.destroy();
-		
-	    refresh_list_view();
+	    var win = new AppConfigWindow(this);
+	    win.destroy.connect(()=>{
+			refresh_list_view();
+		});
 	}
 
 	private void btn_shutdown_clicked(){

@@ -32,15 +32,15 @@ using TeeJee.Multimedia;
 using TeeJee.System;
 using TeeJee.Misc;
 
-public class AppConfigWindow : Gtk.Dialog {
+public class AppConfigWindow : Gtk.Window {
 	private Box vbox_main;
-	private Gtk.Notebook notebook;
+	private Gtk.StackSwitcher switcher;
+	private Gtk.Stack stack;
 	private CheckButton chk_output_dir;
 	private Entry txt_backup_dir;
 	private CheckButton chk_backup_dir;
 	private Entry txt_output_dir;
 	private Button btn_save;
-	private Button btn_cancel;
 	private ComboBox cmb_file_view;
 	private ComboBox cmb_select_encoder;
 	private ComboBox cmb_select_player;
@@ -67,31 +67,46 @@ public class AppConfigWindow : Gtk.Dialog {
 		});
 
 		// get content area
-		vbox_main = get_content_area();
-		vbox_main.set_size_request(400,500);
+		vbox_main = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+		vbox_main.set_size_request(400,450);
+		add(vbox_main);
+		//vbox_main.margin = 0;
+
 		
-		
-		//notebook
-		notebook = new Notebook();
-		notebook.tab_pos = PositionType.TOP;
-		notebook.show_border = true;
-		notebook.scrollable = true;
-		notebook.margin = 6;
-		vbox_main.pack_start (notebook, true, true, 0);
+		var hbox = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+		//hbox.margin = 0;
+		hbox.set_layout (Gtk.ButtonBoxStyle.CENTER);
+		hbox.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+        vbox_main.add(hbox);
+        
+		switcher = new Gtk.StackSwitcher();
+		switcher.margin = 6;
+		hbox.add (switcher);
+
+		stack = new Gtk.Stack();
+		stack.set_transition_duration (200);
+        stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+		vbox_main.add(stack);
+
+		switcher.set_stack(stack);
 		
 		init_ui_tab_general();
 
 		init_ui_tab_tools();
 
-		// TODO: add only OK button instead of Save/Cancel - it is confusing
+		var label = new Label("");
+		label.vexpand = true;
+		vbox_main.add(label);
 
 		// get action area
-		var vbox_action = get_action_area();
-		vbox_action.margin = 6;
-
+		var hbox_action = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+		hbox_action.margin = 6;
+		vbox_main.add(hbox_action);
+		
         // btn_save
-        btn_save = (Button) add_button ("gtk-ok", Gtk.ResponseType.ACCEPT);
+        btn_save = new Button.with_label(_("Close"));
         btn_save.clicked.connect (btn_save_clicked);
+        hbox_action.add(btn_save);
         
         chk_output_dir_clicked();
         chk_backup_dir_clicked();
@@ -101,17 +116,13 @@ public class AppConfigWindow : Gtk.Dialog {
 
 	private void init_ui_tab_general(){
 		
-		// add tab ------------------------------
-		
-		var label = new Label (_("General"));
-
-        var vbox = new Box(Orientation.VERTICAL,6);
+        var vbox = new Gtk.Box(Orientation.VERTICAL,6);
         vbox.margin = 12;
-        notebook.append_page (vbox, label);
-
+		stack.add_titled (vbox, "general", _("General"));
+		
 		// output dir --------------------------------------------
 		
-		label = new Label (_("<b>Output Directory</b>"));
+		var label = new Label (_("<b>Output Directory</b>"));
 		label.set_use_markup(true);
 		label.halign = Align.START;
 		//label.margin_top = 12;
@@ -258,19 +269,15 @@ public class AppConfigWindow : Gtk.Dialog {
 
 	private void init_ui_tab_tools(){
 		
-		// add tab ---------------------------------------
-		
-		var label = new Label (_("Tools"));
-
         var vbox = new Box(Orientation.VERTICAL,6);
         vbox.margin = 12;
-        notebook.append_page (vbox, label);
+        stack.add_titled (vbox, "tools", _("Tools"));
 		
 		var sizegroup_lbl = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
 		var sizegroup_cmb = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
 		
 		// header
-		label = new Label (_("<b>Preferred Tools</b>"));
+		var label = new Label (_("<b>Preferred Tools</b>"));
 		label.set_use_markup(true);
 		label.halign = Align.START;
 		//label.margin_top = 6;
