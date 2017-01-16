@@ -40,9 +40,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private bool IsNew = true;
 
 	private Gtk.Paned pane;
-	private Gtk.TreeView tv_pages;
-	private Gtk.Notebook notebook;
-	private Box vbox_main;
+	private Gtk.Box vbox_main;
+	private Gtk.StackSidebar sidebar;
+	private Gtk.Stack stack;
 
 	// grids
 	private Gtk.Grid grid_video;
@@ -186,13 +186,13 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 		init_ui_general();
 
+		init_ui_audio();
+		
 		init_ui_video();
 
-		init_ui_video_filters();
-
-		init_ui_audio();
-
 		init_ui_audio_filters();
+
+		init_ui_video_filters();
 
 		init_ui_sox();
 		
@@ -203,7 +203,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		// Actions ----------------------------------------------
 
 		var vbox = get_action_area();
-		vbox.margin = 3;
+		vbox.margin = 6;
 		
         //btn_save
         btn_save = (Button) add_button ("gtk-save", Gtk.ResponseType.ACCEPT);
@@ -220,207 +220,31 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private void init_ui_navpane(){
 		pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
-		pane.margin = 6;
+		//pane.margin = 6;
 		vbox_main.add(pane);
 
-		//tv_pages
-		tv_pages = new TreeView();
-		tv_pages.get_selection().mode = SelectionMode.SINGLE;
-		tv_pages.headers_visible = false;
-		tv_pages.activate_on_single_click = true;
+		sidebar = new Gtk.StackSidebar();
+		//sidebar.margin = 6;
+		pane.pack1(sidebar, false, false); //resize, shrink
 
-		var sw_pages = new ScrolledWindow(tv_pages.get_hadjustment(), tv_pages.get_vadjustment());
-		sw_pages.set_shadow_type (ShadowType.ETCHED_IN);
-		sw_pages.add (tv_pages);
-		//sw_pages.margin_right = 3;
-		sw_pages.set_size_request (150, -1);
-		pane.pack1(sw_pages, false, false); //resize, shrink
+		stack = new Gtk.Stack();
+		stack.set_transition_duration (200);
+        stack.set_transition_type (Gtk.StackTransitionType.SLIDE_UP_DOWN);
+		pane.pack2(stack, true, true); //resize, shrink
 
-		TreeViewColumn col;
-		CellRendererPixbuf cellPix;
-		CellRendererText cellText;
-		
-		//col_dir
-		col = new TreeViewColumn();
-		col.expand = true;
-		tv_pages.append_column(col);
-
-		cellPix = new CellRendererPixbuf ();
-		cellPix.xpad = 1;
-		col.pack_start (cellPix, false);
-
-		cellText = new CellRendererText ();
-		cellText.ellipsize = Pango.EllipsizeMode.END;
-		col.pack_start (cellText, false);
-
-		//render icon
-		col.set_attributes(cellPix, "pixbuf", 2);
-
-		//render text
-		col.set_cell_data_func (cellText, (cell_layout, cell, model, iter) => {
-			string name;
-			model.get (iter, 0, out name, -1);
-			(cell as Gtk.CellRendererText).text = name;
-		});
-
-		//row activated event
-		tv_pages.row_activated.connect(tv_pages_row_activated);
-
-
-		tv_pages.get_selection().changed.connect(tv_pages_selection_changed);
-		
-		//notebook
-		notebook = new Notebook();
-		notebook.tab_pos = PositionType.TOP;
-		notebook.show_border = true;
-		notebook.scrollable = true;
-		notebook.show_tabs = false;
-		notebook.margin_left = 3;
-		pane.pack2(notebook, true, true); //resize, shrink
-
-		refresh_navpane();
+		sidebar.set_stack(stack);
 	}
 
-	private void tv_pages_row_activated(TreePath path, TreeViewColumn column){
-		TreeIter iter;
-		tv_pages.model.get_iter_from_string(out iter, path.to_string());
-		string page_name;
-		tv_pages.model.get (iter, 1, out page_name, -1);
-
-		select_page(page_name);
-	}
-
-	private void tv_pages_selection_changed(){
-		var sel = tv_pages.get_selection();
-
-		if (sel.count_selected_rows() != 1){
-			return;
-		}
-		
-		TreeModel model;
-		TreeIter iter;
-		sel.get_selected (out model, out iter);
-		
-		string page_name;
-		model.get (iter, 1, out page_name, -1);
-
-		select_page(page_name);
-	}
-
-	private void select_page(string page_name){
-		switch (page_name){
-		case "general":
-			notebook.set_current_page(0);
-			break;
-		case "video":
-			notebook.set_current_page(1);
-			break;
-		case "vf":
-			notebook.set_current_page(2);
-			break;
-		case "audio":
-			notebook.set_current_page(3);
-			break;
-		case "af":
-			notebook.set_current_page(4);
-			break;
-		case "sox":
-			notebook.set_current_page(5);
-			break;
-		case "subs":
-			notebook.set_current_page(6);
-			break;
-		case "tags":
-			notebook.set_current_page(7);
-			break;
-		}
-	}
-	
-	
-	private void refresh_navpane(){
-		var model = new Gtk.ListStore(3, typeof(string), typeof(string), typeof(Gdk.Pixbuf));
-
-		//status icons
-		Gdk.Pixbuf pix_audio = null;
-		Gdk.Pixbuf pix_video = null;
-		Gdk.Pixbuf pix_subs = null;
-		Gdk.Pixbuf pix_general = null;
-
-		var img = get_shared_icon("","audio.svg",16);
-		if (img != null){
-			pix_audio = img.pixbuf;
-		}
-		img = get_shared_icon("","video.svg",16);
-		if (img != null){
-			pix_video = img.pixbuf;
-		}
-		img = get_shared_icon("","subs.svg",16);
-		if (img != null){
-			pix_subs = img.pixbuf;
-		}
-		img = get_shared_icon("","general.svg",16);
-		if (img != null){
-			pix_general = img.pixbuf;
-		}
-
-		TreeIter iter;
-
-		model.append(out iter);
-		model.set (iter, 0, _("General"));
-		model.set (iter, 1, "general");
-		model.set (iter, 2, pix_general);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Video Encoder"));
-		model.set (iter, 1, "video");
-		model.set (iter, 2, pix_video);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Video Filters"));
-		model.set (iter, 1, "vf");
-		model.set (iter, 2, pix_video);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Audio Encoder"));
-		model.set (iter, 1, "audio");
-		model.set (iter, 2, pix_audio);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Audio Filters"));
-		model.set (iter, 1, "af");
-		model.set (iter, 2, pix_audio);
-
-		model.append(out iter);
-		model.set (iter, 0, _("SOX"));
-		model.set (iter, 1, "sox");
-		model.set (iter, 2, pix_audio);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Subtitles"));
-		model.set (iter, 1, "subs");
-		model.set (iter, 2, pix_subs);
-
-		model.append(out iter);
-		model.set (iter, 0, _("Tags"));
-		model.set (iter, 1, "tags");
-		model.set (iter, 2, pix_subs);
-		
-		tv_pages.set_model(model);
-	}
-	
 	private void init_ui_general(){
-
-		// add tab page -------------------------
-		
-		var lbl_general = new Label (_("General"));
 
 		var grid = new Grid();
 		grid.set_column_spacing (12);
 		grid.set_row_spacing (6);
 		grid.margin = 12;
-		grid.margin_right = 24;
-		notebook.append_page (grid, lbl_general);
+		//grid.margin_right = 24;
 
+		stack.add_titled (grid, "general", _("General"));
+		
 		int row = -1;
 		Gtk.ListStore model;
 		TreeIter iter;
@@ -548,24 +372,21 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	
 	private void init_ui_audio(){
 		
-		// add tab page -------------------------
-		 
-		var label = new Label (_("Audio"));
-
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
         grid.margin = 12;
         grid.visible = false;
-        notebook.append_page (grid, label);
 		grid_audio = grid;
+
+		stack.add_titled (grid_audio, "audio", _("Audio"));
 		
 		int row = -1;
 		Gtk.ListStore model;
 		TreeIter iter;
 
 		//lblHeaderFileFormat
-		label = new Gtk.Label(_("<b>Audio Encoder</b>"));
+		var label = new Gtk.Label(_("<b>Audio Encoder</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_bottom = 6;
@@ -699,24 +520,21 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private void init_ui_audio_filters(){
 		
-		// add tab page -------------------------
-		
-		var label = new Label (_("Filters"));
-
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
         grid.margin = 12;
         grid.visible = false;
-        notebook.append_page (grid, label);
 		grid_af = grid;
+
+		stack.add_titled (grid_af, "af", _("Filters (A)"));
 		
 		int row = -1;
 		int col;
 
 		// resample -----------------------------------------
 		
-		label = new Gtk.Label(_("<b>Resample</b>"));
+		var label = new Gtk.Label(_("<b>Resample</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_top = 6;
@@ -763,14 +581,11 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		int sliderMarginBottom = 3;
 		int spacing = 6;
 
-		// add tab page -------------------------
-		
-		var label = new Label ("" + _("SOX") + "");
-
         vboxSoxOuter = new Box(Orientation.VERTICAL,spacing);
 		vboxSoxOuter.margin = 12;
-        notebook.append_page (vboxSoxOuter, label);
 
+		stack.add_titled (vboxSoxOuter, "sox", _("SOX"));
+		
 		// SOX switch ------------------------------------
 		
 		var hbox = new Box(Orientation.HORIZONTAL,0);
@@ -778,7 +593,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
         vboxSoxOuter.add(hbox);
 
 		//lbl_sox_header
-		label = new Gtk.Label(_("<b>SOX Audio Processing</b>"));
+		var label = new Gtk.Label(_("<b>SOX Audio Processing</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.hexpand = true;
@@ -1207,24 +1022,21 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	
 	private void init_ui_video(){
 		
-		// add tab ----------------------------
-		
-		var label = new Label(_("Video"));
-
 		//grid_video
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
         grid.margin = 12;
-        notebook.append_page (grid, label);
 		grid_video = grid;
+
+		stack.add_titled (grid_video, "video", _("Video"));
 		
 		int row = -1;
 		string tt = "";
 
 		// header ------------------------
 		
-		label = new Gtk.Label(_("<b>Video Encoder</b>"));
+		var label = new Gtk.Label(_("<b>Video Encoder</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_bottom = 6;
@@ -1480,17 +1292,14 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private void init_ui_video_filters(){
 		
-		// add tab page -------------------------
-		
-		var label = new Label (_("Filters"));
-
 		// grid_vf
         var grid = new Grid();
         grid.set_column_spacing (12);
         grid.set_row_spacing (6);
         grid.margin = 12;
-        notebook.append_page (grid, label);
         grid_vf = grid;
+
+        stack.add_titled (grid_vf, "vf", _("Filters (V)"));
 
 		int row = -1;
 		string tt = "";
@@ -1499,7 +1308,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 		// resize header ------------------------------
 		
-		label = new Gtk.Label(_("<b>Resize</b>"));
+		var label = new Gtk.Label(_("<b>Resize</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_bottom = 6;
@@ -1691,23 +1500,20 @@ public class EncoderConfigWindow : Gtk.Dialog {
 
 	private void init_ui_subtitles(){
 		
-		// add tab ---------------------------------------------
-		
-		var label = new Label ("" + _("Subs") + "");
-
         // grid_subs
         var grid = new Grid();
         grid.set_column_spacing (6);
         grid.set_row_spacing (6);
         grid.margin = 12;
-        notebook.append_page (grid, label);
 		grid_subs = grid;
+
+		stack.add_titled (grid_subs, "subs", _("Subtitles"));
 
 		int row = -1;
 		
 		// header ----------------------------------------------
 		
-		label = new Gtk.Label(_("<b>Subtitles</b>"));
+		var label = new Gtk.Label(_("<b>Subtitles</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_bottom = 6;
@@ -1756,22 +1562,21 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		
 		// add tab page -------------------------
 		
-		var label = new Label (_("Tags"));
-
 		var grid = new Grid();
 		grid.set_column_spacing (12);
 		grid.set_row_spacing (6);
 		grid.margin = 12;
 		grid.visible = false;
-		notebook.append_page (grid, label);
 		grid_tags = grid;
+
+		stack.add_titled (grid_tags, "tags", _("Tags"));
 		
 		int row = -1;
 		int col;
 
 		// resample -----------------------------------------
 		
-		label = new Gtk.Label(_("<b>Tags</b>"));
+		var label = new Gtk.Label(_("<b>Tags</b>"));
 		label.set_use_markup(true);
 		label.xalign = (float) 0.0;
 		label.margin_top = 6;
@@ -3156,7 +2961,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	private void btn_save_clicked(){
 
 		if (txt_preset_name.text.length < 1) {
-			notebook.page = 0;
+			stack.set_visible_child_name("general");
 
 			string msg = _("Please enter a name for this preset");
 			var dlg = new Gtk.MessageDialog(null,Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, msg);
