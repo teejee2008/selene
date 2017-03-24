@@ -17,10 +17,10 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=5
-FILE_NAME_0=23970;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
+current_page=0
+FILE_NAME_0=24321;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FUtility.vala;0;4
 FILE_NAME_1=49483;Vala;0;EUTF-8;1;1;0;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMain.vala;0;4
-FILE_NAME_2=47551;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FEncoderConfigWindow.vala;0;4
+FILE_NAME_2=57523;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FEncoderConfigWindow.vala;0;4
 FILE_NAME_3=2267;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFileInfoWindow.vala;0;4
 FILE_NAME_4=6082;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FAboutWindow.vala;0;4
 FILE_NAME_5=2865;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FAppConfigWindow.vala;0;4
@@ -29,14 +29,14 @@ FILE_NAME_7=2436;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselen
 FILE_NAME_8=2966;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FCustomMessageDialog.vala;0;4
 FILE_NAME_9=2819;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FFFmpegBuilder.vala;0;4
 FILE_NAME_10=4148;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FSimpleProgressWindow.vala;0;4
-FILE_NAME_11=91444;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
-FILE_NAME_12=981;Conf;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fcontrol;0;4
+FILE_NAME_11=53533;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMainWindow.vala;0;4
+FILE_NAME_12=168;Conf;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fcontrol;0;4
 FILE_NAME_13=239;None;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fdebian%2Fchangelog;0;4
 FILE_NAME_14=11321;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMediaPlayer.vala;0;4
 FILE_NAME_15=4247;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMediaFile.vala;0;4
 FILE_NAME_16=2475;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FBatchEditWindow.vala;0;4
-FILE_NAME_17=550;Make;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
-FILE_NAME_18=1942;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMediaPlayerWindow.vala;0;4
+FILE_NAME_17=519;Make;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2Fmakefile;0;4
+FILE_NAME_18=3896;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Fselene%2Fsrc%2FMediaPlayerWindow.vala;0;4
 FILE_NAME_19=7859;Vala;0;EUTF-8;1;1;1;%2Fhome%2Fteejee%2Fprojects%2Flinux%2Faptik%2Fsrc%2FClasses.vala;0;4
 
 [VTE]

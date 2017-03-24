@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2017-01-16 23:07+0530\n"
+"POT-Creation-Date: 2017-01-17 22:55+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "(Batch)"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1093
+#: MediaPlayerWindow.vala:1109
 msgid "100%"
 msgstr ""
 
@@ -70,19 +70,19 @@ msgid ""
 "with the same file name."
 msgstr ""
 
-#: MediaPlayerWindow.vala:1095
+#: MediaPlayerWindow.vala:1111
 msgid "200%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1087
+#: MediaPlayerWindow.vala:1103
 msgid "25%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1089
+#: MediaPlayerWindow.vala:1105
 msgid "50%"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1091
+#: MediaPlayerWindow.vala:1107
 msgid "75%"
 msgstr ""
 
@@ -369,7 +369,7 @@ msgstr ""
 msgid "Adjust Stereo for Headphones"
 msgstr ""
 
-#: MediaPlayerWindow.vala:362
+#: MediaPlayerWindow.vala:378
 msgid "Advanced Mode"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: MediaPlayerWindow.vala:476
+#: MediaPlayerWindow.vala:492
 msgid "Basic Mode"
 msgstr ""
 
@@ -488,7 +488,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: MediaPlayerWindow.vala:247
+#: MediaPlayerWindow.vala:263
 msgid "Bottom:"
 msgstr ""
 
@@ -523,7 +523,7 @@ msgstr ""
 msgid "Clear List"
 msgstr ""
 
-#: MediaPlayerWindow.vala:659
+#: MediaPlayerWindow.vala:675
 msgid "Clip"
 msgstr ""
 
@@ -591,7 +591,7 @@ msgstr ""
 msgid "Crop Left"
 msgstr ""
 
-#: BatchEditWindow.vala:85 MainWindow.vala:1442 MediaPlayerWindow.vala:122
+#: BatchEditWindow.vala:85 MainWindow.vala:1442 MediaPlayerWindow.vala:123
 msgid "Crop Video"
 msgstr ""
 
@@ -599,7 +599,7 @@ msgstr ""
 msgid "Crop Videos"
 msgstr ""
 
-#: MediaPlayerWindow.vala:267
+#: MediaPlayerWindow.vala:283
 msgid "Cropped:"
 msgstr ""
 
@@ -611,7 +611,7 @@ msgstr ""
 msgid "Delete Preset"
 msgstr ""
 
-#: MediaPlayerWindow.vala:458
+#: MediaPlayerWindow.vala:474
 msgid "Delete Segment"
 msgstr ""
 
@@ -627,20 +627,20 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: MediaPlayerWindow.vala:282
+#: MediaPlayerWindow.vala:298
 msgid "Detect Borders"
 msgstr ""
 
-#: MediaPlayerWindow.vala:284
+#: MediaPlayerWindow.vala:300
 msgid "Detect black borders in the video and set cropping parameters"
 msgstr ""
 
-#: MediaPlayerWindow.vala:856
+#: MediaPlayerWindow.vala:872
 #, c-format
 msgid "Detected Parameters: %d, %d, %d, %d"
 msgstr ""
 
-#: BatchEditWindow.vala:426 MediaPlayerWindow.vala:788
+#: BatchEditWindow.vala:426 MediaPlayerWindow.vala:804
 msgid "Detecting borders..."
 msgstr ""
 
@@ -708,7 +708,7 @@ msgstr ""
 msgid "Drag files on this window or click the 'Add' button"
 msgstr ""
 
-#: MainWindow.vala:660 MediaPlayerWindow.vala:665
+#: MainWindow.vala:660 MediaPlayerWindow.vala:681
 msgid "Duration"
 msgstr ""
 
@@ -748,15 +748,15 @@ msgstr ""
 msgid "Encoding Script or Preset File"
 msgstr ""
 
-#: MediaPlayerWindow.vala:328
+#: MediaPlayerWindow.vala:344
 msgid "End (sec):"
 msgstr ""
 
-#: MediaPlayerWindow.vala:663
+#: MediaPlayerWindow.vala:679
 msgid "End Pos"
 msgstr ""
 
-#: MediaPlayerWindow.vala:442
+#: MediaPlayerWindow.vala:458
 msgid "End Segment"
 msgstr ""
 
@@ -857,8 +857,8 @@ msgstr ""
 msgid "Filters (V)"
 msgstr ""
 
-#: MainWindow.vala:261 MainWindow.vala:263 MediaPlayerWindow.vala:291
-#: MediaPlayerWindow.vala:377 MediaPlayerWindow.vala:491
+#: MainWindow.vala:261 MainWindow.vala:263 MediaPlayerWindow.vala:307
+#: MediaPlayerWindow.vala:393 MediaPlayerWindow.vala:507
 msgid "Finish"
 msgstr ""
 
@@ -910,7 +910,7 @@ msgstr ""
 msgid "Frames/sec"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1177 MediaPlayerWindow.vala:1181
+#: MediaPlayerWindow.vala:1193 MediaPlayerWindow.vala:1197
 msgid "Fullscreen"
 msgstr ""
 
@@ -968,7 +968,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: MediaPlayerWindow.vala:208
+#: MediaPlayerWindow.vala:224
 msgid "Left:"
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1165 MediaPlayerWindow.vala:1169
+#: MediaPlayerWindow.vala:1181 MediaPlayerWindow.vala:1185
 msgid "Mute"
 msgstr ""
 
@@ -1143,6 +1143,10 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
+#: MediaPlayerWindow.vala:146
+msgid "Open"
+msgstr ""
+
 #: MainWindow.vala:1790
 msgid "Open Folder"
 msgstr ""
@@ -1176,7 +1180,7 @@ msgid "Output"
 msgstr ""
 
 #: MainWindow.vala:234 MainWindow.vala:3030 MainWindow.vala:3032
-#: MediaPlayerWindow.vala:1157
+#: MediaPlayerWindow.vala:1173
 msgid "Pause"
 msgstr ""
 
@@ -1192,7 +1196,7 @@ msgstr ""
 msgid "Pitch"
 msgstr ""
 
-#: MediaPlayerWindow.vala:1153
+#: MediaPlayerWindow.vala:1169
 msgid "Play"
 msgstr ""
 
@@ -1208,7 +1212,7 @@ msgstr ""
 msgid "Player"
 msgstr ""
 
-#: MediaPlayerWindow.vala:790
+#: MediaPlayerWindow.vala:806
 msgid "Please Wait..."
 msgstr ""
 
@@ -1301,7 +1305,7 @@ msgstr ""
 msgid "Right-click for more options"
 msgstr ""
 
-#: MediaPlayerWindow.vala:221
+#: MediaPlayerWindow.vala:237
 msgid "Right:"
 msgstr ""
 
@@ -1321,7 +1325,7 @@ msgstr ""
 msgid "Save files in following location"
 msgstr ""
 
-#: MediaPlayerWindow.vala:204
+#: MediaPlayerWindow.vala:220
 msgid "Scroll mouse wheel to adjust"
 msgstr ""
 
@@ -1337,7 +1341,7 @@ msgstr ""
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
 
-#: MediaPlayerWindow.vala:364
+#: MediaPlayerWindow.vala:380
 msgid "Select multiple segments"
 msgstr ""
 
@@ -1345,7 +1349,7 @@ msgstr ""
 msgid "Select some files from the list"
 msgstr ""
 
-#: MediaPlayerWindow.vala:400
+#: MediaPlayerWindow.vala:416
 msgid "Select the segments to include in output file:"
 msgstr ""
 
@@ -1374,15 +1378,15 @@ msgstr ""
 msgid "Send Email"
 msgstr ""
 
-#: MediaPlayerWindow.vala:342 MediaPlayerWindow.vala:352
+#: MediaPlayerWindow.vala:358 MediaPlayerWindow.vala:368
 msgid "Set"
 msgstr ""
 
-#: MediaPlayerWindow.vala:353
+#: MediaPlayerWindow.vala:369
 msgid "Set current playback position as ending position"
 msgstr ""
 
-#: MediaPlayerWindow.vala:343
+#: MediaPlayerWindow.vala:359
 msgid "Set current playback position as starting position"
 msgstr ""
 
@@ -1438,7 +1442,7 @@ msgstr ""
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:826 MediaPlayerWindow.vala:260
+#: Main.vala:826 MediaPlayerWindow.vala:276
 msgid "Source:"
 msgstr ""
 
@@ -1458,15 +1462,15 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: MediaPlayerWindow.vala:314
+#: MediaPlayerWindow.vala:330
 msgid "Start (sec):"
 msgstr ""
 
-#: MediaPlayerWindow.vala:661
+#: MediaPlayerWindow.vala:677
 msgid "Start Pos"
 msgstr ""
 
-#: MediaPlayerWindow.vala:429
+#: MediaPlayerWindow.vala:445
 msgid "Start Segment"
 msgstr ""
 
@@ -1572,7 +1576,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: MediaPlayerWindow.vala:234
+#: MediaPlayerWindow.vala:250
 msgid "Top:"
 msgstr ""
 
@@ -1593,7 +1597,7 @@ msgstr ""
 msgid "Treble"
 msgstr ""
 
-#: MediaPlayerWindow.vala:125
+#: MediaPlayerWindow.vala:126
 msgid "Trim"
 msgstr ""
 

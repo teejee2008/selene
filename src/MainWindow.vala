@@ -2227,8 +2227,7 @@ public class MainWindow : Gtk.Window{
 
 	// statusbar -------------------
 
-    private void statusbar_show_message (string message, bool is_error = false,
-		bool timeout = true){
+    private void statusbar_show_message (string message, bool is_error = false, bool timeout = true){
 			
 		Gdk.RGBA red = Gdk.RGBA();
 		Gdk.RGBA white = Gdk.RGBA();

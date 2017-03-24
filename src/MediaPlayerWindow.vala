@@ -35,7 +35,8 @@ using TeeJee.Misc;
 
 public class MediaPlayerWindow : Gtk.Window {
 	private Gtk.Box vboxMain;
-
+	private Gtk.HeaderBar headerbar;
+	
 	//crop
 	private Gtk.SpinButton spinCropL;
 	private Gtk.SpinButton spinCropR;
@@ -110,7 +111,7 @@ public class MediaPlayerWindow : Gtk.Window {
 		icon = get_app_icon(16);
 		
 		deletable = true;
-		resizable = false;
+		//resizable = false;
 
 		action = _action;
 
@@ -131,6 +132,21 @@ public class MediaPlayerWindow : Gtk.Window {
 		//vboxMain
 		vboxMain = new Gtk.Box(Orientation.VERTICAL,0);
 		add(vboxMain);
+
+		headerbar = new Gtk.HeaderBar ();
+		headerbar.set_title ("Selene Video Trimer");
+        headerbar.set_subtitle ("Test");
+        headerbar.set_show_close_button(true);
+        //vboxMain.pack_start (headerbar, false, true, 0);
+
+        set_titlebar(headerbar);
+
+        //decorated = false;
+        
+		Gtk.Button button = new Gtk.Button.with_label (_("Open"));
+        button.set_valign (Gtk.Align.CENTER);
+		button.get_style_context().add_class(Gtk.STYLE_CLASS_RAISED);
+        headerbar.pack_start (button);
 
 		if (action == "crop"){
 			init_ui_file_crop_options();

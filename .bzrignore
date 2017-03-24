@@ -3,3 +3,7 @@ installer/amd64
 installer/i386
 installer/*.deb
 installer/*.run
+.git/
+.sass-cache/
+bzr-repo/
+*.pyc

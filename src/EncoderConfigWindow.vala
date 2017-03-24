@@ -1915,7 +1915,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 			case "ac3":
 			case "flac":
 			case "wav":
-				img_file_format.set_from_file(App.SharedImagesFolder + "/libav.png");
+				img_file_format.set_from_file(App.SharedImagesFolder + "/ffmpeg.svg");
 				img_file_format.xalign = (float) 0.5;
 				img_file_format.yalign = (float) 1.0;
 				break;
@@ -2398,7 +2398,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 			case "pcm_s32be":
 			case "pcm_u32le":
 			case "pcm_u32be":
-				img_audio_format.set_from_file(App.SharedImagesFolder + "/libav.png");
+				img_audio_format.set_from_file(App.SharedImagesFolder + "/ffmpeg.svg");
 				img_audio_format.xalign = (float) 0.5;
 				img_audio_format.yalign = (float) 1.0;
 				break;
