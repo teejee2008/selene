@@ -1,0 +1,1916 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Tony George (teejee2008@gmail.com)
+# This file is distributed under the same license as the selene package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: selene 2.2\n"
+"Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
+"POT-Creation-Date: 2017-04-21 12:38+0200\n"
+"PO-Revision-Date: 2017-04-22 12:54+0200\n"
+"Language-Team: Vistaus <vistausss@outlook.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.1\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl_NL\n"
+
+#: EncoderConfigWindow.vala:1952
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Audio track will be copied directly to the output file without changes.\n"
+"\n"
+"2. Format of the audio track must be compatible with the selected file "
+"format. For example, if the input file contains AAC audio and the selected "
+"file format is WEBM, then encoding will fail - since WEBM does not support "
+"AAC audio.\n"
+"\n"
+"3. Input file can be trimmed only in basic mode (single segment). Selecting "
+"multiple segments using advanced mode will not work."
+msgstr ""
+"\n"
+"<b>Let op:</b>\n"
+"\n"
+"1. Het audiospoor zal direct, zonder wijzigingen, worden gekopieerd naar het "
+"uitvoerbestand.\n"
+"\n"
+"2. Het bestandsformaat van het audiospoor moet compatibel zijn met het "
+"geselecteerde bestandsformaat. Als, bijv., het invoerbestand AAC-audio bevat "
+"en het geselecteerde bestandsformaat is WEBM, dan zal het decoderen "
+"mislukken omdat WEBM geen AAC-audio ondersteunt.\n"
+"\n"
+"3. Het invoerbestand kan alleen worden getrimd in de basismodus (los "
+"segment). Het selecteren van meerdere segmenten in de geavanceerde modus "
+"gaat niet werken."
+
+#: EncoderConfigWindow.vala:2870
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Supported subtitle file formats:"
+msgstr ""
+"\n"
+"<b>Let op:</b>\n"
+"\n"
+"1. Ondersteunde ondertitel-bestandsformaten:"
+
+#: EncoderConfigWindow.vala:2445
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Video track will be copied to the output file without re-encoding.\n"
+"\n"
+"2. Format of the video track must be compatible with the selected container. "
+"For example, if the input file contains H264 video and the selected file "
+"format is WEBM, then encoding will fail (since WEBM does not support H264).\n"
+"\n"
+"3. If you are trimming the input file then select the basic mode (single "
+"segment). Selecting multiple segments in advanced mode will not work."
+msgstr ""
+"\n"
+"<b>Let op:</b>\n"
+"\n"
+"1. Het videospoor zal direct, zonder opnieuw te worden gedecodeerd, worden "
+"gekopieerd naar het uitvoerbestand.\n"
+"\n"
+"2. Het bestandsformaat van het videospoor moet compatibel zijn met de "
+"geselecteerde container. Als, bijv., het invoerbestand H264-video bevat en "
+"het geselecteerde bestandsformaat is WEBM, dan zal het decoderen mislukken "
+"omdat WEBM geen H264-video ondersteunt.\n"
+"\n"
+"3. Het invoerbestand kan alleen worden getrimd in de basismodus (los "
+"segment). Het selecteren van meerdere segmenten in de geavanceerde modus "
+"gaat niet werken."
+
+#: BatchEditWindow.vala:85 BatchEditWindow.vala:88
+msgid "(Batch)"
+msgstr "(Batch)"
+
+#: MediaPlayerWindow.vala:1109
+msgid "100%"
+msgstr "100%"
+
+#: EncoderConfigWindow.vala:2890
+msgid ""
+"2. External subtitle files must be present in the same location and start "
+"with the same file name."
+msgstr ""
+"2. Externe ondertitelbestanden moeten aanwezig zijn in dezelfde locatie en "
+"beginnen met dezelfde bestandsnaam."
+
+#: MediaPlayerWindow.vala:1111
+msgid "200%"
+msgstr "200%"
+
+#: MediaPlayerWindow.vala:1103
+msgid "25%"
+msgstr "25%"
+
+#: MediaPlayerWindow.vala:1105
+msgid "50%"
+msgstr "50%"
+
+#: MediaPlayerWindow.vala:1107
+msgid "75%"
+msgstr "75%"
+
+#: EncoderConfigWindow.vala:504 EncoderConfigWindow.vala:505
+msgid ""
+"<b>AAC-ELD</b>\n"
+"Enhanced Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+"<b>AAC-ELD</b>\n"
+"Enhanced Low Delay-profiel voor directe communicatie\n"
+"\n"
+
+#: EncoderConfigWindow.vala:500
+msgid ""
+"<b>AAC-LC (Recommended)</b>\n"
+"MPEG-2 Low-complexity (LC) combined with MPEG-4 Perceptual Noise "
+"Substitution (PNS)\n"
+"\n"
+msgstr ""
+"<b>AAC-LC (aanbevolen)</b>\n"
+"MPEG-2 Low-complexity (LC) gecombineerd met MPEG-4 Perceptual Noise "
+"Substitution (PNS)\n"
+"\n"
+
+#: EncoderConfigWindow.vala:503
+msgid ""
+"<b>AAC-LD</b>\n"
+"Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+"<b>AAC-LD</b>\n"
+"Low Delay-profiel voor directe communicatie\n"
+"\n"
+
+#: EncoderConfigWindow.vala:1251
+msgid ""
+"<b>Additional Options</b>\n"
+"These options will be passed to the encoder\n"
+"on the command line. Please do not specify\n"
+"any options that are already provided by the GUI."
+msgstr ""
+"<b>Extra opties</b>\n"
+"Deze opties zullen worden meegeven aan de decodeerder\n"
+"in de opdrachtregel. Geef geen opties op die al worden\n"
+"geboden door de grafische applicatie."
+
+#: EncoderConfigWindow.vala:631
+msgid "<b>Adjustments:</b>"
+msgstr "<b>Aanpassingen:</b>"
+
+#: EncoderConfigWindow.vala:389
+msgid "<b>Audio Encoder</b>"
+msgstr "<b>Audio-decodeerder</b>"
+
+#: AppConfigWindow.vala:177
+msgid "<b>Backup Directory</b>"
+msgstr "<b>Back-upmap</b>"
+
+#: EncoderConfigWindow.vala:559
+msgid "<b>Channels</b>"
+msgstr "<b>Kanalen</b>"
+
+#: EncoderConfigWindow.vala:1183
+msgid ""
+"<b>Compression Vs Device Compatibility</b>\n"
+"'High' profile gives the best compression.\n"
+"Change this to 'Baseline' or 'Main' only if you are encoding\n"
+"for a particular device (mobiles,PMPs,etc) which does not\n"
+"support the 'High' profile"
+msgstr ""
+"<b>Compressie vs apparaatcomptabiliteit</b>\n"
+"Het profiel 'Hoog' geeft de beste compressie.\n"
+"Wijzig dit alleen in 'Basis' of 'Algemeen' als u decodeert\n"
+"voor een bepaald apparaat (mobiele telefoon, PMP, etc.) die\n"
+"geen ondersteuning heeft voor het profiel 'Hoog'"
+
+#: EncoderConfigWindow.vala:1141
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Slower presets give better compression and smaller files\n"
+"but take more time to encode."
+msgstr ""
+"<b>Compressie vs decodeersnelheid</b>\n"
+"Tragere voorinstellingen geven betere compressie en kleinere bestanden\n"
+"maar hebben meer tijd nodig om te decoderen."
+
+#: EncoderConfigWindow.vala:1119
+msgid ""
+"<b>Compression Vs Quality</b>\n"
+"Smaller values give better quality video and larger files"
+msgstr ""
+"<b>Compressie vs kwaliteit</b>\n"
+"Lagere waarden geven betere videokwaliteit en grotere bestanden"
+
+#: AppConfigWindow.vala:381
+msgid "<b>Default Language</b>"
+msgstr "<b>Standaard taal</b>"
+
+#: EncoderConfigWindow.vala:1522
+msgid ""
+"<b>Embed</b> - Subtitle files will be combined with the output file.\n"
+"These subtitles can be switched off since they are added as a separate track"
+msgstr ""
+"<b>Insluiting</b> - Ondertitelbestanden zullen worden gecombineerd met het "
+"uitvoerbestand.\n"
+"Deze ondertitelingen kunnen worden uitgeschakeld omdat ze worden toegevoegd "
+"als een apart spoor"
+
+#: AppConfigWindow.vala:293
+msgid ""
+"<b>Encoder</b>\n"
+"Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
+"\n"
+msgstr ""
+"<b>Decodeerder</b>\n"
+"Gebruik het 'ffmpeg'-decodeerhulpmiddel van het FFmpeg-project (aanbevolen)\n"
+"\n"
+
+#: EncoderConfigWindow.vala:793
+msgid "<b>Fade:</b>"
+msgstr "<b>Vervagen:</b>"
+
+#: EncoderConfigWindow.vala:253
+msgid "<b>File Format</b>"
+msgstr "<b>Bestandsformaat</b>"
+
+#: AppConfigWindow.vala:435
+msgid "<b>File Handling</b>"
+msgstr "<b>Bestandsafhandeling</b>"
+
+#: EncoderConfigWindow.vala:502
+msgid ""
+"<b>HE-AAC v2</b>\n"
+"AAC-LC + SBR + PS (Parametric Stereo)\n"
+"\n"
+msgstr ""
+"<b>HE-AAC v2</b>\n"
+"AAC-LC + SBR + PS (Parametric Stereo)\n"
+"\n"
+
+#: EncoderConfigWindow.vala:501
+msgid ""
+"<b>HE-AAC</b>\n"
+"AAC-LC + SBR (Spectral Band Replication)\n"
+"\n"
+msgstr ""
+"<b>HE-AAC</b>\n"
+"AAC-LC + SBR (Spectral Band Replication)\n"
+"\n"
+
+#: AppConfigWindow.vala:229
+msgid "<b>Main Window</b>"
+msgstr "<b>Hoofdvenster</b>"
+
+#: EncoderConfigWindow.vala:506
+msgid ""
+"<b>Note:</b>\n"
+"HE-AAC and HE-AACv2 are used for low-bitrate encoding while HE-LD and HE-ELD "
+"are used for real-time communication. HE-AAC is suitable for bit rates "
+"between 48 to 64 kbps (stereo) while HE-AACv2 is suitable for bit rates as "
+"low as 32 kbps."
+msgstr ""
+"<b>Let op:</b>\n"
+"HE-AAC en HE-AACv2 worden gebruikt voor decoderen met lage bitrate; HE-LD en "
+"HE-ELD worden gebruikt voor directe communicatie. HE-AAC is geschikt voor "
+"bitrates tussen de 48 en 64 kbps (stereo); HE-AACv2 is geschikt voor lage "
+"bitrates, al vanaf 32 kbps."
+
+#: EncoderConfigWindow.vala:887
+msgid "<b>Other Effects:</b>"
+msgstr "<b>Andere effecten:</b>"
+
+#: AppConfigWindow.vala:125
+msgid "<b>Output Directory</b>"
+msgstr "<b>Uitvoermap</b>"
+
+#: AppConfigWindow.vala:280
+msgid "<b>Preferred Tools</b>"
+msgstr "<b>Voorkeurshulpmiddelen</b>"
+
+#: EncoderConfigWindow.vala:313
+msgid "<b>Preset</b>"
+msgstr "<b>Voorinstelling</b>"
+
+#: EncoderConfigWindow.vala:2517
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"<b>Best:</b> Best quality, slower\n"
+"<b>Good:</b> Good quality, faster\n"
+"<b>Realtime:</b> Fastest"
+msgstr ""
+"<b>Kwaliteit vs decodeersnelheid</b>\n"
+"\n"
+"<b>Best:</b> Beste kwaliteit, slomer\n"
+"<b>Goed:</b> Goede kwaliteit, sneller\n"
+"<b>Realtime:</b> Snelste"
+
+#: EncoderConfigWindow.vala:2519
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"Smaller values = Better quality, slower\n"
+"Larger value = Lower quality, faster\n"
+msgstr ""
+"<b>Kwaliteit vs decodeersnelheid</b>\n"
+"\n"
+"Lagere waarden = Betere kwaliteit, slomer\n"
+"Hogere waarden = Lagere kwaliteit, sneller\n"
+
+#: EncoderConfigWindow.vala:2527
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"Higher values speed-up encoding at the expense of quality.\n"
+"Lower values improve quality at the expense of encoding speed."
+msgstr ""
+"<b>Kwaliteit vs decodeersnelheid</b>\n"
+"Hogere waarden versnellen het decoderen ten koste van de kwaliteit.\n"
+"Lagere waarden verbeteren de kwaliteit ten koste van de decodeersnelheid."
+
+#: EncoderConfigWindow.vala:1524
+msgid ""
+"<b>Render</b> - Subtitles are rendered/burned on the video.\n"
+"These subtitles cannot be switched off since they become a part of the video"
+msgstr ""
+"<b>Renderen</b> - Ondertitelingen worden gerenderd/gebrand op de video.\n"
+"Deze ondertitelingen kunnen niet worden uitgeschakeld omdat ze onderdeel "
+"worden van de video"
+
+#: EncoderConfigWindow.vala:537 EncoderConfigWindow.vala:1430
+msgid "<b>Resample</b>"
+msgstr "<b>Resample</b>"
+
+#: EncoderConfigWindow.vala:1311
+msgid "<b>Resize</b>"
+msgstr "<b>Vergroten/verkleinen</b>"
+
+#: EncoderConfigWindow.vala:596
+msgid "<b>SOX Audio Processing</b>"
+msgstr "<b>SOX audioverwerking</b>"
+
+#: EncoderConfigWindow.vala:1516
+msgid "<b>Subtitles</b>"
+msgstr "<b>Ondertitelingen</b>"
+
+#: EncoderConfigWindow.vala:1579
+msgid "<b>Tags</b>"
+msgstr "<b>Labels</b>"
+
+#: EncoderConfigWindow.vala:1039
+msgid "<b>Video Encoder</b>"
+msgstr "<b>Videodecodeerder</b>"
+
+#: AppConfigWindow.vala:292
+msgid ""
+"<b>avconv</b>\n"
+"Use the 'avconv' encoding tool from the Libav project\n"
+"\n"
+msgstr ""
+"<b>avconv</b>\n"
+"Gebruik het 'avconv' decodeerhulpmiddel van het Libav-project\n"
+"\n"
+
+#: MainWindow.vala:958
+msgid "A-Bitrate"
+msgstr "A-Bitrate"
+
+#: MainWindow.vala:832
+msgid "A-Ch"
+msgstr "A-Ch"
+
+#: MainWindow.vala:754
+msgid "A-Fmt"
+msgstr "A-Fmt"
+
+#: MainWindow.vala:872
+msgid "A-Sampling"
+msgstr "A-Sampling"
+
+#: EncoderConfigWindow.vala:2928 EncoderConfigWindow.vala:2947
+msgid "AAC-ELD"
+msgstr "AAC-ELD"
+
+#: EncoderConfigWindow.vala:2911 EncoderConfigWindow.vala:2920
+#: EncoderConfigWindow.vala:2939
+msgid "AAC-LC"
+msgstr "AAC-LC"
+
+#: EncoderConfigWindow.vala:2926 EncoderConfigWindow.vala:2945
+msgid "AAC-LD"
+msgstr "AAC-LD"
+
+#: EncoderConfigWindow.vala:276
+msgid "AC3 Audio (*.ac3)"
+msgstr "AC3-audio (*.ac3)"
+
+#: MainWindow.vala:243
+msgid "Abort"
+msgstr "Afbreken"
+
+#: MainWindow.vala:301
+msgid "About"
+msgstr "Over"
+
+#: MainWindow.vala:353 MainWindow.vala:2582
+msgid "Add File(s)"
+msgstr "Bestand(en) toevoegen"
+
+#: MainWindow.vala:336
+msgid "Add File(s)..."
+msgstr "Bestand(en) toevoegen..."
+
+#: MainWindow.vala:2586
+msgid "Add Folder(s)"
+msgstr "Map(pen) toevoegen"
+
+#: MainWindow.vala:346
+msgid "Add Folder(s)..."
+msgstr "Map(pen) toevoegen..."
+
+#: MainWindow.vala:1775
+msgid "Add New Preset"
+msgstr "Nieuwe voorinstelling toevoegen"
+
+#: MainWindow.vala:2890 MainWindow.vala:2916 MainWindow.vala:3050
+msgid "Add some files to the file list"
+msgstr "Voeg wat bestanden toe aan de bestandslijst"
+
+#: MainWindow.vala:2904
+msgid "Add some videos to the file list"
+msgstr "Voeg wat video's toe aan de bestandslijst"
+
+#: MainWindow.vala:2628
+#, c-format
+msgid "Adding (%d/%d): '%s'"
+msgstr "Bezig met toevoegen (%d/%d): '%s'"
+
+#: MainWindow.vala:2618
+msgid "Adding..."
+msgstr "Bezig met toevoegen..."
+
+#: EncoderConfigWindow.vala:924
+msgid "Adjust Stereo for Headphones"
+msgstr "Stereo aanpassen voor koptelefoons"
+
+#: MediaPlayerWindow.vala:378
+msgid "Advanced Mode"
+msgstr "Geavanceerde modus"
+
+#: MainWindow.vala:1204 MainWindow.vala:2773
+msgid "Album"
+msgstr "Album"
+
+#: Main.vala:698
+msgid "All files removed"
+msgstr "Alle bestanden zijn verwijderd"
+
+#: MainWindow.vala:2961
+msgid "An audio-video converter for Linux"
+msgstr "Een audio-video-converteerder voor Linux"
+
+#: MainWindow.vala:277
+msgid "Application Settings"
+msgstr "Applicatie-instellingen"
+
+#: MainWindow.vala:1173 MainWindow.vala:2772
+msgid "Artist"
+msgstr "Artiest"
+
+#: AboutWindow.vala:322
+#, c-format
+msgid "Artists"
+msgstr "Artiesten"
+
+#: EncoderConfigWindow.vala:382 MainWindow.vala:1662
+msgid "Audio"
+msgstr "Audio"
+
+#: MainWindow.vala:2770
+msgid "Audio Bitrate"
+msgstr "Audio-bitrate"
+
+#: MainWindow.vala:2764
+msgid "Audio Channels"
+msgstr "Audiokanalen"
+
+#: MainWindow.vala:2762
+msgid "Audio Format"
+msgstr "Audioformaat"
+
+#: MainWindow.vala:2765
+msgid "Audio Sampling Rate"
+msgstr "Audio sampling rate"
+
+#: EncoderConfigWindow.vala:344
+msgid "Author"
+msgstr "Auteur"
+
+#: AboutWindow.vala:314
+#, c-format
+msgid "Authors"
+msgstr "Auteurs"
+
+#: EncoderConfigWindow.vala:2906
+msgid "Auto"
+msgstr "Automatisch"
+
+#: BatchEditWindow.vala:99
+msgid "Auto Crop"
+msgstr "Automatisch bijsnijden"
+
+#: EncoderConfigWindow.vala:2040 EncoderConfigWindow.vala:2065
+#: EncoderConfigWindow.vala:2083 EncoderConfigWindow.vala:2109
+#: EncoderConfigWindow.vala:2140 EncoderConfigWindow.vala:2157
+#: EncoderConfigWindow.vala:2541 EncoderConfigWindow.vala:2566
+#: EncoderConfigWindow.vala:2591
+msgid "Average Bitrate"
+msgstr "Gemiddelde bitrate"
+
+#: EncoderConfigWindow.vala:2543 EncoderConfigWindow.vala:2568
+#: EncoderConfigWindow.vala:2593
+msgid "Average Bitrate (2-pass)"
+msgstr "Gemiddelde bitrate (2-pass)"
+
+#: AboutWindow.vala:285
+msgid "Back"
+msgstr "Terug"
+
+#: MainWindow.vala:250
+msgid "Background"
+msgstr "Achtergrond"
+
+#: MediaPlayerWindow.vala:492
+msgid "Basic Mode"
+msgstr "Basismodus"
+
+#: EncoderConfigWindow.vala:646
+msgid "Bass"
+msgstr "Bas"
+
+#: EncoderConfigWindow.vala:1220
+msgid "Best"
+msgstr "Best"
+
+#: MainWindow.vala:912 MainWindow.vala:2769
+msgid "Bitrate"
+msgstr "Bitrate"
+
+#: EncoderConfigWindow.vala:433 EncoderConfigWindow.vala:1098
+msgid "Bitrate (kbps)"
+msgstr "Bitrate (kbps)"
+
+#: EncoderConfigWindow.vala:644
+msgid "Boost or cut the bass (lower) frequencies of the audio."
+msgstr "Meer of minder (lagere) basfrequenties in het audiobestand."
+
+#: EncoderConfigWindow.vala:682
+msgid "Boost or cut the treble (upper) frequencies of the audio."
+msgstr "Meer of minder (lagere) treble-frequenties in het audiobestand."
+
+#: BatchEditWindow.vala:221
+msgid "Bottom"
+msgstr "Onderkant"
+
+#: MediaPlayerWindow.vala:263
+msgid "Bottom:"
+msgstr "Onderkant:"
+
+#: MainWindow.vala:1788
+msgid "Browse"
+msgstr "Bladeren"
+
+#: MainWindow.vala:3246
+msgid "CPU: "
+msgstr "CPU: "
+
+#: Main.vala:1227 Main.vala:1241
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+#: EncoderConfigWindow.vala:720
+msgid "Change audio pitch (shrillness) without changing audio tempo (speed)."
+msgstr ""
+"Audio-toonhoogte wijzigen (schrilheid) zonder het audiotempo (snelheid) te "
+"wijzigen."
+
+#: EncoderConfigWindow.vala:758
+msgid ""
+"Change audio tempo (speed) without changing audio pitch (shrillness).\n"
+"\n"
+"WARNING: This will change the duration of the audio track"
+msgstr ""
+"Audio-tempo (snelheid) wijzigen zonder de audio-toonhoogte (schrilheid) te "
+"wijzigen.\n"
+"\n"
+"Waarschuwing: dit wijzigt de duur van het audiospoor"
+
+#: EncoderConfigWindow.vala:567
+msgid "Channels"
+msgstr "Kanalen"
+
+#: MainWindow.vala:387
+msgid "Clear List"
+msgstr "Lijst wissen"
+
+#: MediaPlayerWindow.vala:675
+msgid "Clip"
+msgstr "Vastmaken"
+
+#: AboutWindow.vala:295 AppConfigWindow.vala:107
+msgid "Close"
+msgstr "Sluiten"
+
+#: MainWindow.vala:1536
+msgid "Columns..."
+msgstr "Kolommen..."
+
+#: MainWindow.vala:1329 MainWindow.vala:2777
+msgid "Comments"
+msgstr "Opmerkingen"
+
+#: Main.vala:1062 Main.vala:1072 Main.vala:1080
+msgid "Completed"
+msgstr "Voltooid"
+
+#: EncoderConfigWindow.vala:2042 EncoderConfigWindow.vala:2111
+#: EncoderConfigWindow.vala:2142 EncoderConfigWindow.vala:2618
+msgid "Constant Bitrate"
+msgstr "Constante bitrate"
+
+#: EncoderConfigWindow.vala:2044
+msgid "Constant Bitrate (Strict)"
+msgstr "Constante bitrate (streng)"
+
+#: Main.vala:972 Main.vala:1275 MainWindow.vala:2279
+msgid "Converting"
+msgstr "Bezig met converteren"
+
+#: Main.vala:970 Main.vala:1273
+msgid "Converting: Enter (q) to quit or (p) to pause..."
+msgstr ""
+"Bezig met converteren: druk op (q) om af te sluiten of (p) om te pauzeren..."
+
+#: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1769
+#: EncoderConfigWindow.vala:1784
+msgid "Copy Audio"
+msgstr "Audio kopiëren"
+
+#: EncoderConfigWindow.vala:1688 EncoderConfigWindow.vala:1697
+#: EncoderConfigWindow.vala:1706 EncoderConfigWindow.vala:1713
+#: EncoderConfigWindow.vala:1724
+msgid "Copy Video"
+msgstr "Video kopiëren"
+
+#: EncoderConfigWindow.vala:1588
+msgid "Copy tags (artist, album, etc) from the source file to output file"
+msgstr ""
+"Labels (artiest, album, etc.) kopiëren van het bronbestand naar het "
+"uitvoerbestand"
+
+#: EncoderConfigWindow.vala:1590
+msgid "Copy tags from source file"
+msgstr "Labels kopiëren uit het bronbestand"
+
+#: AboutWindow.vala:272 AboutWindow.vala:289
+msgid "Credits"
+msgstr "Met dank aan"
+
+#: MainWindow.vala:432
+msgid "Crop"
+msgstr "Bijsnijden"
+
+#: BatchEditWindow.vala:161
+msgid "Crop Left"
+msgstr "Links bijsnijden"
+
+#: BatchEditWindow.vala:85 MainWindow.vala:1442 MediaPlayerWindow.vala:123
+msgid "Crop Video"
+msgstr "Video bijsnijden"
+
+#: MainWindow.vala:416 MainWindow.vala:435
+msgid "Crop Videos"
+msgstr "Video's bijsnijden"
+
+#: MediaPlayerWindow.vala:283
+msgid "Cropped:"
+msgstr "Bijgesneden:"
+
+#: EncoderConfigWindow.vala:1328 EncoderConfigWindow.vala:1448
+msgid "Custom"
+msgstr "Aangepast"
+
+#: MainWindow.vala:1782
+msgid "Delete Preset"
+msgstr "Voorinstelling verwijderen"
+
+#: MediaPlayerWindow.vala:474
+msgid "Delete Segment"
+msgstr "Segment verwijderen"
+
+#: AppConfigWindow.vala:445
+msgid "Delete temporary files after successful encode"
+msgstr "Tijdelijke bestanden verwijderen na succesvolle decodering"
+
+#: EncoderConfigWindow.vala:1494
+msgid "Denominator"
+msgstr "Noemer"
+
+#: EncoderStatusWindow.vala:90
+msgid "Description"
+msgstr "Omschrijving"
+
+#: MediaPlayerWindow.vala:298
+msgid "Detect Borders"
+msgstr "Randen detecteren"
+
+#: MediaPlayerWindow.vala:300
+msgid "Detect black borders in the video and set cropping parameters"
+msgstr "Zwarte randen detecteren in de video en bijsnijd-parameters instellen"
+
+#: MediaPlayerWindow.vala:872
+#, c-format
+msgid "Detected Parameters: %d, %d, %d, %d"
+msgstr "Gedetecteerde parameters: %d, %d, %d, %d"
+
+#: BatchEditWindow.vala:426 MediaPlayerWindow.vala:804
+msgid "Detecting borders..."
+msgstr "Bezig met detecteren van randen..."
+
+#: DonationWindow.vala:54
+msgid ""
+"Did you find this software useful?\n"
+"\n"
+"You can buy me a coffee or make a donation via PayPal to show your support. "
+"Or just drop me an email and say Hi. This application is completely free and "
+"will continue to remain that way. Your contributions will help in keeping "
+"this project alive and improving it further.\n"
+"\n"
+"Feel free to send me an email if you find any issues in this application or "
+"if you need any changes. Suggestions and feedback are always welcome.\n"
+"\n"
+"Thanks,\n"
+"Tony George\n"
+"(teejeetech@gmail.com)"
+msgstr ""
+"Vindt u deze software handig?\n"
+"\n"
+"U kunt een kopje koffie voor me kopen of een donatie doen via PayPal om me "
+"te ondersteunen. Of stuur me een e-mail en zeg me gedag. Deze applicatie is "
+"volledig gratis en dat zal ook altijd zo blijven. Uw bijdragen helpen me om "
+"dit project te blijven ontwikkelen en te verbeteren.\n"
+"\n"
+"Stuur me een e-mail als u problemen ervaart met deze applicatie of als u "
+"dingen anders wilt zien. Suggesties en feedback worden altijd gewaardeerd!\n"
+"\n"
+"Bedankt,\n"
+"Tony George\n"
+"(teejeetech@gmail.com)"
+
+#: EncoderConfigWindow.vala:1751 EncoderConfigWindow.vala:1767
+#: EncoderConfigWindow.vala:1782
+msgid "Disable Audio"
+msgstr "Audio uitschakelen"
+
+#: EncoderConfigWindow.vala:1722
+msgid "Disable Video"
+msgstr "Video uitschakelen"
+
+#: EncoderConfigWindow.vala:1411
+msgid "Do not stretch or squeeze the video (Fit-To-Box)"
+msgstr "Video niet uitrekken of omspannen (aanpassen-aan-vierkant)"
+
+#: AboutWindow.vala:346
+#, c-format
+msgid "Documenters"
+msgstr "Documenteerders"
+
+#: DonationWindow.vala:36 MainWindow.vala:290 MainWindow.vala:291
+msgid "Donate"
+msgstr "Doneren"
+
+#: DonationWindow.vala:74
+msgid "Donate with Google Wallet"
+msgstr "Doneren met Google Wallet"
+
+#: DonationWindow.vala:67
+msgid "Donate with PayPal"
+msgstr "Doneren met PayPal"
+
+#: AboutWindow.vala:354
+#, c-format
+msgid "Donations"
+msgstr "Donaties"
+
+#: Main.vala:1057
+msgid "Done"
+msgstr "Voltooid"
+
+#: ColumnSelectionDialog.vala:62
+msgid "Drag and drop to re-order"
+msgstr "Herordenen kan d.m.v. slepen-en-neerzetten"
+
+#: MainWindow.vala:2267
+msgid "Drag files on this window or click the 'Add' button"
+msgstr "Sleep bestanden naar dit venster of klik op 'Toevoegen'"
+
+#: MainWindow.vala:660 MediaPlayerWindow.vala:681
+msgid "Duration"
+msgstr "Duur"
+
+#: BatchEditWindow.vala:283
+msgid "Edit"
+msgstr "Bewerken"
+
+#: MainWindow.vala:1855
+msgid "Edit Preset"
+msgstr "Voorinstelling bewerken"
+
+#: EncoderConfigWindow.vala:355
+msgid "Email"
+msgstr "E-mail"
+
+#: EncoderConfigWindow.vala:1878
+msgid "Embed / Soft Subs"
+msgstr "Insluiten / zachte ondertitels"
+
+#: EncoderConfigWindow.vala:2968
+msgid "Empty Preset Name"
+msgstr "Lege voorinstellingsnaam"
+
+#: AppConfigWindow.vala:295
+msgid "Encoder"
+msgstr "Decodeerder"
+
+#: EncoderStatusWindow.vala:45 MainWindow.vala:283
+msgid "Encoders"
+msgstr "Decodeerders"
+
+#: EncoderConfigWindow.vala:420 EncoderConfigWindow.vala:1079
+msgid "Encoding Mode"
+msgstr "Decodeermodus"
+
+#: MainWindow.vala:1845
+msgid "Encoding Script or Preset File"
+msgstr "Decodeerscript of voorinstellingsbestand"
+
+#: MediaPlayerWindow.vala:344
+msgid "End (sec):"
+msgstr "Einde (sec):"
+
+#: MediaPlayerWindow.vala:679
+msgid "End Pos"
+msgstr "Eindpositie"
+
+#: MediaPlayerWindow.vala:458
+msgid "End Segment"
+msgstr "Eindsegment"
+
+#: BatchEditWindow.vala:262
+msgid "EndPos"
+msgstr "EindPositie"
+
+#: Main.vala:779
+msgid "Enter any key to Cancel..."
+msgstr "Druk op een toets om te annuleren..."
+
+#: AppConfigWindow.vala:145 AppConfigWindow.vala:197
+msgid "Enter path or browse for directory"
+msgstr "Voer het pad in of blader naar een map"
+
+#: Main.vala:1067 Utility.vala:108
+msgid "Error"
+msgstr "Fout"
+
+#: Main.vala:814
+msgid "Error: File missing"
+msgstr "Fout: het bestand ontbreekt"
+
+#: EncoderConfigWindow.vala:300
+msgid "Extension"
+msgstr "Extensie"
+
+#: EncoderConfigWindow.vala:1254
+msgid "Extra Options"
+msgstr "Extra opties"
+
+#: EncoderConfigWindow.vala:278
+msgid "FLAC Audio (*.flac)"
+msgstr "FLAC-audio (*.flac)"
+
+#: EncoderConfigWindow.vala:808
+msgid "Fade In (sec)"
+msgstr "Fade-in (sec)"
+
+#: EncoderConfigWindow.vala:828
+msgid "Fade Out (sec)"
+msgstr "Vervagen (sec)"
+
+#: EncoderConfigWindow.vala:848
+msgid "Fade Type"
+msgstr "Vervagingstype"
+
+#: Main.vala:1083
+msgid "Failed"
+msgstr "Mislukt"
+
+#: Utility.vala:1435
+msgid "Failed to set ownership"
+msgstr "Het instellen van rechten is mislukt"
+
+#: EncoderConfigWindow.vala:1168
+msgid "Fast"
+msgstr "Snel"
+
+#: BatchEditWindow.vala:140 ColumnSelectionDialog.vala:74 MainWindow.vala:471
+msgid "File"
+msgstr "Bestand"
+
+#: MainWindow.vala:1525
+msgid "File Info (Output)"
+msgstr "Bestandsinformatie (uitvoer)"
+
+#: MainWindow.vala:1519
+msgid "File Info (Source)"
+msgstr "Bestandsinformatie (bron)"
+
+#: AppConfigWindow.vala:241
+msgid "File View"
+msgstr "Bestandsweergave"
+
+#: Main.vala:678
+msgid "File added:"
+msgstr "Bestand toegevoegd:"
+
+#: Main.vala:692
+msgid "File removed:"
+msgstr "Bestand verwijderd:"
+
+#: Main.vala:715
+#, c-format
+msgid "Files will be saved in '%s'"
+msgstr "Bestanden zullen worden opgeslagen in '%s'"
+
+#: Main.vala:718
+msgid "Files will be saved in source directory"
+msgstr "Bestanden zullen worden opgeslagen in de bronmap"
+
+#: EncoderConfigWindow.vala:530
+msgid "Filters (A)"
+msgstr "Filters (A)"
+
+#: EncoderConfigWindow.vala:1302
+msgid "Filters (V)"
+msgstr "Filters (V)"
+
+#: MainWindow.vala:261 MainWindow.vala:263 MediaPlayerWindow.vala:307
+#: MediaPlayerWindow.vala:393 MediaPlayerWindow.vala:507
+msgid "Finish"
+msgstr "Afronden"
+
+#: EncoderConfigWindow.vala:1407
+msgid "Fits the video in a box of given width and height."
+msgstr "Past de video in in een vierkant met de opgegeven breedte en hoogte."
+
+#: EncoderConfigWindow.vala:2174
+msgid "Fixed Bitrate"
+msgstr "Vastgezette bitrate"
+
+#: MainWindow.vala:1820 MainWindow.vala:1830
+msgid "Folder"
+msgstr "Map"
+
+#: MainWindow.vala:3065
+msgid "Following encoders were not found on your system:"
+msgstr "De volgende decodeerders kunnen niet gevonden op uw systeem:"
+
+#: Main.vala:347
+msgid "Following utilities are not installed on your system:"
+msgstr "De volgende hulpmiddelen zijn niet geïnstalleerd op uw systeem:"
+
+#: EncoderConfigWindow.vala:261 MainWindow.vala:703 MainWindow.vala:2761
+msgid "Format"
+msgstr "Formaat"
+
+#: EncoderConfigWindow.vala:397 EncoderConfigWindow.vala:1047
+msgid "Format / Codec"
+msgstr "Formaat / Codec"
+
+#: EncoderStatusWindow.vala:153
+msgid "Found"
+msgstr "Gevonden"
+
+#: EncoderConfigWindow.vala:1468
+msgid "Fps: Frames"
+msgstr "Fps: frames"
+
+#: EncoderConfigWindow.vala:1485
+msgid "Fps: Seconds"
+msgstr "Fps: seconden"
+
+#: EncoderConfigWindow.vala:1439
+msgid "Frame Rate"
+msgstr "Framerate"
+
+#: EncoderConfigWindow.vala:1441
+msgid "Frames/sec"
+msgstr "Frames/sec"
+
+#: MediaPlayerWindow.vala:1193 MediaPlayerWindow.vala:1197
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+#: AppConfigWindow.vala:121 EncoderConfigWindow.vala:246
+msgid "General"
+msgstr "Algemeen"
+
+#: MainWindow.vala:1235 MainWindow.vala:2774
+msgid "Genre"
+msgstr "Genre"
+
+#: EncoderConfigWindow.vala:1222
+msgid "Good"
+msgstr "Goed"
+
+#: EncoderConfigWindow.vala:2913 EncoderConfigWindow.vala:2922
+#: EncoderConfigWindow.vala:2941
+msgid "HE-AAC"
+msgstr "HE-AAC"
+
+#: EncoderConfigWindow.vala:2915 EncoderConfigWindow.vala:2924
+#: EncoderConfigWindow.vala:2943
+msgid "HE-AAC v2"
+msgstr "HE-AAC v2"
+
+#: EncoderConfigWindow.vala:868
+msgid "Half Sine"
+msgstr "Half-sinus"
+
+#: EncoderConfigWindow.vala:1369 EncoderConfigWindow.vala:1378
+msgid "Height"
+msgstr "Hoogte"
+
+#: MainWindow.vala:1797 MainWindow.vala:1799 MainWindow.vala:2225
+msgid "Info"
+msgstr "Informatie"
+
+#: Main.vala:706
+msgid "Input queue is empty! Please add some files."
+msgstr "De invoerwachtrij is leeg! Voeg wat bestanden toe."
+
+#: Main.vala:257
+msgid "Input queue is empty! Please select files to convert."
+msgstr "De invoerwachtrij is leeg! Selecteer te converteren bestanden."
+
+#: EncoderConfigWindow.vala:874
+msgid "Inverted Parabola"
+msgstr "Omgekeerde parabool"
+
+#: FileInfoWindow.vala:69
+msgid "Key"
+msgstr "Sleutel"
+
+#: AppConfigWindow.vala:395
+msgid "Language"
+msgstr "Taal"
+
+#: MediaPlayerWindow.vala:224
+msgid "Left:"
+msgstr "Links:"
+
+#: EncoderConfigWindow.vala:870
+msgid "Linear"
+msgstr "Linear"
+
+#: AppConfigWindow.vala:257
+msgid "List"
+msgstr "Lijst"
+
+#: Main.vala:395
+msgid "Loading presets from:"
+msgstr "Voorinstellingen worden geladen uit:"
+
+#: Main.vala:394
+msgid "Loading scripts from:"
+msgstr "Scripts worden geladen uit:"
+
+#: EncoderConfigWindow.vala:872
+msgid "Logarithmic"
+msgstr "Logaritmisch"
+
+#: EncoderConfigWindow.vala:2201
+msgid "Lossless"
+msgstr "Lossless"
+
+#: EncoderConfigWindow.vala:280
+msgid "MP3 Audio (*.mp3)"
+msgstr "MP3-audio (*.mp3)"
+
+#: EncoderConfigWindow.vala:282
+msgid "MP4 Audio (*.mp4)"
+msgstr "MP4-audio (*.mp4)"
+
+#: EncoderConfigWindow.vala:2930 EncoderConfigWindow.vala:2949
+msgid "MPEG-2 AAC-LC"
+msgstr "MPEG-2 AAC-LC"
+
+#: EncoderConfigWindow.vala:2932 EncoderConfigWindow.vala:2951
+msgid "MPEG-2 HE-AAC"
+msgstr "MPEG-2 HE-AAC"
+
+#: EncoderConfigWindow.vala:2953
+msgid "MPEG-2 HE-AAC v2"
+msgstr "MPEG-2 HE-AAC v2"
+
+#: EncoderConfigWindow.vala:270
+msgid "MPEG4 Video (*.mp4)"
+msgstr "MPEG4-video (*.mp4)"
+
+#: EncoderConfigWindow.vala:921
+msgid ""
+"Makes audio easier to listen to on headphones. Adds 'cues' to the audio so "
+"that when listened to on headphones the stereo image is moved from inside "
+"your head (standard for headphones) to outside and in front of the listener "
+"(standard for speakers)."
+msgstr ""
+"Zorgt ervoor dat audio beter te beluisteren is via koptelefoons. Voegt "
+"'cues' toe aan de audio zodat tijdens het luisteren met een koptelefoon de "
+"stereo verplaatst wordt van in uw hoofd (standaard op koptelefoons) naar "
+"buiten en vóór de luisteraar (standaard voor speakers)."
+
+#: EncoderConfigWindow.vala:268
+msgid "Matroska Video (*.mkv)"
+msgstr "Matroska-video (*.mkv)"
+
+#: EncoderConfigWindow.vala:903
+msgid "Maximize Volume Level (Normalize)"
+msgstr "Volumeniveau maximaliseren (normaliseren)"
+
+#: EncoderConfigWindow.vala:900
+msgid "Maximize the volume level (loudness)"
+msgstr "Het volumeniveau maximaliseren (hardheid)"
+
+#: EncoderConfigWindow.vala:1170
+msgid "Medium"
+msgstr "Gemiddeld"
+
+#: EncoderConfigWindow.vala:1388
+msgid "Method"
+msgstr "Methode"
+
+#: EncoderStatusWindow.vala:153
+msgid "Missing"
+msgstr "Ontbreekt"
+
+#: MainWindow.vala:3065
+msgid "Missing Encoders"
+msgstr "Ontbrekende decodeerders"
+
+#: Utility.vala:1037
+msgid "Missing Icon"
+msgstr "Ontbrekend pictogram"
+
+#: Main.vala:348
+msgid "Missing Utilities"
+msgstr "Ontbrekende hulpmiddelen"
+
+#: EncoderConfigWindow.vala:1532
+msgid "Mode"
+msgstr "Modus"
+
+#: AppConfigWindow.vala:185
+msgid "Move source files after encoding is complete"
+msgstr "Bronbestanden verplaatsen nadat het decoderen is afgerond"
+
+#: EncoderConfigWindow.vala:479
+msgid "Music"
+msgstr "Muziek"
+
+#: MediaPlayerWindow.vala:1181 MediaPlayerWindow.vala:1185
+msgid "Mute"
+msgstr "Dempen"
+
+#: MediaFile.vala:565
+msgid "N/A"
+msgstr "N/B"
+
+#: EncoderConfigWindow.vala:322
+msgid "Name"
+msgstr "Naam"
+
+#: EncoderConfigWindow.vala:328 MainWindow.vala:1773
+msgid "New Preset"
+msgstr "Nieuwe voorinstelling"
+
+#: EncoderConfigWindow.vala:1326 EncoderConfigWindow.vala:1446
+#: EncoderConfigWindow.vala:2224 EncoderConfigWindow.vala:2266
+#: EncoderConfigWindow.vala:2294 EncoderConfigWindow.vala:2308
+#: EncoderConfigWindow.vala:2339 EncoderConfigWindow.vala:2359
+msgid "No Change"
+msgstr "Geen wijziging"
+
+#: MainWindow.vala:2889 MainWindow.vala:2915 MainWindow.vala:3049
+msgid "No Files"
+msgstr "Geen bestanden"
+
+#: BatchEditWindow.vala:420 BatchEditWindow.vala:484
+msgid "No Files Selected"
+msgstr "Geen bestanden geselecteerd"
+
+#: EncoderConfigWindow.vala:1876
+msgid "No Subtitles"
+msgstr "Geen ondertitelingen"
+
+#: EncoderConfigWindow.vala:1422
+msgid "No Up-Scaling"
+msgstr "Niet opschalen"
+
+#: MainWindow.vala:2903
+msgid "No Videos"
+msgstr "Geen video's"
+
+#: EncoderConfigWindow.vala:475
+msgid "None"
+msgstr "Geen"
+
+#: Main.vala:347
+msgid "Not possible to continue!"
+msgstr "Het is niet mogelijk om door te gaan!"
+
+#: EncoderConfigWindow.vala:1477
+msgid "Numerator"
+msgstr "Teller"
+
+#: EncoderConfigWindow.vala:272
+msgid "OGG Theora Video (*.ogv)"
+msgstr "OGG Theora-video (*.ogv)"
+
+#: EncoderConfigWindow.vala:284
+msgid "OGG Vorbis Audio (*.ogg)"
+msgstr "OGG Vobis-audio (*.ogg)"
+
+#: DonationWindow.vala:95
+msgid "OK"
+msgstr "Oké"
+
+#: MediaPlayerWindow.vala:146
+msgid "Open"
+msgstr "Openen"
+
+#: MainWindow.vala:1790
+msgid "Open Folder"
+msgstr "Map openen"
+
+#: MainWindow.vala:1496
+msgid "Open Log File"
+msgstr "Logbestand openen"
+
+#: MainWindow.vala:1490
+msgid "Open Output Folder"
+msgstr "Uitvoermap openen"
+
+#: MainWindow.vala:1484
+msgid "Open Temp Folder"
+msgstr "Tijdelijke map openen"
+
+#: MainWindow.vala:319
+msgid "Open output folder"
+msgstr "Uitvoermap openen"
+
+#: EncoderConfigWindow.vala:461
+msgid "Optimization"
+msgstr "Optimalisering"
+
+#: EncoderConfigWindow.vala:286
+msgid "Opus Audio (*.opus)"
+msgstr "Opus-audio (*.opus)"
+
+#: MainWindow.vala:317
+msgid "Output"
+msgstr "Uitvoer"
+
+#: MainWindow.vala:234 MainWindow.vala:3030 MainWindow.vala:3032
+#: MediaPlayerWindow.vala:1173
+msgid "Pause"
+msgstr "Pauzeren"
+
+#: Main.vala:1254 Main.vala:1259
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+#: Main.vala:1257
+msgid "Paused: Enter (r) to resume..."
+msgstr "Gepauzeerd: druk op (r) om verder te gaan..."
+
+#: EncoderConfigWindow.vala:722
+msgid "Pitch"
+msgstr "Toonhoogte"
+
+#: MediaPlayerWindow.vala:1169
+msgid "Play"
+msgstr "Afspelen"
+
+#: MainWindow.vala:1513
+msgid "Play File (Output)"
+msgstr "Bestand (uitvoer) afspelen"
+
+#: MainWindow.vala:1507
+msgid "Play File (Source)"
+msgstr "Bestand (bron) afspelen"
+
+#: AppConfigWindow.vala:341
+msgid "Player"
+msgstr "Speler"
+
+#: MediaPlayerWindow.vala:806
+msgid "Please Wait..."
+msgstr "Even geduld..."
+
+#: EncoderConfigWindow.vala:2966
+msgid "Please enter a name for this preset"
+msgstr "Voer een naam in voor deze voorinstelling"
+
+#: MainWindow.vala:3065
+msgid "Please install required packages or select another preset"
+msgstr ""
+"Installeer de vereiste pakketten of selecteer een andere voorinstelling"
+
+#: EncoderConfigWindow.vala:618
+msgid "Please install the 'sox' package on your system to use this feature"
+msgstr "Installeer het pakket 'sox' om deze functie te kunnen gebruiken"
+
+#: EncoderConfigWindow.vala:167 EncoderConfigWindow.vala:1146
+#: MainWindow.vala:1835
+msgid "Preset"
+msgstr "Voorinstelling"
+
+#: MainWindow.vala:2186
+msgid "Preset deleted"
+msgstr "Voorinstelling verwijderd"
+
+#: MainWindow.vala:3176
+msgid "Press 'Cancel' to abort shutdown"
+msgstr "Druk op 'Annuleren' om het afsluiten af te breken"
+
+#: EncoderConfigWindow.vala:484 EncoderConfigWindow.vala:1188
+msgid "Profile"
+msgstr "Profiel"
+
+#: FileInfoWindow.vala:44
+msgid "Properties"
+msgstr "Eigenschappen"
+
+#: EncoderConfigWindow.vala:447 EncoderConfigWindow.vala:1124
+msgid "Quality"
+msgstr "Kwaliteit"
+
+#: EncoderConfigWindow.vala:866
+msgid "Quarter Sine"
+msgstr "Kwart-sinus"
+
+#: Main.vala:736 Main.vala:795 MediaFile.vala:46
+msgid "Queued"
+msgstr "In wachtrij"
+
+#: MainWindow.vala:2616
+msgid "Reading file properties..."
+msgstr "Bezig met lezen van bestandseigenschappen..."
+
+#: EncoderConfigWindow.vala:1224
+msgid "Realtime"
+msgstr "Real-time"
+
+#: MainWindow.vala:1360 MainWindow.vala:2778
+msgid "Recorded Date"
+msgstr "Opnamedatum"
+
+#: EncoderStatusWindow.vala:108
+msgid "Refresh"
+msgstr "Verversen"
+
+#: MainWindow.vala:394
+msgid "Remove File(s)"
+msgstr "Bestand(en) verwijderen"
+
+#: MainWindow.vala:375
+msgid "Remove Selected Items"
+msgstr "Geselecteerde items verwijderen"
+
+#: BatchEditWindow.vala:103
+msgid "Reset"
+msgstr "Standaardwaarden"
+
+#: EncoderConfigWindow.vala:1319
+msgid "Resolution"
+msgstr "Resolutie"
+
+#: MainWindow.vala:3024 MainWindow.vala:3026
+msgid "Resume"
+msgstr "Doorgaan"
+
+#: BatchEditWindow.vala:181
+msgid "Right"
+msgstr "Rechts"
+
+#: MainWindow.vala:454
+msgid "Right-click for more options"
+msgstr "Klik met de rechtermuisknop voor meer opties"
+
+#: MediaPlayerWindow.vala:237
+msgid "Right:"
+msgstr "Rechts:"
+
+#: MainWindow.vala:255
+msgid "Run in background with lower priority"
+msgstr "Op achtergrond uitvoeren met lagere prioriteit"
+
+#: EncoderConfigWindow.vala:587
+msgid "SOX"
+msgstr "SOX"
+
+#: EncoderConfigWindow.vala:545
+msgid "Sampling Rate (Hz)"
+msgstr "Sampling rate (hz)"
+
+#: AppConfigWindow.vala:133
+msgid "Save files in following location"
+msgstr "Bestanden opslaan op de volgende locatie"
+
+#: MediaPlayerWindow.vala:220
+msgid "Scroll mouse wheel to adjust"
+msgstr "Scroll met muiswiel om aan te passen"
+
+#: ColumnSelectionDialog.vala:42
+msgid "Select Columns"
+msgstr "Kolommen selecteren"
+
+#: AppConfigWindow.vala:156 AppConfigWindow.vala:208
+msgid "Select Path"
+msgstr "Pad selecteren"
+
+#: MainWindow.vala:2265
+msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr ""
+"Selecteer een script in het uitrolmenu en druk op 'Starten' om te beginnen"
+
+#: MediaPlayerWindow.vala:380
+msgid "Select multiple segments"
+msgstr "Selecteer meerdere segmenten"
+
+#: BatchEditWindow.vala:421 BatchEditWindow.vala:485
+msgid "Select some files from the list"
+msgstr "Selecteer wat bestanden uit de lijst"
+
+#: MediaPlayerWindow.vala:416
+msgid "Select the segments to include in output file:"
+msgstr ""
+"Selecteer de segmenten die moeten worden opgenomen in het uitvoerbestand:"
+
+#: AppConfigWindow.vala:393
+msgid ""
+"Selected language will be used for setting the default flag on the audio/"
+"subtitle track"
+msgstr ""
+"De geselecteerde taal zal worden gebruikt voor het instellen van de "
+"standaard optie op het audio-/ondertitelingsspoor"
+
+#: MainWindow.vala:2223
+msgid ""
+"Selene supports 2 types of presets:\n"
+"\n"
+"1) JSON presets with a '.json' file extension. Clicking the Edit button on "
+"the toolbar will display a GUI for configuring the preset.\n"
+"\n"
+"2) Bash scripts with a '.sh' file extension. Clicking the Edit button will "
+"open the script file in a text editor. Bash scripts are useful if you need "
+"complete control over the encoding process. The script can use any set of "
+"commands for encoding the input files. Selene will try to parse the output "
+"and display the progress during encoding. See the sample scripts in '$HOME/."
+"config/selene/scripts' for the syntax."
+msgstr ""
+"Selene ondersteunt 2 soort voorinstellingen:\n"
+"\n"
+"1) JSON-voorinstellingen met een '.json'-bestandsextensie. Klik op de knop "
+"Bewerken op de werkbalk om een venster te openen voor het instellen van de "
+"voorinstelling.\n"
+"\n"
+"2) Bash-scripts met een '.sh'-bestandsextensie. Klik op de knop Bewerken op "
+"het script te openen in een tekstbewerker. Bash-scripts zijn handig als u "
+"volledige controle over het decodeerproces wilt. Het script kan welk "
+"commando dan ook bevatten voor het decoderen van de invoerbestanden. Selene "
+"zal proberen om de uitvoer te verwerken en de voortgang te laten zien "
+"tijdens het decoderen. Bekijk de voorbeeldscripts in '$HOME/.config/selene/"
+"scripts' om de syntax bestuderen."
+
+#: DonationWindow.vala:81
+msgid "Send Email"
+msgstr "E-mail versturen"
+
+#: MediaPlayerWindow.vala:358 MediaPlayerWindow.vala:368
+msgid "Set"
+msgstr "Instellen"
+
+#: MediaPlayerWindow.vala:369
+msgid "Set current playback position as ending position"
+msgstr "Huidige afspeelpositie instellen als eindpositie"
+
+#: MediaPlayerWindow.vala:359
+msgid "Set current playback position as starting position"
+msgstr "Huidige afspeelpositie instellen als beginpositie"
+
+#: EncoderConfigWindow.vala:1348
+msgid ""
+"Set either Width or Height and leave the other as 0.\n"
+"It will be calculated automatically.\n"
+"\n"
+"Setting both width and height is not recommended\n"
+"since the video may get stretched or squeezed.\n"
+"\n"
+"Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
+msgstr ""
+"Stel óf de breedte óf de hoogte in en laat de rest op 0 staan.\n"
+"Dit zal automatisch worden berekend.\n"
+"\n"
+"Het instellen van zowel de breedte als hoogte is af te raden\n"
+"aangezien de video uitgerekt of samengeperst kan worden.\n"
+"\n"
+"Schakel 'Aanpassen aan vierkant' in om wijzigen in de schermverhouding te "
+"voorkomen."
+
+#: MainWindow.vala:306
+msgid "Shutdown"
+msgstr "Afsluiten"
+
+#: MainWindow.vala:3002
+msgid "Shutdown Disabled"
+msgstr "Afsluiten uitgeschakeld"
+
+#: MainWindow.vala:2999
+msgid "Shutdown Enabled"
+msgstr "Afsluiten ingeschakeld"
+
+#: MainWindow.vala:311
+msgid "Shutdown system after completion"
+msgstr "Systeem afsluiten na voltooiing"
+
+#: MainWindow.vala:610
+msgid "Size"
+msgstr "Grootte"
+
+#: MainWindow.vala:1437
+msgid "Skip File"
+msgstr "Bestand overslaan"
+
+#: EncoderConfigWindow.vala:1172
+msgid "Slow"
+msgstr "Sloom"
+
+#: EncoderConfigWindow.vala:1174
+msgid "Slower"
+msgstr "Slomer"
+
+#: MainWindow.vala:2654
+msgid "Some files could not be added:"
+msgstr "Enkele bestanden kunnen niet worden toegevoegd:"
+
+#: Main.vala:724
+#, c-format
+msgid "Source files will be moved to '%s'"
+msgstr "De bronbestanden zullen worden verplaatst naar '%s'"
+
+#: Main.vala:826 MediaPlayerWindow.vala:276
+msgid "Source:"
+msgstr "Bron:"
+
+#: EncoderConfigWindow.vala:618
+msgid "Sox Not Installed"
+msgstr "Sox is niet geïnstalleerd"
+
+#: EncoderConfigWindow.vala:477
+msgid "Speech"
+msgstr "Spraak"
+
+#: EncoderConfigWindow.vala:1208
+msgid "Speed"
+msgstr "Snelheid"
+
+#: MainWindow.vala:225 MainWindow.vala:227
+msgid "Start"
+msgstr "Starten"
+
+#: MediaPlayerWindow.vala:330
+msgid "Start (sec):"
+msgstr "Starten (sec):"
+
+#: MediaPlayerWindow.vala:677
+msgid "Start Pos"
+msgstr "Beginpositie"
+
+#: MediaPlayerWindow.vala:445
+msgid "Start Segment"
+msgstr "Beginsegment"
+
+#: BatchEditWindow.vala:241
+msgid "StartPos"
+msgstr "Beginpositie"
+
+#: Main.vala:710
+#, c-format
+msgid "Starting batch of %d file(s):"
+msgstr "Bezig met starten van batch van %d bestand(en):"
+
+#: EncoderStatusWindow.vala:98 MainWindow.vala:1392
+msgid "Status"
+msgstr "Status"
+
+#: Utility.vala:761
+msgid "Stopped"
+msgstr "Gestopt"
+
+#: Main.vala:1077
+msgid "Stopped!"
+msgstr "Gestopt!"
+
+#: MainWindow.vala:1665
+msgid "Subtitle"
+msgstr "Ondertiteling"
+
+#: EncoderConfigWindow.vala:1510 EncoderConfigWindow.vala:1550
+msgid "Subtitles"
+msgstr "Ondertitelingen"
+
+#: EncoderConfigWindow.vala:1166
+msgid "SuperFast"
+msgstr "Supersnel"
+
+#: MainWindow.vala:3178
+msgid "System shutdown"
+msgstr "Systeem afsluiten"
+
+#: MainWindow.vala:3185
+#, c-format
+msgid "System shutdown was cancelled by user!"
+msgstr "Het afsluiten is geannuleerd door de gebruiker!"
+
+#: Main.vala:230
+msgid "System will be shutdown after completion"
+msgstr "Het systeem zal worden afgesloten na voltooiing"
+
+#: Main.vala:778 MainWindow.vala:3175
+msgid "System will shutdown in one minute!"
+msgstr "Het systeem zal over één minuut worden afgesloten!"
+
+#: EncoderConfigWindow.vala:1572
+msgid "Tags"
+msgstr "Labels"
+
+#: EncoderConfigWindow.vala:760
+msgid "Tempo"
+msgstr "Tempo"
+
+#: EncoderConfigWindow.vala:618
+msgid "The Sox utility was not found on your system"
+msgstr "Het Sox-hulpmiddel kan niet worden gevonden op uw systeem"
+
+#: EncoderConfigWindow.vala:1384
+msgid ""
+"The resizing filter affects the sharpness and compressibility of the video.\n"
+"For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
+"makes the video more difficult to compress resulting in slightly bigger "
+"files.\n"
+"The 'Bilinear' filter gives smoother video (less detail) and smaller files."
+msgstr ""
+"Het herschalingsfilter beïnvloedt de scherpte en compressiemogelijkheden van "
+"de video.\n"
+"Voorbeeld: het 'Lanzos'-filter geeft scherpere videobeelden maar de extra "
+"details\n"
+"zorgen voor moeilijkere compressie waardoor de bestanden groter worden.\n"
+"Het 'Bilinear'-filter geeft vloeiender videobeelden (minder details) en "
+"kleinere bestanden."
+
+#: AppConfigWindow.vala:442
+msgid ""
+"The temporary folder contains files which may be useful for advanced users. "
+"Keep this un-checked if you want to keep the temp files till the next reboot."
+msgstr ""
+"De tijdelijke map bevat bestanden die handig kunnen zijn voor geavanceerde "
+"gebruikers. Vink dit niet aan als u de tijdelijke bestanden wilt bewaren "
+"totdat u de computer opnieuw opstart."
+
+#: AboutWindow.vala:338
+#, c-format
+msgid "Third Party Tools &amp; Software"
+msgstr "Hulpmiddelen en software van derde partijen"
+
+#: AppConfigWindow.vala:259
+msgid "Tiles"
+msgstr "Tegels"
+
+#: MainWindow.vala:1266 MainWindow.vala:2775
+msgid "Title"
+msgstr "Titel"
+
+#: EncoderStatusWindow.vala:76
+msgid "Tool"
+msgstr "Hulpmiddel"
+
+#: AppConfigWindow.vala:274
+msgid "Tools"
+msgstr "Hulpmiddelen"
+
+#: BatchEditWindow.vala:201
+msgid "Top"
+msgstr "Bovenkant"
+
+#: MediaPlayerWindow.vala:250
+msgid "Top:"
+msgstr "Bovenkant:"
+
+#: MainWindow.vala:1297
+msgid "Track #"
+msgstr "Spoor #"
+
+#: MainWindow.vala:2776
+msgid "Track Number"
+msgstr "Spoornummer"
+
+#: AboutWindow.vala:330
+#, c-format
+msgid "Translators"
+msgstr "Vertalers"
+
+#: EncoderConfigWindow.vala:684
+msgid "Treble"
+msgstr "Treble"
+
+#: MediaPlayerWindow.vala:126
+msgid "Trim"
+msgstr "Trimmen"
+
+#: BatchEditWindow.vala:88 MainWindow.vala:427 MainWindow.vala:1447
+msgid "Trim Duration"
+msgstr "Trimduur"
+
+#: EncoderConfigWindow.vala:1164
+msgid "UltraFast"
+msgstr "Ultrasnel"
+
+#: Main.vala:683
+msgid "Unknown format:"
+msgstr "Onbekend formaat:"
+
+#: Main.vala:396
+msgid "Using temp folder:"
+msgstr "De gebruikte tijdelijke map:"
+
+#: MainWindow.vala:1013
+msgid "V-Bitrate"
+msgstr "V-Bitrate"
+
+#: MainWindow.vala:793
+msgid "V-Fmt"
+msgstr "V-Fmt"
+
+#: MainWindow.vala:1133
+msgid "V-Fps"
+msgstr "V-Fps"
+
+#: MainWindow.vala:1093
+msgid "V-Height"
+msgstr "V-Hoogte"
+
+#: MainWindow.vala:1053
+msgid "V-Width"
+msgstr "V-Breedte"
+
+#: FileInfoWindow.vala:70
+msgid "Value"
+msgstr "Waarde"
+
+#: EncoderConfigWindow.vala:2038 EncoderConfigWindow.vala:2063
+#: EncoderConfigWindow.vala:2081 EncoderConfigWindow.vala:2107
+#: EncoderConfigWindow.vala:2138 EncoderConfigWindow.vala:2155
+#: EncoderConfigWindow.vala:2589 EncoderConfigWindow.vala:2614
+msgid "Variable Bitrate"
+msgstr "Variabele bitrate"
+
+#: EncoderConfigWindow.vala:2616
+msgid "Variable Bitrate (2pass)"
+msgstr "Variabele bitrate (2pass)"
+
+#: EncoderConfigWindow.vala:2539 EncoderConfigWindow.vala:2564
+msgid "Variable Bitrate / CRF"
+msgstr "Variabele bitrate / CRF"
+
+#: EncoderConfigWindow.vala:333
+msgid "Version"
+msgstr "Versie"
+
+#: EncoderConfigWindow.vala:1176
+msgid "VerySlow"
+msgstr "Ergsloom"
+
+#: EncoderConfigWindow.vala:1032 MainWindow.vala:1659
+msgid "Video"
+msgstr "Video"
+
+#: MainWindow.vala:2771
+msgid "Video Bitrate"
+msgstr "Video-bitrate"
+
+#: MainWindow.vala:2763
+msgid "Video Format"
+msgstr "Videoformaat"
+
+#: MainWindow.vala:2768
+msgid "Video Framerate"
+msgstr "Video-framerate"
+
+#: MainWindow.vala:2767
+msgid "Video Height"
+msgstr "Videohoogte"
+
+#: MainWindow.vala:2766
+msgid "Video Width"
+msgstr "Videobreedte"
+
+#: EncoderConfigWindow.vala:1418
+msgid ""
+"Video will not be resized if it's smaller than the given width and height"
+msgstr ""
+"De video zal niet worden herschaald als deze kleiner is dan de opgegeven "
+"breedte en hoogte"
+
+#: DonationWindow.vala:88
+msgid "Visit Website"
+msgstr "Website bezoeken"
+
+#: EncoderConfigWindow.vala:288
+msgid "WAV Audio (*.wav)"
+msgstr "WAV-audio (*.wav)"
+
+#: Utility.vala:108
+msgid "Warning"
+msgstr "Waarschuwing"
+
+#: Main.vala:233
+msgid ""
+"Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
+msgstr ""
+"Waarschuwing: de gebruikers heeft geen administratorrechten. '--shutdown' "
+"zal worden genegeerd."
+
+#: EncoderConfigWindow.vala:274
+msgid "WebM Video (*.webm)"
+msgstr "WebM-video (*.webm)"
+
+#: EncoderConfigWindow.vala:1352 EncoderConfigWindow.vala:1361
+msgid "Width"
+msgstr "Breedte"
+
+#: MainWindow.vala:2271
+msgid ""
+"[Batch completed] Right-click for options or click 'Finish' to continue."
+msgstr ""
+"[Batch voltooid] Klik met de rechtermuisknop voor opties of druk op "
+"'Afronden' om door te gaan."
+
+#: MainWindow.vala:2275
+msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
+msgstr ""
+"[Gepauzeerd] Druk op 'Doorgaan' om door te gaan op 'Stoppen' om af te breken."
+
+#: AppConfigWindow.vala:311
+msgid "avconv / Libav"
+msgstr "avconv/libav"
+
+#: AppConfigWindow.vala:309
+msgid "ffmpeg"
+msgstr "ffmpeg"
+
+#: AppConfigWindow.vala:355
+msgid "mplayer"
+msgstr "mplayer"
+
+#: AppConfigWindow.vala:353
+msgid "mpv"
+msgstr "mpv"
+
+#: MainWindow.vala:1906
+msgid "presets"
+msgstr "voorinstellingen"
+
+#: MainWindow.vala:1902
+msgid "scripts"
+msgstr "scripts"
