@@ -165,7 +165,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 	
 	private void init_ui() {
 		title = _("Preset");
-		//set_default_size (450, 550);
+		set_default_size (550, 550);
 
 		window_position = WindowPosition.CENTER_ON_PARENT;
 		destroy_with_parent = true;
@@ -232,6 +232,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
         stack.set_transition_type (Gtk.StackTransitionType.SLIDE_UP_DOWN);
 		pane.pack2(stack, true, true); //resize, shrink
 
+		pane.wide_handle = false;
+		
 		sidebar.set_stack(stack);
 	}
 

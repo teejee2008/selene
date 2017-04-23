@@ -44,8 +44,11 @@ public class CustomMessageDialog : Gtk.Dialog {
 	private string msg_body;
 	private Gtk.MessageType msg_type;
 	
-	public CustomMessageDialog(string _msg_title, string _msg_body, Gtk.MessageType _msg_type, Window? parent) {
-		set_transient_for(parent);
+	public CustomMessageDialog(string _msg_title, string _msg_body, Gtk.MessageType _msg_type, Gtk.Window? parent) {
+
+		if (parent != null){
+			set_transient_for(parent);
+		}
 		set_modal(true);
 
 		msg_title = _msg_title;
@@ -54,16 +57,18 @@ public class CustomMessageDialog : Gtk.Dialog {
 		
 		init_window();
 
+		set_size_request(450,300);
+
 		show_all();
 
-		if (lbl_msg.get_allocated_height() > 400){
+		/*if (lbl_msg.get_allocated_height() > 400){
 			sw_msg.vscrollbar_policy = PolicyType.AUTOMATIC;
 			sw_msg.set_size_request(-1,400);
 			lbl_msg.margin_right = 25;
 		}
 		else{
 			sw_msg.vscrollbar_policy = PolicyType.NEVER;
-		}
+		}*/
 	}
 
 	public void init_window () {
@@ -122,7 +127,7 @@ public class CustomMessageDialog : Gtk.Dialog {
 		sw_msg.hscrollbar_policy = PolicyType.NEVER;
 		sw_msg.vscrollbar_policy = PolicyType.AUTOMATIC;
 		//sw_msg.set_size_request();
-		hbox_contents.add(sw_msg);
+		hbox_contents.add(sw_msg); 
 
 		//actions
 		btn_ok = (Gtk.Button) add_button ("_Ok", Gtk.ResponseType.OK);

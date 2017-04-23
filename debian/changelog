@@ -1,3 +1,20 @@
+selene (17.4.1) xenial; urgency=low
+
+  * Use StackSwitcher in app settings window
+
+  * Use GtkSidebar in encoder settings window
+
+  * Subs: Added support for muxing ASS subs in MKV
+  
+  * AppSettings: Show OK button instead of Save & Cancel
+  
+  * AppSettings: Save settings if window is closed directly
+
+  * Removed dependency on realpath
+
+ -- Tony George <tony.george.kol@gmail.com>  Sat, 22 Apr 2017 10:00:00 +0530
+
+
 selene (16.9) xenial; urgency=low
 
   * Fixed: Encoding fails when ffmpeg fails to detect file encoding

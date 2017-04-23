@@ -94,8 +94,9 @@ public class MainWindow : Gtk.Window{
 
 	// list view columns
 
-	private Gtk.TreeView tv_files;
+	private Gtk.TreeView treeview;
 	private Gtk.ScrolledWindow sw_files;
+	private TreeViewColumnManager tv_manager;
 	
 	private Gtk.TreeViewColumn col_name;
 	private Gtk.TreeViewColumn col_size;
@@ -121,8 +122,6 @@ public class MainWindow : Gtk.Window{
 	private Gtk.TreeViewColumn col_comments;
 	private Gtk.TreeViewColumn col_recorded_date;
 	private Gtk.Grid grid_config;
-
-	private Gee.HashMap<TreeViewColumn,TreeViewListColumn> col_list;
 
 	// regular expressions
 	
@@ -153,6 +152,9 @@ public class MainWindow : Gtk.Window{
 	// initialize window -----------------
 
 	public MainWindow() {
+
+		log_debug("MainWindow()");
+		
 		set_window_title();
         window_position = WindowPosition.CENTER;
         set_default_size (650, 20);
@@ -165,27 +167,39 @@ public class MainWindow : Gtk.Window{
         vbox_main = new Box (Orientation.VERTICAL, 0);
         add (vbox_main);
 
+		log_debug("MainWindow(): toolbar");
+		
         //main toolbar
 		init_ui_main_toolbar();
 
+		log_debug("MainWindow(): listview");
+		
 		//listview
 		init_list_view();
 		refresh_list_view();
 		init_list_view_context_menu();
 
+		log_debug("MainWindow(): presets");
+		
 		//presets
 		init_preset_toolbar();
 		init_preset_dropdowns();
         populate_script_folders();
 		select_script();
 
+		log_debug("MainWindow(): statusbar");
+		
 		//statusbar
 		init_statusbar();
 		statusbar_default_message();
 
+		log_debug("MainWindow(): regular_expressions");
+		
 		//regex
 		init_regular_expressions();
 
+		log_debug("MainWindow(): handlers");
+		
 		//destroy handler
 		this.delete_event.connect (()=>{
 			if (App.Status == AppStatus.IDLE){
@@ -198,6 +212,8 @@ public class MainWindow : Gtk.Window{
 		});
 
 		this.destroy.connect(Gtk.main_quit);
+
+		log_debug("MainWindow(): exit");
 	}
 
 	// toolbar -------------------------------------
@@ -446,24 +462,28 @@ public class MainWindow : Gtk.Window{
 	// file list -------------------------------------
 
 	private void init_list_view(){
+
+		log_debug("MainWindow(): init_list_view()");
 		
 		// tv_files ---------------------------------------------------
 		
-		tv_files = new TreeView();
-		tv_files.get_selection().mode = SelectionMode.MULTIPLE;
-		tv_files.set_tooltip_text (_("Right-click for more options"));
-		tv_files.headers_clickable = true;
-		tv_files.rules_hint = true;
+		treeview = new TreeView();
+		treeview.get_selection().mode = SelectionMode.MULTIPLE;
+		treeview.set_tooltip_text (_("Right-click for more options"));
+		treeview.headers_clickable = true;
+		treeview.rules_hint = true;
 		
-		sw_files = new ScrolledWindow(tv_files.get_hadjustment(), tv_files.get_vadjustment());
+		sw_files = new ScrolledWindow(treeview.get_hadjustment(), treeview.get_vadjustment());
 		sw_files.set_shadow_type (ShadowType.ETCHED_IN);
-		sw_files.add (tv_files);
+		sw_files.add (treeview);
 		sw_files.margin = 3;
 		sw_files.set_size_request (-1, 300);
 		vbox_main.pack_start (sw_files, true, true, 0);
 	
 		CellRendererText cellText;
 		TreeViewColumn col;
+
+		log_debug("MainWindow(): init_list_view(): columns");
 		
 		// col_name  -------------------------------------------------
 		
@@ -475,7 +495,7 @@ public class MainWindow : Gtk.Window{
 		col.reorderable = true;
 		col.min_width = 200;
 		col.sort_column_id = InputField.FILE_PATH;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_name = col;
 		
 		//icon
@@ -515,7 +535,7 @@ public class MainWindow : Gtk.Window{
 
 		//toggle handler
 		cell_select.toggled.connect((path) => {
-			var store = (Gtk.TreeStore) tv_files.model;
+			var store = (Gtk.TreeStore) treeview.model;
 			bool selected, isChild;
 			MediaStream stream;
 			
@@ -611,7 +631,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_SIZE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_size = col;
 		
 		cellText = new CellRendererText();
@@ -661,7 +681,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_DURATION;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_duration = col;
 		
 		cellText = new CellRendererText();
@@ -704,7 +724,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_FFORMAT;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_file_format = col;
 		
 		cellText = new CellRendererText();
@@ -755,7 +775,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_AFORMAT;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_aformat = col;
 		
 		cellText = new CellRendererText();
@@ -794,7 +814,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_VFORMAT;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_vformat = col;
 		
 		cellText = new CellRendererText();
@@ -833,7 +853,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_ACHANNELS;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_channels = col;
 		
 		cellText = new CellRendererText();
@@ -873,7 +893,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_ARATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_sampling = col;
 		
 		cellText = new CellRendererText();
@@ -913,7 +933,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_BITRATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_bitrate = col;
 		
 		cellText = new CellRendererText();
@@ -959,7 +979,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_ABITRATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_abitrate = col;
 		
 		cellText = new CellRendererText();
@@ -996,7 +1016,7 @@ public class MainWindow : Gtk.Window{
 		//colVFrameSize
 		colVFrameSize = new TreeViewColumn();
 		colVFrameSize.title = _("Video Size");
-		tv_files.append_column(colVFrameSize);
+		treeview.append_column(colVFrameSize);
 		
 		cellText = new CellRendererText();
 		colVFrameSize.pack_start (cellText, false);
@@ -1014,7 +1034,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_VBITRATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_vbitrate = col;
 		
 		cellText = new CellRendererText();
@@ -1054,7 +1074,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_VWIDTH;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_width = col;
 		
 		cellText = new CellRendererText();
@@ -1094,7 +1114,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_VHEIGHT;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_height = col;
 		
 		cellText = new CellRendererText();
@@ -1134,7 +1154,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_VRATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_fps = col;
 		
 		cellText = new CellRendererText();
@@ -1174,7 +1194,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_ARTIST;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_artist = col;
 		
 		cellText = new CellRendererText();
@@ -1205,7 +1225,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_ALBUM;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_album = col;
 		
 		cellText = new CellRendererText();
@@ -1236,7 +1256,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_GENRE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_genre = col;
 		
 		cellText = new CellRendererText();
@@ -1267,7 +1287,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_TRACK_NAME;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_track_name = col;
 		
 		cellText = new CellRendererText();
@@ -1298,7 +1318,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_TRACK_NUM;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_track_num = col;
 		
 		cellText = new CellRendererText();
@@ -1330,7 +1350,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_COMMENTS;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_comments = col;
 		
 		cellText = new CellRendererText();
@@ -1361,7 +1381,7 @@ public class MainWindow : Gtk.Window{
 		col.clickable = true;
 		col.reorderable = true;
 		col.sort_column_id = InputField.FILE_RECORDED_DATE;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_recorded_date = col;
 		
 		cellText = new CellRendererText();
@@ -1391,7 +1411,7 @@ public class MainWindow : Gtk.Window{
 		col = new TreeViewColumn();
 		col.title = _("Status");
 		col.fixed_width = 150;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_progress = col;
 		
 		CellRendererProgress2 cellProgress = new CellRendererProgress2();
@@ -1405,7 +1425,7 @@ public class MainWindow : Gtk.Window{
 		col = new TreeViewColumn();
 		col.expand = false;
 		col.fixed_width = 10;
-		tv_files.append_column(col);
+		treeview.append_column(col);
 		col_spacer = col;
 		
 		cellText = new CellRendererText();
@@ -1413,19 +1433,22 @@ public class MainWindow : Gtk.Window{
 
 		// init ----------------------------------------------------
 		
-		tv_files_init_columns();
+		init_column_manager();
 
 		startupTimer = Timeout.add (100,() => {
-			col_progress.visible = false;
+			//col_progress.visible = false;
 			Source.remove (startupTimer);
 			return true;
 		});
 
-		Gtk.drag_dest_set (tv_files,Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
-        tv_files.drag_data_received.connect(on_drag_data_received);
+		Gtk.drag_dest_set (treeview, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
+        treeview.drag_data_received.connect(on_drag_data_received);
 	}
 
 	private void init_list_view_context_menu(){
+
+		log_debug("MainWindow(): init_list_view_context_menu()");
+		
 		Gdk.RGBA gray = Gdk.RGBA();
 		gray.parse ("rgba(200,200,200,1)");
 
@@ -1450,7 +1473,7 @@ public class MainWindow : Gtk.Window{
 
 		// miFileSeparator0
 		var miFileSeparator0 = new Gtk.MenuItem();
-		miFileSeparator0.override_color (StateFlags.NORMAL, gray);
+		//miFileSeparator0.override_color (StateFlags.NORMAL, gray);
 		menu_file.append(miFileSeparator0);
 
 		mi_file_crop.show.connect(()=>{
@@ -1476,7 +1499,7 @@ public class MainWindow : Gtk.Window{
 
 		// miFileSeparator1
 		miFileSeparator1 = new Gtk.MenuItem();
-		miFileSeparator1.override_color (StateFlags.NORMAL, gray);
+		//miFileSeparator1.override_color (StateFlags.NORMAL, gray);
 		menu_file.append(miFileSeparator1);
 
 		// mi_file_open_temp_dir
@@ -1499,7 +1522,7 @@ public class MainWindow : Gtk.Window{
 
 		// miFileSeparator2
 		miFileSeparator2 = new Gtk.MenuItem();
-		miFileSeparator2.override_color (StateFlags.NORMAL, gray);
+		//miFileSeparator2.override_color (StateFlags.NORMAL, gray);
 		menu_file.append(miFileSeparator2);
 
 		// mi_file_play_src
@@ -1528,7 +1551,7 @@ public class MainWindow : Gtk.Window{
 
 		// miFileSeparator3
 		var miFileSeparator3 = new Gtk.MenuItem();
-		miFileSeparator3.override_color (StateFlags.NORMAL, gray);
+		//miFileSeparator3.override_color (StateFlags.NORMAL, gray);
 		menu_file.append(miFileSeparator3);
 		
 		// mi_listview_columns
@@ -1536,11 +1559,11 @@ public class MainWindow : Gtk.Window{
 		mi_listview_columns.label = _("Columns...");
 		menu_file.append(mi_listview_columns);
 		mi_listview_columns.activate.connect(()=>{
-			var dlg = new ColumnSelectionDialog.with_parent(this, col_list);
-			dlg.run();
+			var dlg = new ColumnSelectionDialog.with_parent(this, tv_manager);
+			dlg.show_all();
 			//dlg.close();
 			//dlg.destroy();
-			tv_files_load_columns();
+			//tv_manager.set_columns(App.selected_columns);
 		});
 
 		mi_listview_columns.show.connect(()=>{
@@ -1554,9 +1577,9 @@ public class MainWindow : Gtk.Window{
 		menu_file.show_all();
 
 		//connect signal for shift+F10
-        tv_files.popup_menu.connect(() => { return menu_file_popup (menu_file, null); });
+        treeview.popup_menu.connect(() => { return menu_file_popup (menu_file, null); });
         //connect signal for right-click
-		tv_files.button_press_event.connect ((w, event) => {
+		treeview.button_press_event.connect ((w, event) => {
 			if (event.button == 3) {
 				return menu_file_popup (menu_file, event);
 			}
@@ -1566,6 +1589,9 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void refresh_list_view (bool refresh_model = true){
+
+		log_debug("MainWindow(): refresh_list_view()");
+		
 		if (refresh_model){
 			var inputStore = new Gtk.TreeStore (32,  
 				typeof(MediaFile), 	//FILE_REF
@@ -1603,7 +1629,7 @@ public class MainWindow : Gtk.Window{
 				);
 
 			TreeIter iter, iter2;
-			foreach(MediaFile mFile in App.InputFiles) {
+			foreach(var mFile in App.InputFiles) {
 				inputStore.append (out iter, null);
 				inputStore.set (iter, InputField.FILE_REF, 			mFile);
 				inputStore.set (iter, InputField.STREAM_REF,		null);
@@ -1702,22 +1728,32 @@ public class MainWindow : Gtk.Window{
 				}
 			}
 
-			tv_files.set_model (inputStore);
+			treeview.set_model (inputStore);
 		}
 
-		//set visibility - columns
-		foreach(TreeViewListColumn col in col_list.values){
-			if (col.Selected){
-				col.Ref.visible = !App.TileView;
+		if (App.TileView){
+			if (App.Status == AppStatus.NOTSTARTED){
+				tv_manager.set_columns("name,spacer");
+			}
+			else{
+				tv_manager.set_columns("name,progress,spacer");
 			}
 		}
-		col_size.visible = !App.TileView;
-		col_duration.visible = !App.TileView;
+		else{
+			if (App.Status == AppStatus.NOTSTARTED){
+				tv_manager.set_columns(App.selected_columns);
+			}
+			else{
+				tv_manager.set_columns(Main.DEFAULT_COLUMNS);
+			}
+		}
 		
 		//set visibility - column header
-		tv_files.headers_visible = !App.TileView;
+		treeview.headers_visible = !App.TileView;
 
-		tv_files.columns_autosize();
+		treeview.columns_autosize();
+
+		log_debug("MainWindow(): refresh_list_view(): exit");
 	}
 
 	private enum InputField{
@@ -2097,7 +2133,7 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void mi_file_open_logfile_clicked(){
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 
 		if (selection.count_selected_rows() > 0){
 			TreeModel model;
@@ -2283,7 +2319,7 @@ public class MainWindow : Gtk.Window{
 	// file list context menu -------------------------
 
     private bool menu_file_popup (Gtk.Menu popup, Gdk.EventButton? event) {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 		int index = -1;
 		MediaFile mFile = null;
 		//if (selection.count_selected_rows() == 0){
@@ -2417,7 +2453,7 @@ public class MainWindow : Gtk.Window{
 	}
 
     private void mi_file_info_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 
 		if (selection.count_selected_rows() > 0){
 			TreeModel model;
@@ -2433,7 +2469,7 @@ public class MainWindow : Gtk.Window{
     }
 
     private void mi_file_info_output_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 
 		if (selection.count_selected_rows() > 0){
 			TreeModel model;
@@ -2454,7 +2490,7 @@ public class MainWindow : Gtk.Window{
 	}
 
     private void mi_file_crop_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 		if (selection.count_selected_rows() != 1){ return; }
 
 		TreeModel model;
@@ -2474,7 +2510,7 @@ public class MainWindow : Gtk.Window{
     }
 
 	private void mi_file_trim_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 		if (selection.count_selected_rows() != 1){ return; }
 
 		TreeModel model;
@@ -2498,7 +2534,7 @@ public class MainWindow : Gtk.Window{
     }
 
     private void mi_file_open_temp_dir_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 		if (selection.count_selected_rows() == 0){ return; }
 
 		TreeModel model;
@@ -2515,7 +2551,7 @@ public class MainWindow : Gtk.Window{
     }
 
     private void mi_file_open_output_dir_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 		if (selection.count_selected_rows() == 0){ return; }
 
 		TreeModel model;
@@ -2544,7 +2580,7 @@ public class MainWindow : Gtk.Window{
 
 
     private void mi_file_play_output_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 
 		if (selection.count_selected_rows() > 0){
 			TreeModel model;
@@ -2559,7 +2595,7 @@ public class MainWindow : Gtk.Window{
     }
 
     private void mi_file_play_src_clicked() {
-		TreeSelection selection = tv_files.get_selection();
+		TreeSelection selection = treeview.get_selection();
 
 		if (selection.count_selected_rows() > 0){
 			TreeModel model;
@@ -2641,13 +2677,13 @@ public class MainWindow : Gtk.Window{
 
 		//Adjustment adj = sw_files.get_vadjustment();
 		//double pos = adj.get_value();
-		//log_msg("%f".printf(tv_files.vadjustment.get_value()));
+		//log_msg("%f".printf(treeview.vadjustment.get_value()));
 		refresh_list_view();
 
 		//adj.set_value(adj.upper-adj.page_size);
 		//sw_files.set_vadjustment(adj);
 
-		//log_msg("%f".printf(tv_files.vadjustment.get_value()));
+		//log_msg("%f".printf(treeview.vadjustment.get_value()));
 
 	 	if (msg_add.length > 0){
 			msg_add = _("Some files could not be added:") + "\n\n" + msg_add;
@@ -2752,126 +2788,58 @@ public class MainWindow : Gtk.Window{
 
 	// treeview columns --------------------------------
 
-	private void tv_files_init_columns(){
-		col_list = new Gee.HashMap<TreeViewColumn,TreeViewListColumn>();
-		//col_list[col_name] = new TreeViewListColumn("name",col_name);
-		//col_list[col_size] = new TreeViewListColumn("size",col_size);
-		//col_list[col_duration] = new TreeViewListColumn("duration",col_duration);
-		col_list[col_file_format] = new TreeViewListColumn("format",_("Format"),col_file_format);
-		col_list[col_aformat] = new TreeViewListColumn("aformat",_("Audio Format"),col_aformat);
-		col_list[col_vformat] = new TreeViewListColumn("vformat",_("Video Format"),col_vformat);
-		col_list[col_channels] = new TreeViewListColumn("channels",_("Audio Channels"),col_channels);
-		col_list[col_sampling] = new TreeViewListColumn("samplingrate",_("Audio Sampling Rate"),col_sampling);
-		col_list[col_width] = new TreeViewListColumn("width",_("Video Width"),col_width);
-		col_list[col_height] = new TreeViewListColumn("height",_("Video Height"),col_height);
-		col_list[col_fps] = new TreeViewListColumn("framerate",_("Video Framerate"),col_fps);
-		col_list[col_bitrate] = new TreeViewListColumn("bitrate",_("Bitrate"),col_bitrate);
-		col_list[col_abitrate] = new TreeViewListColumn("abitrate",_("Audio Bitrate"),col_abitrate);
-		col_list[col_vbitrate] = new TreeViewListColumn("vbitrate",_("Video Bitrate"),col_vbitrate);
-		col_list[col_artist] = new TreeViewListColumn("artist",_("Artist"),col_artist);
-		col_list[col_album] = new TreeViewListColumn("album",_("Album"),col_album);
-		col_list[col_genre] = new TreeViewListColumn("genre",_("Genre"),col_genre);
-		col_list[col_track_name] = new TreeViewListColumn("title",_("Title"),col_track_name);
-		col_list[col_track_num] = new TreeViewListColumn("tracknum",_("Track Number"),col_track_num);
-		col_list[col_comments] = new TreeViewListColumn("comments",_("Comments"),col_comments);
-		col_list[col_recorded_date] = new TreeViewListColumn("recordeddate",_("Recorded Date"),col_recorded_date);
-		//col_list[col_progress] = new TreeViewListColumn("status",col_progress);
-		//col_list[col_spacer] = new TreeViewListColumn("spacer",col_spacer);
-	
-		tv_files_load_columns();
+	private void init_column_manager(){
 
-		//disconnect event handler before exit
-		this.delete_event.connect(()=>{
-			tv_files.columns_changed.disconnect(tv_files_columns_changed);
-			return false;
-		});
-	}
-
-	private void tv_files_load_columns(){
-
-		tv_files.columns_changed.disconnect(tv_files_columns_changed);
+		// set column names
+		col_name.set_data<string>("name", "name");
+		col_size.set_data<string>("name", "size");
+		col_duration.set_data<string>("name", "duration");
 		
-		//remove all columns
-		var list = new Gee.ArrayList<TreeViewColumn>();
-		foreach(TreeViewColumn col in tv_files.get_columns()){
-			list.add(col);
-		}
-		foreach(TreeViewColumn col in list){
-			tv_files.remove_column(col);
-		}
-
-		//add required columns
-		tv_files.append_column(col_name);
-		tv_files.append_column(col_size);
-		tv_files.append_column(col_duration);
+		col_file_format.set_data<string>("name", "format");
+		col_aformat.set_data<string>("name", "aformat");
+		col_vformat.set_data<string>("name", "vformat");
+		col_channels.set_data<string>("name", "channels");
+		col_sampling.set_data<string>("name", "samplingrate");
+		col_width.set_data<string>("name", "width");
+		col_height.set_data<string>("name", "height");
+		col_fps.set_data<string>("name", "framerate");
+		col_bitrate.set_data<string>("name", "bitrate");
+		col_abitrate.set_data<string>("name", "abitrate");
+		col_vbitrate.set_data<string>("name", "vbitrate");
 		
-		//add selected columns
-		foreach(string col_name in App.ListViewColumns.split(",")){
-			foreach(TreeViewListColumn col in col_list.values){
-				if (col.Name == col_name){
-					tv_files.append_column(col.Ref);
-					break;
-				}
-			}
-		}
+		col_artist.set_data<string>("name", "artist");
+		col_album.set_data<string>("name", "album");
+		col_genre.set_data<string>("name", "genre");
+		col_track_name.set_data<string>("name", "title");
+		col_track_num.set_data<string>("name", "tracknum");
+		col_comments.set_data<string>("name", "comments");
+		col_recorded_date.set_data<string>("name", "recordeddate");
 
-		//add required columns
-		tv_files.append_column(col_progress);
-		tv_files.append_column(col_spacer);
+		col_progress.set_data<string>("name", "progress");
+		col_spacer.set_data<string>("name", "spacer");
 
-		//update Selected flag
-		foreach(TreeViewListColumn col in col_list.values){
-			col.Selected = false;
-		}
-		foreach(TreeViewColumn col in tv_files.get_columns()){
-			if (col_list.has_key(col)){
-				col_list[col].Selected = true;
-			}
-		}
+		// load default columns
+		tv_manager = new TreeViewColumnManager((Gtk.TreeView) treeview,
+			Main.REQUIRED_COLUMNS, Main.REQUIRED_COLUMNS_END, Main.DEFAULT_COLUMNS, Main.DEFAULT_COLUMN_ORDER);
 
-		tv_files.columns_changed.connect(tv_files_columns_changed);
-	}
-	
-	private void tv_files_columns_changed(){
-		tv_files_save_columns();
-	}
-	
-	private void tv_files_save_columns(){
-		if (col_list == null){
-			return;
-		}
-
-		string s = "";
-		var list = tv_files.get_columns();
-		foreach(TreeViewColumn col in list){
-			//s += "'%s',".printf(col.title);
-			if (col_list.has_key(col)){
-				s += col_list[col].Name + ",";
-			}
-		}
-
-		if (s.has_suffix(",")){
-			s = s[0:s.length - 1];
-		}
-
-		App.ListViewColumns = s;
+		//tv_manager.set_columns(App.selected_columns);
 	}
 
     // toolbar --------------------------------
     
 	private void btn_remove_files_clicked(){
 		Gee.ArrayList<MediaFile> list = new Gee.ArrayList<MediaFile>();
-		TreeSelection sel = tv_files.get_selection();
+		TreeSelection sel = treeview.get_selection();
 
 		TreeIter iter;
-		bool iterExists = tv_files.model.get_iter_first (out iter);
+		bool iterExists = treeview.model.get_iter_first (out iter);
 		while (iterExists) {
 			if (sel.iter_is_selected (iter)){
 				MediaFile mf;
-				tv_files.model.get (iter, InputField.FILE_REF, out mf, -1);
+				treeview.model.get (iter, InputField.FILE_REF, out mf, -1);
 				list.add(mf);
 			}
-			iterExists = tv_files.model.iter_next (ref iter);
+			iterExists = treeview.model.iter_next (ref iter);
 		}
 
 		App.remove_files(list);
@@ -3103,13 +3071,8 @@ public class MainWindow : Gtk.Window{
 		paused = false;
 		btn_pause.stock_id = "gtk-media-pause";
 
-		foreach(TreeViewListColumn col in col_list.values){
-			if (col.Selected){
-				col.Ref.visible = false;
-			}
-		}
 		//colCrop.visible = false;
-		col_progress.visible = true;
+		//col_progress.visible = true;
 
 		start_cpu_usage_timer();
 	}
@@ -3119,15 +3082,11 @@ public class MainWindow : Gtk.Window{
 		grid_config.visible = true;
 
 		//show extra columns
-		if (!App.TileView){
-			foreach(TreeViewListColumn col in col_list.values){
-				if (col.Selected){
-					col.Ref.visible = true;
-				}
-			}
-		}
+		//if (!App.TileView){
+		//	tv_manager.set_columns(App.selected_columns);
+		//}
 		//colCrop.visible = !App.TileView;
-		col_progress.visible = false;
+		//col_progress.visible = false;
 
 		btn_edit_files.visible = true;
 		btn_start.visible = true;
@@ -3156,7 +3115,7 @@ public class MainWindow : Gtk.Window{
 
 	private bool update_status(){
 		TreeIter iter;
-		var model = (Gtk.TreeStore)tv_files.model;
+		var model = (Gtk.TreeStore)treeview.model;
 
 		switch (App.Status) {
 			case AppStatus.PAUSED:
@@ -3254,7 +3213,7 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void update_status_all(){
-		var model = (Gtk.TreeStore)tv_files.model;
+		var model = (Gtk.TreeStore)treeview.model;
 		MediaFile mf;
 		int index = -1;
 		TreeIter iter;
@@ -3275,19 +3234,6 @@ public class MainWindow : Gtk.Window{
 	private bool shutdown(){
 		shutdown();
 		return true;
-	}
-}
-
-public class TreeViewListColumn : GLib.Object {
-	public string Name;
-	public TreeViewColumn Ref;
-	public string FullDisplayName;
-	public bool Selected = false;
-	
-	public TreeViewListColumn(string _Name, string _FullDisplayName, TreeViewColumn _Ref){
-		Name = _Name;
-		Ref = _Ref;
-		FullDisplayName = _FullDisplayName;
 	}
 }
 

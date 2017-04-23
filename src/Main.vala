@@ -38,7 +38,7 @@ using TeeJee.Misc;
 public Main App;
 public const string AppName = "Selene Media Converter";
 public const string AppShortName = "selene";
-public const string AppVersion = "16.9";
+public const string AppVersion = "17.4";
 public const string AppAuthor = "Tony George";
 public const string AppAuthorEmail = "teejeetech@gmail.com";
 
@@ -90,9 +90,7 @@ public class Main : GLib.Object{
 	public string PrimaryPlayer = "mpv";
 	public string DefaultLanguage = "en";
 	public bool DeleteTempFiles = true;
-	
-	public string ListViewColumns = "";
-	
+
 	public ScriptFile SelectedScript;
 	public MediaFile CurrentFile;
 	public string CurrentLine;
@@ -131,6 +129,13 @@ public class Main : GLib.Object{
 	private Regex regex_vpxenc;
 	private Regex regex_neroaacenc;
 
+	public static string REQUIRED_COLUMNS = "name,spacer";
+	public static string REQUIRED_COLUMNS_END = "spacer";
+	public static string DEFAULT_COLUMNS = "name,size,duration,spacer";
+	//public static string DEFAULT_COLUMNS_TILE_VIEW = "name,progress,spacer";
+	public static string DEFAULT_COLUMN_ORDER = "name,size,duration,format,aformat,vformat,channels,samplingrate,width,height,framerate,bitrate,abitrate,vbitrate,artist,album,genre,title,tracknum,comments,recordeddate,progress,spacer";
+	public string selected_columns = DEFAULT_COLUMNS;
+
 	private string tempLine;
 	private MatchInfo match;
 	private double dblVal;
@@ -167,6 +172,8 @@ public class Main : GLib.Object{
 			}
 		}
 
+		stdout.printf("\n"); // print an empty line, otherwise log_debug() stops working; TODO: investigate
+
 		//init GTK
 		Gtk.init (ref args);
 
@@ -180,6 +187,8 @@ public class Main : GLib.Object{
 		string term = Environment.get_variable ("TERM").down();
 		LOG_COLORS = (term == "xterm");
 
+		log_debug("Parsing arguments...");
+		
 		//get command line arguments
 		for (int k = 1; k < args.length; k++) // Oth arg is app path
 		{
@@ -261,6 +270,7 @@ public class Main : GLib.Object{
 			App.convert_begin();
 		}
 		else{
+			log_debug("Creating MainWindow\n");
 			var window = new MainWindow();
 			window.destroy.connect (App.exit_app);
 			window.show_all();
@@ -324,6 +334,8 @@ Notes:
 	
 	
 	public Main(string arg0){
+
+		log_debug("Main()");
 		
 		InputFiles = new Gee.ArrayList<MediaFile>();
 		Encoders = new Gee.HashMap<string,Encoder>();
@@ -440,9 +452,12 @@ Notes:
 		blankLine = "";
 		for (int i=0; i<80; i++)
 			blankLine += " ";
+
+		log_debug("Main(): exit");
 	}
 
 	public void init_encoder_list(){
+		
 		Encoders["avconv"] = new Encoder("avconv","Libav Encoder","Audio-Video Decoding");
 		Encoders["ffmpeg"] = new Encoder("ffmpeg","FFmpeg Encoder","Audio-Video Decoding");
 		//Encoders["ffmpeg2theora"] = new Encoder("ffmpeg2theora","Theora Video Encoder","Theora Output");
@@ -532,6 +547,9 @@ Notes:
 	}
 
 	public void save_config(){
+
+		log_debug("save_config()");
+		
 		var config = new Json.Object();
 		config.set_string_member("input-dir", InputDirectory);
 		config.set_string_member("backup-dir", BackupDirectory);
@@ -542,7 +560,7 @@ Notes:
 		config.set_string_member("av-player", PrimaryPlayer);
 		config.set_string_member("default-lang", DefaultLanguage);
 		config.set_string_member("delete-temp-files", DeleteTempFiles.to_string());
-		config.set_string_member("list-view-columns", ListViewColumns);
+		config.set_string_member("list-view-columns", selected_columns);
 		
 		if (SelectedScript != null) {
 			config.set_string_member("last-script", SelectedScript.Path);
@@ -567,6 +585,8 @@ Notes:
 	public void load_config(){
 		var f = File.new_for_path(AppConfPath);
 		if (!f.query_exists()) { return; }
+
+		log_debug("load_config()");
 
 		var parser = new Json.Parser();
         try{
@@ -611,7 +631,9 @@ Notes:
 
 		TileView = json_get_bool(config,"tile-view",true);
 
-		ListViewColumns = json_get_string(config,"list-view-columns", ListViewColumns);
+		selected_columns = json_get_string(config,"list-view-columns", selected_columns);
+
+		log_debug("load_config(): exit");
 	}
 
 	public void check_and_default_av_encoder(){
@@ -647,6 +669,7 @@ Notes:
 	}
 	
 	public void exit_app(){
+		log_debug("exit_app()");
 		save_config();
 		Gtk.main_quit();
 	}

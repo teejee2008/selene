@@ -56,11 +56,8 @@ DEB files are available from following links:
 [selene-latest-amd64.deb](http://dl.dropbox.com/u/67740416/linux/selene-latest-amd64.deb?dl=1) (64-bit)  
 
 ### Other Linux Distributions  
-An installer is available from following links:   
-[selene-latest-i386.run](http://dl.dropbox.com/u/67740416/linux/selene-latest-i386.run?dl=1) (32-bit)  
-[selene-latest-amd64.run](http://dl.dropbox.com/u/67740416/linux/selene-latest-amd64.run?dl=1) (64-bit)
-
-Run it from a terminal window with the following commands:  
+.RUN installers are available on the [GitHub Releases page](https://github.com/teejee2008/ukuu/releases).    
+Download the 32-bit or 64-bit installer and run the following commands in a terminal window:  
 
     sh ./selene-latest-i386.run  #32-bit
     sh ./selene-latest-amd64.run  #64-bit
@@ -101,7 +98,7 @@ Selene can also be used as a normal command-line utility. Run Selene with the '-
 Bash scripts can be written for controlling the encoding process.  For example:
 
     x264 -o "${outDir}/${title}.mkv" "${inFile}"
-    
+
 This script converts any given input file to an MKV file using the x264 encoder.  
 ${inFile}, ${outDir}, ${title} are variables which refer to the input file. These variables will be inserted into the script before execution. It is mandatory to use these variables instead of hard-coding the input file names. This is the only restriction.  
 
@@ -121,9 +118,9 @@ For auto-cropping the input files:
 3.  Select any preset, OR
 4.  Select any script that uses avconv, x264 or ffmpeg2theora for encoding. The script must use the cropping option for the encoder that is used. For example, we can use:
 
-        x264 --vf crop:0,0,0,0 -o "${outDir}/${title}.mkv" "${inFile}"
+         x264 --vf crop:0,0,0,0 -o "${outDir}/${title}.mkv" "${inFile}"
 
-    The cropping values specified in the script will be replaced with the calculated values before the script is executed.
+     The cropping values specified in the script will be replaced with the calculated values before the script is executed.
 
 After using the 'AutoCrop' option, the output can be previewed by right-clicking the file and selecting the 'Preview Output' option. The values can be edited directly from the input file list. Clear the values to disable the cropping option.  
 

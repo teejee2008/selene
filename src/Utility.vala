@@ -335,28 +335,15 @@ namespace TeeJee.FileSystem{
 		return execute_command_sync ("chmod " + permission + " \"%s\"".printf(file));
 	}
 
-	public string resolve_relative_path (string filePath){
+	public string resolve_relative_path (string file_path){
 
-		/* Resolve the full path of given file using 'realpath' command */
+		string? resolved_path = Posix.realpath(file_path);
 
-		string filePath2 = filePath;
-		if (filePath2.has_prefix ("~")){
-			filePath2 = Environment.get_home_dir () + "/" + filePath2[2:filePath2.length];
+		if (resolved_path == null){
+			resolved_path = file_path;
 		}
-
-		try {
-			string output = "";
-			Process.spawn_command_line_sync("realpath \"%s\"".printf(filePath2), out output);
-			output = output.strip ();
-			if (FileUtils.test(output, GLib.FileTest.EXISTS)){
-				return output;
-			}
-		}
-		catch(Error e){
-	        log_error (e.message);
-	    }
-
-	    return filePath2;
+		
+	    return resolved_path;
 	}
 
 	public int rsync (string sourceDirectory, string destDirectory, bool updateExisting, bool deleteExtra){
@@ -1055,6 +1042,42 @@ namespace TeeJee.GtkHelper{
         
         widget.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		widget.get_style_context().add_class("style_%d".printf(CSS_AUTO_CLASS_INDEX));
+	}
+
+		public TreeIter gtk_get_iter_next (Gtk.TreeModel model, Gtk.TreeIter iter_find){
+
+		bool return_next = false;
+		
+		TreeIter iter;
+		bool iterExists = model.get_iter_first (out iter);
+		while (iterExists){
+			if (return_next){
+				return iter;
+			}
+			else if (iter == iter_find){
+				return_next = true;
+			}
+			iterExists = model.iter_next (ref iter);
+		}
+
+		return iter_find;
+	}
+
+	public TreeIter gtk_get_iter_prev (Gtk.TreeModel model, Gtk.TreeIter iter_find){
+
+		TreeIter iter_prev = iter_find;
+		
+		TreeIter iter;
+		bool iterExists = model.get_iter_first (out iter);
+		while (iterExists){
+			if (iter == iter_find){
+				return iter_prev;
+			}
+			iter_prev = iter;
+			iterExists = model.iter_next (ref iter);
+		}
+
+		return iter_find;
 	}
 }
 

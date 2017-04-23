@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2017-01-17 22:55+0530\n"
+"POT-Creation-Date: 2017-04-23 12:02+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: EncoderConfigWindow.vala:1952
+#: EncoderConfigWindow.vala:1954
 msgid ""
 "\n"
 "<b>Note:</b>\n"
@@ -33,7 +33,7 @@ msgid ""
 "multiple segments using advanced mode will not work."
 msgstr ""
 
-#: EncoderConfigWindow.vala:2870
+#: EncoderConfigWindow.vala:2872
 msgid ""
 "\n"
 "<b>Note:</b>\n"
@@ -41,7 +41,7 @@ msgid ""
 "1. Supported subtitle file formats:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2445
+#: EncoderConfigWindow.vala:2447
 msgid ""
 "\n"
 "<b>Note:</b>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "100%"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2890
+#: EncoderConfigWindow.vala:2892
 msgid ""
 "2. External subtitle files must be present in the same location and start "
 "with the same file name."
@@ -86,14 +86,14 @@ msgstr ""
 msgid "75%"
 msgstr ""
 
-#: EncoderConfigWindow.vala:504 EncoderConfigWindow.vala:505
+#: EncoderConfigWindow.vala:506 EncoderConfigWindow.vala:507
 msgid ""
 "<b>AAC-ELD</b>\n"
 "Enhanced Low Delay Profile for real-time communication\n"
 "\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:500
+#: EncoderConfigWindow.vala:502
 msgid ""
 "<b>AAC-LC (Recommended)</b>\n"
 "MPEG-2 Low-complexity (LC) combined with MPEG-4 Perceptual Noise "
@@ -101,14 +101,14 @@ msgid ""
 "\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:503
+#: EncoderConfigWindow.vala:505
 msgid ""
 "<b>AAC-LD</b>\n"
 "Low Delay Profile for real-time communication\n"
 "\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1251
+#: EncoderConfigWindow.vala:1253
 msgid ""
 "<b>Additional Options</b>\n"
 "These options will be passed to the encoder\n"
@@ -116,11 +116,11 @@ msgid ""
 "any options that are already provided by the GUI."
 msgstr ""
 
-#: EncoderConfigWindow.vala:631
+#: EncoderConfigWindow.vala:633
 msgid "<b>Adjustments:</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:389
+#: EncoderConfigWindow.vala:391
 msgid "<b>Audio Encoder</b>"
 msgstr ""
 
@@ -128,11 +128,11 @@ msgstr ""
 msgid "<b>Backup Directory</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:559
+#: EncoderConfigWindow.vala:561
 msgid "<b>Channels</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1183
+#: EncoderConfigWindow.vala:1185
 msgid ""
 "<b>Compression Vs Device Compatibility</b>\n"
 "'High' profile gives the best compression.\n"
@@ -141,14 +141,14 @@ msgid ""
 "support the 'High' profile"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1141
+#: EncoderConfigWindow.vala:1143
 msgid ""
 "<b>Compression Vs Encoding Speed</b>\n"
 "Slower presets give better compression and smaller files\n"
 "but take more time to encode."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1119
+#: EncoderConfigWindow.vala:1121
 msgid ""
 "<b>Compression Vs Quality</b>\n"
 "Smaller values give better quality video and larger files"
@@ -158,7 +158,7 @@ msgstr ""
 msgid "<b>Default Language</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1522
+#: EncoderConfigWindow.vala:1524
 msgid ""
 "<b>Embed</b> - Subtitle files will be combined with the output file.\n"
 "These subtitles can be switched off since they are added as a separate track"
@@ -171,11 +171,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:793
+#: EncoderConfigWindow.vala:795
 msgid "<b>Fade:</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:253
+#: EncoderConfigWindow.vala:255
 msgid "<b>File Format</b>"
 msgstr ""
 
@@ -183,14 +183,14 @@ msgstr ""
 msgid "<b>File Handling</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:502
+#: EncoderConfigWindow.vala:504
 msgid ""
 "<b>HE-AAC v2</b>\n"
 "AAC-LC + SBR + PS (Parametric Stereo)\n"
 "\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:501
+#: EncoderConfigWindow.vala:503
 msgid ""
 "<b>HE-AAC</b>\n"
 "AAC-LC + SBR (Spectral Band Replication)\n"
@@ -201,7 +201,7 @@ msgstr ""
 msgid "<b>Main Window</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:506
+#: EncoderConfigWindow.vala:508
 msgid ""
 "<b>Note:</b>\n"
 "HE-AAC and HE-AACv2 are used for low-bitrate encoding while HE-LD and HE-ELD "
@@ -210,7 +210,7 @@ msgid ""
 "low as 32 kbps."
 msgstr ""
 
-#: EncoderConfigWindow.vala:887
+#: EncoderConfigWindow.vala:889
 msgid "<b>Other Effects:</b>"
 msgstr ""
 
@@ -222,11 +222,11 @@ msgstr ""
 msgid "<b>Preferred Tools</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:313
+#: EncoderConfigWindow.vala:315
 msgid "<b>Preset</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2517
+#: EncoderConfigWindow.vala:2519
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "\n"
@@ -235,7 +235,7 @@ msgid ""
 "<b>Realtime:</b> Fastest"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2519
+#: EncoderConfigWindow.vala:2521
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "\n"
@@ -243,40 +243,40 @@ msgid ""
 "Larger value = Lower quality, faster\n"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2527
+#: EncoderConfigWindow.vala:2529
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "Higher values speed-up encoding at the expense of quality.\n"
 "Lower values improve quality at the expense of encoding speed."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1524
+#: EncoderConfigWindow.vala:1526
 msgid ""
 "<b>Render</b> - Subtitles are rendered/burned on the video.\n"
 "These subtitles cannot be switched off since they become a part of the video"
 msgstr ""
 
-#: EncoderConfigWindow.vala:537 EncoderConfigWindow.vala:1430
+#: EncoderConfigWindow.vala:539 EncoderConfigWindow.vala:1432
 msgid "<b>Resample</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1311
+#: EncoderConfigWindow.vala:1313
 msgid "<b>Resize</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:596
+#: EncoderConfigWindow.vala:598
 msgid "<b>SOX Audio Processing</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1516
+#: EncoderConfigWindow.vala:1518
 msgid "<b>Subtitles</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1579
+#: EncoderConfigWindow.vala:1581
 msgid "<b>Tags</b>"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1039
+#: EncoderConfigWindow.vala:1041
 msgid "<b>Video Encoder</b>"
 msgstr ""
 
@@ -287,85 +287,85 @@ msgid ""
 "\n"
 msgstr ""
 
-#: MainWindow.vala:958
+#: MainWindow.vala:978
 msgid "A-Bitrate"
 msgstr ""
 
-#: MainWindow.vala:832
+#: MainWindow.vala:852
 msgid "A-Ch"
 msgstr ""
 
-#: MainWindow.vala:754
+#: MainWindow.vala:774
 msgid "A-Fmt"
 msgstr ""
 
-#: MainWindow.vala:872
+#: MainWindow.vala:892
 msgid "A-Sampling"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2928 EncoderConfigWindow.vala:2947
+#: EncoderConfigWindow.vala:2930 EncoderConfigWindow.vala:2949
 msgid "AAC-ELD"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2911 EncoderConfigWindow.vala:2920
-#: EncoderConfigWindow.vala:2939
+#: EncoderConfigWindow.vala:2913 EncoderConfigWindow.vala:2922
+#: EncoderConfigWindow.vala:2941
 msgid "AAC-LC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2926 EncoderConfigWindow.vala:2945
+#: EncoderConfigWindow.vala:2928 EncoderConfigWindow.vala:2947
 msgid "AAC-LD"
 msgstr ""
 
-#: EncoderConfigWindow.vala:276
+#: EncoderConfigWindow.vala:278
 msgid "AC3 Audio (*.ac3)"
 msgstr ""
 
-#: MainWindow.vala:243
+#: MainWindow.vala:259
 msgid "Abort"
 msgstr ""
 
-#: MainWindow.vala:301
+#: MainWindow.vala:317
 msgid "About"
 msgstr ""
 
-#: MainWindow.vala:353 MainWindow.vala:2582
+#: MainWindow.vala:369 MainWindow.vala:2617
 msgid "Add File(s)"
 msgstr ""
 
-#: MainWindow.vala:336
+#: MainWindow.vala:352
 msgid "Add File(s)..."
 msgstr ""
 
-#: MainWindow.vala:2586
+#: MainWindow.vala:2621
 msgid "Add Folder(s)"
 msgstr ""
 
-#: MainWindow.vala:346
+#: MainWindow.vala:362
 msgid "Add Folder(s)..."
 msgstr ""
 
-#: MainWindow.vala:1775
+#: MainWindow.vala:1811
 msgid "Add New Preset"
 msgstr ""
 
-#: MainWindow.vala:2890 MainWindow.vala:2916 MainWindow.vala:3050
+#: MainWindow.vala:2857 MainWindow.vala:2883 MainWindow.vala:3017
 msgid "Add some files to the file list"
 msgstr ""
 
-#: MainWindow.vala:2904
+#: MainWindow.vala:2871
 msgid "Add some videos to the file list"
 msgstr ""
 
-#: MainWindow.vala:2628
+#: MainWindow.vala:2663
 #, c-format
 msgid "Adding (%d/%d): '%s'"
 msgstr ""
 
-#: MainWindow.vala:2618
+#: MainWindow.vala:2653
 msgid "Adding..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:924
+#: EncoderConfigWindow.vala:926
 msgid "Adjust Stereo for Headphones"
 msgstr ""
 
@@ -373,23 +373,23 @@ msgstr ""
 msgid "Advanced Mode"
 msgstr ""
 
-#: MainWindow.vala:1204 MainWindow.vala:2773
+#: MainWindow.vala:1224
 msgid "Album"
 msgstr ""
 
-#: Main.vala:698
+#: Main.vala:721
 msgid "All files removed"
 msgstr ""
 
-#: MainWindow.vala:2961
+#: MainWindow.vala:2928
 msgid "An audio-video converter for Linux"
 msgstr ""
 
-#: MainWindow.vala:277
+#: MainWindow.vala:293
 msgid "Application Settings"
 msgstr ""
 
-#: MainWindow.vala:1173 MainWindow.vala:2772
+#: MainWindow.vala:1193
 msgid "Artist"
 msgstr ""
 
@@ -398,27 +398,11 @@ msgstr ""
 msgid "Artists"
 msgstr ""
 
-#: EncoderConfigWindow.vala:382 MainWindow.vala:1662
+#: EncoderConfigWindow.vala:384 MainWindow.vala:1688
 msgid "Audio"
 msgstr ""
 
-#: MainWindow.vala:2770
-msgid "Audio Bitrate"
-msgstr ""
-
-#: MainWindow.vala:2764
-msgid "Audio Channels"
-msgstr ""
-
-#: MainWindow.vala:2762
-msgid "Audio Format"
-msgstr ""
-
-#: MainWindow.vala:2765
-msgid "Audio Sampling Rate"
-msgstr ""
-
-#: EncoderConfigWindow.vala:344
+#: EncoderConfigWindow.vala:346
 msgid "Author"
 msgstr ""
 
@@ -427,7 +411,7 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2906
+#: EncoderConfigWindow.vala:2908
 msgid "Auto"
 msgstr ""
 
@@ -435,16 +419,16 @@ msgstr ""
 msgid "Auto Crop"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2040 EncoderConfigWindow.vala:2065
-#: EncoderConfigWindow.vala:2083 EncoderConfigWindow.vala:2109
-#: EncoderConfigWindow.vala:2140 EncoderConfigWindow.vala:2157
-#: EncoderConfigWindow.vala:2541 EncoderConfigWindow.vala:2566
-#: EncoderConfigWindow.vala:2591
+#: EncoderConfigWindow.vala:2042 EncoderConfigWindow.vala:2067
+#: EncoderConfigWindow.vala:2085 EncoderConfigWindow.vala:2111
+#: EncoderConfigWindow.vala:2142 EncoderConfigWindow.vala:2159
+#: EncoderConfigWindow.vala:2543 EncoderConfigWindow.vala:2568
+#: EncoderConfigWindow.vala:2593
 msgid "Average Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2543 EncoderConfigWindow.vala:2568
-#: EncoderConfigWindow.vala:2593
+#: EncoderConfigWindow.vala:2545 EncoderConfigWindow.vala:2570
+#: EncoderConfigWindow.vala:2595
 msgid "Average Bitrate (2-pass)"
 msgstr ""
 
@@ -452,7 +436,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: MainWindow.vala:250
+#: MainWindow.vala:266
 msgid "Background"
 msgstr ""
 
@@ -460,27 +444,27 @@ msgstr ""
 msgid "Basic Mode"
 msgstr ""
 
-#: EncoderConfigWindow.vala:646
+#: EncoderConfigWindow.vala:648
 msgid "Bass"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1220
+#: EncoderConfigWindow.vala:1222
 msgid "Best"
 msgstr ""
 
-#: MainWindow.vala:912 MainWindow.vala:2769
+#: MainWindow.vala:932
 msgid "Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:433 EncoderConfigWindow.vala:1098
+#: EncoderConfigWindow.vala:435 EncoderConfigWindow.vala:1100
 msgid "Bitrate (kbps)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:644
+#: EncoderConfigWindow.vala:646
 msgid "Boost or cut the bass (lower) frequencies of the audio."
 msgstr ""
 
-#: EncoderConfigWindow.vala:682
+#: EncoderConfigWindow.vala:684
 msgid "Boost or cut the treble (upper) frequencies of the audio."
 msgstr ""
 
@@ -492,34 +476,34 @@ msgstr ""
 msgid "Bottom:"
 msgstr ""
 
-#: MainWindow.vala:1788
+#: MainWindow.vala:1824
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:3246
+#: MainWindow.vala:3204
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1227 Main.vala:1241
+#: Main.vala:1250 Main.vala:1264
 msgid "Cancelled"
 msgstr ""
 
-#: EncoderConfigWindow.vala:720
+#: EncoderConfigWindow.vala:722
 msgid "Change audio pitch (shrillness) without changing audio tempo (speed)."
 msgstr ""
 
-#: EncoderConfigWindow.vala:758
+#: EncoderConfigWindow.vala:760
 msgid ""
 "Change audio tempo (speed) without changing audio pitch (shrillness).\n"
 "\n"
 "WARNING: This will change the duration of the audio track"
 msgstr ""
 
-#: EncoderConfigWindow.vala:567
+#: EncoderConfigWindow.vala:569
 msgid "Channels"
 msgstr ""
 
-#: MainWindow.vala:387
+#: MainWindow.vala:403
 msgid "Clear List"
 msgstr ""
 
@@ -527,55 +511,56 @@ msgstr ""
 msgid "Clip"
 msgstr ""
 
-#: AboutWindow.vala:295 AppConfigWindow.vala:107
+#: AboutWindow.vala:295 AppConfigWindow.vala:107 ColumnSelectionBox.vala:214
+#: ColumnSelectionBox.vala:215
 msgid "Close"
 msgstr ""
 
-#: MainWindow.vala:1536
+#: MainWindow.vala:1559
 msgid "Columns..."
 msgstr ""
 
-#: MainWindow.vala:1329 MainWindow.vala:2777
+#: MainWindow.vala:1349
 msgid "Comments"
 msgstr ""
 
-#: Main.vala:1062 Main.vala:1072 Main.vala:1080
+#: Main.vala:1085 Main.vala:1095 Main.vala:1103
 msgid "Completed"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2042 EncoderConfigWindow.vala:2111
-#: EncoderConfigWindow.vala:2142 EncoderConfigWindow.vala:2618
+#: EncoderConfigWindow.vala:2044 EncoderConfigWindow.vala:2113
+#: EncoderConfigWindow.vala:2144 EncoderConfigWindow.vala:2620
 msgid "Constant Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2044
+#: EncoderConfigWindow.vala:2046
 msgid "Constant Bitrate (Strict)"
 msgstr ""
 
-#: Main.vala:972 Main.vala:1275 MainWindow.vala:2279
+#: Main.vala:995 Main.vala:1298 MainWindow.vala:2314
 msgid "Converting"
 msgstr ""
 
-#: Main.vala:970 Main.vala:1273
+#: Main.vala:993 Main.vala:1296
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1769
-#: EncoderConfigWindow.vala:1784
+#: EncoderConfigWindow.vala:1755 EncoderConfigWindow.vala:1771
+#: EncoderConfigWindow.vala:1786
 msgid "Copy Audio"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1688 EncoderConfigWindow.vala:1697
-#: EncoderConfigWindow.vala:1706 EncoderConfigWindow.vala:1713
-#: EncoderConfigWindow.vala:1724
+#: EncoderConfigWindow.vala:1690 EncoderConfigWindow.vala:1699
+#: EncoderConfigWindow.vala:1708 EncoderConfigWindow.vala:1715
+#: EncoderConfigWindow.vala:1726
 msgid "Copy Video"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1588
+#: EncoderConfigWindow.vala:1590
 msgid "Copy tags (artist, album, etc) from the source file to output file"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1590
+#: EncoderConfigWindow.vala:1592
 msgid "Copy tags from source file"
 msgstr ""
 
@@ -583,7 +568,7 @@ msgstr ""
 msgid "Credits"
 msgstr ""
 
-#: MainWindow.vala:432
+#: MainWindow.vala:448
 msgid "Crop"
 msgstr ""
 
@@ -591,11 +576,11 @@ msgstr ""
 msgid "Crop Left"
 msgstr ""
 
-#: BatchEditWindow.vala:85 MainWindow.vala:1442 MediaPlayerWindow.vala:123
+#: BatchEditWindow.vala:85 MainWindow.vala:1465 MediaPlayerWindow.vala:123
 msgid "Crop Video"
 msgstr ""
 
-#: MainWindow.vala:416 MainWindow.vala:435
+#: MainWindow.vala:432 MainWindow.vala:451
 msgid "Crop Videos"
 msgstr ""
 
@@ -603,11 +588,11 @@ msgstr ""
 msgid "Cropped:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1328 EncoderConfigWindow.vala:1448
+#: EncoderConfigWindow.vala:1330 EncoderConfigWindow.vala:1450
 msgid "Custom"
 msgstr ""
 
-#: MainWindow.vala:1782
+#: MainWindow.vala:1818
 msgid "Delete Preset"
 msgstr ""
 
@@ -619,7 +604,7 @@ msgstr ""
 msgid "Delete temporary files after successful encode"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1494
+#: EncoderConfigWindow.vala:1496
 msgid "Denominator"
 msgstr ""
 
@@ -661,16 +646,16 @@ msgid ""
 "(teejeetech@gmail.com)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1751 EncoderConfigWindow.vala:1767
-#: EncoderConfigWindow.vala:1782
+#: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1769
+#: EncoderConfigWindow.vala:1784
 msgid "Disable Audio"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1722
+#: EncoderConfigWindow.vala:1724
 msgid "Disable Video"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1411
+#: EncoderConfigWindow.vala:1413
 msgid "Do not stretch or squeeze the video (Fit-To-Box)"
 msgstr ""
 
@@ -679,7 +664,7 @@ msgstr ""
 msgid "Documenters"
 msgstr ""
 
-#: DonationWindow.vala:36 MainWindow.vala:290 MainWindow.vala:291
+#: DonationWindow.vala:36 MainWindow.vala:306 MainWindow.vala:307
 msgid "Donate"
 msgstr ""
 
@@ -696,19 +681,15 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: Main.vala:1057
+#: Main.vala:1080
 msgid "Done"
 msgstr ""
 
-#: ColumnSelectionDialog.vala:62
-msgid "Drag and drop to re-order"
-msgstr ""
-
-#: MainWindow.vala:2267
+#: MainWindow.vala:2302
 msgid "Drag files on this window or click the 'Add' button"
 msgstr ""
 
-#: MainWindow.vala:660 MediaPlayerWindow.vala:681
+#: MainWindow.vala:680 MediaPlayerWindow.vala:681
 msgid "Duration"
 msgstr ""
 
@@ -716,19 +697,19 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: MainWindow.vala:1855
+#: MainWindow.vala:1891
 msgid "Edit Preset"
 msgstr ""
 
-#: EncoderConfigWindow.vala:355
+#: EncoderConfigWindow.vala:357
 msgid "Email"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1878
+#: EncoderConfigWindow.vala:1880
 msgid "Embed / Soft Subs"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2968
+#: EncoderConfigWindow.vala:2970
 msgid "Empty Preset Name"
 msgstr ""
 
@@ -736,15 +717,15 @@ msgstr ""
 msgid "Encoder"
 msgstr ""
 
-#: EncoderStatusWindow.vala:45 MainWindow.vala:283
+#: EncoderStatusWindow.vala:45 MainWindow.vala:299
 msgid "Encoders"
 msgstr ""
 
-#: EncoderConfigWindow.vala:420 EncoderConfigWindow.vala:1079
+#: EncoderConfigWindow.vala:422 EncoderConfigWindow.vala:1081
 msgid "Encoding Mode"
 msgstr ""
 
-#: MainWindow.vala:1845
+#: MainWindow.vala:1881
 msgid "Encoding Script or Preset File"
 msgstr ""
 
@@ -764,7 +745,7 @@ msgstr ""
 msgid "EndPos"
 msgstr ""
 
-#: Main.vala:779
+#: Main.vala:802
 msgid "Enter any key to Cancel..."
 msgstr ""
 
@@ -772,59 +753,59 @@ msgstr ""
 msgid "Enter path or browse for directory"
 msgstr ""
 
-#: Main.vala:1067 Utility.vala:108
+#: Main.vala:1090 Utility.vala:108
 msgid "Error"
 msgstr ""
 
-#: Main.vala:814
+#: Main.vala:837
 msgid "Error: File missing"
 msgstr ""
 
-#: EncoderConfigWindow.vala:300
+#: EncoderConfigWindow.vala:302
 msgid "Extension"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1254
+#: EncoderConfigWindow.vala:1256
 msgid "Extra Options"
 msgstr ""
 
-#: EncoderConfigWindow.vala:278
+#: EncoderConfigWindow.vala:280
 msgid "FLAC Audio (*.flac)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:808
+#: EncoderConfigWindow.vala:810
 msgid "Fade In (sec)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:828
+#: EncoderConfigWindow.vala:830
 msgid "Fade Out (sec)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:848
+#: EncoderConfigWindow.vala:850
 msgid "Fade Type"
 msgstr ""
 
-#: Main.vala:1083
+#: Main.vala:1106
 msgid "Failed"
 msgstr ""
 
-#: Utility.vala:1435
+#: Utility.vala:1458
 msgid "Failed to set ownership"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1168
+#: EncoderConfigWindow.vala:1170
 msgid "Fast"
 msgstr ""
 
-#: BatchEditWindow.vala:140 ColumnSelectionDialog.vala:74 MainWindow.vala:471
+#: BatchEditWindow.vala:140 MainWindow.vala:491
 msgid "File"
 msgstr ""
 
-#: MainWindow.vala:1525
+#: MainWindow.vala:1548
 msgid "File Info (Output)"
 msgstr ""
 
-#: MainWindow.vala:1519
+#: MainWindow.vala:1542
 msgid "File Info (Source)"
 msgstr ""
 
@@ -832,61 +813,65 @@ msgstr ""
 msgid "File View"
 msgstr ""
 
-#: Main.vala:678
+#: Main.vala:701
 msgid "File added:"
 msgstr ""
 
-#: Main.vala:692
+#: Main.vala:715
 msgid "File removed:"
 msgstr ""
 
-#: Main.vala:715
+#: Main.vala:738
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr ""
 
-#: Main.vala:718
+#: Main.vala:741
 msgid "Files will be saved in source directory"
 msgstr ""
 
-#: EncoderConfigWindow.vala:530
+#: EncoderConfigWindow.vala:532
 msgid "Filters (A)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1302
+#: EncoderConfigWindow.vala:1304
 msgid "Filters (V)"
 msgstr ""
 
-#: MainWindow.vala:261 MainWindow.vala:263 MediaPlayerWindow.vala:307
+#: MainWindow.vala:277 MainWindow.vala:279 MediaPlayerWindow.vala:307
 #: MediaPlayerWindow.vala:393 MediaPlayerWindow.vala:507
 msgid "Finish"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1407
+#: EncoderConfigWindow.vala:1409
 msgid "Fits the video in a box of given width and height."
 msgstr ""
 
-#: EncoderConfigWindow.vala:2174
+#: EncoderConfigWindow.vala:2176
 msgid "Fixed Bitrate"
 msgstr ""
 
-#: MainWindow.vala:1820 MainWindow.vala:1830
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Fixed Column"
+msgstr ""
+
+#: MainWindow.vala:1856 MainWindow.vala:1866
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:3065
+#: MainWindow.vala:3032
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
-#: Main.vala:347
+#: Main.vala:359
 msgid "Following utilities are not installed on your system:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:261 MainWindow.vala:703 MainWindow.vala:2761
+#: EncoderConfigWindow.vala:263 MainWindow.vala:723
 msgid "Format"
 msgstr ""
 
-#: EncoderConfigWindow.vala:397 EncoderConfigWindow.vala:1047
+#: EncoderConfigWindow.vala:399 EncoderConfigWindow.vala:1049
 msgid "Format / Codec"
 msgstr ""
 
@@ -894,19 +879,19 @@ msgstr ""
 msgid "Found"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1468
+#: EncoderConfigWindow.vala:1470
 msgid "Fps: Frames"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1485
+#: EncoderConfigWindow.vala:1487
 msgid "Fps: Seconds"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1439
+#: EncoderConfigWindow.vala:1441
 msgid "Frame Rate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1441
+#: EncoderConfigWindow.vala:1443
 msgid "Frames/sec"
 msgstr ""
 
@@ -914,49 +899,53 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
-#: AppConfigWindow.vala:121 EncoderConfigWindow.vala:246
+#: AppConfigWindow.vala:121 EncoderConfigWindow.vala:248
 msgid "General"
 msgstr ""
 
-#: MainWindow.vala:1235 MainWindow.vala:2774
+#: MainWindow.vala:1255
 msgid "Genre"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1222
+#: EncoderConfigWindow.vala:1224
 msgid "Good"
-msgstr ""
-
-#: EncoderConfigWindow.vala:2913 EncoderConfigWindow.vala:2922
-#: EncoderConfigWindow.vala:2941
-msgid "HE-AAC"
 msgstr ""
 
 #: EncoderConfigWindow.vala:2915 EncoderConfigWindow.vala:2924
 #: EncoderConfigWindow.vala:2943
+msgid "HE-AAC"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2917 EncoderConfigWindow.vala:2926
+#: EncoderConfigWindow.vala:2945
 msgid "HE-AAC v2"
 msgstr ""
 
-#: EncoderConfigWindow.vala:868
+#: EncoderConfigWindow.vala:870
 msgid "Half Sine"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1369 EncoderConfigWindow.vala:1378
+#: EncoderConfigWindow.vala:1371 EncoderConfigWindow.vala:1380
 msgid "Height"
 msgstr ""
 
-#: MainWindow.vala:1797 MainWindow.vala:1799 MainWindow.vala:2225
+#: ColumnSelectionBox.vala:125
+msgid "Indicator"
+msgstr ""
+
+#: MainWindow.vala:1833 MainWindow.vala:1835 MainWindow.vala:2261
 msgid "Info"
 msgstr ""
 
-#: Main.vala:706
+#: Main.vala:729
 msgid "Input queue is empty! Please add some files."
 msgstr ""
 
-#: Main.vala:257
+#: Main.vala:266
 msgid "Input queue is empty! Please select files to convert."
 msgstr ""
 
-#: EncoderConfigWindow.vala:874
+#: EncoderConfigWindow.vala:876
 msgid "Inverted Parabola"
 msgstr ""
 
@@ -972,7 +961,7 @@ msgstr ""
 msgid "Left:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:870
+#: EncoderConfigWindow.vala:872
 msgid "Linear"
 msgstr ""
 
@@ -980,47 +969,47 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: Main.vala:395
+#: Main.vala:407
 msgid "Loading presets from:"
 msgstr ""
 
-#: Main.vala:394
+#: Main.vala:406
 msgid "Loading scripts from:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:872
+#: EncoderConfigWindow.vala:874
 msgid "Logarithmic"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2201
+#: EncoderConfigWindow.vala:2203
 msgid "Lossless"
 msgstr ""
 
-#: EncoderConfigWindow.vala:280
+#: EncoderConfigWindow.vala:282
 msgid "MP3 Audio (*.mp3)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:282
+#: EncoderConfigWindow.vala:284
 msgid "MP4 Audio (*.mp4)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2930 EncoderConfigWindow.vala:2949
+#: EncoderConfigWindow.vala:2932 EncoderConfigWindow.vala:2951
 msgid "MPEG-2 AAC-LC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2932 EncoderConfigWindow.vala:2951
+#: EncoderConfigWindow.vala:2934 EncoderConfigWindow.vala:2953
 msgid "MPEG-2 HE-AAC"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2953
+#: EncoderConfigWindow.vala:2955
 msgid "MPEG-2 HE-AAC v2"
 msgstr ""
 
-#: EncoderConfigWindow.vala:270
+#: EncoderConfigWindow.vala:272
 msgid "MPEG4 Video (*.mp4)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:921
+#: EncoderConfigWindow.vala:923
 msgid ""
 "Makes audio easier to listen to on headphones. Adds 'cues' to the audio so "
 "that when listened to on headphones the stereo image is moved from inside "
@@ -1028,23 +1017,23 @@ msgid ""
 "(standard for speakers)."
 msgstr ""
 
-#: EncoderConfigWindow.vala:268
+#: EncoderConfigWindow.vala:270
 msgid "Matroska Video (*.mkv)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:903
+#: EncoderConfigWindow.vala:905
 msgid "Maximize Volume Level (Normalize)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:900
+#: EncoderConfigWindow.vala:902
 msgid "Maximize the volume level (loudness)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1170
+#: EncoderConfigWindow.vala:1172
 msgid "Medium"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1388
+#: EncoderConfigWindow.vala:1390
 msgid "Method"
 msgstr ""
 
@@ -1052,27 +1041,47 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:3065
+#: MainWindow.vala:3032
 msgid "Missing Encoders"
 msgstr ""
 
-#: Utility.vala:1037
+#: Utility.vala:1024
 msgid "Missing Icon"
 msgstr ""
 
-#: Main.vala:348
+#: Main.vala:360
 msgid "Missing Utilities"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1532
+#: EncoderConfigWindow.vala:1534
 msgid "Mode"
+msgstr ""
+
+#: ColumnSelectionBox.vala:203
+msgid "Move Down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:192
+msgid "Move Up"
+msgstr ""
+
+#: ColumnSelectionBox.vala:204
+msgid "Move selected item down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:193
+msgid "Move selected item up"
 msgstr ""
 
 #: AppConfigWindow.vala:185
 msgid "Move source files after encoding is complete"
 msgstr ""
 
-#: EncoderConfigWindow.vala:479
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Multiple items selected"
+msgstr ""
+
+#: EncoderConfigWindow.vala:481
 msgid "Music"
 msgstr ""
 
@@ -1084,22 +1093,22 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: EncoderConfigWindow.vala:322
+#: ColumnSelectionBox.vala:105 EncoderConfigWindow.vala:324
 msgid "Name"
 msgstr ""
 
-#: EncoderConfigWindow.vala:328 MainWindow.vala:1773
+#: EncoderConfigWindow.vala:330 MainWindow.vala:1809
 msgid "New Preset"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1326 EncoderConfigWindow.vala:1446
-#: EncoderConfigWindow.vala:2224 EncoderConfigWindow.vala:2266
-#: EncoderConfigWindow.vala:2294 EncoderConfigWindow.vala:2308
-#: EncoderConfigWindow.vala:2339 EncoderConfigWindow.vala:2359
+#: EncoderConfigWindow.vala:1328 EncoderConfigWindow.vala:1448
+#: EncoderConfigWindow.vala:2226 EncoderConfigWindow.vala:2268
+#: EncoderConfigWindow.vala:2296 EncoderConfigWindow.vala:2310
+#: EncoderConfigWindow.vala:2341 EncoderConfigWindow.vala:2361
 msgid "No Change"
 msgstr ""
 
-#: MainWindow.vala:2889 MainWindow.vala:2915 MainWindow.vala:3049
+#: MainWindow.vala:2856 MainWindow.vala:2882 MainWindow.vala:3016
 msgid "No Files"
 msgstr ""
 
@@ -1107,35 +1116,35 @@ msgstr ""
 msgid "No Files Selected"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1876
+#: EncoderConfigWindow.vala:1878
 msgid "No Subtitles"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1422
+#: EncoderConfigWindow.vala:1424
 msgid "No Up-Scaling"
 msgstr ""
 
-#: MainWindow.vala:2903
+#: MainWindow.vala:2870
 msgid "No Videos"
 msgstr ""
 
-#: EncoderConfigWindow.vala:475
+#: EncoderConfigWindow.vala:477
 msgid "None"
 msgstr ""
 
-#: Main.vala:347
+#: Main.vala:359
 msgid "Not possible to continue!"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1477
+#: EncoderConfigWindow.vala:1479
 msgid "Numerator"
 msgstr ""
 
-#: EncoderConfigWindow.vala:272
+#: EncoderConfigWindow.vala:274
 msgid "OGG Theora Video (*.ogv)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:284
+#: EncoderConfigWindow.vala:286
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
@@ -1147,52 +1156,52 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: MainWindow.vala:1790
+#: MainWindow.vala:1826
 msgid "Open Folder"
 msgstr ""
 
-#: MainWindow.vala:1496
+#: MainWindow.vala:1519
 msgid "Open Log File"
 msgstr ""
 
-#: MainWindow.vala:1490
+#: MainWindow.vala:1513
 msgid "Open Output Folder"
 msgstr ""
 
-#: MainWindow.vala:1484
+#: MainWindow.vala:1507
 msgid "Open Temp Folder"
 msgstr ""
 
-#: MainWindow.vala:319
+#: MainWindow.vala:335
 msgid "Open output folder"
 msgstr ""
 
-#: EncoderConfigWindow.vala:461
+#: EncoderConfigWindow.vala:463
 msgid "Optimization"
 msgstr ""
 
-#: EncoderConfigWindow.vala:286
+#: EncoderConfigWindow.vala:288
 msgid "Opus Audio (*.opus)"
 msgstr ""
 
-#: MainWindow.vala:317
+#: MainWindow.vala:333
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:234 MainWindow.vala:3030 MainWindow.vala:3032
+#: MainWindow.vala:250 MainWindow.vala:2997 MainWindow.vala:2999
 #: MediaPlayerWindow.vala:1173
 msgid "Pause"
 msgstr ""
 
-#: Main.vala:1254 Main.vala:1259
+#: Main.vala:1277 Main.vala:1282
 msgid "Paused"
 msgstr ""
 
-#: Main.vala:1257
+#: Main.vala:1280
 msgid "Paused: Enter (r) to resume..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:722
+#: EncoderConfigWindow.vala:724
 msgid "Pitch"
 msgstr ""
 
@@ -1200,11 +1209,11 @@ msgstr ""
 msgid "Play"
 msgstr ""
 
-#: MainWindow.vala:1513
+#: MainWindow.vala:1536
 msgid "Play File (Output)"
 msgstr ""
 
-#: MainWindow.vala:1507
+#: MainWindow.vala:1530
 msgid "Play File (Source)"
 msgstr ""
 
@@ -1216,32 +1225,36 @@ msgstr ""
 msgid "Please Wait..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:2966
+#: EncoderConfigWindow.vala:2968
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:3065
+#: MainWindow.vala:3032
 msgid "Please install required packages or select another preset"
 msgstr ""
 
-#: EncoderConfigWindow.vala:618
+#: EncoderConfigWindow.vala:620
 msgid "Please install the 'sox' package on your system to use this feature"
 msgstr ""
 
-#: EncoderConfigWindow.vala:167 EncoderConfigWindow.vala:1146
-#: MainWindow.vala:1835
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Position of fixed columns cannot be changed"
+msgstr ""
+
+#: EncoderConfigWindow.vala:167 EncoderConfigWindow.vala:1148
+#: MainWindow.vala:1871
 msgid "Preset"
 msgstr ""
 
-#: MainWindow.vala:2186
+#: MainWindow.vala:2222
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:3176
+#: MainWindow.vala:3134
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
-#: EncoderConfigWindow.vala:484 EncoderConfigWindow.vala:1188
+#: EncoderConfigWindow.vala:486 EncoderConfigWindow.vala:1190
 msgid "Profile"
 msgstr ""
 
@@ -1249,27 +1262,27 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
-#: EncoderConfigWindow.vala:447 EncoderConfigWindow.vala:1124
+#: EncoderConfigWindow.vala:449 EncoderConfigWindow.vala:1126
 msgid "Quality"
 msgstr ""
 
-#: EncoderConfigWindow.vala:866
+#: EncoderConfigWindow.vala:868
 msgid "Quarter Sine"
 msgstr ""
 
-#: Main.vala:736 Main.vala:795 MediaFile.vala:46
+#: Main.vala:759 Main.vala:818 MediaFile.vala:46
 msgid "Queued"
 msgstr ""
 
-#: MainWindow.vala:2616
+#: MainWindow.vala:2651
 msgid "Reading file properties..."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1224
+#: EncoderConfigWindow.vala:1226
 msgid "Realtime"
 msgstr ""
 
-#: MainWindow.vala:1360 MainWindow.vala:2778
+#: MainWindow.vala:1380
 msgid "Recorded Date"
 msgstr ""
 
@@ -1277,23 +1290,27 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: MainWindow.vala:394
+#: MainWindow.vala:410
 msgid "Remove File(s)"
 msgstr ""
 
-#: MainWindow.vala:375
+#: MainWindow.vala:391
 msgid "Remove Selected Items"
 msgstr ""
 
-#: BatchEditWindow.vala:103
+#: BatchEditWindow.vala:103 ColumnSelectionBox.vala:169
 msgid "Reset"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1319
+#: ColumnSelectionBox.vala:170
+msgid "Reset to default columns"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1321
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:3024 MainWindow.vala:3026
+#: MainWindow.vala:2991 MainWindow.vala:2993
 msgid "Resume"
 msgstr ""
 
@@ -1301,7 +1318,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: MainWindow.vala:454
+#: MainWindow.vala:472
 msgid "Right-click for more options"
 msgstr ""
 
@@ -1309,15 +1326,15 @@ msgstr ""
 msgid "Right:"
 msgstr ""
 
-#: MainWindow.vala:255
+#: MainWindow.vala:271
 msgid "Run in background with lower priority"
 msgstr ""
 
-#: EncoderConfigWindow.vala:587
+#: EncoderConfigWindow.vala:589
 msgid "SOX"
 msgstr ""
 
-#: EncoderConfigWindow.vala:545
+#: EncoderConfigWindow.vala:547
 msgid "Sampling Rate (Hz)"
 msgstr ""
 
@@ -1329,7 +1346,7 @@ msgstr ""
 msgid "Scroll mouse wheel to adjust"
 msgstr ""
 
-#: ColumnSelectionDialog.vala:42
+#: ColumnSelectionDialog.vala:43
 msgid "Select Columns"
 msgstr ""
 
@@ -1337,12 +1354,16 @@ msgstr ""
 msgid "Select Path"
 msgstr ""
 
-#: MainWindow.vala:2265
+#: MainWindow.vala:2300
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr ""
 
 #: MediaPlayerWindow.vala:380
 msgid "Select multiple segments"
+msgstr ""
+
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Select single item to move"
 msgstr ""
 
 #: BatchEditWindow.vala:421 BatchEditWindow.vala:485
@@ -1359,7 +1380,7 @@ msgid ""
 "subtitle track"
 msgstr ""
 
-#: MainWindow.vala:2223
+#: MainWindow.vala:2259
 msgid ""
 "Selene supports 2 types of presets:\n"
 "\n"
@@ -1390,7 +1411,7 @@ msgstr ""
 msgid "Set current playback position as starting position"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1348
+#: EncoderConfigWindow.vala:1350
 msgid ""
 "Set either Width or Height and leave the other as 0.\n"
 "It will be calculated automatically.\n"
@@ -1401,64 +1422,64 @@ msgid ""
 "Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
 msgstr ""
 
-#: MainWindow.vala:306
+#: MainWindow.vala:322
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:3002
+#: MainWindow.vala:2969
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:2999
+#: MainWindow.vala:2966
 msgid "Shutdown Enabled"
 msgstr ""
 
-#: MainWindow.vala:311
+#: MainWindow.vala:327
 msgid "Shutdown system after completion"
 msgstr ""
 
-#: MainWindow.vala:610
+#: MainWindow.vala:630
 msgid "Size"
 msgstr ""
 
-#: MainWindow.vala:1437
+#: MainWindow.vala:1460
 msgid "Skip File"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1172
+#: EncoderConfigWindow.vala:1174
 msgid "Slow"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1174
+#: EncoderConfigWindow.vala:1176
 msgid "Slower"
 msgstr ""
 
-#: MainWindow.vala:2654
+#: MainWindow.vala:2689
 msgid "Some files could not be added:"
 msgstr ""
 
-#: Main.vala:724
+#: Main.vala:747
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr ""
 
-#: Main.vala:826 MediaPlayerWindow.vala:276
+#: Main.vala:849 MediaPlayerWindow.vala:276
 msgid "Source:"
 msgstr ""
 
-#: EncoderConfigWindow.vala:618
+#: EncoderConfigWindow.vala:620
 msgid "Sox Not Installed"
 msgstr ""
 
-#: EncoderConfigWindow.vala:477
+#: EncoderConfigWindow.vala:479
 msgid "Speech"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1208
+#: EncoderConfigWindow.vala:1210
 msgid "Speed"
 msgstr ""
 
-#: MainWindow.vala:225 MainWindow.vala:227
+#: MainWindow.vala:241 MainWindow.vala:243
 msgid "Start"
 msgstr ""
 
@@ -1478,65 +1499,65 @@ msgstr ""
 msgid "StartPos"
 msgstr ""
 
-#: Main.vala:710
+#: Main.vala:733
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr ""
 
-#: EncoderStatusWindow.vala:98 MainWindow.vala:1392
+#: EncoderStatusWindow.vala:98 MainWindow.vala:1412
 msgid "Status"
 msgstr ""
 
-#: Utility.vala:761
+#: Utility.vala:748
 msgid "Stopped"
 msgstr ""
 
-#: Main.vala:1077
+#: Main.vala:1100
 msgid "Stopped!"
 msgstr ""
 
-#: MainWindow.vala:1665
+#: MainWindow.vala:1691
 msgid "Subtitle"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1510 EncoderConfigWindow.vala:1550
+#: EncoderConfigWindow.vala:1512 EncoderConfigWindow.vala:1552
 msgid "Subtitles"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1166
+#: EncoderConfigWindow.vala:1168
 msgid "SuperFast"
 msgstr ""
 
-#: MainWindow.vala:3178
+#: MainWindow.vala:3136
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:3185
+#: MainWindow.vala:3143
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
 
-#: Main.vala:230
+#: Main.vala:239
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:778 MainWindow.vala:3175
+#: Main.vala:801 MainWindow.vala:3133
 msgid "System will shutdown in one minute!"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1572
+#: EncoderConfigWindow.vala:1574
 msgid "Tags"
 msgstr ""
 
-#: EncoderConfigWindow.vala:760
+#: EncoderConfigWindow.vala:762
 msgid "Tempo"
 msgstr ""
 
-#: EncoderConfigWindow.vala:618
+#: EncoderConfigWindow.vala:620
 msgid "The Sox utility was not found on your system"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1384
+#: EncoderConfigWindow.vala:1386
 msgid ""
 "The resizing filter affects the sharpness and compressibility of the video.\n"
 "For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
@@ -1560,7 +1581,7 @@ msgstr ""
 msgid "Tiles"
 msgstr ""
 
-#: MainWindow.vala:1266 MainWindow.vala:2775
+#: MainWindow.vala:1286
 msgid "Title"
 msgstr ""
 
@@ -1580,12 +1601,8 @@ msgstr ""
 msgid "Top:"
 msgstr ""
 
-#: MainWindow.vala:1297
+#: MainWindow.vala:1317
 msgid "Track #"
-msgstr ""
-
-#: MainWindow.vala:2776
-msgid "Track Number"
 msgstr ""
 
 #: AboutWindow.vala:330
@@ -1593,7 +1610,7 @@ msgstr ""
 msgid "Translators"
 msgstr ""
 
-#: EncoderConfigWindow.vala:684
+#: EncoderConfigWindow.vala:686
 msgid "Treble"
 msgstr ""
 
@@ -1601,39 +1618,39 @@ msgstr ""
 msgid "Trim"
 msgstr ""
 
-#: BatchEditWindow.vala:88 MainWindow.vala:427 MainWindow.vala:1447
+#: BatchEditWindow.vala:88 MainWindow.vala:443 MainWindow.vala:1470
 msgid "Trim Duration"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1164
+#: EncoderConfigWindow.vala:1166
 msgid "UltraFast"
 msgstr ""
 
-#: Main.vala:683
+#: Main.vala:706
 msgid "Unknown format:"
 msgstr ""
 
-#: Main.vala:396
+#: Main.vala:408
 msgid "Using temp folder:"
 msgstr ""
 
-#: MainWindow.vala:1013
+#: MainWindow.vala:1033
 msgid "V-Bitrate"
 msgstr ""
 
-#: MainWindow.vala:793
+#: MainWindow.vala:813
 msgid "V-Fmt"
 msgstr ""
 
-#: MainWindow.vala:1133
+#: MainWindow.vala:1153
 msgid "V-Fps"
 msgstr ""
 
-#: MainWindow.vala:1093
+#: MainWindow.vala:1113
 msgid "V-Height"
 msgstr ""
 
-#: MainWindow.vala:1053
+#: MainWindow.vala:1073
 msgid "V-Width"
 msgstr ""
 
@@ -1641,54 +1658,34 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2038 EncoderConfigWindow.vala:2063
-#: EncoderConfigWindow.vala:2081 EncoderConfigWindow.vala:2107
-#: EncoderConfigWindow.vala:2138 EncoderConfigWindow.vala:2155
-#: EncoderConfigWindow.vala:2589 EncoderConfigWindow.vala:2614
+#: EncoderConfigWindow.vala:2040 EncoderConfigWindow.vala:2065
+#: EncoderConfigWindow.vala:2083 EncoderConfigWindow.vala:2109
+#: EncoderConfigWindow.vala:2140 EncoderConfigWindow.vala:2157
+#: EncoderConfigWindow.vala:2591 EncoderConfigWindow.vala:2616
 msgid "Variable Bitrate"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2616
+#: EncoderConfigWindow.vala:2618
 msgid "Variable Bitrate (2pass)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:2539 EncoderConfigWindow.vala:2564
+#: EncoderConfigWindow.vala:2541 EncoderConfigWindow.vala:2566
 msgid "Variable Bitrate / CRF"
 msgstr ""
 
-#: EncoderConfigWindow.vala:333
+#: EncoderConfigWindow.vala:335
 msgid "Version"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1176
+#: EncoderConfigWindow.vala:1178
 msgid "VerySlow"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1032 MainWindow.vala:1659
+#: EncoderConfigWindow.vala:1034 MainWindow.vala:1685
 msgid "Video"
 msgstr ""
 
-#: MainWindow.vala:2771
-msgid "Video Bitrate"
-msgstr ""
-
-#: MainWindow.vala:2763
-msgid "Video Format"
-msgstr ""
-
-#: MainWindow.vala:2768
-msgid "Video Framerate"
-msgstr ""
-
-#: MainWindow.vala:2767
-msgid "Video Height"
-msgstr ""
-
-#: MainWindow.vala:2766
-msgid "Video Width"
-msgstr ""
-
-#: EncoderConfigWindow.vala:1418
+#: EncoderConfigWindow.vala:1420
 msgid ""
 "Video will not be resized if it's smaller than the given width and height"
 msgstr ""
@@ -1697,7 +1694,7 @@ msgstr ""
 msgid "Visit Website"
 msgstr ""
 
-#: EncoderConfigWindow.vala:288
+#: EncoderConfigWindow.vala:290
 msgid "WAV Audio (*.wav)"
 msgstr ""
 
@@ -1705,25 +1702,25 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: Main.vala:233
+#: Main.vala:242
 msgid ""
 "Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
 msgstr ""
 
-#: EncoderConfigWindow.vala:274
+#: EncoderConfigWindow.vala:276
 msgid "WebM Video (*.webm)"
 msgstr ""
 
-#: EncoderConfigWindow.vala:1352 EncoderConfigWindow.vala:1361
+#: EncoderConfigWindow.vala:1354 EncoderConfigWindow.vala:1363
 msgid "Width"
 msgstr ""
 
-#: MainWindow.vala:2271
+#: MainWindow.vala:2306
 msgid ""
 "[Batch completed] Right-click for options or click 'Finish' to continue."
 msgstr ""
 
-#: MainWindow.vala:2275
+#: MainWindow.vala:2310
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 
@@ -1743,10 +1740,10 @@ msgstr ""
 msgid "mpv"
 msgstr ""
 
-#: MainWindow.vala:1906
+#: MainWindow.vala:1942
 msgid "presets"
 msgstr ""
 
-#: MainWindow.vala:1902
+#: MainWindow.vala:1938
 msgid "scripts"
 msgstr ""

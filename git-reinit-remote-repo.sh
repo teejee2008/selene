@@ -4,8 +4,8 @@ backup=`pwd`
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 cd "$DIR"
 
-echo "Pushing local changes to Git repo..."
-git push -u origin master
+echo "Re-initializing Git repo and pushing changes..."
+git push --force --set-upstream origin master
 
 #check for errors
 if [ $? -ne 0 ]; then

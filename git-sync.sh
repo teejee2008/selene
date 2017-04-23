@@ -4,7 +4,7 @@ backup=`pwd`
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 cd "$DIR"
 
-echo "Updating local git repo..."
+echo "Updating local Git repo..."
 bzr fast-export --plain . | git fast-import
 
 #check for errors

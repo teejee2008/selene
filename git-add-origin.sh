@@ -4,8 +4,8 @@ backup=`pwd`
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 cd "$DIR"
 
-echo "Pushing local changes to Git repo..."
-git push -u origin master
+echo "Adding Git origin..."
+git remote add origin git@github.com:teejee2008/selene-media-converter.git
 
 #check for errors
 if [ $? -ne 0 ]; then
@@ -15,5 +15,7 @@ if [ $? -ne 0 ]; then
 fi
 
 cd "$backup"
+
+
 
 
