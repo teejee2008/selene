@@ -65,6 +65,8 @@ install:
 	msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/es/LC_MESSAGES/${app_name}.mo" ../po/${app_name}-es.po
 	mkdir -p "$(DESTDIR)$(localedir)/cs/LC_MESSAGES"
 	msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/cs/LC_MESSAGES/${app_name}.mo" ../po/${app_name}-cs.po
+	mkdir -p "$(DESTDIR)$(localedir)/nl/LC_MESSAGES"
+	msgfmt --check --verbose -o "$(DESTDIR)$(localedir)/nl/LC_MESSAGES/${app_name}.mo" ../po/${app_name}-nl.po
 	
 uninstall:
 	#binary

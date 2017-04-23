@@ -2902,7 +2902,8 @@ public class MainWindow : Gtk.Window{
 			"abuyop (Malay):launchpad.net/~abuyop",
 			"B. W. Knight (Korean):launchpad.net/~kbd0651",
 			"Felix Moreno (Spanish):launchpad.net/~felix-justdust",
-			"Radek Otáhal (Czech):radek.otahal@email.cz"
+			"Radek Otáhal (Czech):radek.otahal@email.cz",
+			"Heimen Stoffels (Dutch):vistausss@outlook.com"
 		};
 
 		dialog.third_party = {
