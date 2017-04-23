@@ -1,6 +1,8 @@
 selene (17.4.1) xenial; urgency=low
 
-  * Use StackSwitcher in app settings window
+  * Fixed issues with newer Gtk versions
+  
+  * Use GtkStackSwitcher in app settings window
 
   * Use GtkSidebar in encoder settings window
 
@@ -11,6 +13,8 @@ selene (17.4.1) xenial; urgency=low
   * AppSettings: Save settings if window is closed directly
 
   * Removed dependency on realpath
+
+  * Added Dutch translation by Heimen Stoffels
 
  -- Tony George <tony.george.kol@gmail.com>  Sat, 22 Apr 2017 10:00:00 +0530
 
