@@ -1744,7 +1744,7 @@ public class MainWindow : Gtk.Window{
 				tv_manager.set_columns(App.selected_columns);
 			}
 			else{
-				tv_manager.set_columns(Main.DEFAULT_COLUMNS);
+				tv_manager.set_columns("name,size,duration,progress,spacer");
 			}
 		}
 		

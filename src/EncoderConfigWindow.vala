@@ -224,7 +224,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 		vbox_main.add(pane);
 
 		sidebar = new Gtk.StackSidebar();
-		//sidebar.margin = 6;
+		sidebar.set_size_request(120,-1);
 		pane.pack1(sidebar, false, false); //resize, shrink
 
 		stack = new Gtk.Stack();
