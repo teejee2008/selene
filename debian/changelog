@@ -1,3 +1,12 @@
+selene (17.4.2) xenial; urgency=low
+
+  * Fixed build issues
+  
+  * Fixed: Progress column was hidden during encoding in list view
+
+ -- Tony George <tony.george.kol@gmail.com>  Tue, 25 Apr 2017 10:00:00 +0530
+
+
 selene (17.4.1) xenial; urgency=low
 
   * Fixed issues with newer Gtk versions
