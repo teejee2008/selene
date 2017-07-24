@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: selene 2.2\n"
 "Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
-"POT-Creation-Date: 2017-07-24 07:37+0530\n"
+"POT-Creation-Date: 2017-07-24 07:56+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -348,7 +348,7 @@ msgstr ""
 msgid "Add New Preset"
 msgstr ""
 
-#: MainWindow.vala:2857 MainWindow.vala:2883 MainWindow.vala:3018
+#: MainWindow.vala:2857 MainWindow.vala:2883 MainWindow.vala:3017
 msgid "Add some files to the file list"
 msgstr ""
 
@@ -448,6 +448,10 @@ msgstr ""
 msgid "Bass"
 msgstr ""
 
+#: DonationWindow.vala:99
+msgid "Become a Patron"
+msgstr ""
+
 #: EncoderConfigWindow.vala:1222
 msgid "Best"
 msgstr ""
@@ -480,7 +484,7 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: MainWindow.vala:3205
+#: MainWindow.vala:3204
 msgid "CPU: "
 msgstr ""
 
@@ -514,6 +518,10 @@ msgstr ""
 #: AboutWindow.vala:295 AppConfigWindow.vala:107 ColumnSelectionBox.vala:214
 #: ColumnSelectionBox.vala:215
 msgid "Close"
+msgstr ""
+
+#: DonationWindow.vala:131
+msgid "Close Window"
 msgstr ""
 
 #: MainWindow.vala:1559
@@ -629,21 +637,16 @@ msgstr ""
 msgid "Detecting borders..."
 msgstr ""
 
-#: DonationWindow.vala:54
+#: DonationWindow.vala:56
 msgid ""
-"Did you find this software useful?\n"
+"Did you find this application useful?\n"
 "\n"
 "You can buy me a coffee or make a donation via PayPal to show your support. "
-"Or just drop me an email and say Hi. This application is completely free and "
-"will continue to remain that way. Your contributions will help in keeping "
-"this project alive and improving it further.\n"
-"\n"
-"Feel free to send me an email if you find any issues in this application or "
-"if you need any changes. Suggestions and feedback are always welcome.\n"
+"Your contributions will help keep the project alive and support future "
+"development.\n"
 "\n"
 "Thanks,\n"
-"Tony George\n"
-"(teejeetech@gmail.com)"
+"Tony George"
 msgstr ""
 
 #: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1769
@@ -664,15 +667,11 @@ msgstr ""
 msgid "Documenters"
 msgstr ""
 
-#: DonationWindow.vala:36 MainWindow.vala:306 MainWindow.vala:307
+#: DonationWindow.vala:38 MainWindow.vala:306 MainWindow.vala:307
 msgid "Donate"
 msgstr ""
 
-#: DonationWindow.vala:74
-msgid "Donate with Google Wallet"
-msgstr ""
-
-#: DonationWindow.vala:67
+#: DonationWindow.vala:91
 msgid "Donate with PayPal"
 msgstr ""
 
@@ -789,7 +788,7 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: Utility.vala:1458
+#: Utility.vala:1462
 msgid "Failed to set ownership"
 msgstr ""
 
@@ -859,7 +858,7 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: MainWindow.vala:3033
+#: MainWindow.vala:3032
 msgid "Following encoders were not found on your system:"
 msgstr ""
 
@@ -947,6 +946,10 @@ msgstr ""
 
 #: EncoderConfigWindow.vala:876
 msgid "Inverted Parabola"
+msgstr ""
+
+#: DonationWindow.vala:107
+msgid "Issue Tracker ~ Report Issues, Request Features, Ask Questions"
 msgstr ""
 
 #: FileInfoWindow.vala:69
@@ -1041,7 +1044,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: MainWindow.vala:3033
+#: MainWindow.vala:3032
 msgid "Missing Encoders"
 msgstr ""
 
@@ -1108,7 +1111,7 @@ msgstr ""
 msgid "No Change"
 msgstr ""
 
-#: MainWindow.vala:2856 MainWindow.vala:2882 MainWindow.vala:3017
+#: MainWindow.vala:2856 MainWindow.vala:2882 MainWindow.vala:3016
 msgid "No Files"
 msgstr ""
 
@@ -1148,10 +1151,6 @@ msgstr ""
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr ""
 
-#: DonationWindow.vala:95
-msgid "OK"
-msgstr ""
-
 #: MediaPlayerWindow.vala:146
 msgid "Open"
 msgstr ""
@@ -1188,7 +1187,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: MainWindow.vala:250 MainWindow.vala:2998 MainWindow.vala:3000
+#: MainWindow.vala:250 MainWindow.vala:2997 MainWindow.vala:2999
 #: MediaPlayerWindow.vala:1173
 msgid "Pause"
 msgstr ""
@@ -1229,7 +1228,7 @@ msgstr ""
 msgid "Please enter a name for this preset"
 msgstr ""
 
-#: MainWindow.vala:3033
+#: MainWindow.vala:3032
 msgid "Please install required packages or select another preset"
 msgstr ""
 
@@ -1250,7 +1249,7 @@ msgstr ""
 msgid "Preset deleted"
 msgstr ""
 
-#: MainWindow.vala:3135
+#: MainWindow.vala:3134
 msgid "Press 'Cancel' to abort shutdown"
 msgstr ""
 
@@ -1310,7 +1309,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: MainWindow.vala:2992 MainWindow.vala:2994
+#: MainWindow.vala:2991 MainWindow.vala:2993
 msgid "Resume"
 msgstr ""
 
@@ -1395,10 +1394,6 @@ msgid ""
 "config/selene/scripts' for the syntax."
 msgstr ""
 
-#: DonationWindow.vala:81
-msgid "Send Email"
-msgstr ""
-
 #: MediaPlayerWindow.vala:358 MediaPlayerWindow.vala:368
 msgid "Set"
 msgstr ""
@@ -1426,11 +1421,11 @@ msgstr ""
 msgid "Shutdown"
 msgstr ""
 
-#: MainWindow.vala:2970
+#: MainWindow.vala:2969
 msgid "Shutdown Disabled"
 msgstr ""
 
-#: MainWindow.vala:2967
+#: MainWindow.vala:2966
 msgid "Shutdown Enabled"
 msgstr ""
 
@@ -1528,11 +1523,11 @@ msgstr ""
 msgid "SuperFast"
 msgstr ""
 
-#: MainWindow.vala:3137
+#: MainWindow.vala:3136
 msgid "System shutdown"
 msgstr ""
 
-#: MainWindow.vala:3144
+#: MainWindow.vala:3143
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr ""
@@ -1541,7 +1536,7 @@ msgstr ""
 msgid "System will be shutdown after completion"
 msgstr ""
 
-#: Main.vala:801 MainWindow.vala:3134
+#: Main.vala:801 MainWindow.vala:3133
 msgid "System will shutdown in one minute!"
 msgstr ""
 
@@ -1690,10 +1685,6 @@ msgid ""
 "Video will not be resized if it's smaller than the given width and height"
 msgstr ""
 
-#: DonationWindow.vala:88
-msgid "Visit Website"
-msgstr ""
-
 #: EncoderConfigWindow.vala:290
 msgid "WAV Audio (*.wav)"
 msgstr ""
@@ -1709,6 +1700,10 @@ msgstr ""
 
 #: EncoderConfigWindow.vala:276
 msgid "WebM Video (*.webm)"
+msgstr ""
+
+#: DonationWindow.vala:123
+msgid "Website ~ teejeetech.in"
 msgstr ""
 
 #: EncoderConfigWindow.vala:1354 EncoderConfigWindow.vala:1363

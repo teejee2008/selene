@@ -1,7 +1,7 @@
 /*
  * DonationWindow.vala
  *
- * Copyright 2012 Tony George <teejee2008@gmail.com>
+ * Copyright 2012-2017 Tony George <teejeetech@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,75 +27,114 @@ using TeeJee.Logging;
 using TeeJee.FileSystem;
 using TeeJee.JSON;
 using TeeJee.ProcessManagement;
-using TeeJee.GtkHelper;
 using TeeJee.System;
 using TeeJee.Misc;
+using TeeJee.GtkHelper;
 
 public class DonationWindow : Dialog {
-	public DonationWindow() {
+
+	public DonationWindow(Gtk.Window window) {
+
 		set_title(_("Donate"));
+		set_transient_for(window);
 		window_position = WindowPosition.CENTER_ON_PARENT;
 		set_destroy_with_parent (true);
 		set_modal (true);
 		set_deletable(true);
 		set_skip_taskbar_hint(false);
-		set_default_size (400, 20);
+		set_default_size (500, 20);
 		icon = get_app_icon(16);
 
 		//vbox_main
-		Box vbox_main = get_content_area();
+		var vbox_main = get_content_area();
 		vbox_main.margin = 6;
-		vbox_main.homogeneous = false;
+		vbox_main.spacing = 6;
+		//vbox_main.homogeneous = false;
 
-		get_action_area().visible = false;
+		//get_action_area().visible = false;
 
-		//lbl_message
-		Label lbl_message = new Gtk.Label("");
-		string msg = _("Did you find this software useful?\n\nYou can buy me a coffee or make a donation via PayPal to show your support. Or just drop me an email and say Hi. This application is completely free and will continue to remain that way. Your contributions will help in keeping this project alive and improving it further.\n\nFeel free to send me an email if you find any issues in this application or if you need any changes. Suggestions and feedback are always welcome.\n\nThanks,\nTony George\n(teejeetech@gmail.com)");
-		lbl_message.label = msg;
-		lbl_message.wrap = true;
-		vbox_main.pack_start(lbl_message,true,true,0);
+		string msg = _("Did you find this application useful?\n\nYou can buy me a coffee or make a donation via PayPal to show your support. Your contributions will help keep the project alive and support future development.\n\nThanks,\nTony George");
+		
+		var label = new Gtk.Label(msg);
+		label.wrap = true;
+		label.wrap_mode = Pango.WrapMode.WORD;
+		label.max_width_chars = 50;
+		label.xalign = 0.0f;
+		label.margin_bottom = 6;
 
-		//vbox_actions
-		Box vbox_actions = new Box (Orientation.VERTICAL, 6);
-		vbox_actions.margin_left = 50;
-		vbox_actions.margin_right = 50;
-		vbox_actions.margin_top = 20;
-		vbox_main.pack_start(vbox_actions,false,false,0);
-
-		//btn_donate_paypal
-		Button btn_donate_paypal = new Button.with_label("   " + _("Donate with PayPal") + "   ");
-		vbox_actions.add(btn_donate_paypal);
-		btn_donate_paypal.clicked.connect(()=>{
+		var scrolled = new Gtk.ScrolledWindow(null, null);
+		scrolled.hscrollbar_policy = PolicyType.NEVER;
+		scrolled.vscrollbar_policy = PolicyType.NEVER;
+		scrolled.add (label);
+		vbox_main.add(scrolled);
+		
+		/*var hbox = new Gtk.Box(Orientation.HORIZONTAL, 6);
+		hbox.margin_top = 24;
+		vbox_main.pack_start(hbox, false, false, 0);
+		
+		var bbox = new Gtk.ButtonBox(Orientation.HORIZONTAL);
+		//bbox.set_layout(Gtk.ButtonBoxStyle.EXPAND);
+		bbox.set_spacing(6);
+		bbox.set_homogeneous(false);
+		hbox.add(bbox);
+		* */
+		
+		// donation_features
+		/*var button = new Gtk.LinkButton.with_label("", _("Donation Features"));
+		button.set_tooltip_text("https://github.com/teejee2008/selene-media-converter/wiki/Donation-Features");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
+			xdg_open("https://github.com/teejee2008/selene-media-converter/wiki/Donation-Features");
+		});*/
+		
+		// donate paypal
+		var button = new Gtk.LinkButton.with_label("", _("Donate with PayPal"));
+		button.set_tooltip_text("Donate to: teejeetech@gmail.com");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
 			xdg_open("https://www.paypal.com/cgi-bin/webscr?business=teejeetech@gmail.com&cmd=_xclick&currency_code=USD&amount=10&item_name=Selene%20Donation");
 		});
 
-		//btn_donate_wallet
-		Button btn_donate_wallet = new Button.with_label("   " + _("Donate with Google Wallet") + "   ");
-		vbox_actions.add(btn_donate_wallet);
-		btn_donate_wallet.clicked.connect(()=>{
-			xdg_open("https://support.google.com/mail/answer/3141103?hl=en");
-		});
-		
-		//btn_send_email
-		Button btn_send_email = new Button.with_label("   " + _("Send Email") + "   ");
-		vbox_actions.add(btn_send_email);
-		btn_send_email.clicked.connect(()=>{
-			xdg_open("mailto:teejeetech@gmail.com");
+		// patreon
+		button = new Gtk.LinkButton.with_label("", _("Become a Patron"));
+		button.set_tooltip_text("https://www.patreon.com/bePatron?u=3059450");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
+			xdg_open("https://www.patreon.com/bePatron?u=3059450");
 		});
 
-		//btn_visit
-		Button btn_visit = new Button.with_label("   " + _("Visit Website") + "   ");
-		vbox_actions.add(btn_visit);
-		btn_visit.clicked.connect(()=>{
+		// issue tracker
+		button = new Gtk.LinkButton.with_label("", _("Issue Tracker ~ Report Issues, Request Features, Ask Questions"));
+		button.set_tooltip_text("https://github.com/teejee2008/selene-media-converter/issues");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
+			xdg_open("https://github.com/teejee2008/selene-media-converter/issues");
+		});
+
+		// wiki
+		/*button = new Gtk.LinkButton.with_label("", _("Wiki ~ Documentation & Help"));
+		button.set_tooltip_text("https://github.com/teejee2008/selene-media-converter/wiki");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
+			xdg_open("https://github.com/teejee2008/selene-media-converter/wiki");
+		});*/
+
+		// website
+		button = new Gtk.LinkButton.with_label("", _("Website ~ teejeetech.in"));
+		button.set_tooltip_text("http://www.teejeetech.in");
+		vbox_main.add(button);
+		button.clicked.connect(() => {
 			xdg_open("http://www.teejeetech.in");
 		});
 
-		//btn_exit
-		Button btn_exit = new Button.with_label("   " + _("OK") + "   ");
-		vbox_actions.add(btn_exit);
-		btn_exit.clicked.connect(() => {
-			this.destroy();
+		// close window
+		button = new Gtk.LinkButton.with_label("", _("Close Window"));
+		vbox_main.add(button);
+		button.clicked.connect(() => {
+			this.close();
 		});
+
+		this.show_all();
 	}
 }
+

@@ -1296,14 +1296,18 @@ namespace TeeJee.System{
 	}
 
 	public bool xdg_open (string file){
-		string path;
-		path = get_cmd_path ("xdg-open");
-		if ((path != null)&&(path != "")){
-			return execute_command_script_async ("xdg-open \"" + file + "\"");
-		}
-		return false;
+		string path; 
+		path = get_cmd_path ("xdg-open"); 
+		if ((path != null)&&(path != "")){ 
+			return execute_command_script_async ("xdg-open '" + escape_single_quote(file) + "'"); 
+		} 
+		return false; 
 	}
 
+	public string escape_single_quote(string file_path){
+		return file_path.replace("'","'\\''");
+	}
+	
 	public bool exo_open_folder (string dir_path, bool xdg_open_try_first = true){
 
 		/* Tries to open the given directory in a file manager */

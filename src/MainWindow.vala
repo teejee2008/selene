@@ -2940,9 +2940,8 @@ public class MainWindow : Gtk.Window{
 	}
 
 	private void btnDonation_clicked(){
-		var dialog = new DonationWindow();
-		dialog.set_transient_for(this);
-		dialog.show_all();
+		var dialog = new DonationWindow(this);
+		//dialog.show_all();
 		dialog.run();
 		dialog.destroy();
 	}
