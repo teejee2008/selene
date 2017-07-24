@@ -3179,11 +3179,11 @@ Notes:
 		
 		if (mf.HasVideo && video.get_string_member("codec") != "disable") {
 			//encode to tempAudio
-			s += mux_mp4box_aac_to_mp4("audio.aac","\"${temp_audio_%d}\"".printf(stream.TypeIndex));
+			s += mux_avconv_aac_to_mp4(mf, settings, "audio.aac","${temp_audio_%d}".printf(stream.TypeIndex));
 		}
 		else {
 			//encode to outputFile
-			s += mux_mp4box_aac_to_mp4("audio.aac","\"${outputFile}\"");
+			s += mux_avconv_aac_to_mp4(mf, settings, "audio.aac","${outputFile}");
 		}
 
 		s += "\n";
@@ -3530,14 +3530,53 @@ Notes:
 		return s;
 	}
 
-	private string mux_mp4box_aac_to_mp4 (string input_file, string output_file){
+	private string mux_mp4box_aac_to_mp4(string input_file, string output_file){
+
+		// deprecated; does not support tags
+		
 		string s = "";
 
 		s += "MP4Box -new";
-		s += " -add %s".printf(input_file);
-		s += " %s".printf(output_file);
+		s += " -add \"%s\"".printf(input_file);
+		s += " \"%s\"".printf(output_file);
 		s += "\n";
 
+		return s;
+	}
+
+	private string mux_avconv_aac_to_mp4 (MediaFile mf, Json.Object settings, string input_file, string output_file){
+		
+		string s = "";
+
+		//tags
+		bool copy_tags = true;
+		if (settings.has_member("tags")){
+			Json.Object tags = (Json.Object) settings.get_object_member("tags");
+			copy_tags = tags.get_boolean_member("copyTags");
+		}
+		
+		s += PrimaryEncoder;
+		s += " -i \"%s\"".printf(input_file);
+		s += " -f mp4";
+		s += " -c:a copy -vn -sn"; // 
+		s += " -bsf:a aac_adtstoasc";
+		
+		if (copy_tags){
+			s += (mf.TrackName.length > 0) ? " -metadata 'title'=\"${tagTitle}\"" : "";
+			s += (mf.TrackNumber.length > 0) ? " -metadata 'track'=\"${tagTrackNum}\"" : "";
+			s += (mf.Artist.length > 0) ? " -metadata 'artist'=\"${tagArtist}\"" : "";
+			s += (mf.Album.length > 0) ? " -metadata 'album'=\"${tagAlbum}\"" : "";
+			s += (mf.Genre.length > 0) ? " -metadata 'genre'=\"${tagGenre}\"" : "";
+			s += (mf.RecordedDate.length > 0) ? " -metadata 'year'=\"${tagYear}\"" : "";
+			s += (mf.Comment.length > 0) ? " -metadata 'comment'=\"${tagComment}\"" : "";
+		}
+		else{
+			s += " -map_metadata -1";
+		}
+		
+		s += " -y \"%s\"".printf(output_file);
+		s += "\n";
+		
 		return s;
 	}
 
