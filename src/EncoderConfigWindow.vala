@@ -1785,6 +1785,8 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.append (out iter);
 				model.set (iter,0,_("Copy Audio"),1,"copy");
 				model.append (out iter);
+				model.set (iter,0,"Opus",1,"opus");
+				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
 				cmb_acodec.set_active(2);
 				break;

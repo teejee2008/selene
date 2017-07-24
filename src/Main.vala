@@ -1557,6 +1557,13 @@ Notes:
 							encoderList.add("sox");
 						};
 						break;
+					case "opus":
+						s += encode_audio_opus(mf,stream,settings);
+						encoderList.add("opusenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
 					case "copy":
 						s += copy_audio_avconv(mf,stream,settings);
 						encoderList.add(PrimaryEncoder);
