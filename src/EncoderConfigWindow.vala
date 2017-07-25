@@ -1761,7 +1761,9 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
-				cmb_acodec.set_active(3);
+				model.append (out iter);
+				model.set (iter,0,"Opus",1,"opus");
+				cmb_acodec.set_active(6);
 				break;
 
 			case "mp4v":
@@ -1775,7 +1777,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
-				cmb_acodec.set_active(2);
+				cmb_acodec.set_active(4);
 				break;
 
 			case "ogv":
@@ -1788,13 +1790,15 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,"Opus",1,"opus");
 				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
-				cmb_acodec.set_active(2);
+				cmb_acodec.set_active(3);
 				break;
 
 			case "ogg":
 				model.append (out iter);
+				model.set (iter,0,"Opus",1,"opus");
+				model.append (out iter);
 				model.set (iter,0,"Vorbis",1,"vorbis");
-				cmb_acodec.set_active(0);
+				cmb_acodec.set_active(1);
 				break;
 
 			case "mp3":
@@ -1810,7 +1814,7 @@ public class EncoderConfigWindow : Gtk.Dialog {
 				model.set (iter,0,"AAC / Nero",1,"neroaac");
 				model.append (out iter);
 				model.set (iter,0,"AAC / Fraunhofer FDK",1,"libfdk_aac");
-				cmb_acodec.set_active(0);
+				cmb_acodec.set_active(2);
 				break;
 
 			case "opus":

@@ -1686,11 +1686,26 @@ Notes:
 				if (!stream.IsSelected){
 					continue;
 				}
-				s += encode_audio_oggenc(mf,stream,settings);
-				encoderList.add("oggenc");
-				if (audio.get_boolean_member("soxEnabled")){
-					encoderList.add("sox");
-				};
+
+				//encode audio
+				if (mf.HasAudio && acodec != "disable") {
+					switch (acodec) {
+					case "vorbis":
+						s += encode_audio_oggenc(mf,stream,settings);
+						encoderList.add("oggenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					case "opus":
+						s += encode_audio_opus(mf,stream,settings);
+						encoderList.add("opusenc");
+						if (audio.get_boolean_member("soxEnabled")){
+							encoderList.add("sox");
+						};
+						break;
+					}
+				}
 			}
 			break;
 
