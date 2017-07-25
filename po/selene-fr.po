@@ -1,0 +1,1940 @@
+# French translation for selene
+# Copyright (c) 2015 Rosetta Contributors and Canonical Ltd 2015
+# This file is distributed under the same license as the selene package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: selene\n"
+"Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
+"POT-Creation-Date: 2017-07-25 07:17+0530\n"
+"PO-Revision-Date: 2017-07-25 07:17+0530\n"
+"Last-Translator: Jean-Marc <Unknown>\n"
+"Language-Team: French <fr@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-07-24 02:32+0000\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: EncoderConfigWindow.vala:1960
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Audio track will be copied directly to the output file without changes.\n"
+"\n"
+"2. Format of the audio track must be compatible with the selected file "
+"format. For example, if the input file contains AAC audio and the selected "
+"file format is WEBM, then encoding will fail - since WEBM does not support "
+"AAC audio.\n"
+"\n"
+"3. Input file can be trimmed only in basic mode (single segment). Selecting "
+"multiple segments using advanced mode will not work."
+msgstr ""
+
+#: EncoderConfigWindow.vala:2878
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Supported subtitle file formats:"
+msgstr ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Formats de fichier de sous-titres pris en charge :"
+
+#: EncoderConfigWindow.vala:2453
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Video track will be copied to the output file without re-encoding.\n"
+"\n"
+"2. Format of the video track must be compatible with the selected container. "
+"For example, if the input file contains H264 video and the selected file "
+"format is WEBM, then encoding will fail (since WEBM does not support H264).\n"
+"\n"
+"3. If you are trimming the input file then select the basic mode (single "
+"segment). Selecting multiple segments in advanced mode will not work."
+msgstr ""
+
+#: BatchEditWindow.vala:85 BatchEditWindow.vala:88
+msgid "(Batch)"
+msgstr "(Lot)"
+
+#: MediaPlayerWindow.vala:1109
+msgid "100%"
+msgstr "100 %"
+
+#: EncoderConfigWindow.vala:2898
+msgid ""
+"2. External subtitle files must be present in the same location and start "
+"with the same file name."
+msgstr ""
+"2. Les fichiers de sous-titres externes doivent être présents au même "
+"endroit et commencer avec le même nom de fichier."
+
+#: MediaPlayerWindow.vala:1111
+msgid "200%"
+msgstr "200 %"
+
+#: MediaPlayerWindow.vala:1103
+msgid "25%"
+msgstr "25 %"
+
+#: MediaPlayerWindow.vala:1105
+msgid "50%"
+msgstr "50 %"
+
+#: MediaPlayerWindow.vala:1107
+msgid "75%"
+msgstr "75 %"
+
+#: EncoderConfigWindow.vala:506 EncoderConfigWindow.vala:507
+msgid ""
+"<b>AAC-ELD</b>\n"
+"Enhanced Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:502
+msgid ""
+"<b>AAC-LC (Recommended)</b>\n"
+"MPEG-2 Low-complexity (LC) combined with MPEG-4 Perceptual Noise "
+"Substitution (PNS)\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:505
+msgid ""
+"<b>AAC-LD</b>\n"
+"Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1253
+msgid ""
+"<b>Additional Options</b>\n"
+"These options will be passed to the encoder\n"
+"on the command line. Please do not specify\n"
+"any options that are already provided by the GUI."
+msgstr ""
+"<b>Options supplémentaires</b>\n"
+"Ces options seront envoyées à l’encodeur\n"
+"via la ligne de commande. Veuillez ne pas spécifier\n"
+"d’options qui sont déjà fournies par l’interface graphique."
+
+#: EncoderConfigWindow.vala:633
+msgid "<b>Adjustments:</b>"
+msgstr "<b>Ajustements :</b>"
+
+#: EncoderConfigWindow.vala:391
+msgid "<b>Audio Encoder</b>"
+msgstr "<b>Encodeur audio</b>"
+
+#: AppConfigWindow.vala:177
+msgid "<b>Backup Directory</b>"
+msgstr "<b>Répertoire de sauvegarde</b>"
+
+#: EncoderConfigWindow.vala:561
+msgid "<b>Channels</b>"
+msgstr "<b>Canaux</b>"
+
+#: EncoderConfigWindow.vala:1185
+msgid ""
+"<b>Compression Vs Device Compatibility</b>\n"
+"'High' profile gives the best compression.\n"
+"Change this to 'Baseline' or 'Main' only if you are encoding\n"
+"for a particular device (mobiles,PMPs,etc) which does not\n"
+"support the 'High' profile"
+msgstr ""
+"<b>Compression / Compatibilité du périphérique</b>\n"
+"Le profil « Haute » permet la meilleure compression.\n"
+"Passez-le à « Défaut » ou « Primaire » seulement si vous\n"
+"encodez pour un appareil particulier (portables, baladeur, etc.) qui ne "
+"prend pas\n"
+"en charge le profil « Haute »"
+
+#: EncoderConfigWindow.vala:1143
+msgid ""
+"<b>Compression Vs Encoding Speed</b>\n"
+"Slower presets give better compression and smaller files\n"
+"but take more time to encode."
+msgstr ""
+"<b>Compression / Vitesse d’encodage</b>\n"
+"Les réglages les plus lents donnent une meilleure compression et des "
+"fichiers plus légers\n"
+"mais mettent plus de temps à encoder."
+
+#: EncoderConfigWindow.vala:1121
+msgid ""
+"<b>Compression Vs Quality</b>\n"
+"Smaller values give better quality video and larger files"
+msgstr ""
+"<b>Compression / Qualité</b>\n"
+"Les valeurs les plus faibles donnent des vidéos de meilleure qualité mais "
+"des fichiers plus lourds"
+
+#: AppConfigWindow.vala:381
+msgid "<b>Default Language</b>"
+msgstr "<b>Langue par défaut</b>"
+
+#: EncoderConfigWindow.vala:1524
+msgid ""
+"<b>Embed</b> - Subtitle files will be combined with the output file.\n"
+"These subtitles can be switched off since they are added as a separate track"
+msgstr ""
+"<b>Intégrés</b> - Les sous-titres seront combinés au fichier de sortie.\n"
+"Ces sous-titres peuvent être désactivés puisqu’ils forment une piste séparée"
+
+#: AppConfigWindow.vala:293
+msgid ""
+"<b>Encoder</b>\n"
+"Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
+"\n"
+msgstr ""
+"<b>Encodeur</b>\n"
+"Utiliser l'outil d'encodage « ffmpeg » du projet FFmpeg (Recommandé)\n"
+"\n"
+
+#: EncoderConfigWindow.vala:795
+msgid "<b>Fade:</b>"
+msgstr "<b>Fondu :</b>"
+
+#: EncoderConfigWindow.vala:255
+msgid "<b>File Format</b>"
+msgstr "<b>Format de fichier</b>"
+
+#: AppConfigWindow.vala:435
+msgid "<b>File Handling</b>"
+msgstr "<b>Gestion de fichier</b>"
+
+#: EncoderConfigWindow.vala:504
+msgid ""
+"<b>HE-AAC v2</b>\n"
+"AAC-LC + SBR + PS (Parametric Stereo)\n"
+"\n"
+msgstr ""
+"<b>HE-AAC v2</b>\n"
+"AAC-LC + SBR + PS (stéréo paramétrique)\n"
+"\n"
+
+#: EncoderConfigWindow.vala:503
+msgid ""
+"<b>HE-AAC</b>\n"
+"AAC-LC + SBR (Spectral Band Replication)\n"
+"\n"
+msgstr ""
+"<b>HE-AAC</b>\n"
+"AAC-LC + SBR (reconstruction de bande spectrale)\n"
+"\n"
+
+#: AppConfigWindow.vala:229
+msgid "<b>Main Window</b>"
+msgstr "<b>Fenêtre principale</b>"
+
+#: EncoderConfigWindow.vala:508
+msgid ""
+"<b>Note:</b>\n"
+"HE-AAC and HE-AACv2 are used for low-bitrate encoding while HE-LD and HE-ELD "
+"are used for real-time communication. HE-AAC is suitable for bit rates "
+"between 48 to 64 kbps (stereo) while HE-AACv2 is suitable for bit rates as "
+"low as 32 kbps."
+msgstr ""
+
+#: EncoderConfigWindow.vala:889
+msgid "<b>Other Effects:</b>"
+msgstr "<b>Autres effets :</b>"
+
+#: AppConfigWindow.vala:125
+msgid "<b>Output Directory</b>"
+msgstr "<b>Répertoire de destination/b>"
+
+#: AppConfigWindow.vala:280
+msgid "<b>Preferred Tools</b>"
+msgstr "<b>Outils préférés</b>"
+
+#: EncoderConfigWindow.vala:315
+msgid "<b>Preset</b>"
+msgstr "<b>Préréglage</b>"
+
+#: EncoderConfigWindow.vala:2525
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"<b>Best:</b> Best quality, slower\n"
+"<b>Good:</b> Good quality, faster\n"
+"<b>Realtime:</b> Fastest"
+msgstr ""
+"<b>Qualité / Vitesse d'encodage</b>\n"
+"\n"
+"<b>Meilleure :</b> meilleure qualité, plus lent\n"
+"<b>Bonne :</b> bonne qualité, plus rapide\n"
+"<b>Temps réel :</b> le plus rapide"
+
+#: EncoderConfigWindow.vala:2527
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"Smaller values = Better quality, slower\n"
+"Larger value = Lower quality, faster\n"
+msgstr ""
+"<b>Qualité / Vitesse d'encodage</b>\n"
+"\n"
+"Valeurs plus petites = meilleure qualité, plus lent\n"
+"Valeurs plus grandes = qualité plus basse, plus rapide\n"
+
+#: EncoderConfigWindow.vala:2535
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"Higher values speed-up encoding at the expense of quality.\n"
+"Lower values improve quality at the expense of encoding speed."
+msgstr ""
+"<b>Qualité / Vitesse d'encodage</b>\n"
+"Les valeurs les plus grandes accélèrent l'encodage au dépend de la qualité.\n"
+"Les valeurs les plus basses augmentent la qualité au dépend de la vitesse "
+"d'encodage."
+
+#: EncoderConfigWindow.vala:1526
+msgid ""
+"<b>Render</b> - Subtitles are rendered/burned on the video.\n"
+"These subtitles cannot be switched off since they become a part of the video"
+msgstr ""
+"<b>Fusionnés</b> - Les sous-titres sont fusionnés dans la vidéo.\n"
+"Ces sous-titres ne peuvent être désactivés puisqu'ils font partie de la vidéo"
+
+#: EncoderConfigWindow.vala:539 EncoderConfigWindow.vala:1432
+msgid "<b>Resample</b>"
+msgstr "<b>Ré-échantillonner</b>"
+
+#: EncoderConfigWindow.vala:1313
+msgid "<b>Resize</b>"
+msgstr "<b>Redimensionner</b>"
+
+#: EncoderConfigWindow.vala:598
+msgid "<b>SOX Audio Processing</b>"
+msgstr "<b>Traitement audio SOX</b>"
+
+#: EncoderConfigWindow.vala:1518
+msgid "<b>Subtitles</b>"
+msgstr "<b>Sous-titres</b>"
+
+#: EncoderConfigWindow.vala:1581
+msgid "<b>Tags</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1041
+msgid "<b>Video Encoder</b>"
+msgstr "<b>Encodeur vidéo</b>"
+
+#: AppConfigWindow.vala:292
+msgid ""
+"<b>avconv</b>\n"
+"Use the 'avconv' encoding tool from the Libav project\n"
+"\n"
+msgstr ""
+"<b>avconv</b>\n"
+"Utiliser l'outil d'encodage « avconv » du projet Libav\n"
+"\n"
+
+#: MainWindow.vala:978
+msgid "A-Bitrate"
+msgstr "A-Débit"
+
+#: MainWindow.vala:852
+msgid "A-Ch"
+msgstr "A-Canal"
+
+#: MainWindow.vala:774
+msgid "A-Fmt"
+msgstr "A-Format"
+
+#: MainWindow.vala:892
+msgid "A-Sampling"
+msgstr "A-Échantillonnage"
+
+#: EncoderConfigWindow.vala:2936 EncoderConfigWindow.vala:2955
+msgid "AAC-ELD"
+msgstr "AAC-ELD"
+
+#: EncoderConfigWindow.vala:2919 EncoderConfigWindow.vala:2928
+#: EncoderConfigWindow.vala:2947
+msgid "AAC-LC"
+msgstr "AAC-LC"
+
+#: EncoderConfigWindow.vala:2934 EncoderConfigWindow.vala:2953
+msgid "AAC-LD"
+msgstr "AAC-LD"
+
+#: EncoderConfigWindow.vala:278
+msgid "AC3 Audio (*.ac3)"
+msgstr "Audio AC3 (*.ac3)"
+
+#: MainWindow.vala:259
+msgid "Abort"
+msgstr "Abandonner"
+
+#: MainWindow.vala:317
+msgid "About"
+msgstr "À propos"
+
+#: MainWindow.vala:369 MainWindow.vala:2617
+msgid "Add File(s)"
+msgstr "Ajouter un/des fichier(s)"
+
+#: MainWindow.vala:352
+msgid "Add File(s)..."
+msgstr "Ajouter un ou des fichier(s)..."
+
+#: MainWindow.vala:2621
+msgid "Add Folder(s)"
+msgstr "Ajouter un ou des dossier(s)"
+
+#: MainWindow.vala:362
+msgid "Add Folder(s)..."
+msgstr "Ajouter un ou des dossier(s)..."
+
+#: MainWindow.vala:1811
+msgid "Add New Preset"
+msgstr "Ajouter un nouveau préréglage"
+
+#: MainWindow.vala:2857 MainWindow.vala:2883 MainWindow.vala:3020
+msgid "Add some files to the file list"
+msgstr "Ajouter des fichiers à la liste de fichiers"
+
+#: MainWindow.vala:2871
+msgid "Add some videos to the file list"
+msgstr "Ajouter des vidéos à la liste de fichiers"
+
+#: MainWindow.vala:2663
+#, c-format
+msgid "Adding (%d/%d): '%s'"
+msgstr "Ajout (%d/%d) : « %s »"
+
+#: MainWindow.vala:2653
+msgid "Adding..."
+msgstr "Ajout..."
+
+#: EncoderConfigWindow.vala:926
+msgid "Adjust Stereo for Headphones"
+msgstr "Ajuster la stéréo pour les écouteurs/casques"
+
+#: MediaPlayerWindow.vala:378
+msgid "Advanced Mode"
+msgstr "Mode avancé"
+
+#: MainWindow.vala:1224
+msgid "Album"
+msgstr "Album"
+
+#: Main.vala:721
+msgid "All files removed"
+msgstr "Tous les fichiers ont été supprimés"
+
+#: MainWindow.vala:2932
+msgid "An audio-video converter for Linux"
+msgstr "Un convertisseur audio-vidéo pour Linux"
+
+#: MainWindow.vala:293
+msgid "Application Settings"
+msgstr "Paramètres de l'application"
+
+#: MainWindow.vala:1193
+msgid "Artist"
+msgstr "Artiste"
+
+#: AboutWindow.vala:322
+#, c-format
+msgid "Artists"
+msgstr "Artistes"
+
+#: EncoderConfigWindow.vala:384 MainWindow.vala:1688
+msgid "Audio"
+msgstr "Audio"
+
+#: EncoderConfigWindow.vala:346
+msgid "Author"
+msgstr "Auteur"
+
+#: AboutWindow.vala:314
+#, c-format
+msgid "Authors"
+msgstr "Auteurs"
+
+#: EncoderConfigWindow.vala:2914
+msgid "Auto"
+msgstr "Auto"
+
+#: BatchEditWindow.vala:99
+msgid "Auto Crop"
+msgstr "Rognage automatique"
+
+#: EncoderConfigWindow.vala:2048 EncoderConfigWindow.vala:2073
+#: EncoderConfigWindow.vala:2091 EncoderConfigWindow.vala:2117
+#: EncoderConfigWindow.vala:2148 EncoderConfigWindow.vala:2165
+#: EncoderConfigWindow.vala:2549 EncoderConfigWindow.vala:2574
+#: EncoderConfigWindow.vala:2599
+msgid "Average Bitrate"
+msgstr "Taux d'échantillonnage moyen"
+
+#: EncoderConfigWindow.vala:2551 EncoderConfigWindow.vala:2576
+#: EncoderConfigWindow.vala:2601
+msgid "Average Bitrate (2-pass)"
+msgstr "Taux d'échantillonnage moyen (2 passes)"
+
+#: AboutWindow.vala:285
+msgid "Back"
+msgstr "Précédent"
+
+#: MainWindow.vala:266
+msgid "Background"
+msgstr "Arrière-plan"
+
+#: MediaPlayerWindow.vala:492
+msgid "Basic Mode"
+msgstr "Mode basique"
+
+#: EncoderConfigWindow.vala:648
+msgid "Bass"
+msgstr "Basses"
+
+#: DonationWindow.vala:99
+msgid "Become a Patron"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1222
+msgid "Best"
+msgstr "La meilleure"
+
+#: MainWindow.vala:932
+msgid "Bitrate"
+msgstr "Taux d'échantillonnage"
+
+#: EncoderConfigWindow.vala:435 EncoderConfigWindow.vala:1100
+msgid "Bitrate (kbps)"
+msgstr "Taux d'échantillonnage (kbps)"
+
+#: EncoderConfigWindow.vala:646
+msgid "Boost or cut the bass (lower) frequencies of the audio."
+msgstr "Augmenter ou couper les fréquences de basse (inférieures) de l'audio."
+
+#: EncoderConfigWindow.vala:684
+msgid "Boost or cut the treble (upper) frequencies of the audio."
+msgstr "Augmenter ou couper les fréquences aiguës (supérieures) de l'audio."
+
+#: BatchEditWindow.vala:221
+msgid "Bottom"
+msgstr "Bas"
+
+#: MediaPlayerWindow.vala:263
+msgid "Bottom:"
+msgstr "Bas :"
+
+#: MainWindow.vala:1824
+msgid "Browse"
+msgstr "Parcourir"
+
+#: MainWindow.vala:3207
+msgid "CPU: "
+msgstr "Processeur : "
+
+#: Main.vala:1250 Main.vala:1264
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: EncoderConfigWindow.vala:722
+msgid "Change audio pitch (shrillness) without changing audio tempo (speed)."
+msgstr "Changer la hauteur de l'audio sans changer son tempo (sa vitesse)."
+
+#: EncoderConfigWindow.vala:760
+msgid ""
+"Change audio tempo (speed) without changing audio pitch (shrillness).\n"
+"\n"
+"WARNING: This will change the duration of the audio track"
+msgstr ""
+"Changer le tempo de l'audio (sa vitesse) sans changer sa hauteur.\n"
+"\n"
+"ATTENTION : cela modifiera la durée de la piste audio"
+
+#: EncoderConfigWindow.vala:569
+msgid "Channels"
+msgstr "Canaux"
+
+#: MainWindow.vala:403
+msgid "Clear List"
+msgstr "Effacer la liste"
+
+#: MediaPlayerWindow.vala:675
+msgid "Clip"
+msgstr ""
+
+#: AboutWindow.vala:295 AppConfigWindow.vala:107 ColumnSelectionBox.vala:214
+#: ColumnSelectionBox.vala:215
+msgid "Close"
+msgstr "Fermer"
+
+#: DonationWindow.vala:131
+msgid "Close Window"
+msgstr ""
+
+#: MainWindow.vala:1559
+msgid "Columns..."
+msgstr "Colonnes..."
+
+#: MainWindow.vala:1349
+msgid "Comments"
+msgstr "Commentaires"
+
+#: Main.vala:1085 Main.vala:1095 Main.vala:1103
+msgid "Completed"
+msgstr "Terminé"
+
+#: EncoderConfigWindow.vala:2050 EncoderConfigWindow.vala:2119
+#: EncoderConfigWindow.vala:2150 EncoderConfigWindow.vala:2626
+msgid "Constant Bitrate"
+msgstr "Taux d'échantillonnage constant"
+
+#: EncoderConfigWindow.vala:2052
+msgid "Constant Bitrate (Strict)"
+msgstr "Taux d'échantillonnage constant (strict)"
+
+#: Main.vala:995 Main.vala:1298 MainWindow.vala:2314
+msgid "Converting"
+msgstr "Conversion en cours"
+
+#: Main.vala:993 Main.vala:1296
+msgid "Converting: Enter (q) to quit or (p) to pause..."
+msgstr ""
+"Conversion : appuyez sur (q) pour quitter ou (p) pour mettre en pause..."
+
+#: EncoderConfigWindow.vala:1755 EncoderConfigWindow.vala:1773
+#: EncoderConfigWindow.vala:1788
+msgid "Copy Audio"
+msgstr "Copier un élément audio"
+
+#: EncoderConfigWindow.vala:1690 EncoderConfigWindow.vala:1699
+#: EncoderConfigWindow.vala:1708 EncoderConfigWindow.vala:1715
+#: EncoderConfigWindow.vala:1726
+msgid "Copy Video"
+msgstr "Copier un élément vidéo"
+
+#: EncoderConfigWindow.vala:1590
+msgid "Copy tags (artist, album, etc) from the source file to output file"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1592
+msgid "Copy tags from source file"
+msgstr ""
+
+#: AboutWindow.vala:272 AboutWindow.vala:289
+msgid "Credits"
+msgstr "Contributeurs"
+
+#: MainWindow.vala:448
+msgid "Crop"
+msgstr ""
+
+#: BatchEditWindow.vala:161
+msgid "Crop Left"
+msgstr ""
+
+#: BatchEditWindow.vala:85 MainWindow.vala:1465 MediaPlayerWindow.vala:123
+msgid "Crop Video"
+msgstr ""
+
+#: MainWindow.vala:432 MainWindow.vala:451
+msgid "Crop Videos"
+msgstr ""
+
+#: MediaPlayerWindow.vala:283
+msgid "Cropped:"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1330 EncoderConfigWindow.vala:1450
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: MainWindow.vala:1818
+msgid "Delete Preset"
+msgstr "Effacer le préréglage"
+
+#: MediaPlayerWindow.vala:474
+msgid "Delete Segment"
+msgstr "Supprimer le segment"
+
+#: AppConfigWindow.vala:445
+msgid "Delete temporary files after successful encode"
+msgstr ""
+"Supprimer les fichiers temporaires après un encodage réalisé avec succès"
+
+#: EncoderConfigWindow.vala:1496
+msgid "Denominator"
+msgstr "Dénominateur"
+
+#: EncoderStatusWindow.vala:90
+msgid "Description"
+msgstr "Description"
+
+#: MediaPlayerWindow.vala:298
+msgid "Detect Borders"
+msgstr "Détecter les bordures"
+
+#: MediaPlayerWindow.vala:300
+msgid "Detect black borders in the video and set cropping parameters"
+msgstr ""
+
+#: MediaPlayerWindow.vala:872
+#, c-format
+msgid "Detected Parameters: %d, %d, %d, %d"
+msgstr "Paramètres détectés : %d, %d, %d, %d"
+
+#: BatchEditWindow.vala:426 MediaPlayerWindow.vala:804
+msgid "Detecting borders..."
+msgstr "Détection des bordures..."
+
+#: DonationWindow.vala:56
+msgid ""
+"Did you find this application useful?\n"
+"\n"
+"You can buy me a coffee or make a donation via PayPal to show your support. "
+"Your contributions will help keep the project alive and support future "
+"development.\n"
+"\n"
+"Thanks,\n"
+"Tony George"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1771
+#: EncoderConfigWindow.vala:1786
+msgid "Disable Audio"
+msgstr "Désactiver l'audio"
+
+#: EncoderConfigWindow.vala:1724
+msgid "Disable Video"
+msgstr "Désactiver la vidéo"
+
+#: EncoderConfigWindow.vala:1413
+msgid "Do not stretch or squeeze the video (Fit-To-Box)"
+msgstr "Ne pas étirer ou resserrer la vidéo (ajuster sur un cadre)"
+
+#: AboutWindow.vala:346
+#, c-format
+msgid "Documenters"
+msgstr "Rédacteurs de la documentation"
+
+#: DonationWindow.vala:38 MainWindow.vala:306 MainWindow.vala:307
+msgid "Donate"
+msgstr "Faire un don"
+
+#: DonationWindow.vala:91
+msgid "Donate with PayPal"
+msgstr "Faire un don via PayPal"
+
+#: AboutWindow.vala:354
+#, c-format
+msgid "Donations"
+msgstr "Dons"
+
+#: Main.vala:1080
+msgid "Done"
+msgstr "Terminé"
+
+#: MainWindow.vala:2302
+msgid "Drag files on this window or click the 'Add' button"
+msgstr ""
+"Déplacez les fichiers dans cette fenêtre ou cliquez sur le bouton « Ajouter »"
+
+#: MainWindow.vala:680 MediaPlayerWindow.vala:681
+msgid "Duration"
+msgstr "Durée"
+
+#: BatchEditWindow.vala:283
+msgid "Edit"
+msgstr "Éditer"
+
+#: MainWindow.vala:1891
+msgid "Edit Preset"
+msgstr "Modifier le préréglage"
+
+#: EncoderConfigWindow.vala:357
+msgid "Email"
+msgstr "Adresse électronique"
+
+#: EncoderConfigWindow.vala:1886
+msgid "Embed / Soft Subs"
+msgstr "Sous-titres intégrés / doux"
+
+#: EncoderConfigWindow.vala:2976
+msgid "Empty Preset Name"
+msgstr "Nom de préréglage vide"
+
+#: AppConfigWindow.vala:295
+msgid "Encoder"
+msgstr "Encodeur"
+
+#: EncoderStatusWindow.vala:45 MainWindow.vala:299
+msgid "Encoders"
+msgstr "Encodeurs"
+
+#: EncoderConfigWindow.vala:422 EncoderConfigWindow.vala:1081
+msgid "Encoding Mode"
+msgstr "Mode d'encodage"
+
+#: MainWindow.vala:1881
+msgid "Encoding Script or Preset File"
+msgstr "Script d'encodage ou fichier de préréglage"
+
+#: MediaPlayerWindow.vala:344
+msgid "End (sec):"
+msgstr "Fin (sec) :"
+
+#: MediaPlayerWindow.vala:679
+msgid "End Pos"
+msgstr ""
+
+#: MediaPlayerWindow.vala:458
+msgid "End Segment"
+msgstr ""
+
+#: BatchEditWindow.vala:262
+msgid "EndPos"
+msgstr ""
+
+#: Main.vala:802
+msgid "Enter any key to Cancel..."
+msgstr "Appuyez sur n'importe quelle touche pour annuler..."
+
+#: AppConfigWindow.vala:145 AppConfigWindow.vala:197
+msgid "Enter path or browse for directory"
+msgstr "Saisissez un chemin ou naviguez jusqu'à un répertoire"
+
+#: Main.vala:1090 Utility.vala:108
+msgid "Error"
+msgstr "Erreur"
+
+#: Main.vala:837
+msgid "Error: File missing"
+msgstr "Erreur : fichier manquant"
+
+#: EncoderConfigWindow.vala:302
+msgid "Extension"
+msgstr "Extension"
+
+#: EncoderConfigWindow.vala:1256
+msgid "Extra Options"
+msgstr "Options supplémentaires"
+
+#: EncoderConfigWindow.vala:280
+msgid "FLAC Audio (*.flac)"
+msgstr "Audio FLAC (*.flac)"
+
+#: EncoderConfigWindow.vala:810
+msgid "Fade In (sec)"
+msgstr "Fondu d'entrée (sec)"
+
+#: EncoderConfigWindow.vala:830
+msgid "Fade Out (sec)"
+msgstr "Fondu de sortie (sec)"
+
+#: EncoderConfigWindow.vala:850
+msgid "Fade Type"
+msgstr "Type de fondu"
+
+#: Main.vala:1106
+msgid "Failed"
+msgstr "Échec"
+
+#: Utility.vala:1462
+msgid "Failed to set ownership"
+msgstr "Impossible de définir le propriétaire"
+
+#: EncoderConfigWindow.vala:1170
+msgid "Fast"
+msgstr "Rapide"
+
+#: BatchEditWindow.vala:140 MainWindow.vala:491
+msgid "File"
+msgstr "Fichier"
+
+#: MainWindow.vala:1548
+msgid "File Info (Output)"
+msgstr "Informations du fichier (sortie)"
+
+#: MainWindow.vala:1542
+msgid "File Info (Source)"
+msgstr "Informations du fichier (sortie)"
+
+#: AppConfigWindow.vala:241
+msgid "File View"
+msgstr "Affichage du fichier"
+
+#: Main.vala:701
+msgid "File added:"
+msgstr "Fichier ajouté :"
+
+#: Main.vala:715
+msgid "File removed:"
+msgstr "Fichier supprimé :"
+
+#: Main.vala:738
+#, c-format
+msgid "Files will be saved in '%s'"
+msgstr "Les fichiers seront enregistrés dans « %s »"
+
+#: Main.vala:741
+msgid "Files will be saved in source directory"
+msgstr "Les fichiers seront enregistrés dans le répertoire source"
+
+#: EncoderConfigWindow.vala:532
+msgid "Filters (A)"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1304
+msgid "Filters (V)"
+msgstr ""
+
+#: MainWindow.vala:277 MainWindow.vala:279 MediaPlayerWindow.vala:307
+#: MediaPlayerWindow.vala:393 MediaPlayerWindow.vala:507
+msgid "Finish"
+msgstr "Terminer"
+
+#: EncoderConfigWindow.vala:1409
+msgid "Fits the video in a box of given width and height."
+msgstr "Ajuster la vidéo dans un cadre d'une largeur et d'une hauteur donnée."
+
+#: EncoderConfigWindow.vala:2182
+msgid "Fixed Bitrate"
+msgstr "Taux d'échantillonnage fixe"
+
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Fixed Column"
+msgstr ""
+
+#: MainWindow.vala:1856 MainWindow.vala:1866
+msgid "Folder"
+msgstr "Dossier"
+
+#: MainWindow.vala:3035
+msgid "Following encoders were not found on your system:"
+msgstr "Les encodeurs suivants n'ont pas été trouvés sur votre système :"
+
+#: Main.vala:359
+msgid "Following utilities are not installed on your system:"
+msgstr "Les utilitaires suivants ne sont pas installés sur votre système"
+
+#: EncoderConfigWindow.vala:263 MainWindow.vala:723
+msgid "Format"
+msgstr "Format"
+
+#: EncoderConfigWindow.vala:399 EncoderConfigWindow.vala:1049
+msgid "Format / Codec"
+msgstr "Format/Codec"
+
+#: EncoderStatusWindow.vala:153
+msgid "Found"
+msgstr "Trouvé"
+
+#: EncoderConfigWindow.vala:1470
+msgid "Fps: Frames"
+msgstr "Images par seconde : images"
+
+#: EncoderConfigWindow.vala:1487
+msgid "Fps: Seconds"
+msgstr "Images par secondes : secondes"
+
+#: EncoderConfigWindow.vala:1441
+msgid "Frame Rate"
+msgstr "Fréquence des images"
+
+#: EncoderConfigWindow.vala:1443
+msgid "Frames/sec"
+msgstr "Images/s"
+
+#: MediaPlayerWindow.vala:1193 MediaPlayerWindow.vala:1197
+msgid "Fullscreen"
+msgstr "Plein écran"
+
+#: AppConfigWindow.vala:121 EncoderConfigWindow.vala:248
+msgid "General"
+msgstr "Paramètres généraux"
+
+#: MainWindow.vala:1255
+msgid "Genre"
+msgstr "Style"
+
+#: EncoderConfigWindow.vala:1224
+msgid "Good"
+msgstr "Bonne"
+
+#: EncoderConfigWindow.vala:2921 EncoderConfigWindow.vala:2930
+#: EncoderConfigWindow.vala:2949
+msgid "HE-AAC"
+msgstr "HE-AAC"
+
+#: EncoderConfigWindow.vala:2923 EncoderConfigWindow.vala:2932
+#: EncoderConfigWindow.vala:2951
+msgid "HE-AAC v2"
+msgstr "HE-AAC v2"
+
+#: EncoderConfigWindow.vala:870
+msgid "Half Sine"
+msgstr "Demi sinus"
+
+#: EncoderConfigWindow.vala:1371 EncoderConfigWindow.vala:1380
+msgid "Height"
+msgstr "Hauteur"
+
+#: ColumnSelectionBox.vala:125
+msgid "Indicator"
+msgstr ""
+
+#: MainWindow.vala:1833 MainWindow.vala:1835 MainWindow.vala:2261
+msgid "Info"
+msgstr "Informations"
+
+#: Main.vala:729
+msgid "Input queue is empty! Please add some files."
+msgstr "La file d'attente d'entrée est vide ! Veuillez ajouter des fichiers."
+
+#: Main.vala:266
+msgid "Input queue is empty! Please select files to convert."
+msgstr ""
+"La file d'attente d'entrée est vide ! Veuillez sélectionner des fichiers à "
+"convertir."
+
+#: EncoderConfigWindow.vala:876
+msgid "Inverted Parabola"
+msgstr "Parabole inversée"
+
+#: DonationWindow.vala:107
+msgid "Issue Tracker ~ Report Issues, Request Features, Ask Questions"
+msgstr ""
+
+#: FileInfoWindow.vala:69
+msgid "Key"
+msgstr "Touche"
+
+#: AppConfigWindow.vala:395
+msgid "Language"
+msgstr "Langue"
+
+#: MediaPlayerWindow.vala:224
+msgid "Left:"
+msgstr "Gauche :"
+
+#: EncoderConfigWindow.vala:872
+msgid "Linear"
+msgstr "Linéaire"
+
+#: AppConfigWindow.vala:257
+msgid "List"
+msgstr "Liste"
+
+#: Main.vala:407
+msgid "Loading presets from:"
+msgstr "Chargement des préréglages à partir de :"
+
+#: Main.vala:406
+msgid "Loading scripts from:"
+msgstr "Chargement des scripts à partir de :"
+
+#: EncoderConfigWindow.vala:874
+msgid "Logarithmic"
+msgstr "Logarithmique"
+
+#: EncoderConfigWindow.vala:2209
+msgid "Lossless"
+msgstr "Sans perte"
+
+#: EncoderConfigWindow.vala:282
+msgid "MP3 Audio (*.mp3)"
+msgstr "Audio MP3 (*.mp3)"
+
+#: EncoderConfigWindow.vala:284
+msgid "MP4 Audio (*.mp4)"
+msgstr "Audio MP4 (*.mp4)"
+
+#: EncoderConfigWindow.vala:2938 EncoderConfigWindow.vala:2957
+msgid "MPEG-2 AAC-LC"
+msgstr "MPEG-2 AAC-LC"
+
+#: EncoderConfigWindow.vala:2940 EncoderConfigWindow.vala:2959
+msgid "MPEG-2 HE-AAC"
+msgstr "MPEG-2 HE-AAC"
+
+#: EncoderConfigWindow.vala:2961
+msgid "MPEG-2 HE-AAC v2"
+msgstr "MPEG-2 HE-AAC v2"
+
+#: EncoderConfigWindow.vala:272
+msgid "MPEG4 Video (*.mp4)"
+msgstr "Vidéo MPEG4 (*.mp4)"
+
+#: EncoderConfigWindow.vala:923
+msgid ""
+"Makes audio easier to listen to on headphones. Adds 'cues' to the audio so "
+"that when listened to on headphones the stereo image is moved from inside "
+"your head (standard for headphones) to outside and in front of the listener "
+"(standard for speakers)."
+msgstr ""
+"Rend l'audio plus facile à écouter depuis des écouteurs ou un casque. Ajoute "
+"des « repères » à l'audio de manière à ce que l'image stéréo soit déplacée "
+"de l'intérieur de votre tête (standard pour les écouteurs et les casques) à "
+"l'extérieur et en face de l'auditeur (standard pour les hauts-parleurs), "
+"lors de l'écoute avec des écouteurs ou un casque."
+
+#: EncoderConfigWindow.vala:270
+msgid "Matroska Video (*.mkv)"
+msgstr "Vidéo Matroska (*.mkv)"
+
+#: EncoderConfigWindow.vala:905
+msgid "Maximize Volume Level (Normalize)"
+msgstr "Maximiser le niveau de volume (normaliser)"
+
+#: EncoderConfigWindow.vala:902
+msgid "Maximize the volume level (loudness)"
+msgstr "Maximiser le niveau de volume (intensité)"
+
+#: EncoderConfigWindow.vala:1172
+msgid "Medium"
+msgstr "Moyen"
+
+#: EncoderConfigWindow.vala:1390
+msgid "Method"
+msgstr "Méthode"
+
+#: EncoderStatusWindow.vala:153
+msgid "Missing"
+msgstr "Absent"
+
+#: MainWindow.vala:3035
+msgid "Missing Encoders"
+msgstr "Encodeurs manquants"
+
+#: Utility.vala:1024
+msgid "Missing Icon"
+msgstr "Icônes manquantes"
+
+#: Main.vala:360
+msgid "Missing Utilities"
+msgstr "Utilitaires manquants"
+
+#: EncoderConfigWindow.vala:1534
+msgid "Mode"
+msgstr "Mode"
+
+#: ColumnSelectionBox.vala:203
+msgid "Move Down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:192
+msgid "Move Up"
+msgstr ""
+
+#: ColumnSelectionBox.vala:204
+msgid "Move selected item down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:193
+msgid "Move selected item up"
+msgstr ""
+
+#: AppConfigWindow.vala:185
+msgid "Move source files after encoding is complete"
+msgstr "Déplacer les fichiers source après la fin de l'encodage"
+
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Multiple items selected"
+msgstr ""
+
+#: EncoderConfigWindow.vala:481
+msgid "Music"
+msgstr "Musique"
+
+#: MediaPlayerWindow.vala:1181 MediaPlayerWindow.vala:1185
+msgid "Mute"
+msgstr "Muet"
+
+#: MediaFile.vala:565
+msgid "N/A"
+msgstr "N/A"
+
+#: ColumnSelectionBox.vala:105 EncoderConfigWindow.vala:324
+msgid "Name"
+msgstr "Nom"
+
+#: EncoderConfigWindow.vala:330 MainWindow.vala:1809
+msgid "New Preset"
+msgstr "Nouveau préréglage"
+
+#: EncoderConfigWindow.vala:1328 EncoderConfigWindow.vala:1448
+#: EncoderConfigWindow.vala:2232 EncoderConfigWindow.vala:2274
+#: EncoderConfigWindow.vala:2302 EncoderConfigWindow.vala:2316
+#: EncoderConfigWindow.vala:2347 EncoderConfigWindow.vala:2367
+msgid "No Change"
+msgstr "Aucun changement"
+
+#: MainWindow.vala:2856 MainWindow.vala:2882 MainWindow.vala:3019
+msgid "No Files"
+msgstr "Aucun fichier"
+
+#: BatchEditWindow.vala:420 BatchEditWindow.vala:484
+msgid "No Files Selected"
+msgstr "Aucun fichier sélectionné"
+
+#: EncoderConfigWindow.vala:1884
+msgid "No Subtitles"
+msgstr "Aucun sous-titres"
+
+#: EncoderConfigWindow.vala:1424
+msgid "No Up-Scaling"
+msgstr "Aucune mise à l'échelle"
+
+#: MainWindow.vala:2870
+msgid "No Videos"
+msgstr "Aucune vidéo"
+
+#: EncoderConfigWindow.vala:477
+msgid "None"
+msgstr "Aucun"
+
+#: Main.vala:359
+msgid "Not possible to continue!"
+msgstr "Impossible de continuer !"
+
+#: EncoderConfigWindow.vala:1479
+msgid "Numerator"
+msgstr "Numérateur"
+
+#: EncoderConfigWindow.vala:274
+msgid "OGG Theora Video (*.ogv)"
+msgstr "Vidéo OGG Theora (*.ogv)"
+
+#: EncoderConfigWindow.vala:286
+msgid "OGG Vorbis Audio (*.ogg)"
+msgstr "Audio OGG Vorbis (*.ogg)"
+
+#: MediaPlayerWindow.vala:146
+msgid "Open"
+msgstr ""
+
+#: MainWindow.vala:1826
+msgid "Open Folder"
+msgstr "Ouvrir un dossier"
+
+#: MainWindow.vala:1519
+msgid "Open Log File"
+msgstr "Ouvrir un fichier journal"
+
+#: MainWindow.vala:1513
+msgid "Open Output Folder"
+msgstr "Ouvrir le dossier de sortie"
+
+#: MainWindow.vala:1507
+msgid "Open Temp Folder"
+msgstr "Ouvrir le dossier temporaire"
+
+#: MainWindow.vala:335
+msgid "Open output folder"
+msgstr "Ouvrir le fichier de sortie"
+
+#: EncoderConfigWindow.vala:463
+msgid "Optimization"
+msgstr "Optimisation"
+
+#: EncoderConfigWindow.vala:288
+msgid "Opus Audio (*.opus)"
+msgstr "Audio Opus (*.opus)"
+
+#: MainWindow.vala:333
+msgid "Output"
+msgstr "Sortie"
+
+#: MainWindow.vala:250 MainWindow.vala:3000 MainWindow.vala:3002
+#: MediaPlayerWindow.vala:1173
+msgid "Pause"
+msgstr "Mettre en pause"
+
+#: Main.vala:1277 Main.vala:1282
+msgid "Paused"
+msgstr "En pause"
+
+#: Main.vala:1280
+msgid "Paused: Enter (r) to resume..."
+msgstr "En pause : Appuyez sur (r) pour reprendre"
+
+#: EncoderConfigWindow.vala:724
+msgid "Pitch"
+msgstr "Hauteur"
+
+#: MediaPlayerWindow.vala:1169
+msgid "Play"
+msgstr "Lire"
+
+#: MainWindow.vala:1536
+msgid "Play File (Output)"
+msgstr "Lire le fichier (sortie)"
+
+#: MainWindow.vala:1530
+msgid "Play File (Source)"
+msgstr "Lire le fichier (source)"
+
+#: AppConfigWindow.vala:341
+msgid "Player"
+msgstr "Lecteur"
+
+#: MediaPlayerWindow.vala:806
+msgid "Please Wait..."
+msgstr "Veuillez patienter..."
+
+#: EncoderConfigWindow.vala:2974
+msgid "Please enter a name for this preset"
+msgstr "Veuillez saisir un nom pour ce préréglage"
+
+#: MainWindow.vala:3035
+msgid "Please install required packages or select another preset"
+msgstr ""
+"Veuillez installer les paquets nécessaires ou sélectionner un autre "
+"préréglage"
+
+#: EncoderConfigWindow.vala:620
+msgid "Please install the 'sox' package on your system to use this feature"
+msgstr ""
+"Veuillez installer le paquet « sox » sur votre système pour utiliser cette "
+"fonctionnalité"
+
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Position of fixed columns cannot be changed"
+msgstr ""
+
+#: EncoderConfigWindow.vala:167 EncoderConfigWindow.vala:1148
+#: MainWindow.vala:1871
+msgid "Preset"
+msgstr "Préréglage"
+
+#: MainWindow.vala:2222
+msgid "Preset deleted"
+msgstr "Préréglage supprimé"
+
+#: MainWindow.vala:3137
+msgid "Press 'Cancel' to abort shutdown"
+msgstr "Appuyez sur « Annuler » pour abandonner l'extinction"
+
+#: EncoderConfigWindow.vala:486 EncoderConfigWindow.vala:1190
+msgid "Profile"
+msgstr "Profil"
+
+#: FileInfoWindow.vala:44
+msgid "Properties"
+msgstr "Propriétés"
+
+#: EncoderConfigWindow.vala:449 EncoderConfigWindow.vala:1126
+msgid "Quality"
+msgstr "Qualité"
+
+#: EncoderConfigWindow.vala:868
+msgid "Quarter Sine"
+msgstr "Quart de sinus"
+
+#: Main.vala:759 Main.vala:818 MediaFile.vala:46
+msgid "Queued"
+msgstr "Mis en file d'attente"
+
+#: MainWindow.vala:2651
+msgid "Reading file properties..."
+msgstr "Lecture des propriétés du fichier..."
+
+#: EncoderConfigWindow.vala:1226
+msgid "Realtime"
+msgstr "Temps réel"
+
+#: MainWindow.vala:1380
+msgid "Recorded Date"
+msgstr "Date d'enregistrement"
+
+#: EncoderStatusWindow.vala:108
+msgid "Refresh"
+msgstr "Actualiser"
+
+#: MainWindow.vala:410
+msgid "Remove File(s)"
+msgstr "Retirer le(s) fichier(s)"
+
+#: MainWindow.vala:391
+msgid "Remove Selected Items"
+msgstr "Retirer les éléments sélectionnés"
+
+#: BatchEditWindow.vala:103 ColumnSelectionBox.vala:169
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: ColumnSelectionBox.vala:170
+msgid "Reset to default columns"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1321
+msgid "Resolution"
+msgstr "Résolution"
+
+#: MainWindow.vala:2994 MainWindow.vala:2996
+msgid "Resume"
+msgstr "Reprendre"
+
+#: BatchEditWindow.vala:181
+msgid "Right"
+msgstr "Droite"
+
+#: MainWindow.vala:472
+msgid "Right-click for more options"
+msgstr "Faites un clic droit pour plus d'options"
+
+#: MediaPlayerWindow.vala:237
+msgid "Right:"
+msgstr "Droite :"
+
+#: MainWindow.vala:271
+msgid "Run in background with lower priority"
+msgstr "Exécuter en arrière-plan avec un priorité plus faible"
+
+#: EncoderConfigWindow.vala:589
+msgid "SOX"
+msgstr "SOX"
+
+#: EncoderConfigWindow.vala:547
+msgid "Sampling Rate (Hz)"
+msgstr "Taux d'échantillonnage (Hz)"
+
+#: AppConfigWindow.vala:133
+msgid "Save files in following location"
+msgstr "Enregistrer les fichiers à l'emplacement suivant"
+
+#: MediaPlayerWindow.vala:220
+msgid "Scroll mouse wheel to adjust"
+msgstr "Faites tourner la roulette de la souris pour ajuster"
+
+#: ColumnSelectionDialog.vala:43
+msgid "Select Columns"
+msgstr "Sélectionner les colonnes"
+
+#: AppConfigWindow.vala:156 AppConfigWindow.vala:208
+msgid "Select Path"
+msgstr "Sélectionner le chemin"
+
+#: MainWindow.vala:2300
+msgid "Select a script from the dropdown and click 'Start' to begin"
+msgstr ""
+"Sélectionnez un script dans la liste déroulante et cliquez sur « Lancer » "
+"pour commencer"
+
+#: MediaPlayerWindow.vala:380
+msgid "Select multiple segments"
+msgstr "Sélectionner des segments multiples"
+
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Select single item to move"
+msgstr ""
+
+#: BatchEditWindow.vala:421 BatchEditWindow.vala:485
+msgid "Select some files from the list"
+msgstr "Sélectionner certains fichiers dans la liste"
+
+#: MediaPlayerWindow.vala:416
+msgid "Select the segments to include in output file:"
+msgstr "Sélectionner les segments à inclure dans le fichier de sortie :"
+
+#: AppConfigWindow.vala:393
+msgid ""
+"Selected language will be used for setting the default flag on the audio/"
+"subtitle track"
+msgstr ""
+"La langue sélectionnée sera utilisée pour définir le drapeau par défaut sur "
+"la piste audio / de sous-titres"
+
+#: MainWindow.vala:2259
+msgid ""
+"Selene supports 2 types of presets:\n"
+"\n"
+"1) JSON presets with a '.json' file extension. Clicking the Edit button on "
+"the toolbar will display a GUI for configuring the preset.\n"
+"\n"
+"2) Bash scripts with a '.sh' file extension. Clicking the Edit button will "
+"open the script file in a text editor. Bash scripts are useful if you need "
+"complete control over the encoding process. The script can use any set of "
+"commands for encoding the input files. Selene will try to parse the output "
+"and display the progress during encoding. See the sample scripts in '$HOME/."
+"config/selene/scripts' for the syntax."
+msgstr ""
+
+#: MediaPlayerWindow.vala:358 MediaPlayerWindow.vala:368
+msgid "Set"
+msgstr "Définir"
+
+#: MediaPlayerWindow.vala:369
+msgid "Set current playback position as ending position"
+msgstr "Définir la position de lecture actuelle comme la position de fin"
+
+#: MediaPlayerWindow.vala:359
+msgid "Set current playback position as starting position"
+msgstr "Définir la position de lecture actuelle comme la position de début"
+
+#: EncoderConfigWindow.vala:1350
+msgid ""
+"Set either Width or Height and leave the other as 0.\n"
+"It will be calculated automatically.\n"
+"\n"
+"Setting both width and height is not recommended\n"
+"since the video may get stretched or squeezed.\n"
+"\n"
+"Enable the 'Fit-To-Box' option to avoid changes to aspect ratio."
+msgstr ""
+"Définissez soit la largeur soit la hauteur et laissez l'autre paramètre à "
+"0.\n"
+"Il sera calculé automatiquement.\n"
+"\n"
+"Régler à la fois la largeur et la hauteur n'est pas recommandé\n"
+"puisqu'il se peut que la vidéo soit étirée ou resserrée.\n"
+"\n"
+"Activez l'option « Ajuster sur un cadre » pour éviter les changements de "
+"rapport d'aspect."
+
+#: MainWindow.vala:322
+msgid "Shutdown"
+msgstr "Éteindre"
+
+#: MainWindow.vala:2972
+msgid "Shutdown Disabled"
+msgstr "Extinction désactivée"
+
+#: MainWindow.vala:2969
+msgid "Shutdown Enabled"
+msgstr "Extinction activée"
+
+#: MainWindow.vala:327
+msgid "Shutdown system after completion"
+msgstr "Éteindre le système à la fin"
+
+#: MainWindow.vala:630
+msgid "Size"
+msgstr "Taille"
+
+#: MainWindow.vala:1460
+msgid "Skip File"
+msgstr "Ignorer le fichier"
+
+#: EncoderConfigWindow.vala:1174
+msgid "Slow"
+msgstr "Lent"
+
+#: EncoderConfigWindow.vala:1176
+msgid "Slower"
+msgstr "Plus lent"
+
+#: MainWindow.vala:2689
+msgid "Some files could not be added:"
+msgstr "Certains fichiers n'ont pas pu être ajoutés :"
+
+#: Main.vala:747
+#, c-format
+msgid "Source files will be moved to '%s'"
+msgstr "Les fichiers sources seront déplacés dans « %s »"
+
+#: Main.vala:849 MediaPlayerWindow.vala:276
+msgid "Source:"
+msgstr "Source :"
+
+#: EncoderConfigWindow.vala:620
+msgid "Sox Not Installed"
+msgstr "Sox n'est pas installé"
+
+#: EncoderConfigWindow.vala:479
+msgid "Speech"
+msgstr "Voix"
+
+#: EncoderConfigWindow.vala:1210
+msgid "Speed"
+msgstr "Vitesse"
+
+#: MainWindow.vala:241 MainWindow.vala:243
+msgid "Start"
+msgstr "Démarrer"
+
+#: MediaPlayerWindow.vala:330
+msgid "Start (sec):"
+msgstr "Début (sec) :"
+
+#: MediaPlayerWindow.vala:677
+msgid "Start Pos"
+msgstr "Position de début"
+
+#: MediaPlayerWindow.vala:445
+msgid "Start Segment"
+msgstr ""
+
+#: BatchEditWindow.vala:241
+msgid "StartPos"
+msgstr ""
+
+#: Main.vala:733
+#, c-format
+msgid "Starting batch of %d file(s):"
+msgstr "Lancement du lot de %d fichier(s) :"
+
+#: EncoderStatusWindow.vala:98 MainWindow.vala:1412
+msgid "Status"
+msgstr "État"
+
+#: Utility.vala:748
+msgid "Stopped"
+msgstr "Arrêté"
+
+#: Main.vala:1100
+msgid "Stopped!"
+msgstr "Arrêté !"
+
+#: MainWindow.vala:1691
+msgid "Subtitle"
+msgstr "Sous-titre"
+
+#: EncoderConfigWindow.vala:1512 EncoderConfigWindow.vala:1552
+msgid "Subtitles"
+msgstr "Sous-titres"
+
+#: EncoderConfigWindow.vala:1168
+msgid "SuperFast"
+msgstr "Super rapide"
+
+#: MainWindow.vala:3139
+msgid "System shutdown"
+msgstr "Extinction du système"
+
+#: MainWindow.vala:3146
+#, c-format
+msgid "System shutdown was cancelled by user!"
+msgstr "L'extinction du système a été annulée par l'utilisateur !"
+
+#: Main.vala:239
+msgid "System will be shutdown after completion"
+msgstr "Le système sera éteint à la fin"
+
+#: Main.vala:801 MainWindow.vala:3136
+msgid "System will shutdown in one minute!"
+msgstr "Le système s'éteindra dans une minute !"
+
+#: EncoderConfigWindow.vala:1574
+msgid "Tags"
+msgstr ""
+
+#: EncoderConfigWindow.vala:762
+msgid "Tempo"
+msgstr "Tempo"
+
+#: EncoderConfigWindow.vala:620
+msgid "The Sox utility was not found on your system"
+msgstr "L'utilitaire Sox n'a pas été trouvé sur votre système"
+
+#: EncoderConfigWindow.vala:1386
+msgid ""
+"The resizing filter affects the sharpness and compressibility of the video.\n"
+"For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
+"makes the video more difficult to compress resulting in slightly bigger "
+"files.\n"
+"The 'Bilinear' filter gives smoother video (less detail) and smaller files."
+msgstr ""
+"Le filtre de redimensionnement affecte la netteté et la compressibilité de "
+"la vidéo.\n"
+"Par exemple, le filtre « Lanzos » permet d'obtenir des vidéos plus nettes "
+"mais les détails supplémentaires\n"
+"rendent la vidéo plus difficile à compresser, ce qui conduit à des fichiers "
+"légèrement plus gros.\n"
+"Le filtre « Bilinéaire » permet d'obtenir des vidéos plus lissées (avec "
+"moins de détails) et des fichiers plus petits."
+
+#: AppConfigWindow.vala:442
+msgid ""
+"The temporary folder contains files which may be useful for advanced users. "
+"Keep this un-checked if you want to keep the temp files till the next reboot."
+msgstr ""
+"Le dossier temporaire contient des fichiers qui peuvent s'avérer utiles pour "
+"les utilisateurs avancés. Conserver ceci décoché si vous souhaitez conserver "
+"les fichiers temporaires jusqu'au prochain redémarrage."
+
+#: AboutWindow.vala:338
+#, c-format
+msgid "Third Party Tools &amp; Software"
+msgstr "Outils tiers &amp; Logiciel"
+
+#: AppConfigWindow.vala:259
+msgid "Tiles"
+msgstr "Tuiles"
+
+#: MainWindow.vala:1286
+msgid "Title"
+msgstr "Titre"
+
+#: EncoderStatusWindow.vala:76
+msgid "Tool"
+msgstr "Outil"
+
+#: AppConfigWindow.vala:274
+msgid "Tools"
+msgstr "Outils"
+
+#: BatchEditWindow.vala:201
+msgid "Top"
+msgstr "Haut"
+
+#: MediaPlayerWindow.vala:250
+msgid "Top:"
+msgstr "Haut :"
+
+#: MainWindow.vala:1317
+msgid "Track #"
+msgstr "Piste n°"
+
+#: AboutWindow.vala:330
+#, c-format
+msgid "Translators"
+msgstr "Traducteurs"
+
+#: EncoderConfigWindow.vala:686
+msgid "Treble"
+msgstr "Aigus"
+
+#: MediaPlayerWindow.vala:126
+msgid "Trim"
+msgstr ""
+
+#: BatchEditWindow.vala:88 MainWindow.vala:443 MainWindow.vala:1470
+msgid "Trim Duration"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1166
+msgid "UltraFast"
+msgstr "Ultra rapide"
+
+#: Main.vala:706
+msgid "Unknown format:"
+msgstr "Format inconnu :"
+
+#: Main.vala:408
+msgid "Using temp folder:"
+msgstr "Utilisation du dossier temporaire :"
+
+#: MainWindow.vala:1033
+msgid "V-Bitrate"
+msgstr "V-Débit"
+
+#: MainWindow.vala:813
+msgid "V-Fmt"
+msgstr "V-Format"
+
+#: MainWindow.vala:1153
+msgid "V-Fps"
+msgstr "V-Images par secondes"
+
+#: MainWindow.vala:1113
+msgid "V-Height"
+msgstr "V-Hauteur"
+
+#: MainWindow.vala:1073
+msgid "V-Width"
+msgstr "V-Largeur"
+
+#: FileInfoWindow.vala:70
+msgid "Value"
+msgstr "Valeur"
+
+#: EncoderConfigWindow.vala:2046 EncoderConfigWindow.vala:2071
+#: EncoderConfigWindow.vala:2089 EncoderConfigWindow.vala:2115
+#: EncoderConfigWindow.vala:2146 EncoderConfigWindow.vala:2163
+#: EncoderConfigWindow.vala:2597 EncoderConfigWindow.vala:2622
+msgid "Variable Bitrate"
+msgstr "Taux d'échantillonnage variable"
+
+#: EncoderConfigWindow.vala:2624
+msgid "Variable Bitrate (2pass)"
+msgstr "Taux d'échantillonnage variable (2 passes)"
+
+#: EncoderConfigWindow.vala:2547 EncoderConfigWindow.vala:2572
+msgid "Variable Bitrate / CRF"
+msgstr "Taux d'échantillonnage variable/Facteur de taux constant"
+
+#: EncoderConfigWindow.vala:335
+msgid "Version"
+msgstr "Version"
+
+#: EncoderConfigWindow.vala:1178
+msgid "VerySlow"
+msgstr "Très lent"
+
+#: EncoderConfigWindow.vala:1034 MainWindow.vala:1685
+msgid "Video"
+msgstr "Vidéo"
+
+#: EncoderConfigWindow.vala:1420
+msgid ""
+"Video will not be resized if it's smaller than the given width and height"
+msgstr ""
+"La vidéo ne sera pas redimensionnée si elle est plus petite que la largeur "
+"et la hauteur spécifiées"
+
+#: EncoderConfigWindow.vala:290
+msgid "WAV Audio (*.wav)"
+msgstr "Audio WAV (*.wav)"
+
+#: Utility.vala:108
+msgid "Warning"
+msgstr "Avertissement"
+
+#: Main.vala:242
+msgid ""
+"Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
+msgstr ""
+"Attention : l'utilisateur n'a pas les droits administrateur. La commande « --"
+"shutdown » sera ignorée."
+
+#: EncoderConfigWindow.vala:276
+msgid "WebM Video (*.webm)"
+msgstr "Vidéo WebM (*.webm)"
+
+#: DonationWindow.vala:123
+msgid "Website ~ teejeetech.in"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1354 EncoderConfigWindow.vala:1363
+msgid "Width"
+msgstr "Largeur"
+
+#: MainWindow.vala:2306
+msgid ""
+"[Batch completed] Right-click for options or click 'Finish' to continue."
+msgstr ""
+"[Lot traité] Faites un clic droit pour accéder aux options ou cliquez sur "
+"« Terminer » pour continuer."
+
+#: MainWindow.vala:2310
+msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
+msgstr ""
+"[Mis en pause] Cliquez sur « Reprendre » pour continuer ou « Arrêter » pour "
+"abandonner."
+
+#: AppConfigWindow.vala:311
+msgid "avconv / Libav"
+msgstr "avconv / Libav"
+
+#: AppConfigWindow.vala:309
+msgid "ffmpeg"
+msgstr "ffmpeg"
+
+#: AppConfigWindow.vala:355
+msgid "mplayer"
+msgstr "mplayer"
+
+#: AppConfigWindow.vala:353
+msgid "mpv"
+msgstr "mpv"
+
+#: MainWindow.vala:1942
+msgid "presets"
+msgstr "préréglages"
+
+#: MainWindow.vala:1938
+msgid "scripts"
+msgstr "scripts"
+
+#~ msgid "Audio Bitrate"
+#~ msgstr "Débit audio"
+
+#~ msgid "Audio Channels"
+#~ msgstr "Canaux audio"
+
+#~ msgid "Audio Encoder"
+#~ msgstr "Encodeur audio"
+
+#~ msgid "Audio Filters"
+#~ msgstr "Filtres audio"
+
+#~ msgid "Audio Format"
+#~ msgstr "Format audio"
+
+#~ msgid "Audio Sampling Rate"
+#~ msgstr "Taux d’échantillonnage audio"
+
+#~ msgid ""
+#~ "Did you find this software useful?\n"
+#~ "\n"
+#~ "You can buy me a coffee or make a donation via PayPal to show your "
+#~ "support. Or just drop me an email and say Hi. This application is "
+#~ "completely free and will continue to remain that way. Your contributions "
+#~ "will help in keeping this project alive and improving it further.\n"
+#~ "\n"
+#~ "Feel free to send me an email if you find any issues in this application "
+#~ "or if you need any changes. Suggestions and feedback are always welcome.\n"
+#~ "\n"
+#~ "Thanks,\n"
+#~ "Tony George\n"
+#~ "(teejeetech@gmail.com)"
+#~ msgstr ""
+#~ "Vous avez trouvé ce logiciel utile ?\n"
+#~ "\n"
+#~ "Vous pouvez m'offrir un café ou me faire un don via PayPal pour me "
+#~ "montrer votre soutien. Ou vous pouvez simplement m'envoyer un courriel "
+#~ "pour me dire bonjour. Cette application est totalement libre et "
+#~ "continuera à rester comme telle. Vos contributions aideront à garder "
+#~ "vivant ce projet et à l'améliorer encore plus.\n"
+#~ "\n"
+#~ "N'hésitez pas à m'envoyer un courriel si vous trouvez des anomalies dans "
+#~ "cette application ou si vous avez besoin de certains changements. Les "
+#~ "suggestions et les commentaires sont toujours les bienvenus.\n"
+#~ "\n"
+#~ "Merci,\n"
+#~ "Tony George\n"
+#~ "(teejeetech@gmail.com)"
+
+#~ msgid "Donate with Google Wallet"
+#~ msgstr "Faire un don via Google Wallet"
+
+#~ msgid "Drag and drop to re-order"
+#~ msgstr "Glissez-déposez pour réordonner"
+
+#~ msgid "Filters"
+#~ msgstr "Filtres"
+
+#~ msgid "OK"
+#~ msgstr "Valider"
+
+#~ msgid "Send Email"
+#~ msgstr "Envoyer un courriel"
+
+#~ msgid "Subs"
+#~ msgstr "Sous-titres"
+
+#~ msgid "Track Number"
+#~ msgstr "Numéro de piste"
+
+#~ msgid "Video Bitrate"
+#~ msgstr "Débit vidéo"
+
+#~ msgid "Video Encoder"
+#~ msgstr "Codage vidéo"
+
+#~ msgid "Video Filters"
+#~ msgstr "Filtres vidéo"
+
+#~ msgid "Video Format"
+#~ msgstr "Format vidéo"
+
+#~ msgid "Video Framerate"
+#~ msgstr "Débit vidéo"
+
+#~ msgid "Video Height"
+#~ msgstr "Hauteur de la vidéo"
+
+#~ msgid "Video Width"
+#~ msgstr "Largeur de la vidéo"
+
+#~ msgid "Visit Website"
+#~ msgstr "Visiter le site web"
