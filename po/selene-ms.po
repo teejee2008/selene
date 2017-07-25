@@ -6,30 +6,110 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: selene\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-01-25 23:25+0530\n"
-"PO-Revision-Date: 2014-08-31 01:43+0000\n"
+"Report-Msgid-Bugs-To: teejee2008@gmail.com\n"
+"POT-Creation-Date: 2017-07-25 07:18+0530\n"
+"PO-Revision-Date: 2017-07-25 07:18+0530\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
+"Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2015-01-26 10:12+0000\n"
-"X-Generator: Launchpad (build 17306)\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
-#: EncoderConfigWindow.vala:2304
+#: EncoderConfigWindow.vala:1960
 msgid ""
 "\n"
+"<b>Note:</b>\n"
 "\n"
-"Subtitle files should be present in the same folder\n"
-"and should start with same name."
+"1. Audio track will be copied directly to the output file without changes.\n"
+"\n"
+"2. Format of the audio track must be compatible with the selected file "
+"format. For example, if the input file contains AAC audio and the selected "
+"file format is WEBM, then encoding will fail - since WEBM does not support "
+"AAC audio.\n"
+"\n"
+"3. Input file can be trimmed only in basic mode (single segment). Selecting "
+"multiple segments using advanced mode will not work."
 msgstr ""
-"\n"
-"\n"
-"Fail sari kata seharusnya hadir dalam folder yang  sama\n"
-"dan seharusnya mula dengan nama yang sama."
 
-#: EncoderConfigWindow.vala:490
+#: EncoderConfigWindow.vala:2878
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Supported subtitle file formats:"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2453
+msgid ""
+"\n"
+"<b>Note:</b>\n"
+"\n"
+"1. Video track will be copied to the output file without re-encoding.\n"
+"\n"
+"2. Format of the video track must be compatible with the selected container. "
+"For example, if the input file contains H264 video and the selected file "
+"format is WEBM, then encoding will fail (since WEBM does not support H264).\n"
+"\n"
+"3. If you are trimming the input file then select the basic mode (single "
+"segment). Selecting multiple segments in advanced mode will not work."
+msgstr ""
+
+#: BatchEditWindow.vala:85 BatchEditWindow.vala:88
+msgid "(Batch)"
+msgstr ""
+
+#: MediaPlayerWindow.vala:1109
+msgid "100%"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2898
+msgid ""
+"2. External subtitle files must be present in the same location and start "
+"with the same file name."
+msgstr ""
+
+#: MediaPlayerWindow.vala:1111
+msgid "200%"
+msgstr ""
+
+#: MediaPlayerWindow.vala:1103
+msgid "25%"
+msgstr ""
+
+#: MediaPlayerWindow.vala:1105
+msgid "50%"
+msgstr ""
+
+#: MediaPlayerWindow.vala:1107
+msgid "75%"
+msgstr ""
+
+#: EncoderConfigWindow.vala:506 EncoderConfigWindow.vala:507
+msgid ""
+"<b>AAC-ELD</b>\n"
+"Enhanced Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:502
+msgid ""
+"<b>AAC-LC (Recommended)</b>\n"
+"MPEG-2 Low-complexity (LC) combined with MPEG-4 Perceptual Noise "
+"Substitution (PNS)\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:505
+msgid ""
+"<b>AAC-LD</b>\n"
+"Low Delay Profile for real-time communication\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1253
 msgid ""
 "<b>Additional Options</b>\n"
 "These options will be passed to the encoder\n"
@@ -41,19 +121,23 @@ msgstr ""
 "pada baris perintah. Sila jangan nyatakan\n"
 "mana-mana pilihan yang sudah disedia oleh GUI."
 
-#: EncoderConfigWindow.vala:899
+#: EncoderConfigWindow.vala:633
 msgid "<b>Adjustments:</b>"
 msgstr "<b>Pelarasan</b>"
 
-#: AppConfigWindow.vala:88
-msgid "<b>Backup Folder</b>"
-msgstr "<b>Folder Sandar</b>"
+#: EncoderConfigWindow.vala:391
+msgid "<b>Audio Encoder</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:818
-msgid "<b>Channels &amp; Sampling:</b>"
-msgstr "<b>Saluran &amp; Persampelan:</b>"
+#: AppConfigWindow.vala:177
+msgid "<b>Backup Directory</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:458
+#: EncoderConfigWindow.vala:561
+msgid "<b>Channels</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1185
 msgid ""
 "<b>Compression Vs Device Compatibility</b>\n"
 "'High' profile gives the best compression.\n"
@@ -67,7 +151,7 @@ msgstr ""
 "peranti tertentu (bimbit,PMPs,dll) yang tidak\n"
 "menyokong profil 'Tinggi'"
 
-#: EncoderConfigWindow.vala:426
+#: EncoderConfigWindow.vala:1143
 msgid ""
 "<b>Compression Vs Encoding Speed</b>\n"
 "Slower presets give better compression and smaller files\n"
@@ -77,7 +161,7 @@ msgstr ""
 "Praset lebih perlahan memberikan pemampatan lebih baik dan fail lebih kecil\n"
 "tetapi mengambil masa untuk dienkodkan."
 
-#: EncoderConfigWindow.vala:411
+#: EncoderConfigWindow.vala:1121
 msgid ""
 "<b>Compression Vs Quality</b>\n"
 "Smaller values give better quality video and larger files"
@@ -85,7 +169,11 @@ msgstr ""
 "<b>Pemampatan Vs Kualiti</b>\n"
 "Nilai lebih kecil memberikan video berkualiti baik dan fail lebih besar"
 
-#: EncoderConfigWindow.vala:1141
+#: AppConfigWindow.vala:381
+msgid "<b>Default Language</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1524
 msgid ""
 "<b>Embed</b> - Subtitle files will be combined with the output file.\n"
 "These subtitles can be switched off since they are added as a separate track"
@@ -93,34 +181,93 @@ msgstr ""
 "<b>Terbenam</b> - Fail sarikata akan digabung dengan fail output.\n"
 "Sarikata ini boleh ditutup kerana ia ditambah sebagai trek yang berasingan"
 
-#: EncoderConfigWindow.vala:1012
+#: AppConfigWindow.vala:293
+msgid ""
+"<b>Encoder</b>\n"
+"Use the 'ffmpeg' encoding tool from the FFmpeg project (Recommended)\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:795
 msgid "<b>Fade:</b>"
 msgstr "<b>Resap:</b>"
 
-#: EncoderConfigWindow.vala:241
-msgid "<b>File Format:</b>"
-msgstr "<b>Format Fail:</b>"
+#: EncoderConfigWindow.vala:255
+msgid "<b>File Format</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1077
+#: AppConfigWindow.vala:435
+msgid "<b>File Handling</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:504
+msgid ""
+"<b>HE-AAC v2</b>\n"
+"AAC-LC + SBR + PS (Parametric Stereo)\n"
+"\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:503
+msgid ""
+"<b>HE-AAC</b>\n"
+"AAC-LC + SBR (Spectral Band Replication)\n"
+"\n"
+msgstr ""
+
+#: AppConfigWindow.vala:229
+msgid "<b>Main Window</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:508
+msgid ""
+"<b>Note:</b>\n"
+"HE-AAC and HE-AACv2 are used for low-bitrate encoding while HE-LD and HE-ELD "
+"are used for real-time communication. HE-AAC is suitable for bit rates "
+"between 48 to 64 kbps (stereo) while HE-AACv2 is suitable for bit rates as "
+"low as 32 kbps."
+msgstr ""
+
+#: EncoderConfigWindow.vala:889
 msgid "<b>Other Effects:</b>"
 msgstr "<b>Kesan Lain:</b>"
 
-#: AppConfigWindow.vala:63
-msgid "<b>Output Folder</b>"
-msgstr "<b>Folder Output</b>"
+#: AppConfigWindow.vala:125
+msgid "<b>Output Directory</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:298
-msgid "<b>Preset:</b>"
-msgstr "<b>Praset:</b>"
+#: AppConfigWindow.vala:280
+msgid "<b>Preferred Tools</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:474
+#: EncoderConfigWindow.vala:315
+msgid "<b>Preset</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2525
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"<b>Best:</b> Best quality, slower\n"
+"<b>Good:</b> Good quality, faster\n"
+"<b>Realtime:</b> Fastest"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2527
+msgid ""
+"<b>Quality Vs Encoding Speed</b>\n"
+"\n"
+"Smaller values = Better quality, slower\n"
+"Larger value = Lower quality, faster\n"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2535
 msgid ""
 "<b>Quality Vs Encoding Speed</b>\n"
 "Higher values speed-up encoding at the expense of quality.\n"
 "Lower values improve quality at the expense of encoding speed."
 msgstr ""
 
-#: EncoderConfigWindow.vala:1143
+#: EncoderConfigWindow.vala:1526
 msgid ""
 "<b>Render</b> - Subtitles are rendered/burned on the video.\n"
 "These subtitles cannot be switched off since they become a part of the video"
@@ -128,76 +275,153 @@ msgstr ""
 "<b>Terap</b> - Sarikat diterap dalam video.\n"
 "Sarikata ini tidak dimatikan kerana ia menjadi sebahagian dari video"
 
-#: EncoderConfigWindow.vala:639
-msgid "<b>Resample:</b>"
-msgstr "<b>Sampel Semula:</b>"
+#: EncoderConfigWindow.vala:539 EncoderConfigWindow.vala:1432
+msgid "<b>Resample</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:538
-msgid "<b>Resize:</b>"
-msgstr "<b>Saiz Semula:</b>"
+#: EncoderConfigWindow.vala:1313
+msgid "<b>Resize</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:868
-msgid "<b>SOX Audio Processing:</b>"
-msgstr "<b>Pemprosesan Audio SOX:</b>"
+#: EncoderConfigWindow.vala:598
+msgid "<b>SOX Audio Processing</b>"
+msgstr ""
 
-#: EncoderConfigWindow.vala:265
+#: EncoderConfigWindow.vala:1518
+msgid "<b>Subtitles</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1581
+msgid "<b>Tags</b>"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1041
+msgid "<b>Video Encoder</b>"
+msgstr ""
+
+#: AppConfigWindow.vala:292
+msgid ""
+"<b>avconv</b>\n"
+"Use the 'avconv' encoding tool from the Libav project\n"
+"\n"
+msgstr ""
+
+#: MainWindow.vala:978
+msgid "A-Bitrate"
+msgstr ""
+
+#: MainWindow.vala:852
+msgid "A-Ch"
+msgstr ""
+
+#: MainWindow.vala:774
+msgid "A-Fmt"
+msgstr ""
+
+#: MainWindow.vala:892
+msgid "A-Sampling"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2936 EncoderConfigWindow.vala:2955
+msgid "AAC-ELD"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2919 EncoderConfigWindow.vala:2928
+#: EncoderConfigWindow.vala:2947
+msgid "AAC-LC"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2934 EncoderConfigWindow.vala:2953
+msgid "AAC-LD"
+msgstr ""
+
+#: EncoderConfigWindow.vala:278
 msgid "AC3 Audio (*.ac3)"
 msgstr "Audio AC3 (*.ac3)"
 
-#: MainWindow.vala:189
+#: MainWindow.vala:259
 msgid "Abort"
 msgstr "Henti paksa"
 
-#: MainWindow.vala:237
+#: MainWindow.vala:317
 msgid "About"
 msgstr "Perihal"
 
-#: MainWindow.vala:1383
+#: MainWindow.vala:369 MainWindow.vala:2617
 msgid "Add File(s)"
 msgstr "Tambah Fail"
 
-#: MainWindow.vala:144
-msgid "Add Files"
-msgstr "Tambah Fail"
+#: MainWindow.vala:352
+msgid "Add File(s)..."
+msgstr ""
 
-#: MainWindow.vala:365
+#: MainWindow.vala:2621
+msgid "Add Folder(s)"
+msgstr ""
+
+#: MainWindow.vala:362
+msgid "Add Folder(s)..."
+msgstr ""
+
+#: MainWindow.vala:1811
 msgid "Add New Preset"
 msgstr "Tambah Praset Baharu"
 
-#: MainWindow.vala:363
-msgid "Add Preset"
-msgstr "Tambah Praset"
+#: MainWindow.vala:2857 MainWindow.vala:2883 MainWindow.vala:3020
+msgid "Add some files to the file list"
+msgstr ""
 
-#: MainWindow.vala:147
-msgid "Add file(s)"
-msgstr "Tambah fail"
+#: MainWindow.vala:2871
+msgid "Add some videos to the file list"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1108
+#: MainWindow.vala:2663
+#, c-format
+msgid "Adding (%d/%d): '%s'"
+msgstr ""
+
+#: MainWindow.vala:2653
+msgid "Adding..."
+msgstr ""
+
+#: EncoderConfigWindow.vala:926
 msgid "Adjust Stereo for Headphones"
 msgstr "Laras Stereo untuk Fon Kepala"
 
-#: Main.vala:592
+#: MediaPlayerWindow.vala:378
+msgid "Advanced Mode"
+msgstr ""
+
+#: MainWindow.vala:1224
+msgid "Album"
+msgstr ""
+
+#: Main.vala:721
 msgid "All files removed"
 msgstr "Semua fail dibuang"
 
-#: MainWindow.vala:1453
+#: MainWindow.vala:2932
 msgid "An audio-video converter for Linux"
 msgstr "Merupakan penukar audio-video untuk Linux"
 
-#: MainWindow.vala:213
+#: MainWindow.vala:293
 msgid "Application Settings"
 msgstr "Tetapan Aplikasi"
 
-#: AboutWindow.vala:330
+#: MainWindow.vala:1193
+msgid "Artist"
+msgstr ""
+
+#: AboutWindow.vala:322
 #, c-format
 msgid "Artists"
 msgstr "Artis"
 
-#: EncoderConfigWindow.vala:708
+#: EncoderConfigWindow.vala:384 MainWindow.vala:1688
 msgid "Audio"
 msgstr "Audio"
 
-#: EncoderConfigWindow.vala:329
+#: EncoderConfigWindow.vala:346
 msgid "Author"
 msgstr "Pengarang"
 
@@ -206,19 +430,24 @@ msgstr "Pengarang"
 msgid "Authors"
 msgstr "Pengarang"
 
-#: MainWindow.vala:467
-msgid "AutoCrop Video"
-msgstr "Kerat-Auto Video"
+#: EncoderConfigWindow.vala:2914
+msgid "Auto"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1547 EncoderConfigWindow.vala:1572
-#: EncoderConfigWindow.vala:1603 EncoderConfigWindow.vala:1620
-#: EncoderConfigWindow.vala:1971 EncoderConfigWindow.vala:1994
-#: EncoderConfigWindow.vala:2017
+#: BatchEditWindow.vala:99
+msgid "Auto Crop"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2048 EncoderConfigWindow.vala:2073
+#: EncoderConfigWindow.vala:2091 EncoderConfigWindow.vala:2117
+#: EncoderConfigWindow.vala:2148 EncoderConfigWindow.vala:2165
+#: EncoderConfigWindow.vala:2549 EncoderConfigWindow.vala:2574
+#: EncoderConfigWindow.vala:2599
 msgid "Average Bitrate"
 msgstr "Kadar Bit Purata"
 
-#: EncoderConfigWindow.vala:1973 EncoderConfigWindow.vala:1996
-#: EncoderConfigWindow.vala:2019
+#: EncoderConfigWindow.vala:2551 EncoderConfigWindow.vala:2576
+#: EncoderConfigWindow.vala:2601
 msgid "Average Bitrate (2-pass)"
 msgstr "Kadar Bit Purata (2-laluan)"
 
@@ -226,47 +455,67 @@ msgstr "Kadar Bit Purata (2-laluan)"
 msgid "Back"
 msgstr "Undur"
 
-#: MainWindow.vala:252
+#: MainWindow.vala:266
 msgid "Background"
 msgstr "Latar Belakang"
 
-#: AppConfigWindow.vala:96
-msgid "Backup Location"
-msgstr "Lokasi Sandar"
+#: MediaPlayerWindow.vala:492
+msgid "Basic Mode"
+msgstr ""
 
-#: EncoderConfigWindow.vala:913
-msgid "Bass (lower freq)"
-msgstr "Bass (freq lebih rendah)"
+#: EncoderConfigWindow.vala:648
+msgid "Bass"
+msgstr ""
 
-#: EncoderConfigWindow.vala:400 EncoderConfigWindow.vala:748
+#: DonationWindow.vala:99
+msgid "Become a Patron"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1222
+msgid "Best"
+msgstr ""
+
+#: MainWindow.vala:932
+msgid "Bitrate"
+msgstr ""
+
+#: EncoderConfigWindow.vala:435 EncoderConfigWindow.vala:1100
 msgid "Bitrate (kbps)"
 msgstr "Kadar bit (kbps)"
 
-#: EncoderConfigWindow.vala:911
+#: EncoderConfigWindow.vala:646
 msgid "Boost or cut the bass (lower) frequencies of the audio."
 msgstr "Galak atau potong frekuensi bass audio (lebih rendah)."
 
-#: EncoderConfigWindow.vala:937
+#: EncoderConfigWindow.vala:684
 msgid "Boost or cut the treble (upper) frequencies of the audio."
 msgstr "Galak atau potong frekuensi trebel audio (lebih rendah)."
 
-#: MainWindow.vala:385
+#: BatchEditWindow.vala:221
+msgid "Bottom"
+msgstr ""
+
+#: MediaPlayerWindow.vala:263
+msgid "Bottom:"
+msgstr ""
+
+#: MainWindow.vala:1824
 msgid "Browse"
 msgstr "Layar"
 
-#: MainWindow.vala:1725
+#: MainWindow.vala:3207
 msgid "CPU: "
 msgstr ""
 
-#: Main.vala:1147 Main.vala:1161
+#: Main.vala:1250 Main.vala:1264
 msgid "Cancelled"
 msgstr "Dibatalkan"
 
-#: EncoderConfigWindow.vala:963
+#: EncoderConfigWindow.vala:722
 msgid "Change audio pitch (shrillness) without changing audio tempo (speed)."
 msgstr "Ubah pic audio (kelantangan) tanpa mengubah tempo audio (kelajuan)."
 
-#: EncoderConfigWindow.vala:989
+#: EncoderConfigWindow.vala:760
 msgid ""
 "Change audio tempo (speed) without changing audio pitch (shrillness).\n"
 "\n"
@@ -276,112 +525,162 @@ msgstr ""
 "\n"
 "AMARAN: Ini akan mengubah jangkamasa trek audio"
 
-#: EncoderConfigWindow.vala:837
+#: EncoderConfigWindow.vala:569
 msgid "Channels"
 msgstr "Saluran"
 
-#: AboutWindow.vala:295
+#: MainWindow.vala:403
+msgid "Clear List"
+msgstr ""
+
+#: MediaPlayerWindow.vala:675
+msgid "Clip"
+msgstr ""
+
+#: AboutWindow.vala:295 AppConfigWindow.vala:107 ColumnSelectionBox.vala:214
+#: ColumnSelectionBox.vala:215
 msgid "Close"
 msgstr "Tutup"
 
-#: Main.vala:986 Main.vala:996 Main.vala:1004
+#: DonationWindow.vala:131
+msgid "Close Window"
+msgstr ""
+
+#: MainWindow.vala:1559
+msgid "Columns..."
+msgstr ""
+
+#: MainWindow.vala:1349
+msgid "Comments"
+msgstr ""
+
+#: Main.vala:1085 Main.vala:1095 Main.vala:1103
 msgid "Completed"
 msgstr "Selesai"
 
-#: EncoderConfigWindow.vala:1549 EncoderConfigWindow.vala:1574
-#: EncoderConfigWindow.vala:1605 EncoderConfigWindow.vala:2043
+#: EncoderConfigWindow.vala:2050 EncoderConfigWindow.vala:2119
+#: EncoderConfigWindow.vala:2150 EncoderConfigWindow.vala:2626
 msgid "Constant Bitrate"
 msgstr "Kadar Bit Malar"
 
-#: EncoderConfigWindow.vala:1551
+#: EncoderConfigWindow.vala:2052
 msgid "Constant Bitrate (Strict)"
 msgstr "Kadar Bit Malar (Ketat)"
 
-#: Main.vala:902 Main.vala:1195
-msgid "Converting..."
-msgstr "Menukarkan..."
+#: Main.vala:995 Main.vala:1298 MainWindow.vala:2314
+msgid "Converting"
+msgstr ""
 
-#: MainWindow.vala:1000
-#, c-format
-msgid "Converting: '%s'"
-msgstr "Menukar: '%s'"
-
-#: Main.vala:900 Main.vala:1193
+#: Main.vala:993 Main.vala:1296
 msgid "Converting: Enter (q) to quit or (p) to pause..."
 msgstr "Menukar: Masukkan (q) untuk keluar atau (p) untuk jeda..."
+
+#: EncoderConfigWindow.vala:1755 EncoderConfigWindow.vala:1773
+#: EncoderConfigWindow.vala:1788
+msgid "Copy Audio"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1690 EncoderConfigWindow.vala:1699
+#: EncoderConfigWindow.vala:1708 EncoderConfigWindow.vala:1715
+#: EncoderConfigWindow.vala:1726
+msgid "Copy Video"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1590
+msgid "Copy tags (artist, album, etc) from the source file to output file"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1592
+msgid "Copy tags from source file"
+msgstr ""
 
 #: AboutWindow.vala:272 AboutWindow.vala:289
 msgid "Credits"
 msgstr "Penghargaan"
 
-#: MainWindow.vala:312
-msgid "CropVideo (L:T:R:B)"
-msgstr "KeratVideo (L:T:R:B)"
+#: MainWindow.vala:448
+msgid "Crop"
+msgstr ""
 
-#: EncoderConfigWindow.vala:554 EncoderConfigWindow.vala:657
+#: BatchEditWindow.vala:161
+msgid "Crop Left"
+msgstr ""
+
+#: BatchEditWindow.vala:85 MainWindow.vala:1465 MediaPlayerWindow.vala:123
+msgid "Crop Video"
+msgstr ""
+
+#: MainWindow.vala:432 MainWindow.vala:451
+msgid "Crop Videos"
+msgstr ""
+
+#: MediaPlayerWindow.vala:283
+msgid "Cropped:"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1330 EncoderConfigWindow.vala:1450
 msgid "Custom"
 msgstr "Suai"
 
-#: MainWindow.vala:372
+#: MainWindow.vala:1818
 msgid "Delete Preset"
 msgstr "Padam Praset"
 
-#: EncoderConfigWindow.vala:702
+#: MediaPlayerWindow.vala:474
+msgid "Delete Segment"
+msgstr ""
+
+#: AppConfigWindow.vala:445
+msgid "Delete temporary files after successful encode"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1496
 msgid "Denominator"
 msgstr "Pembawah"
 
-#: EncoderStatusWindow.vala:91
+#: EncoderStatusWindow.vala:90
 msgid "Description"
 msgstr "Keterangan"
 
-#: DonationWindow.vala:53
+#: MediaPlayerWindow.vala:298
+msgid "Detect Borders"
+msgstr ""
+
+#: MediaPlayerWindow.vala:300
+msgid "Detect black borders in the video and set cropping parameters"
+msgstr ""
+
+#: MediaPlayerWindow.vala:872
+#, c-format
+msgid "Detected Parameters: %d, %d, %d, %d"
+msgstr ""
+
+#: BatchEditWindow.vala:426 MediaPlayerWindow.vala:804
+msgid "Detecting borders..."
+msgstr ""
+
+#: DonationWindow.vala:56
 msgid ""
-"Did you find this software useful?\n"
+"Did you find this application useful?\n"
 "\n"
 "You can buy me a coffee or make a donation via PayPal to show your support. "
-"Or just drop me an email and say Hi.\n"
+"Your contributions will help keep the project alive and support future "
+"development.\n"
 "\n"
-"This application is completely free and will continue to remain that way. "
-"Your contributions will help in keeping this project alive and to develop it "
-"further.\n"
-"\n"
-"Feel free to drop me an email if you find any issues or if you have "
-"suggestions for improvement.\n"
-"\n"
-"Regards,\n"
-"Tony George\n"
-"teejeetech@gmail.com"
+"Thanks,\n"
+"Tony George"
 msgstr ""
-"Adakah anda mendapat perisian ini berguna?\n"
-"\n"
-"Anda boleh belanja saya secawan kopi atau beri sumbangan melalui PayPal "
-"untuk menzahirkan sokongan anda. Atau hantar emel kepada saya dan ucapkan "
-"Hai.\n"
-"\n"
-"Aplikasi ini sepenuhnya percuma dan akan terus sedemikian. Sumbangan anda "
-"memastikan projek ini kekal dan senantiasa dibangunkan.\n"
-"\n"
-"Sila hantar maklumbalas jika anda dapati ada masalah atau anda ada cadangan "
-"untuk penambahbaikan.\n"
-"\n"
-"Harap Maklum,\n"
-"Tony George\n"
-"teejeetech@gmail.com"
 
-#: EncoderConfigWindow.vala:1308 EncoderConfigWindow.vala:1318
-#: EncoderConfigWindow.vala:1327
+#: EncoderConfigWindow.vala:1753 EncoderConfigWindow.vala:1771
+#: EncoderConfigWindow.vala:1786
 msgid "Disable Audio"
 msgstr "Lumpuhkan Audio"
 
-#: EncoderConfigWindow.vala:1281
+#: EncoderConfigWindow.vala:1724
 msgid "Disable Video"
 msgstr "Lumpuhkan Video"
 
-#: AppConfigWindow.vala:106
-msgid "Do not move input files"
-msgstr "Jangan alih fail input"
-
-#: EncoderConfigWindow.vala:625
+#: EncoderConfigWindow.vala:1413
 msgid "Do not stretch or squeeze the video (Fit-To-Box)"
 msgstr "Jangan regang atau penyek video (Muat-Suai)"
 
@@ -390,286 +689,352 @@ msgstr "Jangan regang atau penyek video (Muat-Suai)"
 msgid "Documenters"
 msgstr "Juru dokumentasi"
 
-#: DonationWindow.vala:36 MainWindow.vala:226 MainWindow.vala:227
+#: DonationWindow.vala:38 MainWindow.vala:306 MainWindow.vala:307
 msgid "Donate"
 msgstr "Derma"
 
-#: DonationWindow.vala:66
-msgid "Donate via PayPal"
-msgstr "Derma melalui PayPal"
+#: DonationWindow.vala:91
+msgid "Donate with PayPal"
+msgstr ""
 
 #: AboutWindow.vala:354
 #, c-format
 msgid "Donations"
 msgstr "Derma"
 
-#: Main.vala:981
+#: Main.vala:1080
 msgid "Done"
 msgstr "Selesai"
 
-#: MainWindow.vala:988
+#: MainWindow.vala:2302
 msgid "Drag files on this window or click the 'Add' button"
 msgstr "Seret fail dalam tetingkap ini atau klik butang 'Tambah'"
 
-#: MainWindow.vala:304
+#: MainWindow.vala:680 MediaPlayerWindow.vala:681
 msgid "Duration"
 msgstr "Tempoh"
 
-#: MainWindow.vala:379
+#: BatchEditWindow.vala:283
+msgid "Edit"
+msgstr ""
+
+#: MainWindow.vala:1891
 msgid "Edit Preset"
 msgstr "Sunting Praset"
 
-#: EncoderConfigWindow.vala:340
+#: EncoderConfigWindow.vala:357
 msgid "Email"
 msgstr "Emel"
 
-#: EncoderConfigWindow.vala:1417
+#: EncoderConfigWindow.vala:1886
 msgid "Embed / Soft Subs"
 msgstr "Sarikata Luar / Terbenam"
 
-#: EncoderConfigWindow.vala:2339
+#: EncoderConfigWindow.vala:2976
 msgid "Empty Preset Name"
 msgstr "Nama Praset Kosong"
 
-#: EncoderStatusWindow.vala:45 MainWindow.vala:219
+#: AppConfigWindow.vala:295
+msgid "Encoder"
+msgstr ""
+
+#: EncoderStatusWindow.vala:45 MainWindow.vala:299
 msgid "Encoders"
 msgstr "Pengekod"
 
-#: EncoderConfigWindow.vala:387 EncoderConfigWindow.vala:735
+#: EncoderConfigWindow.vala:422 EncoderConfigWindow.vala:1081
 msgid "Encoding Mode"
 msgstr "Mod Pengekodan"
 
-#: MainWindow.vala:444
+#: MainWindow.vala:1881
 msgid "Encoding Script or Preset File"
 msgstr "Skrip Pengekodan atau Fail Praset"
 
-#: EncoderStatusWindow.vala:83
-msgid "Encoding Tool"
-msgstr "Alat Pengekodan"
+#: MediaPlayerWindow.vala:344
+msgid "End (sec):"
+msgstr ""
 
-#: Main.vala:673
+#: MediaPlayerWindow.vala:679
+msgid "End Pos"
+msgstr ""
+
+#: MediaPlayerWindow.vala:458
+msgid "End Segment"
+msgstr ""
+
+#: BatchEditWindow.vala:262
+msgid "EndPos"
+msgstr ""
+
+#: Main.vala:802
 msgid "Enter any key to Cancel..."
 msgstr "Masukkan mana-mana kekunci untuk Batal..."
 
-#: Main.vala:991 Utility.vala:108
+#: AppConfigWindow.vala:145 AppConfigWindow.vala:197
+msgid "Enter path or browse for directory"
+msgstr ""
+
+#: Main.vala:1090 Utility.vala:108
 msgid "Error"
 msgstr "Ralat"
 
-#: Main.vala:708
+#: Main.vala:837
 msgid "Error: File missing"
 msgstr "Ralat: Fail hilang"
 
-#: EncoderConfigWindow.vala:678
-msgid "Examples:"
-msgstr "Contoh:"
-
-#: EncoderConfigWindow.vala:287
+#: EncoderConfigWindow.vala:302
 msgid "Extension"
 msgstr "Sambungan"
 
-#: EncoderConfigWindow.vala:493
+#: EncoderConfigWindow.vala:1256
 msgid "Extra Options"
 msgstr "Pilihan Tambahan"
 
-#: EncoderConfigWindow.vala:267
+#: EncoderConfigWindow.vala:280
 msgid "FLAC Audio (*.flac)"
 msgstr "Audio FLAC (*.flac)"
 
-#: EncoderConfigWindow.vala:675
-msgid "FPS Ratio"
-msgstr "Nisbah FPS"
+#: EncoderConfigWindow.vala:810
+msgid "Fade In (sec)"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1024
-msgid "Fade In (seconds)"
-msgstr "Resap Masuk (saat)"
+#: EncoderConfigWindow.vala:830
+msgid "Fade Out (sec)"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1038
-msgid "Fade Out (seconds)"
-msgstr "Resap Lenyap (saat)"
-
-#: EncoderConfigWindow.vala:1052
+#: EncoderConfigWindow.vala:850
 msgid "Fade Type"
 msgstr "Jenis Resap"
 
-#: Main.vala:1007
+#: Main.vala:1106
 msgid "Failed"
 msgstr "Gagal"
 
-#: Utility.vala:1396
+#: Utility.vala:1462
 msgid "Failed to set ownership"
 msgstr "Gagal tetapkan pemilikan"
 
-#: EncoderConfigWindow.vala:441
+#: EncoderConfigWindow.vala:1170
 msgid "Fast"
 msgstr "Pantas"
 
-#: MainWindow.vala:286
+#: BatchEditWindow.vala:140 MainWindow.vala:491
 msgid "File"
 msgstr "Fail"
 
-#: MainWindow.vala:529
+#: MainWindow.vala:1548
 msgid "File Info (Output)"
 msgstr "Maklumat Fail (Output)"
 
-#: MainWindow.vala:523
+#: MainWindow.vala:1542
 msgid "File Info (Source)"
 msgstr "Maklumat Fail (Sumber)"
 
-#: Main.vala:572
+#: AppConfigWindow.vala:241
+msgid "File View"
+msgstr ""
+
+#: Main.vala:701
 msgid "File added:"
 msgstr "Fail ditambah:"
 
-#: MainWindow.vala:1016
-#, c-format
-msgid "File added: '%s'"
-msgstr "Fail ditambah: '%s'"
-
-#: Main.vala:586
+#: Main.vala:715
 msgid "File removed:"
 msgstr "Fail dibuang:"
 
-#: MainWindow.vala:273
-msgid "File(s) to convert"
-msgstr "Fail ditukar"
-
-#: Main.vala:609
+#: Main.vala:738
 #, c-format
 msgid "Files will be saved in '%s'"
 msgstr "Fail akan disimpan dalam '%s'"
 
-#: Main.vala:612
+#: Main.vala:741
 msgid "Files will be saved in source directory"
 msgstr "Fail akan disimpan dalam direktori sumber"
 
-#: EncoderConfigWindow.vala:525 EncoderConfigWindow.vala:804
-msgid "Filters"
-msgstr "Penapis"
+#: EncoderConfigWindow.vala:532
+msgid "Filters (A)"
+msgstr ""
 
-#: MainWindow.vala:197 MainWindow.vala:199
+#: EncoderConfigWindow.vala:1304
+msgid "Filters (V)"
+msgstr ""
+
+#: MainWindow.vala:277 MainWindow.vala:279 MediaPlayerWindow.vala:307
+#: MediaPlayerWindow.vala:393 MediaPlayerWindow.vala:507
 msgid "Finish"
 msgstr "Selesai"
 
-#: EncoderConfigWindow.vala:622
+#: EncoderConfigWindow.vala:1409
 msgid "Fits the video in a box of given width and height."
 msgstr "Padankan video dalam petak dengan lebar dan tinggi yang diberi."
 
-#: EncoderConfigWindow.vala:1637
+#: EncoderConfigWindow.vala:2182
 msgid "Fixed Bitrate"
 msgstr "Kadar Bit Tetap"
 
-#: MainWindow.vala:419 MainWindow.vala:429
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Fixed Column"
+msgstr ""
+
+#: MainWindow.vala:1856 MainWindow.vala:1866
 msgid "Folder"
 msgstr "Folder"
 
-#: Main.vala:308
-msgid "Following encoders are not installed on your system:"
-msgstr "Pengekod berikut tidak dipasang dalam sistem anda:"
-
-#: MainWindow.vala:1564
+#: MainWindow.vala:3035
 msgid "Following encoders were not found on your system:"
 msgstr "Pengekod berikut tidak ditemui dalam sistem anda:"
 
-#: EncoderConfigWindow.vala:249
+#: Main.vala:359
+msgid "Following utilities are not installed on your system:"
+msgstr ""
+
+#: EncoderConfigWindow.vala:263 MainWindow.vala:723
 msgid "Format"
 msgstr "Format"
 
-#: EncoderConfigWindow.vala:373 EncoderConfigWindow.vala:721
+#: EncoderConfigWindow.vala:399 EncoderConfigWindow.vala:1049
 msgid "Format / Codec"
 msgstr "Format / Kodeks"
 
-#: MainWindow.vala:1400
-msgid "Format not supported:"
-msgstr "Format tidak disokong:"
-
-#: EncoderStatusWindow.vala:143
+#: EncoderStatusWindow.vala:153
 msgid "Found"
 msgstr "Temui"
 
-#: EncoderConfigWindow.vala:647
+#: EncoderConfigWindow.vala:1470
+msgid "Fps: Frames"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1487
+msgid "Fps: Seconds"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1441
 msgid "Frame Rate"
 msgstr "Kadar Bingkai"
 
-#: EncoderConfigWindow.vala:649
+#: EncoderConfigWindow.vala:1443
 msgid "Frames/sec"
 msgstr "Bingkai/saat"
 
-#: EncoderConfigWindow.vala:228
+#: MediaPlayerWindow.vala:1193 MediaPlayerWindow.vala:1197
+msgid "Fullscreen"
+msgstr ""
+
+#: AppConfigWindow.vala:121 EncoderConfigWindow.vala:248
 msgid "General"
 msgstr "Am"
 
-#: EncoderConfigWindow.vala:1067
+#: MainWindow.vala:1255
+msgid "Genre"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1224
+msgid "Good"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2921 EncoderConfigWindow.vala:2930
+#: EncoderConfigWindow.vala:2949
+msgid "HE-AAC"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2923 EncoderConfigWindow.vala:2932
+#: EncoderConfigWindow.vala:2951
+msgid "HE-AAC v2"
+msgstr ""
+
+#: EncoderConfigWindow.vala:870
 msgid "Half Sine"
 msgstr "Separa Sin"
 
-#: EncoderConfigWindow.vala:601
+#: EncoderConfigWindow.vala:1371 EncoderConfigWindow.vala:1380
 msgid "Height"
 msgstr "Tinggi"
 
-#: MainWindow.vala:400 MainWindow.vala:402 MainWindow.vala:944
+#: ColumnSelectionBox.vala:125
+msgid "Indicator"
+msgstr ""
+
+#: MainWindow.vala:1833 MainWindow.vala:1835 MainWindow.vala:2261
 msgid "Info"
 msgstr "Maklumat"
 
-#: MainWindow.vala:1542
-msgid ""
-"Input queue is empty!\n"
-"Please add some files.\n"
-msgstr ""
-"Baris gilir input kosong!\n"
-"Sila tambah beberapa fail.\n"
-
-#: Main.vala:600
+#: Main.vala:729
 msgid "Input queue is empty! Please add some files."
 msgstr "Baris gilir input kosong! Sila tambah beberapa fail."
 
-#: Main.vala:234
+#: Main.vala:266
 msgid "Input queue is empty! Please select files to convert."
 msgstr "Baris gilir input kosong! Sila pilih fail untuk ditukarkan."
 
-#: EncoderConfigWindow.vala:1073
+#: EncoderConfigWindow.vala:876
 msgid "Inverted Parabola"
 msgstr "Parabola Songsang"
 
-#: FileInfoWindow.vala:65
+#: DonationWindow.vala:107
+msgid "Issue Tracker ~ Report Issues, Request Features, Ask Questions"
+msgstr ""
+
+#: FileInfoWindow.vala:69
 msgid "Key"
 msgstr "Kekunci"
 
-#: EncoderConfigWindow.vala:1069
+#: AppConfigWindow.vala:395
+msgid "Language"
+msgstr ""
+
+#: MediaPlayerWindow.vala:224
+msgid "Left:"
+msgstr ""
+
+#: EncoderConfigWindow.vala:872
 msgid "Linear"
 msgstr "Linear"
 
-#: Main.vala:356
+#: AppConfigWindow.vala:257
+msgid "List"
+msgstr ""
+
+#: Main.vala:407
 msgid "Loading presets from:"
 msgstr "Memuatkan praset dari:"
 
-#: Main.vala:355
+#: Main.vala:406
 msgid "Loading scripts from:"
 msgstr "Memuatkan skrip dari:"
 
-#: EncoderConfigWindow.vala:1071
+#: EncoderConfigWindow.vala:874
 msgid "Logarithmic"
 msgstr "Logaritma"
 
-#: EncoderConfigWindow.vala:1664
+#: EncoderConfigWindow.vala:2209
 msgid "Lossless"
 msgstr "Tidak Hilang"
 
-#: Main.vala:722 Main.vala:725
-msgid "Lyrics:"
-msgstr "Lirik:"
-
-#: EncoderConfigWindow.vala:269
+#: EncoderConfigWindow.vala:282
 msgid "MP3 Audio (*.mp3)"
 msgstr "Audio MP3 (*.mp3)"
 
-#: EncoderConfigWindow.vala:271
+#: EncoderConfigWindow.vala:284
 msgid "MP4 Audio (*.mp4)"
 msgstr "Audio MP4 (*.mp4)"
 
-#: EncoderConfigWindow.vala:259
+#: EncoderConfigWindow.vala:2938 EncoderConfigWindow.vala:2957
+msgid "MPEG-2 AAC-LC"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2940 EncoderConfigWindow.vala:2959
+msgid "MPEG-2 HE-AAC"
+msgstr ""
+
+#: EncoderConfigWindow.vala:2961
+msgid "MPEG-2 HE-AAC v2"
+msgstr ""
+
+#: EncoderConfigWindow.vala:272
 msgid "MPEG4 Video (*.mp4)"
 msgstr "Video MPEG4 (*.mp4)"
 
-#: EncoderConfigWindow.vala:1106
+#: EncoderConfigWindow.vala:923
 msgid ""
 "Makes audio easier to listen to on headphones. Adds 'cues' to the audio so "
 "that when listened to on headphones the stereo image is moved from inside "
@@ -681,175 +1046,240 @@ msgstr ""
 "kepala anda (piawai untuk fon kepala) ke arah luar dan di hadapan pendengar "
 "(piawai bagi pembesar suara)."
 
-#: EncoderConfigWindow.vala:257
+#: EncoderConfigWindow.vala:270
 msgid "Matroska Video (*.mkv)"
 msgstr "Video Matroska (*.mkv)"
 
-#: EncoderConfigWindow.vala:1091
+#: EncoderConfigWindow.vala:905
 msgid "Maximize Volume Level (Normalize)"
 msgstr "Maksimumkan Aras Volum (Normalkan)"
 
-#: EncoderConfigWindow.vala:1089
+#: EncoderConfigWindow.vala:902
 msgid "Maximize the volume level (loudness)"
 msgstr "Maksimumkan aras volum (kelantangan)"
 
-#: EncoderConfigWindow.vala:443
+#: EncoderConfigWindow.vala:1172
 msgid "Medium"
 msgstr "Sederhana"
 
-#: EncoderStatusWindow.vala:143
+#: EncoderConfigWindow.vala:1390
+msgid "Method"
+msgstr ""
+
+#: EncoderStatusWindow.vala:153
 msgid "Missing"
 msgstr "Hilang"
 
-#: Main.vala:308 MainWindow.vala:1564
+#: MainWindow.vala:3035
 msgid "Missing Encoders"
 msgstr "Pengekod Hilang"
 
-#: Utility.vala:1025
+#: Utility.vala:1024
 msgid "Missing Icon"
 msgstr "Ikon Hilang"
 
-#: EncoderConfigWindow.vala:791
+#: Main.vala:360
+msgid "Missing Utilities"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1534
+msgid "Mode"
+msgstr ""
+
+#: ColumnSelectionBox.vala:203
+msgid "Move Down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:192
+msgid "Move Up"
+msgstr ""
+
+#: ColumnSelectionBox.vala:204
+msgid "Move selected item down"
+msgstr ""
+
+#: ColumnSelectionBox.vala:193
+msgid "Move selected item up"
+msgstr ""
+
+#: AppConfigWindow.vala:185
+msgid "Move source files after encoding is complete"
+msgstr ""
+
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Multiple items selected"
+msgstr ""
+
+#: EncoderConfigWindow.vala:481
 msgid "Music"
 msgstr "Muzik"
 
-#: Main.vala:2819 MainWindow.vala:1209
+#: MediaPlayerWindow.vala:1181 MediaPlayerWindow.vala:1185
+msgid "Mute"
+msgstr ""
+
+#: MediaFile.vala:565
 msgid "N/A"
 msgstr "T/S"
 
-#: EncoderConfigWindow.vala:306
+#: ColumnSelectionBox.vala:105 EncoderConfigWindow.vala:324
 msgid "Name"
 msgstr "Nama"
 
-#: EncoderConfigWindow.vala:313
+#: EncoderConfigWindow.vala:330 MainWindow.vala:1809
 msgid "New Preset"
 msgstr "Praset Baru"
 
-#: EncoderConfigWindow.vala:552 EncoderConfigWindow.vala:655
-#: EncoderConfigWindow.vala:678 EncoderConfigWindow.vala:1684
-#: EncoderConfigWindow.vala:1724 EncoderConfigWindow.vala:1752
-#: EncoderConfigWindow.vala:1766 EncoderConfigWindow.vala:1795
-#: EncoderConfigWindow.vala:1815
+#: EncoderConfigWindow.vala:1328 EncoderConfigWindow.vala:1448
+#: EncoderConfigWindow.vala:2232 EncoderConfigWindow.vala:2274
+#: EncoderConfigWindow.vala:2302 EncoderConfigWindow.vala:2316
+#: EncoderConfigWindow.vala:2347 EncoderConfigWindow.vala:2367
 msgid "No Change"
 msgstr "Tiada Perubahan"
 
-#: EncoderConfigWindow.vala:1415
+#: MainWindow.vala:2856 MainWindow.vala:2882 MainWindow.vala:3019
+msgid "No Files"
+msgstr ""
+
+#: BatchEditWindow.vala:420 BatchEditWindow.vala:484
+msgid "No Files Selected"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1884
 msgid "No Subtitles"
 msgstr "Tiada Sarikata"
 
-#: EncoderConfigWindow.vala:633
+#: EncoderConfigWindow.vala:1424
 msgid "No Up-Scaling"
 msgstr "Tiada Penskalaan-Naik"
 
-#: EncoderConfigWindow.vala:787
+#: MainWindow.vala:2870
+msgid "No Videos"
+msgstr ""
+
+#: EncoderConfigWindow.vala:477
 msgid "None"
 msgstr "Tiada"
 
-#: Main.vala:308
+#: Main.vala:359
 msgid "Not possible to continue!"
 msgstr "Mustahil diteruskan!"
 
-#: EncoderConfigWindow.vala:693
+#: EncoderConfigWindow.vala:1479
 msgid "Numerator"
 msgstr "Pengangka"
 
-#: EncoderConfigWindow.vala:261
+#: EncoderConfigWindow.vala:274
 msgid "OGG Theora Video (*.ogv)"
 msgstr "Video OGG Theora (*.ogv)"
 
-#: EncoderConfigWindow.vala:273
+#: EncoderConfigWindow.vala:286
 msgid "OGG Vorbis Audio (*.ogg)"
 msgstr "Audio OGG Vorbis (*.ogg)"
 
-#: MainWindow.vala:387
+#: MediaPlayerWindow.vala:146
+msgid "Open"
+msgstr ""
+
+#: MainWindow.vala:1826
 msgid "Open Folder"
 msgstr "Buka Folder"
 
-#: MainWindow.vala:500
+#: MainWindow.vala:1519
 msgid "Open Log File"
 msgstr "Buka Fail Log"
 
-#: MainWindow.vala:494
+#: MainWindow.vala:1513
 msgid "Open Output Folder"
 msgstr "Buka Folder Output"
 
-#: MainWindow.vala:488
+#: MainWindow.vala:1507
 msgid "Open Temp Folder"
 msgstr "Buka Folder Sementara"
 
-#: MainWindow.vala:265
+#: MainWindow.vala:335
 msgid "Open output folder"
 msgstr "Buka folder output"
 
-#: EncoderConfigWindow.vala:770
+#: EncoderConfigWindow.vala:463
 msgid "Optimization"
 msgstr "Pengoptimuman"
 
-#: EncoderConfigWindow.vala:275
+#: EncoderConfigWindow.vala:288
 msgid "Opus Audio (*.opus)"
 msgstr "Audio Opus (*.opus)"
 
-#: MainWindow.vala:263
+#: MainWindow.vala:333
 msgid "Output"
 msgstr "Output"
 
-#: AppConfigWindow.vala:71
-msgid "Output Location"
-msgstr "Lokasi Output"
-
-#: MainWindow.vala:180 MainWindow.vala:1523 MainWindow.vala:1525
+#: MainWindow.vala:250 MainWindow.vala:3000 MainWindow.vala:3002
+#: MediaPlayerWindow.vala:1173
 msgid "Pause"
 msgstr "Jeda"
 
-#: Main.vala:1174 Main.vala:1179
+#: Main.vala:1277 Main.vala:1282
 msgid "Paused"
 msgstr "Dijeda"
 
-#: Main.vala:1177
+#: Main.vala:1280
 msgid "Paused: Enter (r) to resume..."
 msgstr "Dijeda: Masukkan (r) untuk sambung semula..."
 
-#: EncoderConfigWindow.vala:965
-msgid "Pitch (shrillness)"
-msgstr "Pic (kelantangan)"
+#: EncoderConfigWindow.vala:724
+msgid "Pitch"
+msgstr ""
 
-#: MainWindow.vala:517
+#: MediaPlayerWindow.vala:1169
+msgid "Play"
+msgstr ""
+
+#: MainWindow.vala:1536
 msgid "Play File (Output)"
 msgstr "Main Fail (Output)"
 
-#: MainWindow.vala:511
+#: MainWindow.vala:1530
 msgid "Play File (Source)"
 msgstr "Main Fail (Sumber)"
 
-#: EncoderConfigWindow.vala:2337
+#: AppConfigWindow.vala:341
+msgid "Player"
+msgstr ""
+
+#: MediaPlayerWindow.vala:806
+msgid "Please Wait..."
+msgstr ""
+
+#: EncoderConfigWindow.vala:2974
 msgid "Please enter a name for this preset"
 msgstr "Sila masukkan nama untuk praset ini"
 
-#: MainWindow.vala:1564
+#: MainWindow.vala:3035
 msgid "Please install required packages or select another preset"
 msgstr "Sila pasang pakej diperlukan atau pilih praset lain"
 
-#: EncoderConfigWindow.vala:889
+#: EncoderConfigWindow.vala:620
 msgid "Please install the 'sox' package on your system to use this feature"
 msgstr "Sila pasang pakej 'sox' pada sistem anda untuk guna fitur ini"
 
-#: EncoderConfigWindow.vala:429 MainWindow.vala:434
+#: ColumnSelectionBox.vala:267 ColumnSelectionBox.vala:302
+msgid "Position of fixed columns cannot be changed"
+msgstr ""
+
+#: EncoderConfigWindow.vala:167 EncoderConfigWindow.vala:1148
+#: MainWindow.vala:1871
 msgid "Preset"
 msgstr "Praset"
 
-#: MainWindow.vala:882
+#: MainWindow.vala:2222
 msgid "Preset deleted"
 msgstr "Praset dipadam"
 
-#: MainWindow.vala:1661
+#: MainWindow.vala:3137
 msgid "Press 'Cancel' to abort shutdown"
 msgstr "Tekan 'Batal' untuk henti paksa proses matikan"
 
-#: MainWindow.vala:472
-msgid "Preview File"
-msgstr "Pratonton Fail"
-
-#: EncoderConfigWindow.vala:461
+#: EncoderConfigWindow.vala:486 EncoderConfigWindow.vala:1190
 msgid "Profile"
 msgstr "Profil"
 
@@ -857,76 +1287,152 @@ msgstr "Profil"
 msgid "Properties"
 msgstr "Sifat"
 
-#: EncoderConfigWindow.vala:414 EncoderConfigWindow.vala:759
+#: EncoderConfigWindow.vala:449 EncoderConfigWindow.vala:1126
 msgid "Quality"
 msgstr "Kualiti"
 
-#: EncoderConfigWindow.vala:1065
+#: EncoderConfigWindow.vala:868
 msgid "Quarter Sine"
 msgstr "Suku Sinus"
 
-#: MainWindow.vala:1544
-msgid "Queue is Empty"
-msgstr "Baris Gilir Kosong"
-
-#: Main.vala:630 Main.vala:689 Main.vala:2585
+#: Main.vala:759 Main.vala:818 MediaFile.vala:46
 msgid "Queued"
 msgstr "Dibaris gilir"
 
-#: EncoderStatusWindow.vala:109
+#: MainWindow.vala:2651
+msgid "Reading file properties..."
+msgstr ""
+
+#: EncoderConfigWindow.vala:1226
+msgid "Realtime"
+msgstr ""
+
+#: MainWindow.vala:1380
+msgid "Recorded Date"
+msgstr ""
+
+#: EncoderStatusWindow.vala:108
 msgid "Refresh"
 msgstr "Segar Semula"
 
-#: MainWindow.vala:161
-msgid "Remove all file(s)"
-msgstr "Buang semua fail"
+#: MainWindow.vala:410
+msgid "Remove File(s)"
+msgstr ""
 
-#: MainWindow.vala:154
-msgid "Remove selected file(s)"
-msgstr "Buang fail terpilih"
+#: MainWindow.vala:391
+msgid "Remove Selected Items"
+msgstr ""
 
-#: EncoderConfigWindow.vala:930 EncoderConfigWindow.vala:956
-#: EncoderConfigWindow.vala:982 EncoderConfigWindow.vala:1008
+#: BatchEditWindow.vala:103 ColumnSelectionBox.vala:169
 msgid "Reset"
 msgstr "Tetap Semula"
 
-#: EncoderConfigWindow.vala:607
-msgid "Resizing Method"
-msgstr "Kaedah Mensaiz Semula"
+#: ColumnSelectionBox.vala:170
+msgid "Reset to default columns"
+msgstr ""
 
-#: EncoderConfigWindow.vala:545
+#: EncoderConfigWindow.vala:1321
 msgid "Resolution"
 msgstr "Resolusi"
 
-#: MainWindow.vala:1517 MainWindow.vala:1519
+#: MainWindow.vala:2994 MainWindow.vala:2996
 msgid "Resume"
 msgstr "Sambung semula"
 
-#: MainWindow.vala:257
-msgid "Run processes with lower priority"
-msgstr "Jalanan proses dengan keutamaan lebih rendah"
+#: BatchEditWindow.vala:181
+msgid "Right"
+msgstr ""
 
-#: EncoderConfigWindow.vala:855
+#: MainWindow.vala:472
+msgid "Right-click for more options"
+msgstr ""
+
+#: MediaPlayerWindow.vala:237
+msgid "Right:"
+msgstr ""
+
+#: MainWindow.vala:271
+msgid "Run in background with lower priority"
+msgstr ""
+
+#: EncoderConfigWindow.vala:589
 msgid "SOX"
 msgstr "SOX"
 
-#: EncoderConfigWindow.vala:824
+#: EncoderConfigWindow.vala:547
 msgid "Sampling Rate (Hz)"
 msgstr "Kadar Persampelan (Hz)"
 
-#: AppConfigWindow.vala:81
-msgid "Save in input file location"
-msgstr "Simpan dalam lokasi fail input"
+#: AppConfigWindow.vala:133
+msgid "Save files in following location"
+msgstr ""
 
-#: MainWindow.vala:986
+#: MediaPlayerWindow.vala:220
+msgid "Scroll mouse wheel to adjust"
+msgstr ""
+
+#: ColumnSelectionDialog.vala:43
+msgid "Select Columns"
+msgstr ""
+
+#: AppConfigWindow.vala:156 AppConfigWindow.vala:208
+msgid "Select Path"
+msgstr ""
+
+#: MainWindow.vala:2300
 msgid "Select a script from the dropdown and click 'Start' to begin"
 msgstr "Pilih skrip dari tarik-turun dan klik 'Mula' untuk mula"
 
-#: DonationWindow.vala:73
-msgid "Send Email"
-msgstr "Hantar Emel"
+#: MediaPlayerWindow.vala:380
+msgid "Select multiple segments"
+msgstr ""
 
-#: EncoderConfigWindow.vala:572
+#: ColumnSelectionBox.vala:246 ColumnSelectionBox.vala:281
+msgid "Select single item to move"
+msgstr ""
+
+#: BatchEditWindow.vala:421 BatchEditWindow.vala:485
+msgid "Select some files from the list"
+msgstr ""
+
+#: MediaPlayerWindow.vala:416
+msgid "Select the segments to include in output file:"
+msgstr ""
+
+#: AppConfigWindow.vala:393
+msgid ""
+"Selected language will be used for setting the default flag on the audio/"
+"subtitle track"
+msgstr ""
+
+#: MainWindow.vala:2259
+msgid ""
+"Selene supports 2 types of presets:\n"
+"\n"
+"1) JSON presets with a '.json' file extension. Clicking the Edit button on "
+"the toolbar will display a GUI for configuring the preset.\n"
+"\n"
+"2) Bash scripts with a '.sh' file extension. Clicking the Edit button will "
+"open the script file in a text editor. Bash scripts are useful if you need "
+"complete control over the encoding process. The script can use any set of "
+"commands for encoding the input files. Selene will try to parse the output "
+"and display the progress during encoding. See the sample scripts in '$HOME/."
+"config/selene/scripts' for the syntax."
+msgstr ""
+
+#: MediaPlayerWindow.vala:358 MediaPlayerWindow.vala:368
+msgid "Set"
+msgstr ""
+
+#: MediaPlayerWindow.vala:369
+msgid "Set current playback position as ending position"
+msgstr ""
+
+#: MediaPlayerWindow.vala:359
+msgid "Set current playback position as starting position"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1350
 msgid ""
 "Set either Width or Height and leave the other as 0.\n"
 "It will be calculated automatically.\n"
@@ -945,131 +1451,142 @@ msgstr ""
 "Benarkan pilihan 'Fit-To-Box' untuk menghindari perubahan\n"
 "pada nisbah bidang."
 
-#: MainWindow.vala:242
+#: MainWindow.vala:322
 msgid "Shutdown"
 msgstr "Tutup"
 
-#: MainWindow.vala:1496
+#: MainWindow.vala:2972
 msgid "Shutdown Disabled"
 msgstr "Matikan Dilumpuhkan"
 
-#: MainWindow.vala:1493
+#: MainWindow.vala:2969
 msgid "Shutdown Enabled"
 msgstr "Matikan Dibenarkan"
 
-#: MainWindow.vala:247
+#: MainWindow.vala:327
 msgid "Shutdown system after completion"
 msgstr "Matikan sistem selepas selesai"
 
-#: MainWindow.vala:296
+#: MainWindow.vala:630
 msgid "Size"
 msgstr "Saiz"
 
-#: MainWindow.vala:462
+#: MainWindow.vala:1460
 msgid "Skip File"
 msgstr "Langkau Fail"
 
-#: EncoderConfigWindow.vala:445
+#: EncoderConfigWindow.vala:1174
 msgid "Slow"
 msgstr "Perlahan"
 
-#: EncoderConfigWindow.vala:447
+#: EncoderConfigWindow.vala:1176
 msgid "Slower"
 msgstr "Lebih Perlahan"
 
-#: Main.vala:618
+#: MainWindow.vala:2689
+msgid "Some files could not be added:"
+msgstr ""
+
+#: Main.vala:747
 #, c-format
 msgid "Source files will be moved to '%s'"
 msgstr "Fail sumber akan dialih ke '%s'"
 
-#: Main.vala:720
+#: Main.vala:849 MediaPlayerWindow.vala:276
 msgid "Source:"
 msgstr "Sumber:"
 
-#: EncoderConfigWindow.vala:889
+#: EncoderConfigWindow.vala:620
 msgid "Sox Not Installed"
 msgstr "Sox Tidak Dipasang"
 
-#: EncoderConfigWindow.vala:789
+#: EncoderConfigWindow.vala:479
 msgid "Speech"
 msgstr "Pertuturan"
 
-#: EncoderConfigWindow.vala:477
+#: EncoderConfigWindow.vala:1210
 msgid "Speed"
 msgstr "Kelajuan"
 
-#: MainWindow.vala:171 MainWindow.vala:173
+#: MainWindow.vala:241 MainWindow.vala:243
 msgid "Start"
 msgstr "Mula"
 
-#: Main.vala:604
+#: MediaPlayerWindow.vala:330
+msgid "Start (sec):"
+msgstr ""
+
+#: MediaPlayerWindow.vala:677
+msgid "Start Pos"
+msgstr ""
+
+#: MediaPlayerWindow.vala:445
+msgid "Start Segment"
+msgstr ""
+
+#: BatchEditWindow.vala:241
+msgid "StartPos"
+msgstr ""
+
+#: Main.vala:733
 #, c-format
 msgid "Starting batch of %d file(s):"
 msgstr "Memulakan kelompok %d fail:"
 
-#: EncoderStatusWindow.vala:99 MainWindow.vala:323
+#: EncoderStatusWindow.vala:98 MainWindow.vala:1412
 msgid "Status"
 msgstr "Status"
 
-#: Utility.vala:753
+#: Utility.vala:748
 msgid "Stopped"
 msgstr "Dihentikan"
 
-#: Main.vala:1001
+#: Main.vala:1100
 msgid "Stopped!"
 msgstr "Henti!"
 
-#: EncoderConfigWindow.vala:1129
-msgid "Subs"
-msgstr "Sarikata"
+#: MainWindow.vala:1691
+msgid "Subtitle"
+msgstr ""
 
-#: EncoderConfigWindow.vala:1146
-msgid "Subtitle Mode"
-msgstr "Mod Sarikata"
-
-#: EncoderConfigWindow.vala:1162
+#: EncoderConfigWindow.vala:1512 EncoderConfigWindow.vala:1552
 msgid "Subtitles"
 msgstr "Sarikata"
 
-#: Main.vala:722 Main.vala:725
-msgid "Subtitles:"
-msgstr "Sarikata:"
-
-#: EncoderConfigWindow.vala:439
+#: EncoderConfigWindow.vala:1168
 msgid "SuperFast"
 msgstr "SuperPantas"
 
-#: EncoderConfigWindow.vala:2310 EncoderConfigWindow.vala:2313
-#: EncoderConfigWindow.vala:2316 EncoderConfigWindow.vala:2319
-msgid "Supported Formats:"
-msgstr "Format Disokong:"
-
-#: MainWindow.vala:1663
+#: MainWindow.vala:3139
 msgid "System shutdown"
 msgstr "Sistem dimatikan"
 
-#: MainWindow.vala:1670
+#: MainWindow.vala:3146
 #, c-format
 msgid "System shutdown was cancelled by user!"
 msgstr "Matikan sistem telah dibatal oleh pengguna!"
 
-#: Main.vala:209
+#: Main.vala:239
 msgid "System will be shutdown after completion"
 msgstr "Sistem akan dimatikan selepas selesai"
 
-#: Main.vala:672 MainWindow.vala:1660
+#: Main.vala:801 MainWindow.vala:3136
 msgid "System will shutdown in one minute!"
 msgstr "Sistem akan dimatikan dalam tempoh seminit!"
 
-#: EncoderConfigWindow.vala:991
-msgid "Tempo (speed)"
-msgstr "Tempo (kelajuan)"
+#: EncoderConfigWindow.vala:1574
+msgid "Tags"
+msgstr ""
 
-#: EncoderConfigWindow.vala:889
+#: EncoderConfigWindow.vala:762
+msgid "Tempo"
+msgstr ""
+
+#: EncoderConfigWindow.vala:620
 msgid "The Sox utility was not found on your system"
 msgstr "Utiliti Sox tidak ditemui pada sistem anda"
 
-#: EncoderConfigWindow.vala:604
+#: EncoderConfigWindow.vala:1386
 msgid ""
 "The resizing filter affects the sharpness and compressibility of the video.\n"
 "For example, the 'Lanzos' filter gives sharper video but the extra detail\n"
@@ -1083,79 +1600,133 @@ msgstr ""
 "yang lebih besar. Penapis 'Bilinear' memberikan video lebih lebih kemas\n"
 "(kurang terperinci) dan fail lebih kecil."
 
-#: AboutWindow.vala:322
-#, c-format
-msgid "Third Party Tools"
+#: AppConfigWindow.vala:442
+msgid ""
+"The temporary folder contains files which may be useful for advanced users. "
+"Keep this un-checked if you want to keep the temp files till the next reboot."
 msgstr ""
 
 #: AboutWindow.vala:338
 #, c-format
+msgid "Third Party Tools &amp; Software"
+msgstr ""
+
+#: AppConfigWindow.vala:259
+msgid "Tiles"
+msgstr ""
+
+#: MainWindow.vala:1286
+msgid "Title"
+msgstr ""
+
+#: EncoderStatusWindow.vala:76
+msgid "Tool"
+msgstr ""
+
+#: AppConfigWindow.vala:274
+msgid "Tools"
+msgstr ""
+
+#: BatchEditWindow.vala:201
+msgid "Top"
+msgstr ""
+
+#: MediaPlayerWindow.vala:250
+msgid "Top:"
+msgstr ""
+
+#: MainWindow.vala:1317
+msgid "Track #"
+msgstr ""
+
+#: AboutWindow.vala:330
+#, c-format
 msgid "Translators"
 msgstr "Penterjemah"
 
-#: EncoderConfigWindow.vala:939
-msgid "Treble (upper freq)"
-msgstr "Trebel (freq lebih tinggi)"
+#: EncoderConfigWindow.vala:686
+msgid "Treble"
+msgstr ""
 
-#: EncoderConfigWindow.vala:437
+#: MediaPlayerWindow.vala:126
+msgid "Trim"
+msgstr ""
+
+#: BatchEditWindow.vala:88 MainWindow.vala:443 MainWindow.vala:1470
+msgid "Trim Duration"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1166
 msgid "UltraFast"
 msgstr "UltraPantas"
 
-#: Main.vala:577
+#: Main.vala:706
 msgid "Unknown format:"
 msgstr "Format tidak diketahui:"
 
-#: MainWindow.vala:1013
-#, c-format
-msgid "Unknown format: '%s'"
-msgstr "Format tidak diketahui: '%s'"
-
-#: Main.vala:357
+#: Main.vala:408
 msgid "Using temp folder:"
 msgstr "Guna folder sementara:"
 
-#: FileInfoWindow.vala:66
+#: MainWindow.vala:1033
+msgid "V-Bitrate"
+msgstr ""
+
+#: MainWindow.vala:813
+msgid "V-Fmt"
+msgstr ""
+
+#: MainWindow.vala:1153
+msgid "V-Fps"
+msgstr ""
+
+#: MainWindow.vala:1113
+msgid "V-Height"
+msgstr ""
+
+#: MainWindow.vala:1073
+msgid "V-Width"
+msgstr ""
+
+#: FileInfoWindow.vala:70
 msgid "Value"
 msgstr "Nilai"
 
-#: EncoderConfigWindow.vala:1545 EncoderConfigWindow.vala:1570
-#: EncoderConfigWindow.vala:1601 EncoderConfigWindow.vala:1618
-#: EncoderConfigWindow.vala:2015 EncoderConfigWindow.vala:2039
+#: EncoderConfigWindow.vala:2046 EncoderConfigWindow.vala:2071
+#: EncoderConfigWindow.vala:2089 EncoderConfigWindow.vala:2115
+#: EncoderConfigWindow.vala:2146 EncoderConfigWindow.vala:2163
+#: EncoderConfigWindow.vala:2597 EncoderConfigWindow.vala:2622
 msgid "Variable Bitrate"
 msgstr "Kadar Bait Pembolehubah"
 
-#: EncoderConfigWindow.vala:2041
+#: EncoderConfigWindow.vala:2624
 msgid "Variable Bitrate (2pass)"
 msgstr "Kadar Bit Pembolehubah (2pass)"
 
-#: EncoderConfigWindow.vala:1969 EncoderConfigWindow.vala:1992
+#: EncoderConfigWindow.vala:2547 EncoderConfigWindow.vala:2572
 msgid "Variable Bitrate / CRF"
 msgstr "Kadar Bit Pembolehubah / CRF"
 
-#: EncoderConfigWindow.vala:318
+#: EncoderConfigWindow.vala:335
 msgid "Version"
 msgstr "Versi"
 
-#: EncoderConfigWindow.vala:449
+#: EncoderConfigWindow.vala:1178
 msgid "VerySlow"
 msgstr "SangatPerlahan"
 
-#: EncoderConfigWindow.vala:360
+#: EncoderConfigWindow.vala:1034 MainWindow.vala:1685
 msgid "Video"
 msgstr "Video"
 
-#: EncoderConfigWindow.vala:630
+#: EncoderConfigWindow.vala:1420
 msgid ""
 "Video will not be resized if it's smaller than the given width and height"
 msgstr ""
 "Video tidak akan disaiz semula jika ia lebih kecil berbanding lebar dan "
 "tinggi yang diberi"
 
-#: DonationWindow.vala:80
-msgid "Visit Website"
-msgstr "Lawati Laman Sesawang"
-
-#: EncoderConfigWindow.vala:277
+#: EncoderConfigWindow.vala:290
 msgid "WAV Audio (*.wav)"
 msgstr "Audio WAV (*.wav)"
 
@@ -1163,41 +1734,255 @@ msgstr "Audio WAV (*.wav)"
 msgid "Warning"
 msgstr "Amaran"
 
-#: Main.vala:212
+#: Main.vala:242
 msgid ""
 "Warning: User does not have Admin priviledges. '--shutdown' will be ignored."
 msgstr ""
 "Amaran: Pengguna tidak mempunyai kelayakan Pentadbir. '--shutdown' akan "
 "diabaikan."
 
-#: EncoderConfigWindow.vala:263
+#: EncoderConfigWindow.vala:276
 msgid "WebM Video (*.webm)"
 msgstr "Video WebM (*.webm)"
 
-#: EncoderConfigWindow.vala:592
+#: DonationWindow.vala:123
+msgid "Website ~ teejeetech.in"
+msgstr ""
+
+#: EncoderConfigWindow.vala:1354 EncoderConfigWindow.vala:1363
 msgid "Width"
 msgstr "Lebar"
 
-#: EncoderConfigWindow.vala:575
-msgid "Width x Height"
-msgstr "Lebar x Tinggi"
-
-#: MainWindow.vala:992
+#: MainWindow.vala:2306
 msgid ""
 "[Batch completed] Right-click for options or click 'Finish' to continue."
 msgstr ""
 "[Kelompok selesai] Klik-kanan untuk pilihan atau klik 'Selesai' untuk "
 "teruskan."
 
-#: MainWindow.vala:996
+#: MainWindow.vala:2310
 msgid "[Paused] Click 'Resume' to continue or 'Stop' to abort."
 msgstr ""
 "[Dijeda] Klik 'Sambung Semula' untuk teruskan atau 'Henti' untuk henti paksa."
 
-#: MainWindow.vala:595
+#: AppConfigWindow.vala:311
+msgid "avconv / Libav"
+msgstr ""
+
+#: AppConfigWindow.vala:309
+msgid "ffmpeg"
+msgstr ""
+
+#: AppConfigWindow.vala:355
+msgid "mplayer"
+msgstr ""
+
+#: AppConfigWindow.vala:353
+msgid "mpv"
+msgstr ""
+
+#: MainWindow.vala:1942
 msgid "presets"
 msgstr "praset"
 
-#: MainWindow.vala:591
+#: MainWindow.vala:1938
 msgid "scripts"
 msgstr "skrip"
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Subtitle files should be present in the same folder\n"
+#~ "and should start with same name."
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "Fail sari kata seharusnya hadir dalam folder yang  sama\n"
+#~ "dan seharusnya mula dengan nama yang sama."
+
+#~ msgid "<b>Backup Folder</b>"
+#~ msgstr "<b>Folder Sandar</b>"
+
+#~ msgid "<b>Channels &amp; Sampling:</b>"
+#~ msgstr "<b>Saluran &amp; Persampelan:</b>"
+
+#~ msgid "<b>File Format:</b>"
+#~ msgstr "<b>Format Fail:</b>"
+
+#~ msgid "<b>Output Folder</b>"
+#~ msgstr "<b>Folder Output</b>"
+
+#~ msgid "<b>Preset:</b>"
+#~ msgstr "<b>Praset:</b>"
+
+#~ msgid "<b>Resample:</b>"
+#~ msgstr "<b>Sampel Semula:</b>"
+
+#~ msgid "<b>Resize:</b>"
+#~ msgstr "<b>Saiz Semula:</b>"
+
+#~ msgid "<b>SOX Audio Processing:</b>"
+#~ msgstr "<b>Pemprosesan Audio SOX:</b>"
+
+#~ msgid "Add Files"
+#~ msgstr "Tambah Fail"
+
+#~ msgid "Add Preset"
+#~ msgstr "Tambah Praset"
+
+#~ msgid "Add file(s)"
+#~ msgstr "Tambah fail"
+
+#~ msgid "AutoCrop Video"
+#~ msgstr "Kerat-Auto Video"
+
+#~ msgid "Backup Location"
+#~ msgstr "Lokasi Sandar"
+
+#~ msgid "Bass (lower freq)"
+#~ msgstr "Bass (freq lebih rendah)"
+
+#~ msgid "Converting..."
+#~ msgstr "Menukarkan..."
+
+#~ msgid "Converting: '%s'"
+#~ msgstr "Menukar: '%s'"
+
+#~ msgid "CropVideo (L:T:R:B)"
+#~ msgstr "KeratVideo (L:T:R:B)"
+
+#~ msgid ""
+#~ "Did you find this software useful?\n"
+#~ "\n"
+#~ "You can buy me a coffee or make a donation via PayPal to show your "
+#~ "support. Or just drop me an email and say Hi.\n"
+#~ "\n"
+#~ "This application is completely free and will continue to remain that way. "
+#~ "Your contributions will help in keeping this project alive and to develop "
+#~ "it further.\n"
+#~ "\n"
+#~ "Feel free to drop me an email if you find any issues or if you have "
+#~ "suggestions for improvement.\n"
+#~ "\n"
+#~ "Regards,\n"
+#~ "Tony George\n"
+#~ "teejeetech@gmail.com"
+#~ msgstr ""
+#~ "Adakah anda mendapat perisian ini berguna?\n"
+#~ "\n"
+#~ "Anda boleh belanja saya secawan kopi atau beri sumbangan melalui PayPal "
+#~ "untuk menzahirkan sokongan anda. Atau hantar emel kepada saya dan ucapkan "
+#~ "Hai.\n"
+#~ "\n"
+#~ "Aplikasi ini sepenuhnya percuma dan akan terus sedemikian. Sumbangan anda "
+#~ "memastikan projek ini kekal dan senantiasa dibangunkan.\n"
+#~ "\n"
+#~ "Sila hantar maklumbalas jika anda dapati ada masalah atau anda ada "
+#~ "cadangan untuk penambahbaikan.\n"
+#~ "\n"
+#~ "Harap Maklum,\n"
+#~ "Tony George\n"
+#~ "teejeetech@gmail.com"
+
+#~ msgid "Do not move input files"
+#~ msgstr "Jangan alih fail input"
+
+#~ msgid "Donate via PayPal"
+#~ msgstr "Derma melalui PayPal"
+
+#~ msgid "Encoding Tool"
+#~ msgstr "Alat Pengekodan"
+
+#~ msgid "Examples:"
+#~ msgstr "Contoh:"
+
+#~ msgid "FPS Ratio"
+#~ msgstr "Nisbah FPS"
+
+#~ msgid "Fade In (seconds)"
+#~ msgstr "Resap Masuk (saat)"
+
+#~ msgid "Fade Out (seconds)"
+#~ msgstr "Resap Lenyap (saat)"
+
+#~ msgid "File added: '%s'"
+#~ msgstr "Fail ditambah: '%s'"
+
+#~ msgid "File(s) to convert"
+#~ msgstr "Fail ditukar"
+
+#~ msgid "Filters"
+#~ msgstr "Penapis"
+
+#~ msgid "Following encoders are not installed on your system:"
+#~ msgstr "Pengekod berikut tidak dipasang dalam sistem anda:"
+
+#~ msgid "Format not supported:"
+#~ msgstr "Format tidak disokong:"
+
+#~ msgid ""
+#~ "Input queue is empty!\n"
+#~ "Please add some files.\n"
+#~ msgstr ""
+#~ "Baris gilir input kosong!\n"
+#~ "Sila tambah beberapa fail.\n"
+
+#~ msgid "Lyrics:"
+#~ msgstr "Lirik:"
+
+#~ msgid "Output Location"
+#~ msgstr "Lokasi Output"
+
+#~ msgid "Pitch (shrillness)"
+#~ msgstr "Pic (kelantangan)"
+
+#~ msgid "Preview File"
+#~ msgstr "Pratonton Fail"
+
+#~ msgid "Queue is Empty"
+#~ msgstr "Baris Gilir Kosong"
+
+#~ msgid "Remove all file(s)"
+#~ msgstr "Buang semua fail"
+
+#~ msgid "Remove selected file(s)"
+#~ msgstr "Buang fail terpilih"
+
+#~ msgid "Resizing Method"
+#~ msgstr "Kaedah Mensaiz Semula"
+
+#~ msgid "Run processes with lower priority"
+#~ msgstr "Jalanan proses dengan keutamaan lebih rendah"
+
+#~ msgid "Save in input file location"
+#~ msgstr "Simpan dalam lokasi fail input"
+
+#~ msgid "Send Email"
+#~ msgstr "Hantar Emel"
+
+#~ msgid "Subs"
+#~ msgstr "Sarikata"
+
+#~ msgid "Subtitle Mode"
+#~ msgstr "Mod Sarikata"
+
+#~ msgid "Subtitles:"
+#~ msgstr "Sarikata:"
+
+#~ msgid "Supported Formats:"
+#~ msgstr "Format Disokong:"
+
+#~ msgid "Tempo (speed)"
+#~ msgstr "Tempo (kelajuan)"
+
+#~ msgid "Treble (upper freq)"
+#~ msgstr "Trebel (freq lebih tinggi)"
+
+#~ msgid "Unknown format: '%s'"
+#~ msgstr "Format tidak diketahui: '%s'"
+
+#~ msgid "Visit Website"
+#~ msgstr "Lawati Laman Sesawang"
+
+#~ msgid "Width x Height"
+#~ msgstr "Lebar x Tinggi"

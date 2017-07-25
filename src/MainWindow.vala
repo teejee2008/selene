@@ -2903,7 +2903,10 @@ public class MainWindow : Gtk.Window{
 			"B. W. Knight (Korean):launchpad.net/~kbd0651",
 			"Felix Moreno (Spanish):launchpad.net/~felix-justdust",
 			"Radek Otáhal (Czech):radek.otahal@email.cz",
-			"Heimen Stoffels (Dutch):vistausss@outlook.com"
+			"Heimen Stoffels (Dutch):vistausss@outlook.com",
+			"Anne017, Daniel U. Thibault, Jean-Marc. (French):https://launchpad.net/~lp-l10n-fr",
+			"Gilberto vagner, Paulo Giovanni Pereira. (Brazilian Portuguese):https://launchpad.net/~lp-l10n-pt-br",
+			"Åke Engelbrektson (Swedish):https://launchpad.net/~eson",
 		};
 
 		dialog.third_party = {
