@@ -1,3 +1,22 @@
+selene (17.7) xenial; urgency=low
+
+  * Added support for OPUS in WEBM, MKV and OGG containers
+
+  * Added audio tag support for Fraunhoffer AAC encoding
+  
+  * Use VLC for playing media instead of internal player
+  
+  * MediaPlayer: Center screen and show file name in header bar
+
+  * Added French translation by Anne017, Daniel U. Thibault, Jean-Marc
+
+  * Added pt_BR translation by Gilberto vagner, Paulo Giovanni Pereira
+
+  * Added Swedish translation by Åke Engelbrektson
+
+ -- Tony George <tony.george.kol@gmail.com>  Tue, 25 Jul 2017 10:00:00 +0530
+
+
 selene (17.4.2) xenial; urgency=low
 
   * Fixed build issues
