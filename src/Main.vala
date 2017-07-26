@@ -88,6 +88,7 @@ public class Main : GLib.Object{
 	
 	public string PrimaryEncoder = "ffmpeg";
 	public string PrimaryPlayer = "mpv";
+	public string PrimaryGuiPlayer = "vlc";
 	public string DefaultLanguage = "en";
 	public bool DeleteTempFiles = true;
 
@@ -481,8 +482,8 @@ Notes:
 		Encoders["mplayer"] = new Encoder("mplayer","Media Player","Audio-Video Playback");
 		//Encoders["mplayer2"] = new Encoder("mplayer2","Media Player","Audio-Video Playback");
 		Encoders["mpv"] = new Encoder("mpv","Media Player","Audio-Video Playback");
-		//Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
-		//Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
+		Encoders["smplayer"] = new Encoder("smplayer","Media Player","Audio-Video Playback");
+		Encoders["vlc"] = new Encoder("vlc","Media Player","Audio-Video Playback");
 	}
 
 	public void check_all_encoders(){
@@ -623,6 +624,7 @@ Notes:
 
 		check_and_default_av_encoder();
 		check_and_default_av_player();
+		check_and_default_gui_player();
 
 		val = json_get_string(config,"last-script", "");
 		if (val != null && val.length > 0) {
@@ -653,10 +655,11 @@ Notes:
 	}
 
 	public void check_and_default_av_player(){
+		
 		if (Encoders.has_key(PrimaryPlayer) && Encoders[PrimaryPlayer].IsAvailable){
 			return;
 		}
-		
+
 		if (Encoders["mpv"].IsAvailable){
 			PrimaryPlayer = "mpv";
 			return;
@@ -664,6 +667,19 @@ Notes:
 
 		if (Encoders["mplayer"].IsAvailable){
 			PrimaryPlayer = "mplayer";
+			return;
+		}
+	}
+
+	public void check_and_default_gui_player(){
+
+		if (Encoders["vlc"].IsAvailable){
+			PrimaryGuiPlayer = "vlc";
+			return;
+		}
+
+		if (Encoders["smplayer"].IsAvailable){
+			PrimaryGuiPlayer = "smplayer";
 			return;
 		}
 	}

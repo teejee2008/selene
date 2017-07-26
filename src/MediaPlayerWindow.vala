@@ -107,7 +107,7 @@ public class MediaPlayerWindow : Gtk.Window {
 	
 	public MediaPlayerWindow(MediaFile _mFile, Gtk.Window? parent, string _action) {
         set_window_parent(parent);
-		//window_position = WindowPosition.CENTER_ALWAYS;
+		window_position = WindowPosition.CENTER_ALWAYS;
 		icon = get_app_icon(16);
 		
 		deletable = true;
@@ -134,8 +134,8 @@ public class MediaPlayerWindow : Gtk.Window {
 		add(vboxMain);
 
 		headerbar = new Gtk.HeaderBar ();
-		headerbar.set_title ("Selene Video Trimer");
-        headerbar.set_subtitle ("Test");
+		headerbar.set_title (file_basename(_mFile.Name));
+        //headerbar.set_subtitle ("Test");
         headerbar.set_show_close_button(true);
         //vboxMain.pack_start (headerbar, false, true, 0);
 
@@ -143,10 +143,10 @@ public class MediaPlayerWindow : Gtk.Window {
 
         //decorated = false;
         
-		Gtk.Button button = new Gtk.Button.with_label (_("Open"));
+		/*Gtk.Button button = new Gtk.Button.with_label (_("Open"));
         button.set_valign (Gtk.Align.CENTER);
 		button.get_style_context().add_class(Gtk.STYLE_CLASS_RAISED);
-        headerbar.pack_start (button);
+        headerbar.pack_start (button);*/
 
 		if (action == "crop"){
 			init_ui_file_crop_options();
