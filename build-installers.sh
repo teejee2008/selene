@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
 	cd "$backup"; echo "Failed"; exit 1;
 fi
 
-mv -v ./${pkg_name}*${arch}.run ./${pkg_name}-v${pkg_version}-${arch}.run 
+mv -v ./*${arch}.run ./${pkg_name}-v${pkg_version}-${arch}.run 
 
 echo "--------------------------------------------------------------------------"
 
