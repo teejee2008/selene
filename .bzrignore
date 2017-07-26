@@ -7,3 +7,5 @@ installer/*.run
 .sass-cache/
 bzr-repo/
 *.pyc
+*.c
+*.o

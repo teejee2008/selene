@@ -673,6 +673,8 @@ Notes:
 
 	public void check_and_default_gui_player(){
 
+		PrimaryGuiPlayer = ""; // use internal by default
+		
 		if (Encoders["vlc"].IsAvailable){
 			PrimaryGuiPlayer = "vlc";
 			return;

@@ -126,6 +126,7 @@ public class MediaPlayer : GLib.Object{
 
 	
 	public void StartPlayer(string ExtraOptions = ""){
+		
 		string args = App.PrimaryPlayer;
 		
 		if (App.PrimaryPlayer == "mpv"){
@@ -221,7 +222,7 @@ public class MediaPlayer : GLib.Object{
 	private void read_error_line() {
 		try {
 			MatchInfo match;
-			
+
 			err_line = dis_err.read_line (null);
 			while (is_running && (err_line != null)) {
 				if (rex_mpv.match(err_line, 0, out match)){
@@ -248,7 +249,7 @@ public class MediaPlayer : GLib.Object{
 					//log_debug("PAUSED");
 				}
 
-				//log_debug("err:" + err_line);
+				log_debug("err:" + err_line);
 				err_line = dis_err.read_line (null); //read next
 			}
 
@@ -379,23 +380,31 @@ public class MediaPlayer : GLib.Object{
 	}
 
 	public void Mute(){
+
+		log_debug("Mute()");
+		
 		if (App.PrimaryPlayer == "mplayer"){
 			write_to_stdin("mute 1");
-			IsMuted = true;
 		}
 		else{
 			write_to_stdin("cycle mute 1");
 		}
+
+		IsMuted = true;
 	}
 
 	public void UnMute(){
+
+		log_debug("UnMute()");
+		
 		if (App.PrimaryPlayer == "mplayer"){
 			write_to_stdin("mute 0");
-			IsMuted = false;
 		}
 		else{
 			write_to_stdin("cycle mute 0");
 		}
+
+		IsMuted = false;
 	}
 
 	public void SetVolume(int percent){

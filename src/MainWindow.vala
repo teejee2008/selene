@@ -2590,7 +2590,13 @@ public class MainWindow : Gtk.Window{
 			MediaFile mf = App.InputFiles[index];
 
 			var mf_output = new MediaFile(mf.OutputFilePath, App.PrimaryEncoder);
-			MediaPlayerWindow.PlayFile(mf_output);
+
+			if (App.PrimaryGuiPlayer.length > 0){
+				execute_command_script_async("%s '%s'".printf(App.PrimaryGuiPlayer, escape_single_quote(mf.OutputFilePath)));
+			}
+			else{
+				MediaPlayerWindow.PlayFile(mf_output);
+			}
 		}
     }
 
@@ -2604,7 +2610,12 @@ public class MainWindow : Gtk.Window{
 			int index = int.parse (path.to_string());
 			MediaFile mf = App.InputFiles[index];
 
-			MediaPlayerWindow.PlayFile(mf);
+			if (App.PrimaryGuiPlayer.length > 0){
+				execute_command_script_async("%s '%s'".printf(App.PrimaryGuiPlayer, escape_single_quote(mf.Path)));
+			}
+			else{
+				MediaPlayerWindow.PlayFile(mf); 
+			}
 		}
     }
 

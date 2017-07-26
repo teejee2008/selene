@@ -6,3 +6,5 @@ installer/*.run
 .bzr/
 .sass-cache/
 bzr-repo/
+*.c
+*.o
